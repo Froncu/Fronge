@@ -1,19 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Fronge.cpp" />
     <ClCompile Include="Console.cpp">
       <Filter>Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Fronge.cpp">
+      <Filter>Fronge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
       <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fronge">
+      <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
       <Filter>Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Fronge.h">
+      <Filter>Fronge</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
