@@ -1,5 +1,7 @@
 #include "Fronge.h"
 
+#include "EventManager.h"
+
 #include <SDL2/SDL.h>
 #include <cassert>
 
@@ -34,10 +36,6 @@ fro::Fronge::Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
-	SDL_Event event;
-	while (true)
-		while (SDL_PollEvent(&event))
-			if (event.type == SDL_EventType::SDL_QUIT)
-				return;
+	while (EventManager::processEvents());
 }
 #pragma endregion PublicMethods

@@ -7,6 +7,9 @@
     <ClCompile Include="Fronge.cpp">
       <Filter>Fronge</Filter>
     </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -15,6 +18,9 @@
     <Filter Include="Fronge">
       <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EventManager">
+      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -22,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="Fronge.h">
       <Filter>Fronge</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>EventManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
