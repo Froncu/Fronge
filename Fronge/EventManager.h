@@ -2,7 +2,7 @@
 
 namespace fro
 {
-	class EventManager
+	class EventManager final
 	{
 	public:
 		static [[nodiscard("eventual SDL_QUIT event ignored")]] bool processEvents();
