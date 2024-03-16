@@ -73,26 +73,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
-    <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(SolutionDir)Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
-    <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
-    <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(SolutionDir)Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
-    <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -111,9 +111,9 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,7 +138,7 @@ xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(T
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,9 +158,9 @@ xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(T
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -185,7 +185,7 @@ xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(T
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
