@@ -113,7 +113,10 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q
+
+mkdir "$(TargetDir)Resources"
+xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,7 +141,10 @@ xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manif
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+
+mkdir "$(TargetDir)Resources"
+xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -160,7 +166,10 @@ xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manif
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
+xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q
+
+mkdir "$(TargetDir)Resources"
+xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -185,7 +194,10 @@ xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manif
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+
+mkdir "$(TargetDir)Resources"
+xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
