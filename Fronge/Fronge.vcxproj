@@ -185,14 +185,26 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Behaviour.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Fronge.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Behaviour.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Fronge.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
