@@ -74,7 +74,7 @@
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
     <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(SolutionDir)Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
@@ -86,7 +86,7 @@
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
     <IncludePath>$(SolutionDir)Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\SDL2\$(Platform)\;$(SolutionDir)Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
@@ -108,10 +108,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -153,10 +155,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

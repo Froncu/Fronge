@@ -5,6 +5,7 @@
 #include "Scene.h"
 
 #include <SDL2/SDL.h>
+#include <VLD/vld.h>
 #include <cassert>
 
 #pragma region EntryFunction
