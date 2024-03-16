@@ -72,25 +72,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
+    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
+    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
+    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\Intermediate\</IntDir>
+    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
