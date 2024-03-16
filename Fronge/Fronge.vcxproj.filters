@@ -28,6 +28,9 @@
     <ClCompile Include="Renderable.cpp">
       <Filter>Component\Renderable\Base</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -66,6 +69,9 @@
     <Filter Include="Component\Renderable\Base">
       <UniqueIdentifier>{d6ac9562-888e-4f50-99c0-d8a22469c159}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{f7c6e62e-2fed-4791-ba17-ffe27a6e0112}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -94,6 +100,13 @@
     </ClInclude>
     <ClInclude Include="Renderable.h">
       <Filter>Component\Renderable\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.hpp" />
+    <ClInclude Include="Test.hpp">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

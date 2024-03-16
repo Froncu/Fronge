@@ -3,19 +3,36 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "Test.hpp"
+#include "ResourceManager.h"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <VLD/vld.h>
 #include <cassert>
 
 #pragma region EntryFunction
 int main(int, char**)
 {
-	[[maybe_unused]] const int result{ SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) };
+	int result;
+
+	result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 	assert(result == 0 && SDL_GetError());
+
+	constexpr int imageFlags{ NULL };
+	result = IMG_Init(imageFlags);
+	assert(result == imageFlags);
+
+	result = TTF_Init();
+	assert(result == 0);
 
 	fro::Fronge().run();
 
+	fro::ResourceManager::clearCaches();
+
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;
@@ -39,6 +56,8 @@ fro::Fronge::Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
+	SceneManager::addScene("Test").addGameObject().addComponent<Test>();
+
 	while (true)
 	{
 		if (!EventManager::processEvents()) 
