@@ -2,8 +2,6 @@
 
 #include "EventManager.h"
 #include "SceneManager.h"
-#include "Scene.h"
-#include "Test.hpp"
 #include "ResourceManager.h"
 
 #include <SDL2/SDL.h>
@@ -56,8 +54,6 @@ fro::Fronge::Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
-	SceneManager::addScene("Test").addGameObject().addComponent<Test>();
-
 	while (true)
 	{
 		if (!EventManager::processEvents()) 

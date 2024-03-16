@@ -102,9 +102,6 @@
       <Filter>Component\Renderable\Base</Filter>
     </ClInclude>
     <ClInclude Include="Defines.hpp" />
-    <ClInclude Include="Test.hpp">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
