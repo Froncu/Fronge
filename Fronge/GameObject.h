@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Defines.hpp"
 #include "Behaviour.h"
 #include "Renderable.h"
 #include "Component.h"
@@ -38,7 +39,7 @@ namespace fro
 		}
 
 		template<ComponentDerived ComponentType>
-		[[nodiscard("getter's return value ignored")]] ComponentType* getComponent() const noexcept
+		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
 			const auto& mpComponents{ getComponentMap<ComponentType>() };
 

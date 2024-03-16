@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.hpp"
+
 namespace fro
 {
 	class GameObject;
@@ -14,7 +16,7 @@ namespace fro
 	protected:
 		Component(const GameObject& parentingGameObject);
 
-		const GameObject& getParentingGameObject() const;
+		fro_NODISCARD_GETTER const GameObject& getParentingGameObject() const;
 
 	private:
 		Component(const Component&) = delete;
