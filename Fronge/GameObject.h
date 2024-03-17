@@ -45,7 +45,7 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
-			const auto& mpComponents{ getComponentMap<ComponentType>() };
+			const auto& mpComponents{ getComponentMapConstant<ComponentType>() };
 
 			const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
 			if (iterator == mpComponents.end())
@@ -62,8 +62,9 @@ namespace fro
 		GameObject& operator=(const GameObject&) = delete;
 		GameObject& operator=(GameObject&&) noexcept = delete;
 
+		// HACK: there shouldn't be two methods for getting the component map
 		template<ComponentDerived ComponentType>
-		auto& getComponentMap() const
+		const auto& getComponentMapConstant() const
 		{
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
@@ -74,6 +75,20 @@ namespace fro
 			else
 				return m_mpComponents;
 		}
+
+		template<ComponentDerived ComponentType>
+		auto& getComponentMap()
+		{
+			if constexpr (std::derived_from<ComponentType, Behaviour>)
+				return m_mpBehaviours;
+
+			else if constexpr (std::derived_from<ComponentType, Renderable>)
+				return m_mpRenderables;
+
+			else
+				return m_mpComponents;
+		}
+		// END HACK
 
 		void update() const;
 		void render(SDL_Renderer* const pRenderer) const;
