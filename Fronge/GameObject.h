@@ -63,7 +63,7 @@ namespace fro
 		GameObject& operator=(GameObject&&) noexcept = delete;
 
 		template<ComponentDerived ComponentType>
-		auto& getComponentMap()
+		auto& getComponentMap() const
 		{
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
