@@ -20,7 +20,7 @@ void fro::Transform::setLocalPosition(const glm::vec2& position)
 	m_LocalPosition = position;
 }
 
-const glm::vec2& fro::Transform::getLocalPosition()
+const glm::vec2& fro::Transform::getLocalPosition() const
 {
 	return m_LocalPosition;
 }

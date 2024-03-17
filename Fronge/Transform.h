@@ -13,7 +13,7 @@ fro_GENERATED_COMPONENT_BODY
 
 		void setLocalPosition(const glm::vec2& position);
 
-		const glm::vec2& getLocalPosition();
+		const glm::vec2& getLocalPosition() const;
 
 	private:
 		glm::vec2 m_LocalPosition{ 0.0f, 0.0f };
