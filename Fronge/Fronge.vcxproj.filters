@@ -31,6 +31,9 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -72,6 +75,9 @@
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{f7c6e62e-2fed-4791-ba17-ffe27a6e0112}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -104,6 +110,9 @@
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="ResourceManager.h">
       <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

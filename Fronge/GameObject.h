@@ -4,6 +4,7 @@
 #include "Behaviour.h"
 #include "Renderable.h"
 #include "Component.h"
+#include "Transform.h"
 
 #include <memory>
 #include <unordered_map>
@@ -25,29 +26,42 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
 		{
-			const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
-			if (!resultPair.second)
+			if constexpr (std::same_as<ComponentType, Transform>)
 				return nullptr;
+			else
+			{
+				const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
+				if (!resultPair.second)
+					return nullptr;
 
-			return static_cast<ComponentType*>(resultPair.first->second.get());
+				return static_cast<ComponentType*>(resultPair.first->second.get());
+			}
 		}
 
 		template<ComponentDerived ComponentType>
 		bool removeComponent() noexcept
 		{
-			return getComponentMap<ComponentType>().erase(typeid(ComponentType).hash_code());
+			if constexpr (std::same_as<ComponentType, Transform>)
+				return false;
+			else
+				return getComponentMap<ComponentType>().erase(typeid(ComponentType).hash_code());
 		}
 
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
-			const auto& mpComponents{ getComponentMap<ComponentType>() };
+			if constexpr (std::same_as<ComponentType, Transform>)
+				return &m_Transform;
+			else
+			{
+				const auto& mpComponents{ getComponentMap<ComponentType>() };
 
-			const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
-			if (iterator == mpComponents.end())
-				return nullptr;
+				const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
+				if (iterator == mpComponents.end())
+					return nullptr;
 
-			return static_cast<ComponentType*>(iterator->second.get());
+				return static_cast<ComponentType*>(iterator->second.get());
+			}
 		}
 
 	private:
@@ -77,5 +91,7 @@ namespace fro
 		std::unordered_map<size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<size_t, std::unique_ptr<Renderable>> m_mpRenderables{};
 		std::unordered_map<size_t, std::unique_ptr<Component>> m_mpComponents{};
+
+		Transform m_Transform{ *this };
 	};
 }
