@@ -1,5 +1,14 @@
 #include "GameObject.h"
 
+#pragma region Constructors/Destructor
+fro::GameObject::GameObject()
+{
+	m_mpComponents.insert(std::make_pair(typeid(Transform).hash_code(), new Transform(*this)));
+}
+#pragma endregion Constructors/Destructor
+
+
+
 #pragma region PrivateMethods
 void fro::GameObject::update() const
 {

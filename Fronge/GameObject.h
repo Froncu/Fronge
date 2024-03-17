@@ -26,16 +26,11 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
+			const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
+			if (!resultPair.second)
 				return nullptr;
-			else
-			{
-				const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
-				if (!resultPair.second)
-					return nullptr;
 
-				return static_cast<ComponentType*>(resultPair.first->second.get());
-			}
+			return static_cast<ComponentType*>(resultPair.first->second.get());
 		}
 
 		template<ComponentDerived ComponentType>
@@ -50,22 +45,17 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
-				return &m_Transform;
-			else
-			{
-				const auto& mpComponents{ getComponentMap<ComponentType>() };
+			const auto& mpComponents{ getComponentMap<ComponentType>() };
 
-				const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
-				if (iterator == mpComponents.end())
-					return nullptr;
+			const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
+			if (iterator == mpComponents.end())
+				return nullptr;
 
-				return static_cast<ComponentType*>(iterator->second.get());
-			}
+			return static_cast<ComponentType*>(iterator->second.get());
 		}
 
 	private:
-		GameObject() = default;
+		GameObject();
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) noexcept = delete;
 
@@ -91,7 +81,5 @@ namespace fro
 		std::unordered_map<size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<size_t, std::unique_ptr<Renderable>> m_mpRenderables{};
 		std::unordered_map<size_t, std::unique_ptr<Component>> m_mpComponents{};
-
-		Transform m_Transform{ *this };
 	};
 }
