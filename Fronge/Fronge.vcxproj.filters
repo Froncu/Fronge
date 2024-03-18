@@ -79,6 +79,9 @@
     <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp">
       <Filter>ImGui\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Plot.cpp">
+      <Filter>Component\Behaviour\Plot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -147,6 +150,9 @@
     <Filter Include="ImGui\Source">
       <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Behaviour\Plot">
+      <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -200,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>ImGui\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Plot.h">
+      <Filter>Component\Behaviour\Plot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

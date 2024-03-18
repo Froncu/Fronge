@@ -12,6 +12,7 @@
 #include "Rotator.h"
 #include "Text.h"
 #include "FPSCounter.h"
+#include "Plot.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -97,6 +98,8 @@ void fro::Fronge::run()
 	text.setFont("Lingua.otf", 64);
 	pGameObject->addComponent<FPSCounter>();
 	pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
+
+	scene.addGameObject().addComponent<Plot>();
 
 	while (true)
 	{
