@@ -23,10 +23,11 @@ namespace fro
 		Renderable& operator=(const Renderable&) = delete;
 		Renderable& operator=(Renderable&&) noexcept = delete;
 
-		virtual void render(SDL_Renderer* const pRenderer) const = 0;
+		virtual void render(SDL_Renderer* const pRenderer) = 0;
 	};
 }
 
+// HACK: render() is not marked const; Plot needs this for now. Ideally, Plot should not be a Renderable but UI or something in this direction
 #ifndef fro_GENERATED_RENDERABLE_BODY
 #define fro_GENERATED_RENDERABLE_BODY(identifier, ...)\
 namespace fro\
@@ -46,7 +47,7 @@ namespace fro\
 		identifier& operator=(const identifier&) = delete;\
 		identifier& operator=(identifier&&) noexcept = delete;\
 \
-		virtual void render(SDL_Renderer* const pRenderer) const override;\
+		virtual void render(SDL_Renderer* const pRenderer) override;\
 \
 		__VA_ARGS__\
 	};\
@@ -69,8 +70,9 @@ fro_GENERATED_COMPONENT_DESTRUCTOR(identifier, __VA_ARGS__)
 
 #ifndef fro_GENERATED_RENDERABLE_RENDER
 #define fro_GENERATED_RENDERABLE_RENDER(identifier, body)\
-void fro::identifier::render(SDL_Renderer* const pRenderer) const\
+void fro::identifier::render(SDL_Renderer* const pRenderer)\
 {\
 	body\
 }
 #endif
+// END HACK
