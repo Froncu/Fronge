@@ -34,6 +34,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Component\Renderable\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -78,6 +81,9 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Renderable\Sprite">
+      <UniqueIdentifier>{0efc79a3-9896-4751-b694-df848b0da992}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -113,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Component\Renderable\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

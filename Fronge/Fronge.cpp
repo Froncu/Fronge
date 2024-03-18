@@ -3,6 +3,10 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "GameObject.h"
+#include "Sprite.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -54,6 +58,20 @@ fro::Fronge::Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
+	Scene& scene{ SceneManager::addScene("Test") };
+
+	GameObject* pGameObject{ &scene.addGameObject() };
+	pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
+	for (size_t index{}; index < 4; ++index)
+	{
+		GameObject& gameObject{ scene.addGameObject() };
+
+		gameObject.addComponent<Sprite>()->setFileName("logo.tga");
+		gameObject.getComponent<Transform>()->setLocalPosition({ 50, 50 });
+		gameObject.setParent(pGameObject, false);
+		pGameObject = &gameObject;
+	}
+
 	while (true)
 	{
 		if (!EventManager::processEvents()) 
