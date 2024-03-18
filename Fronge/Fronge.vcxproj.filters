@@ -43,6 +43,12 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Timer</Filter>
     </ClCompile>
+    <ClCompile Include="FPSCounter.cpp">
+      <Filter>Component\Behaviour\FPSCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Component\Renderable\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -96,6 +102,12 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Behaviour\FPSCounter">
+      <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderable\Text">
+      <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -140,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounter.h">
+      <Filter>Component\Behaviour\FPSCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Component\Renderable\Text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
