@@ -50,25 +50,28 @@
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>ImGui\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>ImGui\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +135,12 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{353396e0-376e-4165-939e-6c566206b242}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui\GUI">
+      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Source">
+      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -182,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Component\Renderable\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>ImGui\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ namespace fro
 	public:
 		Fronge();
 
-		~Fronge() = default;
+		~Fronge();
 
 		void run();
 

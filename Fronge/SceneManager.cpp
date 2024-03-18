@@ -1,8 +1,10 @@
 #include "SceneManager.h"
 
 #include "Scene.h"
+#include "GUI.h"
 
 #include <SDL2/SDL_render.h>
+#include <ImGui/imgui.h>
 
 #pragma region StaticDataMembers
 std::vector<std::unique_ptr<fro::Scene>> fro::SceneManager::m_vpSCENES{};
@@ -30,11 +32,15 @@ void fro::SceneManager::update()
 void fro::SceneManager::render(SDL_Renderer* const pRenderer)
 {
 	SDL_RenderClear(pRenderer);
+	GUI::startFrame();
+
+	ImGui::ShowDemoWindow();
 
 	for (const auto& pScene : m_vpSCENES)
 		if (pScene->m_IsActive)
 			pScene->render(pRenderer);
 
+	GUI::endFrame();
 	SDL_RenderPresent(pRenderer);
 }
 #pragma endregion PrivateMethods

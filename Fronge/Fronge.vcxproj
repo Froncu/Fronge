@@ -223,6 +223,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="FPSCounter.cpp" />
     <ClCompile Include="Fronge.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Rotator.cpp" />
@@ -242,6 +243,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="Fronge.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Rotator.h" />

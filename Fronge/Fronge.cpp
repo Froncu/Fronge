@@ -2,6 +2,7 @@
 
 #include "EventManager.h"
 #include "SceneManager.h"
+#include "GUI.h"
 #include "ResourceManager.h"
 #include "Timer.h"
 #include "SceneManager.h"
@@ -54,6 +55,13 @@ fro::Fronge::Fronge()
 {
 	assert(m_pWindow.get() && SDL_GetError());
 	assert(m_pRenderer.get() && SDL_GetError());
+
+	fro::GUI::initialise(m_pWindow.get(), m_pRenderer.get());
+}
+
+fro::Fronge::~Fronge()
+{
+	fro::GUI::destroy();
 }
 #pragma endregion Constructors/Destructor
 
@@ -69,7 +77,7 @@ void fro::Fronge::run()
 	pGameObject->addComponent<Rotator>()->setCenter({ 320, 240 });
 
 	float period{ -3.14f };
-	for (size_t index{}; index < 2'000; ++index)
+	for (size_t index{}; index < 2; ++index)
 	{
 		GameObject& gameObject{ scene.addGameObject() };
 
