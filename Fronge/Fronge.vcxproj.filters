@@ -73,6 +73,12 @@
     <ClCompile Include="GUI.cpp">
       <Filter>ImGui\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\External\Source\ImPlot\implot.cpp">
+      <Filter>ImGui\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp">
+      <Filter>ImGui\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">

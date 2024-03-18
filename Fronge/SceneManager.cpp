@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL_render.h>
 #include <ImGui/imgui.h>
+#include <ImPlot/implot.h>
 
 #pragma region StaticDataMembers
 std::vector<std::unique_ptr<fro::Scene>> fro::SceneManager::m_vpSCENES{};

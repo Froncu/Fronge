@@ -216,6 +216,8 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp" />
     <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp" />
     <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="..\External\Source\ImPlot\implot.cpp" />
+    <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />

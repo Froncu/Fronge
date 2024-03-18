@@ -2,6 +2,7 @@
 
 #include <ImGui/imgui_impl_sdl2.h>
 #include <ImGui/imgui_impl_sdlrenderer2.h>
+#include <ImPlot/implot.h>
 
 #pragma region PublicMethods
 void fro::GUI::initialise(SDL_Window* const pWindow, SDL_Renderer* const pRenderer)
@@ -12,10 +13,14 @@ void fro::GUI::initialise(SDL_Window* const pWindow, SDL_Renderer* const pRender
 	ImGui_ImplSDLRenderer2_Init(pRenderer);
 
 	ImGui::StyleColorsClassic();
+
+	ImPlot::CreateContext();
 }
 
 void fro::GUI::destroy()
 {
+	ImPlot::DestroyContext();
+
 	ImGui_ImplSDLRenderer2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 
