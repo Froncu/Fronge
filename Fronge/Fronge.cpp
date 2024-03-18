@@ -99,8 +99,6 @@ void fro::Fronge::run()
 	pGameObject->addComponent<FPSCounter>();
 	pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
 
-	scene.addGameObject().addComponent<Plot>();
-
 	while (true)
 	{
 		Timer::update();
