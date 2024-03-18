@@ -64,7 +64,7 @@ void fro::Fronge::run()
 
 	GameObject* pGameObject{ &scene.addGameObject() };
 	pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
-	pGameObject->addComponent<Rotator>()->setCenter({ 200, 175 });
+	pGameObject->addComponent<Rotator>()->setCenter({ 320, 240 });
 
 	float period{ -3.14f };
 	for (size_t index{}; index < 2; ++index)

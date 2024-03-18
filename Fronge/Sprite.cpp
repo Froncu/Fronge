@@ -27,14 +27,13 @@ fro_GENERATED_RENDERABLE_RENDER
 (
 	Sprite,
 
-	const glm::vec2& worldPosition{ getParentingGameObject().getComponent<Transform>()->getWorldPosition()};
-	SDL_Rect destinationRectangle;
-	
-	destinationRectangle.x = static_cast<int>(worldPosition.x);
-	destinationRectangle.y = static_cast<int>(worldPosition.y);
-
 	SDL_Texture* const pTexture{ fro::ResourceManager::getImageTexture(pRenderer, m_FileName.c_str()) };
+	SDL_Rect destinationRectangle;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &destinationRectangle.w, &destinationRectangle.h);
+
+	const glm::vec2& worldPosition{ getParentingGameObject().getComponent<Transform>()->getWorldPosition() };
+	destinationRectangle.x = static_cast<int>(worldPosition.x) - destinationRectangle.w / 2;
+	destinationRectangle.y = static_cast<int>(worldPosition.y) - destinationRectangle.h / 2;
 
 	SDL_RenderCopy(pRenderer, pTexture, nullptr, &destinationRectangle);
 )
