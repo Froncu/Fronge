@@ -7,6 +7,7 @@
 #include "Transform.h"
 
 #include <memory>
+#include <set>
 #include <unordered_map>
 
 struct SDL_Renderer;
@@ -54,6 +55,12 @@ namespace fro
 			return static_cast<ComponentType*>(iterator->second.get());
 		}
 
+		void setParent(GameObject* const pParent, bool keepWorldPosition = true);
+
+		const GameObject* const getParent() const;
+		const std::set<const GameObject*>& getChildren() const;
+		bool owns(const GameObject* const pGameObject) const;
+
 	private:
 		GameObject();
 		GameObject(const GameObject&) = delete;
@@ -92,6 +99,9 @@ namespace fro
 
 		void update() const;
 		void render(SDL_Renderer* const pRenderer) const;
+
+		GameObject* m_pParent{};
+		std::set<const GameObject*> m_spChildren{};
 
 		std::unordered_map<size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<size_t, std::unique_ptr<Renderable>> m_mpRenderables{};
