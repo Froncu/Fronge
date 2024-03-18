@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Transform.h"
+#include "Timer.h"
 
 #include <GLM/gtc/constants.hpp>
 
@@ -38,9 +39,7 @@ fro_GENERATED_BEHAVIOUR_UPDATE
 
 	constexpr float twoPi{ 2 * glm::pi<float>() };
 
-	// HACK: no delta time means this needs to be adjusted to the framerate
-	m_Angle += twoPi / (240 * m_Period);
-	// END HACK
+	m_Angle += Timer::getDeltaSeconds() * twoPi / m_Period;
 
 	glm::mod(m_Angle, twoPi);
 

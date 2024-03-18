@@ -40,6 +40,9 @@
     <ClCompile Include="Rotator.cpp">
       <Filter>Component\Behaviour\Rotator</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -90,6 +93,9 @@
     <Filter Include="Component\Behaviour\Rotator">
       <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -131,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="Rotator.h">
       <Filter>Component\Behaviour\Rotator</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

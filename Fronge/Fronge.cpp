@@ -3,6 +3,7 @@
 #include "EventManager.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "Timer.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -63,22 +64,29 @@ void fro::Fronge::run()
 
 	GameObject* pGameObject{ &scene.addGameObject() };
 	pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
-	pGameObject->addComponent<Rotator>();
+	pGameObject->addComponent<Rotator>()->setCenter({ 200, 175 });
 
-	for (size_t index{}; index < 4; ++index)
+	float period{ -3.14f };
+	for (size_t index{}; index < 2; ++index)
 	{
 		GameObject& gameObject{ scene.addGameObject() };
 
 		gameObject.addComponent<Sprite>()->setFileName("logo.tga");
-		gameObject.addComponent<Rotator>();
+		Rotator* const pRotator{ gameObject.addComponent<Rotator>() };
+		pRotator->setPeriod(period / (index + 1));
+		pRotator->setRadius(100);
 		gameObject.getComponent<Transform>()->setLocalPosition({ 50, 50 });
 		gameObject.setParent(pGameObject, false);
 		pGameObject = &gameObject;
+
+		period *= -1;
 	}
 
 	while (true)
 	{
-		if (!EventManager::processEvents()) 
+		Timer::update();
+
+		if (!EventManager::processEvents())
 			break;
 
 		SceneManager::update();
