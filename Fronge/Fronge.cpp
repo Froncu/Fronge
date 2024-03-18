@@ -69,7 +69,7 @@ void fro::Fronge::run()
 	pGameObject->addComponent<Rotator>()->setCenter({ 320, 240 });
 
 	float period{ -3.14f };
-	for (size_t index{}; index < 2; ++index)
+	for (size_t index{}; index < 2'000; ++index)
 	{
 		GameObject& gameObject{ scene.addGameObject() };
 

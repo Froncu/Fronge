@@ -43,6 +43,7 @@ namespace fro
 				return getComponentMap<ComponentType>().erase(typeid(ComponentType).hash_code());
 		}
 
+		// TODO: this is very slow plus I am not a fan of holding references to components inside other components
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
@@ -54,6 +55,7 @@ namespace fro
 
 			return static_cast<ComponentType*>(iterator->second.get());
 		}
+		// END TODO
 
 		void setParent(GameObject* const pParent, bool keepWorldPosition = true);
 
