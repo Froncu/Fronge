@@ -37,6 +37,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Component\Renderable\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="Rotator.cpp">
+      <Filter>Component\Behaviour\Rotator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -84,6 +87,9 @@
     <Filter Include="Component\Renderable\Sprite">
       <UniqueIdentifier>{0efc79a3-9896-4751-b694-df848b0da992}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Behaviour\Rotator">
+      <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -122,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Component\Renderable\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>Component\Behaviour\Rotator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

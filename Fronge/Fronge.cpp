@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Sprite.h"
+#include "Rotator.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -62,11 +63,14 @@ void fro::Fronge::run()
 
 	GameObject* pGameObject{ &scene.addGameObject() };
 	pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
+	pGameObject->addComponent<Rotator>();
+
 	for (size_t index{}; index < 4; ++index)
 	{
 		GameObject& gameObject{ scene.addGameObject() };
 
 		gameObject.addComponent<Sprite>()->setFileName("logo.tga");
+		gameObject.addComponent<Rotator>();
 		gameObject.getComponent<Transform>()->setLocalPosition({ 50, 50 });
 		gameObject.setParent(pGameObject, false);
 		pGameObject = &gameObject;
