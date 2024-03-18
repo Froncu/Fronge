@@ -75,24 +75,32 @@
     <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <SourcePath>
+    </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <SourcePath>
+    </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <SourcePath>
+    </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(LibraryPath)</LibraryPath>
+    <SourcePath>
+    </SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -201,6 +209,13 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\External\Source\ImGui\imgui.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
