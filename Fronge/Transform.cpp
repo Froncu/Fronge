@@ -4,7 +4,12 @@
 
 #pragma region Constructors/Destructor
 fro_GENERATED_COMPONENT_CONSTRUCTOR(Transform)
+{
+}
+
 fro_GENERATED_COMPONENT_DESTRUCTOR(Transform)
+{
+}
 #pragma endregion Constructors/Destructor
 
 

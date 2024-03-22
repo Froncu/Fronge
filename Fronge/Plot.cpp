@@ -12,22 +12,22 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro_GENERATED_RENDERABLE_CONSTRUCTOR
-(
-	Plot,
+fro_GENERATED_RENDERABLE_CONSTRUCTOR(Plot)
+	, m_vIntegers(BUFFER_SIZE)
+	, m_vGameObjects3D(BUFFER_SIZE)
+	, m_vGameObjects3DAlt(BUFFER_SIZE)
+{
+}
 
-	m_vIntegers.resize(BUFFER_SIZE);
-	m_vGameObjects3D.resize(BUFFER_SIZE);
-	m_vGameObjects3DAlt.resize(BUFFER_SIZE);
-)
 fro_GENERATED_RENDERABLE_DESTRUCTOR(Plot)
+{
+}
 #pragma endregion Constructors/Destructor
 
 
 
 #pragma region PrivateMethods
-// HACK: should use fro_GENERATED_RENDERABLE_RENDER, but commas are causing problems (perhaps stop using defines for this?)
-void fro::Plot::render(SDL_Renderer* const)
+fro_GENERATED_RENDERABLE_RENDER(Plot)
 {
 	constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
 	constexpr int amountOfStepSizes{ 11 };
@@ -91,6 +91,5 @@ void fro::Plot::render(SDL_Renderer* const)
 
 	ImGui::End();
 }
-// END HACK
 #pragma endregion PrivateMethods
 #undef BUFFER_SIZE

@@ -8,9 +8,11 @@
 #include <algorithm>
 #include <numeric>
 
-fro_GENERATED_RENDERABLE_BODY
-(
-	Plot,
+namespace fro
+{
+	class Plot final : public Renderable
+	{
+		fro_GENERATED_RENDERABLE_BODY(Plot)
 
 	private:
 		struct Transform
@@ -91,7 +93,8 @@ fro_GENERATED_RENDERABLE_BODY
 		std::vector<GameObject3D> m_vGameObjects3D;
 		std::vector<GameObject3DAlt> m_vGameObjects3DAlt;
 
-		std::vector<double> m_vIntegersResults{};
-		std::vector<double> m_vGameObject3DResults{};
-		std::vector<double> m_vGameObject3DAltResults{};
-);
+		std::vector<double> m_vIntegersResults;
+		std::vector<double> m_vGameObject3DResults;
+		std::vector<double> m_vGameObject3DAltResults;
+	};
+}

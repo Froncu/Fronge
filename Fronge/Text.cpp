@@ -8,7 +8,12 @@
 
 #pragma region Constructors/Destructor
 fro_GENERATED_RENDERABLE_CONSTRUCTOR(Text)
+{
+}
+
 fro_GENERATED_RENDERABLE_DESTRUCTOR(Text)
+{
+}
 #pragma endregion Constructors/Destructor
 
 
@@ -23,10 +28,8 @@ void fro::Text::setFont(const std::string& fileName, int size)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_RENDERABLE_RENDER
-(
-	Text,
-
+fro_GENERATED_RENDERABLE_RENDER(Text)
+{
 	// HACK: this is duplicate code compared to the Sprite
 	SDL_Texture* const pTexture{ fro::ResourceManager::getTextTexture(pRenderer, m_Font.first.c_str(), m_Font.second, m_Text) };
 	SDL_Rect destinationRectangle;
@@ -38,5 +41,5 @@ fro_GENERATED_RENDERABLE_RENDER
 
 	SDL_RenderCopy(pRenderer, pTexture, nullptr, &destinationRectangle);
 	// END HACK
-)
+}
 #pragma endregion PrivateMethods

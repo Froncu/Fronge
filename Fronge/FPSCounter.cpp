@@ -8,7 +8,12 @@
 
 #pragma region Constructors/Destructor
 fro_GENERATED_BEHAVIOUR_CONSTRUCTOR(FPSCounter)
+{
+}
+
 fro_GENERATED_BEHAVIOUR_DESTRUCTOR(FPSCounter)
+{
+}
 #pragma endregion Constructors/Destructor
 
 
@@ -20,10 +25,8 @@ fro_GENERATED_BEHAVIOUR_DESTRUCTOR(FPSCounter)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_BEHAVIOUR_UPDATE
-(
-	FPSCounter,
-
+fro_GENERATED_BEHAVIOUR_UPDATE(FPSCounter)
+{
 	constexpr float maxElapsedSeconds{ 0.2f };
 
 	++m_Ticks;
@@ -35,5 +38,5 @@ fro_GENERATED_BEHAVIOUR_UPDATE
 		m_Ticks = 0;
 		m_ElapsedSeconds -= maxElapsedSeconds;
 	};
-)
+}
 #pragma endregion PrivateMethods

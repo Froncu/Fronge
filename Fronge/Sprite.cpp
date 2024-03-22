@@ -8,7 +8,12 @@
 
 #pragma region Constructors/Destructor
 fro_GENERATED_RENDERABLE_CONSTRUCTOR(Sprite)
+{
+}
+
 fro_GENERATED_RENDERABLE_DESTRUCTOR(Sprite)
+{
+}
 #pragma endregion Constructors/Destructor
 
 
@@ -23,10 +28,8 @@ void fro::Sprite::setFileName(const std::string& fileName)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_RENDERABLE_RENDER
-(
-	Sprite,
-
+fro_GENERATED_RENDERABLE_RENDER(Sprite)
+{
 	SDL_Texture* const pTexture{ fro::ResourceManager::getImageTexture(pRenderer, m_FileName.c_str()) };
 	SDL_Rect destinationRectangle;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &destinationRectangle.w, &destinationRectangle.h);
@@ -36,5 +39,5 @@ fro_GENERATED_RENDERABLE_RENDER
 	destinationRectangle.y = static_cast<int>(worldPosition.y) - destinationRectangle.h / 2;
 
 	SDL_RenderCopy(pRenderer, pTexture, nullptr, &destinationRectangle);
-)
+}
 #pragma endregion PrivateMethods

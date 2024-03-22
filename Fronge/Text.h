@@ -14,11 +14,10 @@ namespace fro
 	{
 		{ std::to_string(text) };
 	};
-}
 
-fro_GENERATED_RENDERABLE_BODY
-(
-	Text,
+	class Text final : public Renderable
+	{
+		fro_GENERATED_RENDERABLE_BODY(Text)
 
 	public:
 		template<typename TextType>
@@ -36,4 +35,5 @@ fro_GENERATED_RENDERABLE_BODY
 	private:
 		std::string m_Text{};
 		std::pair<std::string, int> m_Font{};
-)
+	};
+}

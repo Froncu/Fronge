@@ -8,7 +8,12 @@
 
 #pragma region Constructors/Destructor
 fro_GENERATED_BEHAVIOUR_CONSTRUCTOR(Rotator)
+{
+}
+
 fro_GENERATED_BEHAVIOUR_DESTRUCTOR(Rotator)
+{
+}
 #pragma endregion Constructors/Destructor
 
 
@@ -33,10 +38,8 @@ void fro::Rotator::setPeriod(float period)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_BEHAVIOUR_UPDATE
-(
-	Rotator,
-
+fro_GENERATED_BEHAVIOUR_UPDATE(Rotator)
+{
 	constexpr float twoPi{ 2 * glm::pi<float>() };
 
 	m_Angle += Timer::getDeltaSeconds() * twoPi / m_Period;
@@ -44,5 +47,5 @@ fro_GENERATED_BEHAVIOUR_UPDATE
 	glm::mod(m_Angle, twoPi);
 
 	getParentingGameObject().getComponent<Transform>()->setLocalPosition(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
-)
+}
 #pragma endregion PrivateMethods
