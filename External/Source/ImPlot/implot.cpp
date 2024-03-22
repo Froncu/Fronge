@@ -753,7 +753,7 @@ void Locator_Default(ImPlotTicker& ticker, const ImPlotRange& range, float pixel
 
 bool CalcLogarithmicExponents(const ImPlotRange& range, float pix, bool vertical, int& exp_min, int& exp_max, int& exp_step) {
     if (range.Min * range.Max > 0) {
-        const int nMajor = vertical ? ImMax(2, (int)IM_ROUND(pix * 0.02f)) : ImMax(2, (int)IM_ROUND(pix * 0.01f)); // TODO: magic numbers
+        const int nMajor = vertical ? ImMax(2, (int)IM_ROUND(pix * 0.02f)) : ImMax(2, (int)IM_ROUND(pix * 0.01f)); // magic numbers
         double log_min = ImLog10(ImAbs(range.Min));
         double log_max = ImLog10(ImAbs(range.Max));
         double log_a = ImMin(log_min,log_max);
@@ -1067,7 +1067,7 @@ ImPlotTime CombineDateTime(const ImPlotTime& date_part, const ImPlotTime& tod_pa
     return t;
 }
 
-// TODO: allow users to define these
+// allow users to define these
 static const char* MONTH_NAMES[]  = {"January","February","March","April","May","June","July","August","September","October","November","December"};
 static const char* WD_ABRVS[]     = {"Su","Mo","Tu","We","Th","Fr","Sa"};
 static const char* MONTH_ABRVS[]  = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
@@ -1433,7 +1433,6 @@ void ShowAxisContextMenu(ImPlotAxis& axis, ImPlotAxis* equal_axis, bool /*time_a
     ImGui::Separator();
 
     ImGui::CheckboxFlags("Auto-Fit",(unsigned int*)&axis.Flags, ImPlotAxisFlags_AutoFit);
-    // TODO
     // BeginDisabledControls(axis.IsTime() && time_allowed);
     // ImGui::CheckboxFlags("Log Scale",(unsigned int*)&axis.Flags, ImPlotAxisFlags_LogScale);
     // EndDisabledControls(axis.IsTime() && time_allowed);
@@ -1598,13 +1597,13 @@ static inline double RoundAxisValue(const ImPlotAxis& axis, double value) {
 
 void LabelAxisValue(const ImPlotAxis& axis, double value, char* buff, int size, bool round) {
     ImPlotContext& gp = *GImPlot;
-    // TODO: We shouldn't explicitly check that the axis is Time here. Ideally,
+    // We shouldn't explicitly check that the axis is Time here. Ideally,
     // Formatter_Time would handle the formatting for us, but the code below
     // needs additional arguments which are not currently available in ImPlotFormatter
     if (axis.Locator == Locator_Time) {
         ImPlotTimeUnit unit = axis.Vertical
-                            ? GetUnitForRange(axis.Range.Size() / (gp.CurrentPlot->PlotRect.GetHeight() / 100)) // TODO: magic value!
-                            : GetUnitForRange(axis.Range.Size() / (gp.CurrentPlot->PlotRect.GetWidth() / 100)); // TODO: magic value!
+                            ? GetUnitForRange(axis.Range.Size() / (gp.CurrentPlot->PlotRect.GetHeight() / 100)) // magic value!
+                            : GetUnitForRange(axis.Range.Size() / (gp.CurrentPlot->PlotRect.GetWidth() / 100)); // magic value!
         FormatDateTime(ImPlotTime::FromDouble(value), buff, size, GetDateTimeFmt(TimeFormatMouseCursor, unit));
     }
     else {
@@ -2073,7 +2072,7 @@ bool UpdateInput(ImPlotPlot& plot) {
                 plot.Selected      = false;
             }
             else {
-                // TODO: Handle only min or max locked cases
+                // Handle only min or max locked cases
                 const bool full_width  = ImHasFlag(IO.KeyMods, gp.InputMap.SelectHorzMod) || AllAxesInputLocked(&plot.Axes[ImAxis_X1], IMPLOT_NUM_X_AXES);
                 const bool full_height = ImHasFlag(IO.KeyMods, gp.InputMap.SelectVertMod) || AllAxesInputLocked(&plot.Axes[ImAxis_Y1], IMPLOT_NUM_Y_AXES);
                 plot.SelectRect.Min.x = full_width  ? plot.PlotRect.Min.x : ImMin(plot.SelectStart.x, IO.MousePos.x);
@@ -5793,10 +5792,10 @@ void StyleColorsClassic(ImPlotStyle* dst) {
     colors[ImPlotCol_InlayText]     = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
     colors[ImPlotCol_AxisText]      = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
     colors[ImPlotCol_AxisGrid]      = ImVec4(0.90f, 0.90f, 0.90f, 0.25f);
-    colors[ImPlotCol_AxisTick]      = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL; // TODO
+    colors[ImPlotCol_AxisTick]      = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL;
     colors[ImPlotCol_Selection]     = ImVec4(0.97f, 0.97f, 0.39f, 1.00f);
     colors[ImPlotCol_Crosshairs]    = ImVec4(0.50f, 0.50f, 0.50f, 0.75f);
 }
@@ -5822,10 +5821,10 @@ void StyleColorsDark(ImPlotStyle* dst) {
     colors[ImPlotCol_InlayText]     = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImPlotCol_AxisText]      = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImPlotCol_AxisGrid]      = ImVec4(1.00f, 1.00f, 1.00f, 0.25f);
-    colors[ImPlotCol_AxisTick]      = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL; // TODO
+    colors[ImPlotCol_AxisTick]      = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL;
     colors[ImPlotCol_Selection]     = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
     colors[ImPlotCol_Crosshairs]    = ImVec4(1.00f, 1.00f, 1.00f, 0.50f);
 }
@@ -5852,9 +5851,9 @@ void StyleColorsLight(ImPlotStyle* dst) {
     colors[ImPlotCol_AxisText]      = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
     colors[ImPlotCol_AxisGrid]      = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImPlotCol_AxisTick]      = ImVec4(0.00f, 0.00f, 0.00f, 0.25f);
-    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL; // TODO
-    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL; // TODO
+    colors[ImPlotCol_AxisBg]        = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgHovered] = IMPLOT_AUTO_COL;
+    colors[ImPlotCol_AxisBgActive]  = IMPLOT_AUTO_COL;
     colors[ImPlotCol_Selection]     = ImVec4(0.82f, 0.64f, 0.03f, 1.00f);
     colors[ImPlotCol_Crosshairs]    = ImVec4(0.00f, 0.00f, 0.00f, 0.50f);
 }

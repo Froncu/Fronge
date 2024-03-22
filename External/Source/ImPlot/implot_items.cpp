@@ -445,14 +445,14 @@ bool BeginItem(const char* label_id, ImPlotItemFlags flags, ImPlotCol recolor_fr
         s.DigitalBitGap      = s.DigitalBitGap    < 0 ? gp.Style.DigitalBitGap    : s.DigitalBitGap;
         // apply alpha modifier(s)
         s.Colors[ImPlotCol_Fill].w       *= s.FillAlpha;
-        s.Colors[ImPlotCol_MarkerFill].w *= s.FillAlpha; // TODO: this should be separate, if it at all
+        s.Colors[ImPlotCol_MarkerFill].w *= s.FillAlpha; // this should be separate, if it at all
         // apply highlight mods
         if (item->LegendHovered) {
             if (!ImHasFlag(gp.CurrentItems->Legend.Flags, ImPlotLegendFlags_NoHighlightItem)) {
                 s.LineWeight   *= ITEM_HIGHLIGHT_LINE_SCALE;
                 s.MarkerSize   *= ITEM_HIGHLIGHT_MARK_SCALE;
                 s.MarkerWeight *= ITEM_HIGHLIGHT_LINE_SCALE;
-                // TODO: how to highlight fills?
+                // how to highlight fills?
             }
             if (!ImHasFlag(gp.CurrentItems->Legend.Flags, ImPlotLegendFlags_NoHighlightAxis)) {
                 if (gp.CurrentPlot->EnabledAxesX() > 1)
@@ -2669,7 +2669,7 @@ CALL_INSTANTIATE_FOR_NUMERIC_TYPES()
 // [SECTION] PlotDigital
 //-----------------------------------------------------------------------------
 
-// TODO: Make this behave like all the other plot types (.e. not fixed in y axis)
+// Make this behave like all the other plot types (.e. not fixed in y axis)
 
 template <typename Getter>
 void PlotDigitalEx(const char* label_id, Getter getter, ImPlotDigitalFlags flags) {
