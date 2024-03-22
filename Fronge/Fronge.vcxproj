@@ -242,6 +242,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Defines.hpp" />
+    <ClInclude Include="DirtyData.hpp" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="Fronge.h" />

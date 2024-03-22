@@ -210,5 +210,6 @@
     <ClInclude Include="Plot.h">
       <Filter>Component\Behaviour\Plot</Filter>
     </ClInclude>
+    <ClInclude Include="DirtyData.hpp" />
   </ItemGroup>
 </Project>
