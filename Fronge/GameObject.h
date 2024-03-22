@@ -27,11 +27,16 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
 		{
-			const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
-			if (!resultPair.second)
+			if constexpr (std::same_as<ComponentType, Transform>)
 				return nullptr;
+			else
+			{
+				const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
+				if (!resultPair.second)
+					return nullptr;
 
-			return static_cast<ComponentType*>(resultPair.first->second.get());
+				return static_cast<ComponentType*>(resultPair.first->second.get());
+			}
 		}
 
 		template<ComponentDerived ComponentType>
@@ -43,17 +48,22 @@ namespace fro
 				return getComponentMap<ComponentType>().erase(typeid(ComponentType).hash_code());
 		}
 
-		// TODO: this is very slow plus I am not a fan of holding references to components inside other components
+		// TODO: this is very slow plus I am not a fan of holding references to components inside other components (fixed for the Transform component)
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD_GETTER ComponentType* getComponent() const noexcept
 		{
-			const auto& mpComponents{ getComponentMapConstant<ComponentType>() };
+			if constexpr (std::same_as<ComponentType, Transform>)
+				return m_pTranform.get();
+			else
+			{
+				const auto& mpComponents{ getComponentMapConstant<ComponentType>() };
 
-			const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
-			if (iterator == mpComponents.end())
-				return nullptr;
+				const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
+				if (iterator == mpComponents.end())
+					return nullptr;
 
-			return static_cast<ComponentType*>(iterator->second.get());
+				return static_cast<ComponentType*>(iterator->second.get());
+			}
 		}
 		// END TODO
 
@@ -64,7 +74,7 @@ namespace fro
 		bool owns(const GameObject* const pGameObject) const;
 
 	private:
-		GameObject();
+		GameObject() = default;
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) noexcept = delete;
 
@@ -101,6 +111,8 @@ namespace fro
 
 		void update() const;
 		void render(SDL_Renderer* const pRenderer) const;
+
+		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
 
 		GameObject* m_pParent{};
 		std::set<const GameObject*> m_spChildren{};

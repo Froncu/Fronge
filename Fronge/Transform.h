@@ -21,6 +21,9 @@ namespace fro
 		const glm::vec2& getLocalPosition();
 		const glm::vec2& getWorldPosition();
 
+		bool isLocalPositionDirty() const;
+		bool isWorldPositionDirty() const;
+
 	private:
 		void calculateLocalPosition();
 		void calculateWorldPosition();
