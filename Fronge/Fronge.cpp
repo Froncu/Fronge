@@ -71,32 +71,43 @@ fro::Fronge::~Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
+	constexpr bool loadSpiral{  };
+	constexpr bool loadFPSCounter{ true };
+
 	Scene& scene{ SceneManager::addScene("Test") };
 
-	GameObject* pGameObject{ &scene.addGameObject() };
-	pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
-	pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 240 });
+	[[maybe_unused]] GameObject* pGameObject;
 
-	for (size_t index{}; index < 20'000; ++index)
+	if constexpr (loadSpiral)
 	{
-		constexpr float basePeriod{ 0.2f };
-		constexpr float childPeriodDelayMultiplier{ 0.0002f };
+		pGameObject = &scene.addGameObject();
+		pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
+		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 240 });
 
-		GameObject& gameObject{ scene.addGameObject() };
-		gameObject.addComponent<Sprite>()->setFileName("logo.tga");
-		Rotator* const pRotator{ gameObject.addComponent<Rotator>() };
-		pRotator->setPeriod(basePeriod + index * childPeriodDelayMultiplier);
-		pRotator->setRadius(0.2f);
+		for (size_t index{}; index < 20'000; ++index)
+		{
+			constexpr float basePeriod{ 0.2f };
+			constexpr float childPeriodDelayMultiplier{ 0.0002f };
 
-		gameObject.setParent(pGameObject, false);
-		pGameObject = &gameObject;
+			GameObject& gameObject{ scene.addGameObject() };
+			gameObject.addComponent<Sprite>()->setFileName("logo.tga");
+			Rotator* const pRotator{ gameObject.addComponent<Rotator>() };
+			pRotator->setPeriod(basePeriod + index * childPeriodDelayMultiplier);
+			pRotator->setRadius(0.2f);
+
+			gameObject.setParent(pGameObject, false);
+			pGameObject = &gameObject;
+		}
 	}
 
-	pGameObject = &scene.addGameObject();
-	Text& text{ *pGameObject->addComponent<Text>() };
-	text.setFont("Lingua.otf", 64);
-	pGameObject->addComponent<FPSCounter>();
-	pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
+	if constexpr (loadFPSCounter)
+	{
+		pGameObject = &scene.addGameObject();
+		Text& text{ *pGameObject->addComponent<Text>() };
+		text.setFont("Lingua.otf", 64);
+		pGameObject->addComponent<FPSCounter>();
+		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
+	}
 
 	while (true)
 	{
