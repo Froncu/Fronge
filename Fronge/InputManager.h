@@ -1,6 +1,6 @@
 #pragma once
 
-#include "KeyInput.h"
+#include "ButtonInput.h"
 #include "Command.h"
 
 #include <SDL2/SDL_keycode.h>
@@ -27,7 +27,7 @@ namespace fro
 			return *pCommand;
 		}
 
-		static void bindKeyInputToAction(KeyInput keyInput, const std::string& actionName);
+		static void bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName);
 
 	private:
 		InputManager() = delete;
@@ -42,7 +42,7 @@ namespace fro
 		static void processInputContinous();
 		static void processInputEvent(const SDL_Event& event);
 
-		static std::map<KeyInput, std::string> m_mACTIONS;
+		static std::map<ButtonInput, std::string> m_mACTIONS;
 		static std::map<std::string, std::vector<std::unique_ptr<Command>>> m_mCOMMANDS;
 	};
 }

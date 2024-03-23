@@ -1,16 +1,20 @@
 #include "InputManager.h"
 
 #include <SDL2/SDL_events.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <xinput.h>
+#include <thread>
 
 #pragma region StaticDataMembers
-std::map<fro::KeyInput, std::string> fro::InputManager::m_mACTIONS{};
+std::map<fro::ButtonInput, std::string> fro::InputManager::m_mACTIONS{};
 std::map<std::string, std::vector<std::unique_ptr<fro::Command>>> fro::InputManager::m_mCOMMANDS{};
 #pragma endregion StaticDataMembers
 
 
 
 #pragma region PublicMethods
-void fro::InputManager::bindKeyInputToAction(KeyInput keyInput, const std::string& actionName)
+void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)
 {
 	m_mACTIONS.insert({ keyInput, actionName });
 }
@@ -26,7 +30,7 @@ void fro::InputManager::processInputContinous()
 
 	for (int scancode{ 1 }; scancode < numberOfKeys; ++scancode)
 	{
-		const KeyInput keyInput{ static_cast<SDL_Scancode>(scancode), KeyInput::State::down };
+		const ButtonInput keyInput{ static_cast<SDL_Scancode>(scancode), ButtonInput::State::down };
 
 		if (pKeyboardState[scancode])
 			if (const auto actionsIterator{ m_mACTIONS.find(keyInput) }; actionsIterator != m_mACTIONS.end())
@@ -50,10 +54,10 @@ void fro::InputManager::processInputEvent(const SDL_Event& event)
 
 	case SDL_KEYUP:
 	{
-		const KeyInput keyInput
+		const ButtonInput keyInput
 		{
 			event.key.keysym.scancode,
-			eventType == SDL_KEYDOWN ? KeyInput::State::pressed : KeyInput::State::released
+			eventType == SDL_KEYDOWN ? ButtonInput::State::pressed : ButtonInput::State::released
 		};
 
 		if (const auto actionsIterator{ m_mACTIONS.find(keyInput) }; actionsIterator != m_mACTIONS.end())

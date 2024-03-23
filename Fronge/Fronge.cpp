@@ -111,11 +111,11 @@ void fro::Fronge::run()
 		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
 	}
 
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_D, KeyInput::State::down }, "moveRight");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_RIGHT, KeyInput::State::down }, "moveRight");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_A, KeyInput::State::down }, "moveLeft");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_W, KeyInput::State::down }, "moveUp");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_S, KeyInput::State::down }, "moveDown");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_RIGHT, ButtonInput::State::down }, "moveRight");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_W, ButtonInput::State::down }, "moveUp");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_S, ButtonInput::State::down }, "moveDown");
 
 	InputManager::bindActionToCommand<MoveCommand>("moveRight", *pGameObject).setMoveDirection({ 1.0f, 0.0f });
 	InputManager::bindActionToCommand<MoveCommand>("moveLeft", *pGameObject).setMoveDirection({ -1.0f, 0.0f });

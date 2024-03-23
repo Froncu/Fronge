@@ -88,8 +88,8 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Events\Input\InputManager</Filter>
     </ClCompile>
-    <ClCompile Include="KeyInput.cpp">
-      <Filter>Events\Input\KeyInput</Filter>
+    <ClCompile Include="ButtonInput.cpp">
+      <Filter>Events\Input\ButtonInput</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectCommand.cpp">
       <Filter>Command\GameObjectCommand\Base</Filter>
@@ -180,9 +180,6 @@
     <Filter Include="Events\Input\InputManager">
       <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Events\Input\KeyInput">
-      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Command\GameObjectCommand">
       <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
     </Filter>
@@ -194,6 +191,9 @@
     </Filter>
     <Filter Include="Component\Behaviour\FPSCounter">
       <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Input\ButtonInput">
+      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -259,8 +259,8 @@
     <ClInclude Include="InputManager.h">
       <Filter>Events\Input\InputManager</Filter>
     </ClInclude>
-    <ClInclude Include="KeyInput.h">
-      <Filter>Events\Input\KeyInput</Filter>
+    <ClInclude Include="ButtonInput.h">
+      <Filter>Events\Input\ButtonInput</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectCommand.h">
       <Filter>Command\GameObjectCommand\Base</Filter>
