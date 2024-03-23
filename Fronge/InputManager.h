@@ -3,7 +3,6 @@
 #include "ButtonInput.h"
 #include "Command.h"
 
-#include <SDL2/SDL_keycode.h>
 #include <map>
 #include <string>
 #include <vector>

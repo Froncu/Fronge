@@ -2,7 +2,6 @@
 
 #include <SDL2/SDL_Scancode.h>
 #include <SDL2/SDL_gamecontroller.h>
-#include <bitset>
 #include <variant>
 #include <optional>
 
