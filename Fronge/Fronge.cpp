@@ -13,6 +13,8 @@
 #include "Text.h"
 #include "FPSCounter.h"
 #include "Plot.h"
+#include "InputManager.h"
+#include "MoveCommand.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -71,7 +73,7 @@ fro::Fronge::~Fronge()
 #pragma region PublicMethods
 void fro::Fronge::run()
 {
-	constexpr bool loadSpiral{  };
+	constexpr bool loadSpiral{ true };
 	constexpr bool loadFPSCounter{ true };
 
 	Scene& scene{ SceneManager::addScene("Test") };
@@ -108,6 +110,17 @@ void fro::Fronge::run()
 		pGameObject->addComponent<FPSCounter>();
 		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
 	}
+
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_D, KeyInput::State::down }, "moveRight");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_RIGHT, KeyInput::State::down }, "moveRight");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_A, KeyInput::State::down }, "moveLeft");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_W, KeyInput::State::down }, "moveUp");
+	InputManager::bindKeyInputToAction({ SDL_SCANCODE_S, KeyInput::State::down }, "moveDown");
+
+	InputManager::bindActionToCommand<MoveCommand>("moveRight", *pGameObject).setMoveDirection({ 1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveLeft", *pGameObject).setMoveDirection({ -1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveUp", *pGameObject).setMoveDirection({ 0.0f, -1.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveDown", *pGameObject).setMoveDirection({ 0.0f, 1.0f });
 
 	while (true)
 	{

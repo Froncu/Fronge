@@ -8,7 +8,7 @@
       <Filter>Fronge</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
-      <Filter>EventManager</Filter>
+      <Filter>Events\EventManager</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>SceneManager</Filter>
@@ -82,6 +82,21 @@
     <ClCompile Include="Plot.cpp">
       <Filter>Component\Behaviour\Plot</Filter>
     </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Command\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Events\Input\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyInput.cpp">
+      <Filter>Events\Input\KeyInput</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectCommand.cpp">
+      <Filter>Command\GameObjectCommand\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -89,9 +104,6 @@
     </Filter>
     <Filter Include="Fronge">
       <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EventManager">
-      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{37ae0f73-f61e-46b3-a08e-6219afa194c0}</UniqueIdentifier>
@@ -135,9 +147,6 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Behaviour\FPSCounter">
-      <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Renderable\Text">
       <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
     </Filter>
@@ -153,6 +162,39 @@
     <Filter Include="Component\Behaviour\Plot">
       <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{be5aca59-aee0-40df-969e-fb5757bc3dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Base">
+      <UniqueIdentifier>{74775c7b-09b0-404c-a741-3ce97a0afcb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{9904007b-9c93-42cd-bd8e-331968d391dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\EventManager">
+      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Input">
+      <UniqueIdentifier>{308e9dee-9252-47a2-b1a7-eb64b4d5e6e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Input\InputManager">
+      <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Input\KeyInput">
+      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\GameObjectCommand">
+      <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\GameObjectCommand\Base">
+      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\GameObjectCommand\MoveCommand">
+      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\FPSCounter">
+      <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -162,7 +204,7 @@
       <Filter>Fronge</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>EventManager</Filter>
+      <Filter>Events\EventManager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>SceneManager</Filter>
@@ -211,5 +253,20 @@
       <Filter>Component\Behaviour\Plot</Filter>
     </ClInclude>
     <ClInclude Include="DirtyData.hpp" />
+    <ClInclude Include="Command.h">
+      <Filter>Command\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Events\Input\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyInput.h">
+      <Filter>Events\Input\KeyInput</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectCommand.h">
+      <Filter>Command\GameObjectCommand\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
