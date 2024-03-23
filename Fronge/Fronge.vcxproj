@@ -230,6 +230,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="ButtonInput.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="XInput.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Plot.cpp" />
     <ClCompile Include="Renderable.cpp" />

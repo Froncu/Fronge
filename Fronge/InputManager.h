@@ -39,10 +39,15 @@ namespace fro
 		InputManager& operator=(const InputManager&) = delete;
 		InputManager& operator=(InputManager&&) noexcept = delete;
 
-		static void processInputContinous();
+		static void processKeyboardInputContinous();
+		static void processGamePadInputContinous();
+
 		static void processInputEvent(const SDL_Event& event);
 
 		static std::map<ButtonInput, std::string> m_mACTIONS;
 		static std::map<std::string, std::vector<std::unique_ptr<Command>>> m_mCOMMANDS;
+
+		class GameControllerInputImplementation;
+		static std::unique_ptr<GameControllerInputImplementation> m_pIMPLEMENTATION;
 	};
 }

@@ -10,6 +10,15 @@ fro::ButtonInput::ButtonInput(Button button, State state)
 
 
 
+#pragma region PublicMethods
+fro::ButtonInput::State fro::ButtonInput::getState() const
+{
+	return m_State;
+}
+#pragma endregion PublicMethods
+
+
+
 #pragma region Operators
 bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
 {
@@ -17,5 +26,5 @@ bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
 		return this->m_Button < otherButtonInput.m_Button;
 
 	return this->m_State < otherButtonInput.m_State;
-};
+}
 #pragma endregion Operators

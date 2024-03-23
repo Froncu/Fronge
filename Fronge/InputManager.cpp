@@ -1,10 +1,6 @@
 #include "InputManager.h"
 
 #include <SDL2/SDL_events.h>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <xinput.h>
-#include <thread>
 
 #pragma region StaticDataMembers
 std::map<fro::ButtonInput, std::string> fro::InputManager::m_mACTIONS{};
@@ -23,7 +19,7 @@ void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::st
 
 
 #pragma region PrivateMethods
-void fro::InputManager::processInputContinous()
+void fro::InputManager::processKeyboardInputContinous()
 {
 	int numberOfKeys;
 	auto pKeyboardState{ SDL_GetKeyboardState(&numberOfKeys) };

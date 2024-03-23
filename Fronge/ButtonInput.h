@@ -8,7 +8,7 @@
 
 namespace fro
 {
-	struct ButtonInput final
+	class ButtonInput final
 	{
 	public:
 		using Button = std::variant<SDL_Scancode, SDL_GameControllerButton>;
@@ -31,16 +31,19 @@ namespace fro
 
 		bool operator<(const ButtonInput& otherButtonInput) const;
 
-		//template<typename ButtonType>
-		//requires std::same_as<ButtonType, SDL_Scancode> or std::same_as<ButtonType, SDL_GameControllerButton>
-		//std::optional<ButtonType> getButton() const
-		//{
-		//	if (std::holds_alternative<ButtonType>(m_Button))
-		//		return std::get<ButtonType>(m_Button);
+		template<typename ButtonType>
+		requires std::same_as<ButtonType, SDL_Scancode> or std::same_as<ButtonType, SDL_GameControllerButton>
+		std::optional<ButtonType> getButton() const
+		{
+			if (std::holds_alternative<ButtonType>(m_Button))
+				return std::get<ButtonType>(m_Button);
 
-		//	return std::nullopt;
-		//};
+			return std::nullopt;
+		};
 
+		State getState() const;
+
+	private:
 		const Button m_Button;
 		const State m_State;
 	};

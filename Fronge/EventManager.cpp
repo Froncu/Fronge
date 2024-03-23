@@ -8,7 +8,8 @@
 #pragma region PublicMethods
 bool fro::EventManager::processEvents()
 {
-	InputManager::processInputContinous();
+	InputManager::processKeyboardInputContinous();
+	InputManager::processGamePadInputContinous();
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
