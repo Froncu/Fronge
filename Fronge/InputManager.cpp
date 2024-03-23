@@ -24,7 +24,7 @@ void fro::InputManager::processInputContinous()
 	int numberOfKeys;
 	auto pKeyboardState{ SDL_GetKeyboardState(&numberOfKeys) };
 
-	for (size_t scancode{ 1 }; scancode < numberOfKeys; ++scancode)
+	for (int scancode{ 1 }; scancode < numberOfKeys; ++scancode)
 	{
 		const KeyInput keyInput{ static_cast<SDL_Scancode>(scancode), KeyInput::State::down };
 
