@@ -86,16 +86,16 @@ void fro::Fronge::run()
 		pGameObject->addComponent<Sprite>()->setFileName("logo.tga");
 		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 240 });
 
-		for (size_t index{}; index < 20'000; ++index)
+		for (size_t index{}; index < 500; ++index)
 		{
-			constexpr float basePeriod{ 0.2f };
-			constexpr float childPeriodDelayMultiplier{ 0.0002f };
+			constexpr float basePeriod{ 2.0f };
+			constexpr float childPeriodDelayMultiplier{ 0.002f };
 
 			GameObject& gameObject{ scene.addGameObject() };
 			gameObject.addComponent<Sprite>()->setFileName("logo.tga");
 			Rotator* const pRotator{ gameObject.addComponent<Rotator>() };
 			pRotator->setPeriod(basePeriod + index * childPeriodDelayMultiplier);
-			pRotator->setRadius(0.2f);
+			pRotator->setRadius(2.0f);
 
 			gameObject.setParent(pGameObject, false);
 			pGameObject = &gameObject;
