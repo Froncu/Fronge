@@ -13,11 +13,9 @@ fro::KeyInput::KeyInput(SDL_Scancode key, State state)
 #pragma region Operators
 bool fro::KeyInput::operator<(const KeyInput& otherKeyInput) const
 {
-	const auto thisKeyInputStateMask{ static_cast<std::uint64_t>(this->state) << 32 };
-	const auto otherKeyInputStateMask{ static_cast<std::uint64_t>(otherKeyInput.state) << 32 };
+	if (this->key != otherKeyInput.key)
+		return this->key < otherKeyInput.key;
 
-	return
-		(thisKeyInputStateMask | this->key) <
-		(otherKeyInputStateMask | otherKeyInput.key);
+	return this->state < otherKeyInput.state;
 };
 #pragma endregion Operators
