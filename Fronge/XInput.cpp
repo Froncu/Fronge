@@ -47,6 +47,7 @@ namespace fro
 		void updateController()
 		{
 			XINPUT_STATE currentGamePadState;
+			ZeroMemory(&currentGamePadState, sizeof(decltype(currentGamePadState)));
 			XInputGetState(0, &currentGamePadState);
 
 			const auto buttonChanges{ currentGamePadState.Gamepad.wButtons ^ m_PreviousGamePadState.Gamepad.wButtons };
