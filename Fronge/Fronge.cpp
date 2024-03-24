@@ -20,12 +20,19 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <VLD/vld.h>
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#include <Steam/steam_api.h>
+#pragma warning (pop)
 #include <cassert>
 
 #pragma region EntryFunction
 int main(int, char**)
 {
 	int result;
+
+	result = SteamAPI_Init();
+	assert(result);
 
 	result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 	assert(result == 0 && SDL_GetError());
@@ -141,6 +148,8 @@ void fro::Fronge::run()
 
 	while (true)
 	{
+		SteamAPI_RunCallbacks();
+
 		Timer::update();
 
 		if (!EventManager::processEvents())
