@@ -15,6 +15,7 @@
 #include "Plot.h"
 #include "InputManager.h"
 #include "MoveCommand.h"
+#include "Console.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -118,33 +119,33 @@ void fro::Fronge::run()
 		pGameObject->getComponent<Transform>()->setLocalPosition({ 320, 30 });
 	}
 
-	pGameObject = &scene.addGameObject();
-	pGameObject->addComponent<Sprite>()->setFileName("DigDug.png");
-	pGameObject->getComponent<Transform>()->setLocalPosition({ 300, 300 });
+	GameObject& player1{ scene.addGameObject() };
+	player1.addComponent<Sprite>()->setFileName("DigDug.png");
+	player1.getComponent<Transform>()->setLocalPosition({ 300, 300 });
 
 	InputManager::bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
 	InputManager::bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
 	InputManager::bindKeyInputToAction({ SDL_SCANCODE_W, ButtonInput::State::down }, "moveUp");
 	InputManager::bindKeyInputToAction({ SDL_SCANCODE_S, ButtonInput::State::down }, "moveDown");
 
-	InputManager::bindActionToCommand<MoveCommand>("moveRight", *pGameObject).setMoveDirection({ 1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveLeft", *pGameObject).setMoveDirection({ -1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveUp", *pGameObject).setMoveDirection({ 0.0f, -1.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveDown", *pGameObject).setMoveDirection({ 0.0f, 1.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveRight", player1).setMoveDirection({ 1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveLeft", player1).setMoveDirection({ -1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveUp", player1).setMoveDirection({ 0.0f, -1.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveDown", player1).setMoveDirection({ 0.0f, 1.0f });
 
-	pGameObject = &scene.addGameObject();
-	pGameObject->addComponent<Sprite>()->setFileName("DigDug.png");
-	pGameObject->getComponent<Transform>()->setLocalPosition({ 200, 300 });
+	GameObject& player2{ scene.addGameObject() };
+	player2.addComponent<Sprite>()->setFileName("DigDug.png");
+	player2.getComponent<Transform>()->setLocalPosition({ 200, 300 });
 
 	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, ButtonInput::State::down }, "moveRightController");
 	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, ButtonInput::State::down }, "moveLeftController");
 	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_UP, ButtonInput::State::down }, "moveUpController");
 	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_DOWN, ButtonInput::State::down }, "moveDownController");
 
-	InputManager::bindActionToCommand<MoveCommand>("moveRightController", *pGameObject).setMoveDirection({ 1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveLeftController", *pGameObject).setMoveDirection({ -1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveUpController", *pGameObject).setMoveDirection({ 0.0f, -1.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveDownController", *pGameObject).setMoveDirection({ 0.0f, 1.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveRightController", player2).setMoveDirection({ 1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveLeftController", player2).setMoveDirection({ -1.0f, 0.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveUpController", player2).setMoveDirection({ 0.0f, -1.0f });
+	InputManager::bindActionToCommand<MoveCommand>("moveDownController", player2).setMoveDirection({ 0.0f, 1.0f });
 
 	while (true)
 	{

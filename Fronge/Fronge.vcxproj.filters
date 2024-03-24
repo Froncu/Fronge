@@ -204,6 +204,9 @@
     <Filter Include="Events\Input\InputManager\Implementations">
       <UniqueIdentifier>{5a36b74e-3164-4bd1-b7d6-916d1455a13f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EventDispatcher">
+      <UniqueIdentifier>{ff6664fe-63ea-4513-a494-19a1df372c1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -276,6 +279,12 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Events\Input\InputManager\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.hpp">
+      <Filter>EventDispatcher</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDispatcher.hpp">
+      <Filter>EventDispatcher</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
