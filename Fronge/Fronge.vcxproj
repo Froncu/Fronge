@@ -121,6 +121,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q
 
@@ -152,6 +153,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
 xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
@@ -208,6 +210,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
+xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
 xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
