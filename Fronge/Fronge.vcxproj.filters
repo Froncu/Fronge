@@ -85,9 +85,6 @@
     <ClCompile Include="Command.cpp">
       <Filter>Command\Base</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Events\Input\InputManager</Filter>
-    </ClCompile>
     <ClCompile Include="ButtonInput.cpp">
       <Filter>Events\Input\ButtonInput</Filter>
     </ClCompile>
@@ -96,6 +93,12 @@
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Events\Input\InputManager\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="XInput.cpp">
+      <Filter>Events\Input\InputManager\Implementations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +198,12 @@
     <Filter Include="Events\Input\ButtonInput">
       <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events\Input\InputManager\Interface">
+      <UniqueIdentifier>{b4f97f11-3edd-4a1a-b763-155c8e61495e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Input\InputManager\Implementations">
+      <UniqueIdentifier>{5a36b74e-3164-4bd1-b7d6-916d1455a13f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -256,9 +265,6 @@
     <ClInclude Include="Command.h">
       <Filter>Command\Base</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Events\Input\InputManager</Filter>
-    </ClInclude>
     <ClInclude Include="ButtonInput.h">
       <Filter>Events\Input\ButtonInput</Filter>
     </ClInclude>
@@ -267,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
       <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Events\Input\InputManager\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
