@@ -238,6 +238,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="ButtonInput.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="SteamAchievements.cpp" />
     <ClCompile Include="XInput.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Plot.cpp" />
@@ -276,6 +277,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Event.hpp" />
+    <ClInclude Include="SteamAchievements.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />

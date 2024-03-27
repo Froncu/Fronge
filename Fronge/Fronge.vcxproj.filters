@@ -100,6 +100,9 @@
     <ClCompile Include="XInput.cpp">
       <Filter>Events\Input\InputManager\Implementations</Filter>
     </ClCompile>
+    <ClCompile Include="SteamAchievements.cpp">
+      <Filter>SteamAchievements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -207,6 +210,9 @@
     <Filter Include="EventDispatcher">
       <UniqueIdentifier>{ff6664fe-63ea-4513-a494-19a1df372c1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SteamAchievements">
+      <UniqueIdentifier>{a32450b7-13d1-44c7-9aab-eeb66c40a6ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -285,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="EventDispatcher.hpp">
       <Filter>EventDispatcher</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamAchievements.h">
+      <Filter>SteamAchievements</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
