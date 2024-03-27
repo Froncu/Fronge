@@ -9,7 +9,7 @@
 
 namespace fro
 {
-	enum class AchievementID
+	enum AchievementID
 	{
 		ACH_WIN_ONE_GAME = 0
 	};
@@ -27,7 +27,7 @@ namespace fro
 		};
 
 	public:
-		SteamAchievements(const std::vector<Achievement>& vAchievements = { fro_ACHIEVEMENT_ID(AchievementID::ACH_WIN_ONE_GAME, "Winner") });
+		SteamAchievements(const std::vector<Achievement>& vAchievements = { fro_ACHIEVEMENT_ID(ACH_WIN_ONE_GAME, "Winner") });
 
 		~SteamAchievements() = default;
 
