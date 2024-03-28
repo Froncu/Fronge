@@ -35,7 +35,7 @@ int main(int, char**)
 	result = SteamAPI_Init();
 	assert(result);
 
-	result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	result = SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 	assert(result == 0 && SDL_GetError());
 
 	constexpr int imageFlags{ NULL };
