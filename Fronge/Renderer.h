@@ -15,6 +15,9 @@ namespace fro
 
 		~Renderer() = default;
 
+		SDL_Window* getWindow() const;
+		SDL_Renderer* getRenderer() const;
+
 	private:
 		Renderer& operator=(const Renderer&) = delete;
 		Renderer& operator=(Renderer&&) noexcept = delete;

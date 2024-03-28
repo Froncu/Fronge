@@ -17,3 +17,17 @@ fro::Renderer::Renderer()
 		throw std::runtime_error(std::format("[ SDL_CreateRenderer() FAILED ] -> {}", SDL_GetError()));
 }
 #pragma endregion Constructors/Destructor
+
+
+
+#pragma region PublicMethods
+SDL_Window* fro::Renderer::getWindow() const
+{
+	return m_pWindow.get();
+}
+
+SDL_Renderer* fro::Renderer::getRenderer() const
+{
+	return m_pRenderer.get();
+}
+#pragma endregion PublicMethods
