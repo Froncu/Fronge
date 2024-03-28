@@ -103,6 +103,7 @@
     <ClCompile Include="SteamAchievements.cpp">
       <Filter>SteamAchievements</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -295,5 +296,6 @@
     <ClInclude Include="SteamAchievements.h">
       <Filter>SteamAchievements</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer.h" />
   </ItemGroup>
 </Project>
