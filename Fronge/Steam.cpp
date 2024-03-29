@@ -1,4 +1,4 @@
-#include "SteamAchievements.h"
+#include "Steam.h"
 
 #include "Console.h"
 
@@ -7,22 +7,25 @@
 #include <stdexcept>
 
 #pragma region Constructors/Destructor
-fro::SteamAchievements::SteamAchievements(const std::vector<Achievement>& vAchievements)
-	: m_CallbackUserStatsReceived{ this, &SteamAchievements::onUserStatsReceived }
-	, m_CallbackUserStatsStored{ this, &SteamAchievements::onUserStatsStored }
-	, m_CallbackAchievementStored{ this, &SteamAchievements::onAchievementStored }
+fro_GENERATED_SINGLETON_CONSTRUCTOR(Steam)
+	: m_CallbackUserStatsReceived{ this, &Steam::onUserStatsReceived }
+	, m_CallbackUserStatsStored{ this, &Steam::onUserStatsStored }
+	, m_CallbackAchievementStored{ this, &Steam::onAchievementStored }
 
 	, m_AppID{ SteamUtils()->GetAppID() }
-	, m_vAchievements{ vAchievements }
 {
 	requestStats();
+}
+
+fro_GENERATED_SINGLETON_DESTRUCTOR(Steam)
+{
 }
 #pragma endregion Constructors/Destructor
 
 
 
 #pragma region PublicMethods
-bool fro::SteamAchievements::requestStats()
+bool fro::Steam::requestStats()
 {
 	if (SteamUserStats() == NULL || SteamUser() == NULL)
 		return false;
@@ -33,7 +36,7 @@ bool fro::SteamAchievements::requestStats()
 	return SteamUserStats()->RequestCurrentStats();
 }
 
-bool fro::SteamAchievements::unlockAchievement(AchievementID achievementID)
+bool fro::Steam::unlockAchievement(AchievementID achievementID)
 {
 	if (m_IsInitialized)
 	{
@@ -49,7 +52,7 @@ bool fro::SteamAchievements::unlockAchievement(AchievementID achievementID)
 
 
 #pragma region PrivateMethods
-void fro::SteamAchievements::onUserStatsReceived(UserStatsReceived_t* pCallback)
+void fro::Steam::onUserStatsReceived(UserStatsReceived_t* pCallback)
 {
 	if (pCallback->m_nGameID == m_AppID)
 	{
@@ -88,7 +91,7 @@ void fro::SteamAchievements::onUserStatsReceived(UserStatsReceived_t* pCallback)
 	}
 }
 
-void fro::SteamAchievements::onUserStatsStored(UserStatsStored_t* pCallback)
+void fro::Steam::onUserStatsStored(UserStatsStored_t* pCallback)
 {
 	if (m_AppID == pCallback->m_nGameID)
 	{
@@ -103,17 +106,17 @@ void fro::SteamAchievements::onUserStatsStored(UserStatsStored_t* pCallback)
 	}
 }
 
-void fro::SteamAchievements::onAchievementStored(UserAchievementStored_t* pCallback)
+void fro::Steam::onAchievementStored(UserAchievementStored_t* pCallback)
 {
 	if (pCallback->m_nGameID == m_AppID)
 		Console::getInstance().log("Stored Achievement for Steam");
 }
 
-std::string fro::SteamAchievements::getAchievementName(AchievementID achievementID)
+std::string fro::Steam::getAchievementName(AchievementID achievementID)
 {
 	switch (achievementID)
 	{
-	case fro::AchievementID::ACH_WIN_ONE_GAME:
+	case ACH_WIN_ONE_GAME:
 		return "ACH_WIN_ONE_GAME";
 
 	default:
