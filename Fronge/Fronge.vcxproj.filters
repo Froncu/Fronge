@@ -304,5 +304,6 @@
     <ClInclude Include="RenderContext.h">
       <Filter>RenderContext</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.hpp" />
   </ItemGroup>
 </Project>

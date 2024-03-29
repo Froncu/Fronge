@@ -276,6 +276,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Event.hpp" />
     <ClInclude Include="SteamAchievements.h" />
