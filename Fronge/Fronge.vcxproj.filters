@@ -295,9 +295,6 @@
     <ClInclude Include="Event.hpp">
       <Filter>EventDispatcher</Filter>
     </ClInclude>
-    <ClInclude Include="EventDispatcher.hpp">
-      <Filter>EventDispatcher</Filter>
-    </ClInclude>
     <ClInclude Include="SteamAchievements.h">
       <Filter>SteamAchievements</Filter>
     </ClInclude>
