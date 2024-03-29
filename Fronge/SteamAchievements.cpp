@@ -55,7 +55,7 @@ void fro::SteamAchievements::onUserStatsReceived(UserStatsReceived_t* pCallback)
 	{
 		if (pCallback->m_eResult == k_EResultOK)
 		{
-			Console::log("Received stats and achievements from Steam");
+			Console::getInstance().log("Received stats and achievements from Steam");
 			m_IsInitialized = true;
 
 			for (auto& achievement : m_vAchievements)
@@ -83,7 +83,7 @@ void fro::SteamAchievements::onUserStatsReceived(UserStatsReceived_t* pCallback)
 		{
 			char buffer[128];
 			_snprintf_s(buffer, 128, "Failed to receive stats and achievements from Steam, %d", pCallback->m_eResult);
-			Console::log(buffer);
+			Console::getInstance().log(buffer);
 		}
 	}
 }
@@ -93,12 +93,12 @@ void fro::SteamAchievements::onUserStatsStored(UserStatsStored_t* pCallback)
 	if (m_AppID == pCallback->m_nGameID)
 	{
 		if (pCallback->m_eResult == k_EResultOK)
-			Console::log("Stored stats for Steam");
+			Console::getInstance().log("Stored stats for Steam");
 		else
 		{
 			char buffer[128];
 			_snprintf_s(buffer, 128, "Failed to store stats for Steam, %d", pCallback->m_eResult);
-			Console::log(buffer);
+			Console::getInstance().log(buffer);
 		}
 	}
 }
@@ -106,7 +106,7 @@ void fro::SteamAchievements::onUserStatsStored(UserStatsStored_t* pCallback)
 void fro::SteamAchievements::onAchievementStored(UserAchievementStored_t* pCallback)
 {
 	if (pCallback->m_nGameID == m_AppID)
-		Console::log("Stored Achievement for Steam");
+		Console::getInstance().log("Stored Achievement for Steam");
 }
 
 std::string fro::SteamAchievements::getAchievementName(AchievementID achievementID)

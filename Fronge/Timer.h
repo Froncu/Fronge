@@ -1,28 +1,18 @@
 #pragma once
 
-#include "Fronge.h"
+#include "Singleton.hpp"
 
 namespace fro
 {
-	class Timer final
+	class Timer final : public Singleton<Timer>
 	{
-		friend void Fronge::run();
+		fro_GENERATED_SINGLETON_BODY(Timer)
 
 	public:
-		static float getDeltaSeconds();
+		void update();
+		float getDeltaSeconds() const;
 
 	private:
-		Timer() = delete;
-		Timer(const Timer&) = delete;
-		Timer(Timer&&) noexcept = delete;
-
-		~Timer() = delete;
-
-		Timer& operator=(const Timer&) = delete;
-		Timer& operator=(Timer&&) noexcept = delete;
-
-		static void update();
-
-		static float m_DELTA_SECONDS;
+		float m_DeltaSeconds{};
 	};
 }

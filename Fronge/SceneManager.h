@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Fronge.h"
+#include "Singleton.hpp"
 
 #include <string>
 #include <vector>
@@ -12,26 +12,16 @@ namespace fro
 {
 	class Scene;
 
-	class SceneManager final
+	class SceneManager final : public Singleton<SceneManager>
 	{
-		friend void Fronge::run();
+		fro_GENERATED_SINGLETON_BODY(SceneManager)
 
 	public:
-		static Scene& addScene(const std::string& name);
+		Scene& addScene(const std::string& name);
+		void update();
+		void render(SDL_Renderer* const pRenderer);
 
 	private:
-		SceneManager() = delete;
-		SceneManager(const SceneManager&) = delete;
-		SceneManager(SceneManager&&) noexcept = delete;
-
-		~SceneManager() = delete;
-
-		SceneManager& operator=(const SceneManager&) = delete;
-		SceneManager& operator=(SceneManager&&) noexcept = delete;
-
-		static void update();
-		static void render(SDL_Renderer* const pRenderer);
-
-		static std::vector<std::unique_ptr<Scene>> m_vpSCENES;
+		std::vector<std::unique_ptr<Scene>> m_vpScenes{};
 	};
 }

@@ -32,6 +32,6 @@ void fro::MoveCommand::setMoveSpeed(float moveSpeed)
 #pragma region Operators
 fro_GENERATED_GAME_OBJECT_COMMAND_OPERATOR(MoveCommand)
 {
-	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getDeltaSeconds() * m_MoveSpeed * m_MoveDirection);
+	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * m_MoveDirection);
 }
 #pragma endregion Operators

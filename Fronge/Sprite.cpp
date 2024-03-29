@@ -30,7 +30,7 @@ void fro::Sprite::setFileName(const std::string& fileName)
 #pragma region PrivateMethods
 fro_GENERATED_RENDERABLE_RENDER(Sprite)
 {
-	SDL_Texture* const pTexture{ fro::ResourceManager::getImageTexture(pRenderer, m_FileName.c_str()) };
+	SDL_Texture* const pTexture{ fro::ResourceManager::getInstance().getImageTexture(pRenderer, m_FileName.c_str()) };
 	SDL_Rect destinationRectangle;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &destinationRectangle.w, &destinationRectangle.h);
 

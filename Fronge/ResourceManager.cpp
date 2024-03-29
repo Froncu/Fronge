@@ -4,19 +4,22 @@
 #include <SDL2/SDL_ttf.h>
 #include <cassert>
 
-#pragma region StaticDataMembers
-std::string fro::ResourceManager::m_RESOURCES_DIRECTORY{ "../Resources/" };
-std::unordered_map<std::pair<std::string, int>, fro::ResourceManager::SDLUniquePointer<TTF_Font>, fro::ResourceManager::PairHash, fro::ResourceManager::PairEqual> fro::ResourceManager::m_mpFONTS{};
-std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, fro::ResourceManager::SDLUniquePointer<SDL_Texture>>, fro::ResourceManager::PairHash, fro::ResourceManager::PairEqual> fro::ResourceManager::m_mmpTEXT_TEXTURE_MAPS{};
-std::unordered_map < std::string, fro::ResourceManager::SDLUniquePointer<SDL_Texture>> fro::ResourceManager::m_mpIMAGE_TEXTURES{};
-#pragma endregion StaticDataMembers
+#pragma region Constructors/Destructor
+fro_GENERATED_SINGLETON_CONSTRUCTOR(ResourceManager)
+{
+}
+
+fro_GENERATED_SINGLETON_DESTRUCTOR(ResourceManager)
+{
+}
+#pragma endregion Constructors/Destructor
 
 
 
 #pragma region PublicMethods
 fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
 {
-	auto& mpTextTextures{ m_mmpTEXT_TEXTURE_MAPS[{ fileName, size }]};
+	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }]};
 
 	auto iterator{ mpTextTextures.find(text) };
 
@@ -35,24 +38,24 @@ fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getTextTexture(SDL
 
 fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
 {
-	auto& pTexture{ m_mpIMAGE_TEXTURES[imageFileName] };
+	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
 	if (!pTexture.get())
-		pTexture = SDLUniquePointer<SDL_Texture>(IMG_LoadTexture(pRenderer, (m_RESOURCES_DIRECTORY + imageFileName).c_str()), SDL_DestroyTexture);
+		pTexture = SDLUniquePointer<SDL_Texture>(IMG_LoadTexture(pRenderer, (m_ResourcesDirectory + imageFileName).c_str()), SDL_DestroyTexture);
 
 	return pTexture.get();
 }
 
 void fro::ResourceManager::setResourcesDirectory(const std::string& resourcesDirectory)
 {
-	m_RESOURCES_DIRECTORY = resourcesDirectory;
+	m_ResourcesDirectory = resourcesDirectory;
 }
 
 void fro::ResourceManager::clearCaches()
 {
-	m_mpFONTS.clear();
-	m_mmpTEXT_TEXTURE_MAPS.clear();
-	m_mpIMAGE_TEXTURES.clear();
+	m_mpFonts.clear();
+	m_mmpTextTexturesMap.clear();
+	m_mpImageTextures.clear();
 }
 #pragma region PublicMethods
 
@@ -61,10 +64,10 @@ void fro::ResourceManager::clearCaches()
 #pragma region PrivateMethods
 fro_NODISCARD_GETTER TTF_Font* const fro::ResourceManager::getFont(const std::string& fileName, int size)
 {
-	auto& pFont{ m_mpFONTS[{ fileName, size }] };
+	auto& pFont{ m_mpFonts[{ fileName, size }] };
 
 	if (!pFont.get())
-		pFont = SDLUniquePointer<TTF_Font>(TTF_OpenFont((m_RESOURCES_DIRECTORY + fileName).c_str(), size), TTF_CloseFont);
+		pFont = SDLUniquePointer<TTF_Font>(TTF_OpenFont((m_ResourcesDirectory + fileName).c_str(), size), TTF_CloseFont);
 
 	return pFont.get();
 }

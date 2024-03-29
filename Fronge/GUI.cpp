@@ -1,23 +1,26 @@
 #include "GUI.h"
 
+#include "RenderContext.h"
+
 #include <ImGui/imgui_impl_sdl2.h>
 #include <ImGui/imgui_impl_sdlrenderer2.h>
 #include <ImPlot/implot.h>
 
-#pragma region PublicMethods
-void fro::GUI::initialise(SDL_Window* const pWindow, SDL_Renderer* const pRenderer)
+#pragma region Constructors/Destructor
+fro_GENERATED_SINGLETON_CONSTRUCTOR(GUI)
 {
 	ImGui::CreateContext();
 
-	ImGui_ImplSDL2_InitForSDLRenderer(pWindow, pRenderer);
-	ImGui_ImplSDLRenderer2_Init(pRenderer);
+	RenderContext& renderContex{ RenderContext::getInstance() };
+	ImGui_ImplSDL2_InitForSDLRenderer(renderContex.getWindow(), renderContex.getRenderer());
+	ImGui_ImplSDLRenderer2_Init(renderContex.getRenderer());
 
 	ImGui::StyleColorsClassic();
 
 	ImPlot::CreateContext();
 }
 
-void fro::GUI::destroy()
+fro_GENERATED_SINGLETON_DESTRUCTOR(GUI)
 {
 	ImPlot::DestroyContext();
 
@@ -26,20 +29,24 @@ void fro::GUI::destroy()
 
 	ImGui::DestroyContext();
 }
+#pragma endregion Constructors/Destructor
 
-void fro::GUI::processEvent(const SDL_Event& event)
+
+
+#pragma region PublicMethods
+void fro::GUI::processEvent(const SDL_Event& event) const
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void fro::GUI::startFrame()
+void fro::GUI::startFrame() const
 {
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 }
 
-void fro::GUI::endFrame()
+void fro::GUI::endFrame() const
 {
 	ImGui::Render();
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());

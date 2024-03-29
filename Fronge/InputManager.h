@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Singleton.hpp"
 #include "ButtonInput.h"
 #include "Command.h"
 
@@ -12,41 +13,31 @@ union SDL_Event;
 
 namespace fro
 {
-	class InputManager final
+	class InputManager final : public Singleton<InputManager>
 	{
-		friend class EventManager;
+		fro_GENERATED_SINGLETON_BODY(InputManager)
 
 	public:
 		template<typename CommandType, typename... Arguments>
 			requires std::derived_from<CommandType, Command>
-		static CommandType& bindActionToCommand(const std::string& actionName, Arguments&&... arguments)
+		CommandType& bindActionToCommand(const std::string& actionName, Arguments&&... arguments)
 		{
 			CommandType* const pCommand{ new CommandType(std::forward<Arguments>(arguments))... };
-			m_mCOMMANDS[actionName].emplace_back(std::unique_ptr<CommandType>(pCommand));
+			m_mCommands[actionName].emplace_back(std::unique_ptr<CommandType>(pCommand));
 			return *pCommand;
 		}
 
-		static void bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName);
+		void bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName);
+
+		void processGamePadInputContinous() const;
+		void processKeyboardInputContinous() const;
+		void processInputEvent(const SDL_Event& event) const;
 
 	private:
-		InputManager() = delete;
-		InputManager(const InputManager&) = delete;
-		InputManager(InputManager&&) noexcept = delete;
-
-		~InputManager() = delete;
-
-		InputManager& operator=(const InputManager&) = delete;
-		InputManager& operator=(InputManager&&) noexcept = delete;
-
-		static void processKeyboardInputContinous();
-		static void processGamePadInputContinous();
-
-		static void processInputEvent(const SDL_Event& event);
-
-		static std::map<ButtonInput, std::string> m_mACTIONS;
-		static std::map<std::string, std::vector<std::unique_ptr<Command>>> m_mCOMMANDS;
+		std::map<ButtonInput, std::string> m_mActions{};
+		std::map<std::string, std::vector<std::unique_ptr<Command>>> m_mCommands{};
 
 		class GameControllerInputImplementation;
-		static std::unique_ptr<GameControllerInputImplementation> m_pIMPLEMENTATION;
+		std::unique_ptr<GameControllerInputImplementation> m_pImplementation;
 	};
 }

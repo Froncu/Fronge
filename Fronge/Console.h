@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Singleton.hpp"
+
 #include <iostream>
 #include <windows.h>
 
@@ -11,8 +13,10 @@ namespace fro
 		{ outputStream << value };
 	};
 
-	class Console final
+	class Console final : public Singleton<Console>
 	{
+		fro_GENERATED_SINGLETON_BODY(Console)
+
 	public:
 		enum class TextColor
 		{
@@ -54,48 +58,48 @@ namespace fro
 			White = 0xf0
 		};
 
-		static void setColor([[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
+		void setColor([[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
 		{
 #ifdef _CONSOLE
-			m_TEXT_COLOR = textColor;
-			m_BACKGROUND_COLOR = backgroundColor;
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(m_TEXT_COLOR) | static_cast<WORD>(m_BACKGROUND_COLOR));
+			m_TextColor = textColor;
+			m_BackgroundColor = backgroundColor;
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(m_TextColor) | static_cast<WORD>(m_BackgroundColor));
 #endif
 		}
 
-		static void setColor([[maybe_unused]] TextColor textColor)
+		void setColor([[maybe_unused]] TextColor textColor)
 		{
 #ifdef _CONSOLE
-			setColor(textColor, m_BACKGROUND_COLOR);
+			setColor(textColor, m_BackgroundColor);
 #endif
 		}
 
-		static void setColor([[maybe_unused]] BackgroundColor backgroundColor)
+		void setColor([[maybe_unused]] BackgroundColor backgroundColor)
 		{
 #ifdef _CONSOLE
-			setColor(m_TEXT_COLOR, backgroundColor);
+			setColor(m_TextColor, backgroundColor);
 #endif
 		}
 
-		static void resetColor()
+		void resetColor()
 		{
 #ifdef _CONSOLE
 			setColor(TextColor::Gray, BackgroundColor::Black);
 #endif
 		}
 
-		static void log([[maybe_unused]] const Printable auto& value)
+		void log([[maybe_unused]] const Printable auto& value) const
 		{
 #ifdef _CONSOLE
 			std::cout << value << std::endl;
 #endif
 		}
 
-		static void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
+		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
 		{
 #ifdef _CONSOLE
-			const TextColor oldTextColor{ m_TEXT_COLOR };
-			const BackgroundColor oldBackgroundColor{ m_BACKGROUND_COLOR };
+			const TextColor oldTextColor{ m_TextColor };
+			const BackgroundColor oldBackgroundColor{ m_BackgroundColor };
 
 			setColor(textColor, backgroundColor);
 			log(value);
@@ -103,21 +107,21 @@ namespace fro
 #endif
 		};
 
-		static void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor)
+		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor)
 		{
 #ifdef _CONSOLE
-			log(value, textColor, m_BACKGROUND_COLOR);
+			log(value, textColor, m_BackgroundColor);
 #endif
 		};
 
-		static void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] BackgroundColor backgroundColor)
+		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] BackgroundColor backgroundColor)
 		{
 #ifdef _CONSOLE
-			log(value, m_TEXT_COLOR, backgroundColor);
+			log(value, m_TextColor, backgroundColor);
 #endif
 		};
 
-		static void clear()
+		void clear() const
 		{
 #ifdef _CONSOLE
 			system("CLS");
@@ -125,18 +129,9 @@ namespace fro
 		}
 
 	private:
-		Console() = delete;
-		Console(const Console&) = delete;
-		Console(Console&&) noexcept = delete;
-
-		~Console() = delete;
-
-		Console& operator=(const Console&) = delete;
-		Console& operator=(Console&&) noexcept = delete;
-
 #ifdef _CONSOLE
-		static TextColor m_TEXT_COLOR;
-		static BackgroundColor m_BACKGROUND_COLOR;
+		TextColor m_TextColor{ TextColor::Gray };
+		BackgroundColor m_BackgroundColor{ BackgroundColor::Black };
 #endif
 	};
 }

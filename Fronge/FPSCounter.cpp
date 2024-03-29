@@ -30,7 +30,7 @@ fro_GENERATED_BEHAVIOUR_UPDATE(FPSCounter)
 	constexpr float maxElapsedSeconds{ 0.2f };
 
 	++m_Ticks;
-	m_ElapsedSeconds += Timer::getDeltaSeconds();
+	m_ElapsedSeconds += Timer::getInstance().getDeltaSeconds();
 	if (m_ElapsedSeconds >= maxElapsedSeconds)
 	{
 		getParentingGameObject().getComponent<Text>()->setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));

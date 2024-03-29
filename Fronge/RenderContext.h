@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Singleton.hpp"
+
 #include <memory>
 #include <functional>
 
@@ -8,23 +10,15 @@ struct SDL_Renderer;
 
 namespace fro
 {
-	class RenderContext final
+	class RenderContext final : public Singleton<RenderContext>
 	{
+		fro_GENERATED_SINGLETON_BODY(RenderContext)
+
 	public:
-		RenderContext();
-
-		~RenderContext() = default;
-
 		SDL_Window* getWindow() const;
 		SDL_Renderer* getRenderer() const;
 
 	private:
-		RenderContext& operator=(const RenderContext&) = delete;
-		RenderContext& operator=(RenderContext&&) noexcept = delete;
-
-		RenderContext(const RenderContext&) = delete;
-		RenderContext(RenderContext&&) noexcept = delete;
-
 		template<typename ResourceType>
 		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
 

@@ -26,7 +26,7 @@ namespace fro
 	};
 }
 
-#ifndef fro_GENERATED_SINGLETON_BODY(identifier)
+#ifndef fro_GENERATED_SINGLETON_BODY
 #define fro_GENERATED_SINGLETON_BODY(identifier)\
 friend class Singleton<identifier>;\
 \

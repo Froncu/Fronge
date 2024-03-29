@@ -16,6 +16,7 @@
 #include "InputManager.h"
 #include "MoveCommand.h"
 #include "Console.h"
+#include "RenderContext.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -45,9 +46,9 @@ int main(int, char**)
 	result = TTF_Init();
 	assert(result == 0);
 
-	fro::Fronge().run();
+	fro::Fronge::getInstance().run();
 
-	fro::ResourceManager::clearCaches();
+	fro::ResourceManager::getInstance().clearCaches();
 
 	TTF_Quit();
 	IMG_Quit();
@@ -60,19 +61,12 @@ int main(int, char**)
 
 
 #pragma region Constructors/Destructor
-fro::Fronge::Fronge()
-	: m_pWindow{ SDL_CreateWindow("Fronge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, NULL), SDL_DestroyWindow }
-	, m_pRenderer{ SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer }
+fro_GENERATED_SINGLETON_CONSTRUCTOR(Fronge)
 {
-	assert(m_pWindow.get() && SDL_GetError());
-	assert(m_pRenderer.get() && SDL_GetError());
-
-	fro::GUI::initialise(m_pWindow.get(), m_pRenderer.get());
 }
 
-fro::Fronge::~Fronge()
+fro_GENERATED_SINGLETON_DESTRUCTOR(Fronge)
 {
-	fro::GUI::destroy();
 }
 #pragma endregion Constructors/Destructor
 
@@ -84,7 +78,7 @@ void fro::Fronge::run()
 	constexpr bool loadSpiral{ true };
 	constexpr bool loadFPSCounter{ true };
 
-	Scene& scene{ SceneManager::addScene("Test") };
+	Scene& scene{ SceneManager::getInstance().addScene("Test") };
 
 	[[maybe_unused]] GameObject* pGameObject;
 
@@ -123,41 +117,41 @@ void fro::Fronge::run()
 	player1.addComponent<Sprite>()->setFileName("DigDug.png");
 	player1.getComponent<Transform>()->setLocalPosition({ 300, 300 });
 
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_W, ButtonInput::State::down }, "moveUp");
-	InputManager::bindKeyInputToAction({ SDL_SCANCODE_S, ButtonInput::State::down }, "moveDown");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_W, ButtonInput::State::down }, "moveUp");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_S, ButtonInput::State::down }, "moveDown");
 
-	InputManager::bindActionToCommand<MoveCommand>("moveRight", player1).setMoveDirection({ 1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveLeft", player1).setMoveDirection({ -1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveUp", player1).setMoveDirection({ 0.0f, -1.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveDown", player1).setMoveDirection({ 0.0f, 1.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveRight", player1).setMoveDirection({ 1.0f, 0.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveLeft", player1).setMoveDirection({ -1.0f, 0.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveUp", player1).setMoveDirection({ 0.0f, -1.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveDown", player1).setMoveDirection({ 0.0f, 1.0f });
 
 	GameObject& player2{ scene.addGameObject() };
 	player2.addComponent<Sprite>()->setFileName("DigDug.png");
 	player2.getComponent<Transform>()->setLocalPosition({ 200, 300 });
 
-	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, ButtonInput::State::down }, "moveRightController");
-	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, ButtonInput::State::down }, "moveLeftController");
-	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_UP, ButtonInput::State::down }, "moveUpController");
-	InputManager::bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_DOWN, ButtonInput::State::down }, "moveDownController");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, ButtonInput::State::down }, "moveRightController");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, ButtonInput::State::down }, "moveLeftController");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_UP, ButtonInput::State::down }, "moveUpController");
+	InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_DOWN, ButtonInput::State::down }, "moveDownController");
 
-	InputManager::bindActionToCommand<MoveCommand>("moveRightController", player2).setMoveDirection({ 1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveLeftController", player2).setMoveDirection({ -1.0f, 0.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveUpController", player2).setMoveDirection({ 0.0f, -1.0f });
-	InputManager::bindActionToCommand<MoveCommand>("moveDownController", player2).setMoveDirection({ 0.0f, 1.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveRightController", player2).setMoveDirection({ 1.0f, 0.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveLeftController", player2).setMoveDirection({ -1.0f, 0.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveUpController", player2).setMoveDirection({ 0.0f, -1.0f });
+	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveDownController", player2).setMoveDirection({ 0.0f, 1.0f });
 
 	while (true)
 	{
 		SteamAPI_RunCallbacks();
 
-		Timer::update();
+		Timer::getInstance().update();
 
-		if (!EventManager::processEvents())
+		if (!EventManager::getInstance().processEvents())
 			break;
 
-		SceneManager::update();
-		SceneManager::render(m_pRenderer.get());
+		SceneManager::getInstance().update();
+		SceneManager::getInstance().render(RenderContext::getInstance().getRenderer());
 	}
 }
 #pragma endregion PublicMethods

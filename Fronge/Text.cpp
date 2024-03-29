@@ -31,7 +31,7 @@ void fro::Text::setFont(const std::string& fileName, int size)
 fro_GENERATED_RENDERABLE_RENDER(Text)
 {
 	// HACK: this is duplicate code compared to the Sprite
-	SDL_Texture* const pTexture{ fro::ResourceManager::getTextTexture(pRenderer, m_Font.first.c_str(), m_Font.second, m_Text) };
+	SDL_Texture* const pTexture{ fro::ResourceManager::getInstance().getTextTexture(pRenderer, m_Font.first.c_str(), m_Font.second, m_Text) };
 	SDL_Rect destinationRectangle;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &destinationRectangle.w, &destinationRectangle.h);
 

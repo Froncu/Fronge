@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Singleton.hpp"
 #include "Defines.hpp"
 
 #include <memory>
@@ -13,16 +14,16 @@ typedef struct _TTF_Font TTF_Font;
 
 namespace fro
 {
-	class ResourceManager final
+	class ResourceManager final : public Singleton<ResourceManager>
 	{
-		friend class Fronge;
+		fro_GENERATED_SINGLETON_BODY(ResourceManager)
 
 	public:
-		static fro_NODISCARD_GETTER SDL_Texture* const getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
-		static fro_NODISCARD_GETTER SDL_Texture* const getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
+		fro_NODISCARD_GETTER SDL_Texture* const getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
+		fro_NODISCARD_GETTER SDL_Texture* const getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
 		
-		static void setResourcesDirectory(const std::string& resourcesDirectory);
-		static void clearCaches();
+		void setResourcesDirectory(const std::string& resourcesDirectory);
+		void clearCaches();
 
 	private:
 		struct PairHash
@@ -45,23 +46,14 @@ namespace fro
 			}
 		};
 
-		ResourceManager() = delete;
-		ResourceManager(const ResourceManager&) = delete;
-		ResourceManager(ResourceManager&&) noexcept = delete;
-
-		~ResourceManager() = delete;
-
-		ResourceManager& operator=(const ResourceManager&) = delete;
-		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
-
 		template<typename ResourceType>
 		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
 
-		static fro_NODISCARD_GETTER TTF_Font* const getFont(const std::string& fileName, int size);
+		fro_NODISCARD_GETTER TTF_Font* const getFont(const std::string& fileName, int size);
 
-		static std::string m_RESOURCES_DIRECTORY;
-		static std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFONTS;
-		static std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTEXT_TEXTURE_MAPS;
-		static std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>> m_mpIMAGE_TEXTURES;
+		std::string m_ResourcesDirectory{ "../Resources/" };
+		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
+		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
+		std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
 	};
 }

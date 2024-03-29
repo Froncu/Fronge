@@ -42,7 +42,7 @@ fro_GENERATED_BEHAVIOUR_UPDATE(Rotator)
 {
 	constexpr float twoPi{ 2 * glm::pi<float>() };
 
-	m_Angle += Timer::getDeltaSeconds() * twoPi / m_Period;
+	m_Angle += Timer::getInstance().getDeltaSeconds() * twoPi / m_Period;
 
 	glm::mod(m_Angle, twoPi);
 

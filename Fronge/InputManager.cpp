@@ -2,24 +2,17 @@
 
 #include <SDL2/SDL_events.h>
 
-#pragma region StaticDataMembers
-std::map<fro::ButtonInput, std::string> fro::InputManager::m_mACTIONS{};
-std::map<std::string, std::vector<std::unique_ptr<fro::Command>>> fro::InputManager::m_mCOMMANDS{};
-#pragma endregion StaticDataMembers
-
-
-
 #pragma region PublicMethods
 void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)
 {
-	m_mACTIONS.insert({ keyInput, actionName });
+	m_mActions.insert({ keyInput, actionName });
 }
 #pragma endregion PublicMethods
 
 
 
 #pragma region PrivateMethods
-void fro::InputManager::processKeyboardInputContinous()
+void fro::InputManager::processKeyboardInputContinous() const
 {
 	int numberOfKeys;
 	auto pKeyboardState{ SDL_GetKeyboardState(&numberOfKeys) };
@@ -29,14 +22,14 @@ void fro::InputManager::processKeyboardInputContinous()
 		const ButtonInput keyInput{ static_cast<SDL_Scancode>(scancode), ButtonInput::State::down };
 
 		if (pKeyboardState[scancode])
-			if (const auto actionsIterator{ m_mACTIONS.find(keyInput) }; actionsIterator != m_mACTIONS.end())
-				if (const auto commandsIterator{ m_mCOMMANDS.find(actionsIterator->second) }; commandsIterator != m_mCOMMANDS.end())
+			if (const auto actionsIterator{ m_mActions.find(keyInput) }; actionsIterator != m_mActions.end())
+				if (const auto commandsIterator{ m_mCommands.find(actionsIterator->second) }; commandsIterator != m_mCommands.end())
 					for (auto& pCommand : commandsIterator->second)
 						(*pCommand)();
 	}
 }
 
-void fro::InputManager::processInputEvent(const SDL_Event& event)
+void fro::InputManager::processInputEvent(const SDL_Event& event) const
 {
 	const auto& eventType{ event.type };
 
@@ -56,8 +49,8 @@ void fro::InputManager::processInputEvent(const SDL_Event& event)
 			eventType == SDL_KEYDOWN ? ButtonInput::State::pressed : ButtonInput::State::released
 		};
 
-		if (const auto actionsIterator{ m_mACTIONS.find(keyInput) }; actionsIterator != m_mACTIONS.end())
-			if (const auto commandsIterator{ m_mCOMMANDS.find(actionsIterator->second) }; commandsIterator != m_mCOMMANDS.end())
+		if (const auto actionsIterator{ m_mActions.find(keyInput) }; actionsIterator != m_mActions.end())
+			if (const auto commandsIterator{ m_mCommands.find(actionsIterator->second) }; commandsIterator != m_mCommands.end())
 				for (auto& pCommand : commandsIterator->second)
 					(*pCommand)();
 	}

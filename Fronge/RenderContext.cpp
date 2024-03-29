@@ -6,7 +6,7 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro::RenderContext::RenderContext()
+fro_GENERATED_SINGLETON_CONSTRUCTOR(RenderContext)
 	: m_pWindow{ SDL_CreateWindow("Fronge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, NULL), SDL_DestroyWindow }
 	, m_pRenderer{ SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer }
 {
@@ -15,6 +15,10 @@ fro::RenderContext::RenderContext()
 
 	if (!m_pRenderer.get())
 		throw std::runtime_error(std::format("[ SDL_CreateRenderer() FAILED ] -> {}", SDL_GetError()));
+}
+
+fro_GENERATED_SINGLETON_DESTRUCTOR(RenderContext)
+{
 }
 #pragma endregion Constructors/Destructor
 
