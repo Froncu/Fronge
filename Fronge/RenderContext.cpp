@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "RenderContext.h"
 
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
@@ -6,7 +6,7 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro::Renderer::Renderer()
+fro::RenderContext::RenderContext()
 	: m_pWindow{ SDL_CreateWindow("Fronge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, NULL), SDL_DestroyWindow }
 	, m_pRenderer{ SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer }
 {
@@ -21,12 +21,12 @@ fro::Renderer::Renderer()
 
 
 #pragma region PublicMethods
-SDL_Window* fro::Renderer::getWindow() const
+SDL_Window* fro::RenderContext::getWindow() const
 {
 	return m_pWindow.get();
 }
 
-SDL_Renderer* fro::Renderer::getRenderer() const
+SDL_Renderer* fro::RenderContext::getRenderer() const
 {
 	return m_pRenderer.get();
 }

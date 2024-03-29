@@ -103,7 +103,9 @@
     <ClCompile Include="SteamAchievements.cpp">
       <Filter>SteamAchievements</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>RenderContext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Console">
@@ -214,6 +216,9 @@
     <Filter Include="SteamAchievements">
       <UniqueIdentifier>{a32450b7-13d1-44c7-9aab-eeb66c40a6ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RenderContext">
+      <UniqueIdentifier>{74339848-40df-485b-a7ef-4268d48cfdf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -296,6 +301,8 @@
     <ClInclude Include="SteamAchievements.h">
       <Filter>SteamAchievements</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderContext.h">
+      <Filter>RenderContext</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

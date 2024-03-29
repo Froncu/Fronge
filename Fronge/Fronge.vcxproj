@@ -239,7 +239,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="ButtonInput.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="SteamAchievements.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="XInput.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Plot.cpp" />
@@ -282,7 +282,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="Text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderContext.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,22 +8,22 @@ struct SDL_Renderer;
 
 namespace fro
 {
-	class Renderer final
+	class RenderContext final
 	{
 	public:
-		Renderer();
+		RenderContext();
 
-		~Renderer() = default;
+		~RenderContext() = default;
 
 		SDL_Window* getWindow() const;
 		SDL_Renderer* getRenderer() const;
 
 	private:
-		Renderer& operator=(const Renderer&) = delete;
-		Renderer& operator=(Renderer&&) noexcept = delete;
+		RenderContext& operator=(const RenderContext&) = delete;
+		RenderContext& operator=(RenderContext&&) noexcept = delete;
 
-		Renderer(const Renderer&) = delete;
-		Renderer(Renderer&&) noexcept = delete;
+		RenderContext(const RenderContext&) = delete;
+		RenderContext(RenderContext&&) noexcept = delete;
 
 		template<typename ResourceType>
 		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
