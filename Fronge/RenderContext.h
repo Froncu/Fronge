@@ -22,7 +22,7 @@ namespace fro
 		template<typename ResourceType>
 		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
 
-		const SDLUniquePointer<SDL_Window> m_pWindow;
-		const SDLUniquePointer<SDL_Renderer> m_pRenderer;
+		SDLUniquePointer<SDL_Window> m_pWindow;
+		SDLUniquePointer<SDL_Renderer> m_pRenderer;
 	};
 }

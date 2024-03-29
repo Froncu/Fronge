@@ -2,6 +2,10 @@
 
 #include "Console.h"
 
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#include <Steam/steam_api.h>
+#pragma warning (pop)
 #include <Steam/isteamutils.h>
 #include <Steam/isteamuser.h>
 #include <stdexcept>
@@ -11,21 +15,26 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(Steam)
 	: m_CallbackUserStatsReceived{ this, &Steam::onUserStatsReceived }
 	, m_CallbackUserStatsStored{ this, &Steam::onUserStatsStored }
 	, m_CallbackAchievementStored{ this, &Steam::onAchievementStored }
-
-	, m_AppID{ SteamUtils()->GetAppID() }
 {
-	requestStats();
+	if (SteamAPI_Init() == 0)
+		throw std::runtime_error("[ SteamAPI_Init() FAILED ]");
+
+	if (!requestStats())
+		throw std::runtime_error("[ requestStats() FAILED ]");
+
+	m_AppID = SteamUtils()->GetAppID();
 }
 
 fro_GENERATED_SINGLETON_DESTRUCTOR(Steam)
 {
+	SteamAPI_Shutdown();
 }
 #pragma endregion Constructors/Destructor
 
 
 
 #pragma region PublicMethods
-bool fro::Steam::requestStats()
+bool fro::Steam::requestStats() const
 {
 	if (SteamUserStats() == NULL || SteamUser() == NULL)
 		return false;
@@ -36,7 +45,7 @@ bool fro::Steam::requestStats()
 	return SteamUserStats()->RequestCurrentStats();
 }
 
-bool fro::Steam::unlockAchievement(AchievementID achievementID)
+bool fro::Steam::unlockAchievement(AchievementID achievementID) const
 {
 	if (m_IsInitialized)
 	{
@@ -46,6 +55,11 @@ bool fro::Steam::unlockAchievement(AchievementID achievementID)
 	}
 
 	return false;
+}
+
+void fro::Steam::update() const
+{
+	SteamAPI_RunCallbacks();
 }
 #pragma endregion PublicMethods
 
@@ -112,7 +126,7 @@ void fro::Steam::onAchievementStored(UserAchievementStored_t* pCallback)
 		Console::getInstance().log("Stored Achievement for Steam");
 }
 
-std::string fro::Steam::getAchievementName(AchievementID achievementID)
+std::string fro::Steam::getAchievementName(AchievementID achievementID) const
 {
 	switch (achievementID)
 	{

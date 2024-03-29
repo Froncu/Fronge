@@ -17,42 +17,18 @@
 #include "MoveCommand.h"
 #include "Console.h"
 #include "RenderContext.h"
+#include "Steam.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <VLD/vld.h>
-#pragma warning (push)
-#pragma warning (disable: 4996)
-#include <Steam/steam_api.h>
-#pragma warning (pop)
 #include <cassert>
 
 #pragma region EntryFunction
 int main(int, char**)
 {
-	int result;
-
-	result = SteamAPI_Init();
-	assert(result);
-
-	result = SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-	assert(result == 0 && SDL_GetError());
-
-	constexpr int imageFlags{ NULL };
-	result = IMG_Init(imageFlags);
-	assert(result == imageFlags);
-
-	result = TTF_Init();
-	assert(result == 0);
-
 	fro::Fronge::getInstance().run();
-
-	fro::ResourceManager::getInstance().clearCaches();
-
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
 
 	return 0;
 }
@@ -67,6 +43,7 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(Fronge)
 
 fro_GENERATED_SINGLETON_DESTRUCTOR(Fronge)
 {
+	SDL_Quit();
 }
 #pragma endregion Constructors/Destructor
 
@@ -143,7 +120,7 @@ void fro::Fronge::run()
 
 	while (true)
 	{
-		SteamAPI_RunCallbacks();
+		Steam::getInstance().update();
 
 		Timer::getInstance().update();
 

@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Console.cpp">
-      <Filter>Console</Filter>
+      <Filter>Systems\Console</Filter>
     </ClCompile>
     <ClCompile Include="Fronge.cpp">
-      <Filter>Fronge</Filter>
+      <Filter>Systems\Fronge</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
-      <Filter>Events\EventManager</Filter>
+      <Filter>Systems\EventManager</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>SceneManager</Filter>
+      <Filter>Systems\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -29,7 +29,7 @@
       <Filter>Component\Renderable\Base</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>ResourceManager</Filter>
+      <Filter>Systems\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Component\Transform</Filter>
@@ -41,7 +41,7 @@
       <Filter>Component\Behaviour\Rotator</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Timer</Filter>
+      <Filter>Systems\Timer</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounter.cpp">
       <Filter>Component\Behaviour\FPSCounter</Filter>
@@ -50,34 +50,31 @@
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp">
-      <Filter>ImGui\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>ImGui\GUI</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImPlot\implot.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp">
-      <Filter>ImGui\Source</Filter>
+      <Filter>Systems\GUI\Source</Filter>
     </ClCompile>
     <ClCompile Include="Plot.cpp">
       <Filter>Component\Behaviour\Plot</Filter>
@@ -86,7 +83,7 @@
       <Filter>Command\Base</Filter>
     </ClCompile>
     <ClCompile Include="ButtonInput.cpp">
-      <Filter>Events\Input\ButtonInput</Filter>
+      <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectCommand.cpp">
       <Filter>Command\GameObjectCommand\Base</Filter>
@@ -94,31 +91,25 @@
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Command\GameObjectCommand\MoveCommand</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Events\Input\InputManager\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="XInput.cpp">
-      <Filter>Events\Input\InputManager\Implementations</Filter>
+      <Filter>Systems\InputManager\Implementations</Filter>
     </ClCompile>
     <ClCompile Include="Steam.cpp">
-      <Filter>Steam</Filter>
+      <Filter>Systems\Steam</Filter>
     </ClCompile>
     <ClCompile Include="RenderContext.cpp">
-      <Filter>RenderContext</Filter>
+      <Filter>Systems\RenderContext</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Systems\InputManager\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Systems\GUI\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Console">
-      <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fronge">
-      <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{37ae0f73-f61e-46b3-a08e-6219afa194c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager">
-      <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{ff7889ff-ba96-4bf4-b0ca-0e5866fe2452}</UniqueIdentifier>
@@ -141,9 +132,6 @@
     <Filter Include="Component\Renderable\Base">
       <UniqueIdentifier>{d6ac9562-888e-4f50-99c0-d8a22469c159}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ResourceManager">
-      <UniqueIdentifier>{f7c6e62e-2fed-4791-ba17-ffe27a6e0112}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
     </Filter>
@@ -153,20 +141,8 @@
     <Filter Include="Component\Behaviour\Rotator">
       <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Timer">
-      <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Renderable\Text">
       <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{353396e0-376e-4165-939e-6c566206b242}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\GUI">
-      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\Source">
-      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Behaviour\Plot">
       <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
@@ -177,35 +153,8 @@
     <Filter Include="Command\Base">
       <UniqueIdentifier>{74775c7b-09b0-404c-a741-3ce97a0afcb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{9904007b-9c93-42cd-bd8e-331968d391dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\EventManager">
-      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\Input">
-      <UniqueIdentifier>{308e9dee-9252-47a2-b1a7-eb64b4d5e6e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\Input\InputManager">
-      <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Behaviour\FPSCounter">
       <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\Input\ButtonInput">
-      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\Input\InputManager\Interface">
-      <UniqueIdentifier>{b4f97f11-3edd-4a1a-b763-155c8e61495e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events\Input\InputManager\Implementations">
-      <UniqueIdentifier>{5a36b74e-3164-4bd1-b7d6-916d1455a13f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EventDispatcher">
-      <UniqueIdentifier>{ff6664fe-63ea-4513-a494-19a1df372c1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RenderContext">
-      <UniqueIdentifier>{74339848-40df-485b-a7ef-4268d48cfdf0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Command\GameObjectCommand">
       <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
@@ -216,22 +165,67 @@
     <Filter Include="Command\GameObjectCommand\MoveCommand">
       <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Steam">
+    <Filter Include="Systems">
+      <UniqueIdentifier>{155d828d-df90-4d40-a913-23871868d0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\ResourceManager">
+      <UniqueIdentifier>{f7c6e62e-2fed-4791-ba17-ffe27a6e0112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\RenderContext">
+      <UniqueIdentifier>{74339848-40df-485b-a7ef-4268d48cfdf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Steam">
       <UniqueIdentifier>{a32450b7-13d1-44c7-9aab-eeb66c40a6ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Timer">
+      <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUI">
+      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUI\Source">
+      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Fronge">
+      <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Console">
+      <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\EventManager">
+      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\InputManager">
+      <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\InputManager\Interface">
+      <UniqueIdentifier>{b4f97f11-3edd-4a1a-b763-155c8e61495e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\InputManager\Implementations">
+      <UniqueIdentifier>{5a36b74e-3164-4bd1-b7d6-916d1455a13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\InputManager\ButtonInput">
+      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUI\Interface">
+      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SceneManager">
+      <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
-      <Filter>Console</Filter>
+      <Filter>Systems\Console</Filter>
     </ClInclude>
     <ClInclude Include="Fronge.h">
-      <Filter>Fronge</Filter>
+      <Filter>Systems\Fronge</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>Events\EventManager</Filter>
+      <Filter>Systems\EventManager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>SceneManager</Filter>
+      <Filter>Systems\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
@@ -250,7 +244,7 @@
     </ClInclude>
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="ResourceManager.h">
-      <Filter>ResourceManager</Filter>
+      <Filter>Systems\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Component\Transform</Filter>
@@ -262,16 +256,13 @@
       <Filter>Component\Behaviour\Rotator</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Timer</Filter>
+      <Filter>Systems\Timer</Filter>
     </ClInclude>
     <ClInclude Include="FPSCounter.h">
       <Filter>Component\Behaviour\FPSCounter</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Component\Renderable\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>ImGui\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Plot.h">
       <Filter>Component\Behaviour\Plot</Filter>
@@ -281,7 +272,7 @@
       <Filter>Command\Base</Filter>
     </ClInclude>
     <ClInclude Include="ButtonInput.h">
-      <Filter>Events\Input\ButtonInput</Filter>
+      <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectCommand.h">
       <Filter>Command\GameObjectCommand\Base</Filter>
@@ -289,18 +280,19 @@
     <ClInclude Include="MoveCommand.h">
       <Filter>Command\GameObjectCommand\MoveCommand</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Events\Input\InputManager\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.hpp">
-      <Filter>EventDispatcher</Filter>
-    </ClInclude>
     <ClInclude Include="Steam.h">
-      <Filter>Steam</Filter>
+      <Filter>Systems\Steam</Filter>
     </ClInclude>
     <ClInclude Include="RenderContext.h">
-      <Filter>RenderContext</Filter>
+      <Filter>Systems\RenderContext</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="Event.hpp" />
+    <ClInclude Include="InputManager.h">
+      <Filter>Systems\InputManager\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Systems\GUI\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

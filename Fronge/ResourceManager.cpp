@@ -2,15 +2,25 @@
 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <cassert>
+#include <stdexcept>
+#include <format>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_SINGLETON_CONSTRUCTOR(ResourceManager)
 {
+	if (constexpr int imageFlags{ NULL }; IMG_Init(imageFlags) != imageFlags)
+		throw std::runtime_error(std::format("[ IMG_Init FAILED ] -> {}", IMG_GetError()));
+
+	if (TTF_Init() == -1)
+		throw std::runtime_error(std::format("[ TTF_Init FAILED ] -> {}", TTF_GetError()));
 }
 
 fro_GENERATED_SINGLETON_DESTRUCTOR(ResourceManager)
 {
+	clearCaches(); // TODO: the caches need to be cleared before quiting the subsystems, I would prefer this to not be necessary
+
+	TTF_Quit();
+	IMG_Quit();
 }
 #pragma endregion Constructors/Destructor
 
