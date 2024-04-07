@@ -15,6 +15,6 @@ namespace fro
 		fro_GENERATED_SINGLETON_BODY(Fronge)
 
 	public:
-		void run();
+		int run();
 	};
 }

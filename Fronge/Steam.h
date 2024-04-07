@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Defines.hpp"
 
 #include <Steam/isteamuserstats.h>
 #include <cstdint>
@@ -42,7 +43,7 @@ namespace fro
 		STEAM_CALLBACK(Steam, onUserStatsStored, UserStatsStored_t, m_CallbackUserStatsStored);
 		STEAM_CALLBACK(Steam, onAchievementStored , UserAchievementStored_t, m_CallbackAchievementStored);
 
-		std::string getAchievementName(AchievementID achievementID) const;
+		fro_NODISCARD_GETTER std::string getAchievementName(AchievementID achievementID) const;
 
 		std::vector<Achievement> m_vAchievements
 		{ 

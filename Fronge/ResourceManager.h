@@ -19,8 +19,8 @@ namespace fro
 		fro_GENERATED_SINGLETON_BODY(ResourceManager)
 
 	public:
-		fro_NODISCARD_GETTER SDL_Texture* const getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
-		fro_NODISCARD_GETTER SDL_Texture* const getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
+		fro_NODISCARD_GETTER SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
+		fro_NODISCARD_GETTER SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
 		
 		void setResourcesDirectory(const std::string& resourcesDirectory);
 		void clearCaches();
@@ -49,7 +49,7 @@ namespace fro
 		template<typename ResourceType>
 		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
 
-		fro_NODISCARD_GETTER TTF_Font* const getFont(const std::string& fileName, int size);
+		fro_NODISCARD_GETTER TTF_Font* getFont(const std::string& fileName, int size);
 
 		std::string m_ResourcesDirectory{ "../Resources/" };
 		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};

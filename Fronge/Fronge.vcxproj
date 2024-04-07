@@ -227,7 +227,6 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="..\External\Source\ImPlot\implot.cpp" />
     <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp" />
     <ClCompile Include="Behaviour.cpp" />
-    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="EventManager.cpp" />
@@ -256,7 +255,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Behaviour.h" />
-    <ClInclude Include="Command.h" />
+    <ClInclude Include="Command.hpp" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Defines.hpp" />

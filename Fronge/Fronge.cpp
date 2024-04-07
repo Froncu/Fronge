@@ -28,9 +28,7 @@
 #pragma region EntryFunction
 int main(int, char**)
 {
-	fro::Fronge::getInstance().run();
-
-	return 0;
+	return fro::Fronge::getInstance().run();
 }
 #pragma endregion EntryFunction
 
@@ -50,7 +48,7 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(Fronge)
 
 
 #pragma region PublicMethods
-void fro::Fronge::run()
+int fro::Fronge::run()
 {
 	constexpr bool loadSpiral{ true };
 	constexpr bool loadFPSCounter{ true };
@@ -93,8 +91,6 @@ void fro::Fronge::run()
 	GameObject& player1{ scene.addGameObject() };
 	player1.addComponent<Sprite>()->setFileName("DigDug.png");
 	player1.getComponent<Transform>()->setLocalPosition({ 300, 300 });
-
-	scene.addGameObject().addComponent<Plot>();
 
 	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
 	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
@@ -140,5 +136,7 @@ void fro::Fronge::run()
 		GUIContext::getInstance().endFrame();
 		RenderContext::getInstance().present();
 	}
+
+	return 0;
 }
 #pragma endregion PublicMethods

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.hpp"
+
 #include <functional>
 
 namespace fro
@@ -32,12 +34,12 @@ namespace fro
 			m_IsDerivedDataDirty = true;
 		}
 
-		const DerivedDataType& getPrimaryData() const
+		fro_NODISCARD_GETTER const DerivedDataType& getPrimaryData() const
 		{
 			return m_PrimaryData;
 		}
 
-		const PrimaryDataType& getDerivedData()
+		fro_NODISCARD_GETTER const PrimaryDataType& getDerivedData()
 		{
 			if (m_IsDerivedDataDirty)
 				calculateDerivedData();
@@ -45,7 +47,7 @@ namespace fro
 			return m_DerivedData;
 		}
 
-		bool isDirty() const
+		fro_NODISCARD_GETTER bool isDirty() const
 		{
 			return m_IsDerivedDataDirty;
 		}

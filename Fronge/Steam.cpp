@@ -126,7 +126,7 @@ void fro::Steam::onAchievementStored(UserAchievementStored_t* pCallback)
 		Console::getInstance().log("Stored Achievement for Steam");
 }
 
-std::string fro::Steam::getAchievementName(AchievementID achievementID) const
+fro_NODISCARD_GETTER std::string fro::Steam::getAchievementName(AchievementID achievementID) const
 {
 	switch (achievementID)
 	{

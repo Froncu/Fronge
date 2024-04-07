@@ -26,21 +26,21 @@ fro::Scene& fro::SceneManager::addScene(const std::string& name)
 	return *m_vpScenes.emplace_back(decltype(m_vpScenes)::value_type{ new Scene(name) });
 }
 
-void fro::SceneManager::update()
+void fro::SceneManager::update() const
 {
 	for (const auto& pScene : m_vpScenes)
 		if (pScene->m_IsActive)
 			pScene->update();
 }
 
-void fro::SceneManager::render()
+void fro::SceneManager::render() const
 {
 	for (const auto& pScene : m_vpScenes)
 		if (pScene->m_IsActive)
 			pScene->render();
 }
 
-void fro::SceneManager::display()
+void fro::SceneManager::display() const
 {
 	for (const auto& pScene : m_vpScenes)
 		if (pScene->m_IsActive)

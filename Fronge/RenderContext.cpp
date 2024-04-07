@@ -61,12 +61,12 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-SDL_Window* fro::RenderContext::getWindow() const
+fro_NODISCARD_GETTER SDL_Window* fro::RenderContext::getWindow() const
 {
 	return m_pWindow.get();
 }
 
-SDL_Renderer* fro::RenderContext::getRenderer() const
+fro_NODISCARD_GETTER SDL_Renderer* fro::RenderContext::getRenderer() const
 {
 	return m_pRenderer.get();
 }

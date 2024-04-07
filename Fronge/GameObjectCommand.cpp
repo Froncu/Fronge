@@ -10,7 +10,7 @@ fro::GameObjectCommand::GameObjectCommand(const GameObject& commandedGameObject)
 
 
 #pragma region ProtectedMethods
-const fro::GameObject& fro::GameObjectCommand::getCommandedGameObject() const
+fro_NODISCARD_GETTER const fro::GameObject& fro::GameObjectCommand::getCommandedGameObject() const
 {
 	return m_CommandedGameObject;
 }

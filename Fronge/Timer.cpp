@@ -24,7 +24,7 @@ void fro::Timer::update()
 	oldTimePoint = currentTimePoint;
 }
 
-float fro::Timer::getDeltaSeconds() const
+fro_NODISCARD_GETTER float fro::Timer::getDeltaSeconds() const
 {
 	return m_DeltaSeconds;
 }

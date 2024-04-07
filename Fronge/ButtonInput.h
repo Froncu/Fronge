@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.hpp"
+
 #include <SDL2/SDL_Scancode.h>
 #include <SDL2/SDL_gamecontroller.h>
 #include <variant>
@@ -28,11 +30,11 @@ namespace fro
 		ButtonInput& operator=(const ButtonInput&) = default;
 		ButtonInput& operator=(ButtonInput&&) noexcept = default;
 
-		bool operator<(const ButtonInput& otherButtonInput) const;
+		fro_NODISCARD bool operator<(const ButtonInput& otherButtonInput) const;
 
 		template<typename ButtonType>
 		requires std::same_as<ButtonType, SDL_Scancode> or std::same_as<ButtonType, SDL_GameControllerButton>
-		std::optional<ButtonType> getButton() const
+		fro_NODISCARD_GETTER std::optional<ButtonType> getButton() const
 		{
 			if (std::holds_alternative<ButtonType>(m_Button))
 				return std::get<ButtonType>(m_Button);
@@ -40,7 +42,7 @@ namespace fro
 			return std::nullopt;
 		};
 
-		State getState() const;
+		fro_NODISCARD_GETTER State getState() const;
 
 	private:
 		const Button m_Button;

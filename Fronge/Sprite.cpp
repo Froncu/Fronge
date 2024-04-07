@@ -23,11 +23,6 @@ void fro::Sprite::setFileName(const std::string& fileName)
 {
 	m_pTexture = ResourceManager::getInstance().getImageTexture(RenderContext::getInstance().getRenderer(), fileName);
 }
-
-SDL_Texture* const fro::Sprite::getTexture() const
-{
-	return m_pTexture;
-}
 #pragma endregion PublicMethods
 
 

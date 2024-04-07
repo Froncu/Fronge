@@ -27,7 +27,7 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(ResourceManager)
 
 
 #pragma region PublicMethods
-fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
+fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
 {
 	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }]};
 
@@ -46,7 +46,7 @@ fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getTextTexture(SDL
 	return iterator->second.get();
 }
 
-fro_NODISCARD_GETTER SDL_Texture* const fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
+fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
 {
 	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
@@ -72,7 +72,7 @@ void fro::ResourceManager::clearCaches()
 
 
 #pragma region PrivateMethods
-fro_NODISCARD_GETTER TTF_Font* const fro::ResourceManager::getFont(const std::string& fileName, int size)
+fro_NODISCARD_GETTER TTF_Font* fro::ResourceManager::getFont(const std::string& fileName, int size)
 {
 	auto& pFont{ m_mpFonts[{ fileName, size }] };
 

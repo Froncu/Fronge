@@ -70,9 +70,6 @@
     <ClCompile Include="Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Patterns\Command\Base</Filter>
-    </ClCompile>
     <ClCompile Include="ButtonInput.cpp">
       <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClCompile>
@@ -270,7 +267,7 @@
     <ClInclude Include="Plot.h">
       <Filter>Component\GUI\Plot</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
+    <ClInclude Include="Command.hpp">
       <Filter>Patterns\Command\Base</Filter>
     </ClInclude>
     <ClInclude Include="ButtonInput.h">

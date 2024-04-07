@@ -11,7 +11,7 @@ fro::ButtonInput::ButtonInput(Button button, State state)
 
 
 #pragma region PublicMethods
-fro::ButtonInput::State fro::ButtonInput::getState() const
+fro_NODISCARD_GETTER fro::ButtonInput::State fro::ButtonInput::getState() const
 {
 	return m_State;
 }
@@ -20,7 +20,7 @@ fro::ButtonInput::State fro::ButtonInput::getState() const
 
 
 #pragma region Operators
-bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
+fro_NODISCARD bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
 {
 	if (this->m_Button != otherButtonInput.m_Button)
 		return this->m_Button < otherButtonInput.m_Button;

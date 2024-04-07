@@ -45,22 +45,22 @@ void fro::Transform::setWorldPosition(const glm::vec2& worldPosition)
 	setLocalPositionDirty();
 }
 
-const glm::vec2& fro::Transform::getLocalPosition()
+fro_NODISCARD_GETTER const glm::vec2& fro::Transform::getLocalPosition()
 {
 	return getLocalPositionInternal();
 }
 
-const glm::vec2& fro::Transform::getWorldPosition()
+fro_NODISCARD_GETTER const glm::vec2& fro::Transform::getWorldPosition()
 {
 	return getWorldPositionInternal();
 }
 
-bool fro::Transform::isLocalPositionDirty() const
+fro_NODISCARD_GETTER bool fro::Transform::isLocalPositionDirty() const
 {
 	return m_IsLocalPositionDirty;
 }
 
-bool fro::Transform::isWorldPositionDirty() const
+fro_NODISCARD_GETTER bool fro::Transform::isWorldPositionDirty() const
 {
 	return m_IsWorldPositionDirty;
 }
@@ -123,7 +123,7 @@ void fro::Transform::setWorldPositionDirty()
 	}
 }
 
-glm::vec2& fro::Transform::getLocalPositionInternal()
+fro_NODISCARD_GETTER glm::vec2& fro::Transform::getLocalPositionInternal()
 {
 	if (m_IsLocalPositionDirty)
 	{
@@ -134,7 +134,7 @@ glm::vec2& fro::Transform::getLocalPositionInternal()
 	return m_LocalPosition;
 }
 
-glm::vec2& fro::Transform::getWorldPositionInternal()
+fro_NODISCARD_GETTER glm::vec2& fro::Transform::getWorldPositionInternal()
 {
 	if (m_IsWorldPositionDirty)
 	{

@@ -27,19 +27,9 @@ namespace fro
 
 #ifndef fro_GENERATED_GUI_BODY
 #define fro_GENERATED_GUI_BODY(identifier)\
-friend GameObject;\
-\
-public:\
-	virtual ~identifier() override; \
+fro_GENERATED_COMPONENT_BODY(identifier)\
 \
 private:\
-	identifier(const GameObject& parentingGameObject);\
-	identifier(const identifier&) = delete;\
-	identifier(identifier&&) noexcept = delete;\
-\
-	identifier& operator=(const identifier&) = delete;\
-	identifier& operator=(identifier&&) noexcept = delete;\
-\
 	virtual void display() override;
 #endif
 

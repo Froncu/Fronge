@@ -26,11 +26,6 @@ void fro::Text::setFont(const std::string& fontName, int fontSize)
 
 	updateTexture();
 }
-
-SDL_Texture* fro::Text::getTexture() const
-{
-	return m_pTexture;
-}
 #pragma endregion PublicMethods
 
 

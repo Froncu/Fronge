@@ -1,6 +1,7 @@
 #include "InputManager.h"
 
 #include "ButtonInput.h"
+#include "Defines.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -70,7 +71,7 @@ private:
 		m_ButtonsDown = currentGamePadState.Gamepad.wButtons;
 	}
 
-	bool isButtonInState(WORD button, ButtonInput::State state) const
+	fro_NODISCARD bool isButtonInState(WORD button, ButtonInput::State state) const
 	{
 		switch (state)
 		{
@@ -87,7 +88,7 @@ private:
 		return false;
 	}
 
-	WORD convertSDLControllerButtonToXInput(SDL_GameControllerButton gameControllerButton)
+	fro_NODISCARD WORD convertSDLControllerButtonToXInput(SDL_GameControllerButton gameControllerButton) const
 	{
 		switch (gameControllerButton)
 		{

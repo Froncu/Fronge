@@ -36,8 +36,6 @@ namespace fro
 
 		void setFont(const std::string& fontName, int fontSize);
 
-		SDL_Texture* getTexture() const;
-
 	private:
 		void updateTexture();
 

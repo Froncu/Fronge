@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Command.h"
+#include "Command.hpp"
+#include "Defines.hpp"
 
 namespace fro
 {
@@ -16,7 +17,7 @@ namespace fro
 	protected:
 		GameObjectCommand(const GameObject& commandedGameObject);
 
-		const GameObject& getCommandedGameObject() const;
+		fro_NODISCARD_GETTER const GameObject& getCommandedGameObject() const;
 
 	private:
 		GameObjectCommand(const GameObjectCommand&) = delete;
@@ -46,7 +47,7 @@ private:\
 	identifier& operator=(const identifier&) = delete;\
 	identifier& operator=(identifier&&) noexcept = delete;\
 \
-	virtual void operator()();
+	virtual void operator()() override;
 #endif
 
 #ifndef fro_GENERATED_GAME_OBJECT_COMMAND_CONSTRUCTOR

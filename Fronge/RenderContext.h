@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Defines.hpp"
 
 #include <GLM/vec2.hpp>
 #include <memory>
@@ -23,8 +24,8 @@ namespace fro
 		void clear() const;
 		void present() const;
 
-		SDL_Window* getWindow() const;
-		SDL_Renderer* getRenderer() const;
+		fro_NODISCARD_GETTER SDL_Window* getWindow() const;
+		fro_NODISCARD_GETTER SDL_Renderer* getRenderer() const;
 
 	private:
 		template<typename ResourceType>

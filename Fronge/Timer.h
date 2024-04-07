@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.hpp"
+#include "Defines.hpp"
 
 namespace fro
 {
@@ -10,7 +11,8 @@ namespace fro
 
 	public:
 		void update();
-		float getDeltaSeconds() const;
+
+		fro_NODISCARD_GETTER float getDeltaSeconds() const;
 
 	private:
 		float m_DeltaSeconds{};

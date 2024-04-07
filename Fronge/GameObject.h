@@ -84,7 +84,7 @@ namespace fro
 
 		// HACK: there shouldn't be two methods for getting the component map
 		template<ComponentDerived ComponentType>
-		const auto& getComponentMapConstant() const
+		fro_NODISCARD_GETTER const auto& getComponentMapConstant() const
 		{
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
@@ -100,7 +100,7 @@ namespace fro
 		}
 
 		template<ComponentDerived ComponentType>
-		auto& getComponentMap()
+		fro_NODISCARD_GETTER auto& getComponentMap()
 		{
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;

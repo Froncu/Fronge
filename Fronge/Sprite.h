@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderable.h"
+#include "Defines.hpp"
 
 #include <string>
 
@@ -15,8 +16,6 @@ namespace fro
 
 	public:
 		void setFileName(const std::string& fileName);
-
-		SDL_Texture* const getTexture() const;
 
 	private:
 		SDL_Texture* m_pTexture{};

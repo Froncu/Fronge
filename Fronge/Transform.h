@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Defines.hpp"
 
 #include <GLM/glm.hpp>
 #include <GLM/vec2.hpp>
@@ -18,11 +19,11 @@ namespace fro
 		void setLocalPosition(const glm::vec2& localPosition);
 		void setWorldPosition(const glm::vec2& worldPosition);
 
-		const glm::vec2& getLocalPosition();
-		const glm::vec2& getWorldPosition();
+		fro_NODISCARD_GETTER const glm::vec2& getLocalPosition();
+		fro_NODISCARD_GETTER const glm::vec2& getWorldPosition();
 
-		bool isLocalPositionDirty() const;
-		bool isWorldPositionDirty() const;
+		fro_NODISCARD_GETTER bool isLocalPositionDirty() const;
+		fro_NODISCARD_GETTER bool isWorldPositionDirty() const;
 
 	private:
 		void calculateLocalPosition();
@@ -31,8 +32,8 @@ namespace fro
 		void setLocalPositionDirty();
 		void setWorldPositionDirty();
 
-		glm::vec2& getLocalPositionInternal();
-		glm::vec2& getWorldPositionInternal();
+		fro_NODISCARD_GETTER glm::vec2& getLocalPositionInternal();
+		fro_NODISCARD_GETTER glm::vec2& getWorldPositionInternal();
 
 		bool m_IsLocalPositionDirty{};
 		bool m_IsWorldPositionDirty{};

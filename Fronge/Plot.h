@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GUI.h"
+#include "Defines.hpp"
 
 #include <deque>
 #include <vector>
@@ -53,7 +54,7 @@ namespace fro
 		};
 
 		template<typename DataType>
-		std::vector<double> measure(std::vector<DataType>& vData)
+		fro_NODISCARD std::vector<double> measure(std::vector<DataType>& vData) const
 		{
 			std::vector<double> vResults{};
 

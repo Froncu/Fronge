@@ -2,7 +2,8 @@
 
 #include "Singleton.hpp"
 #include "ButtonInput.h"
-#include "Command.h"
+#include "Command.hpp"
+#include "Defines.hpp"
 
 #include <map>
 #include <string>

@@ -38,7 +38,7 @@ private:\
 	identifier& operator=(const identifier&) = delete;\
 	identifier& operator=(identifier&&) noexcept = delete;\
 \
-	virtual void operator()();
+	virtual void operator()() override;
 #endif
 
 #ifndef fro_GENERATED_COMMAND_CONSTRUCTOR

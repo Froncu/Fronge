@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.hpp"
+
 namespace fro
 {
 	template<typename InheritingType>
@@ -10,7 +12,7 @@ namespace fro
 
 		virtual ~Singleton() = default;
 
-		static InheritingType& getInstance()
+		fro_NODISCARD_GETTER static InheritingType& getInstance()
 		{
 			static InheritingType instance{};
 

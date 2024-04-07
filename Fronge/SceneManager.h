@@ -19,9 +19,9 @@ namespace fro
 	public:
 		Scene& addScene(const std::string& name);
 
-		void update();
-		void render();
-		void display();
+		void update() const;
+		void render() const;
+		void display() const;
 
 	private:
 		std::vector<std::unique_ptr<Scene>> m_vpScenes{};
