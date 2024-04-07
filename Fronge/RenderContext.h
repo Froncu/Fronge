@@ -2,9 +2,12 @@
 
 #include "Singleton.hpp"
 
+#include <GLM/vec2.hpp>
 #include <memory>
 #include <functional>
+#include <set>
 
+struct SDL_Texture;
 struct SDL_Window;
 struct SDL_Renderer;
 
@@ -15,6 +18,11 @@ namespace fro
 		fro_GENERATED_SINGLETON_BODY(RenderContext)
 
 	public:
+		void renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const;
+
+		void clear() const;
+		void present() const;
+
 		SDL_Window* getWindow() const;
 		SDL_Renderer* getRenderer() const;
 

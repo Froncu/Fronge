@@ -128,7 +128,10 @@ void fro::Fronge::run()
 			break;
 
 		SceneManager::getInstance().update();
-		SceneManager::getInstance().render(RenderContext::getInstance().getRenderer());
+
+		RenderContext::getInstance().clear();
+		SceneManager::getInstance().render();
+		RenderContext::getInstance().present();
 	}
 }
 #pragma endregion PublicMethods

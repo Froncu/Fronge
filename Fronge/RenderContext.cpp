@@ -30,6 +30,37 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(RenderContext)
 
 
 #pragma region PublicMethods
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const
+{
+	int textureWidth;
+	int textureHeight;
+	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
+
+	const SDL_Rect destinationRectangle
+	{ 
+		static_cast<int>(position.x) - textureWidth / 2, 
+		static_cast<int>(position.y) - textureHeight / 2, 
+		textureWidth, 
+		textureHeight 
+	};
+
+	SDL_RenderCopy(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle);
+}
+
+void fro::RenderContext::clear() const
+{
+	constexpr SDL_Color clearColor{ 32, 32, 32, 255 };
+
+	SDL_SetRenderDrawColor(m_pRenderer.get(), clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	SDL_RenderClear(m_pRenderer.get());
+	SDL_SetRenderDrawColor(m_pRenderer.get(), 255, 255, 255, 255);
+}
+
+void fro::RenderContext::present() const
+{
+	SDL_RenderPresent(m_pRenderer.get());
+}
+
 SDL_Window* fro::RenderContext::getWindow() const
 {
 	return m_pWindow.get();

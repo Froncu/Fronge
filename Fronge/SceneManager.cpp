@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Scene.h"
+#include "RenderContext.h"
 #include "GUI.h"
 
 #include <SDL2/SDL_render.h>
@@ -32,16 +33,10 @@ void fro::SceneManager::update()
 			pScene->update();
 }
 
-void fro::SceneManager::render(SDL_Renderer* const pRenderer)
+void fro::SceneManager::render()
 {
-	SDL_RenderClear(pRenderer);
-	GUI::getInstance().startFrame();
-
 	for (const auto& pScene : m_vpScenes)
 		if (pScene->m_IsActive)
-			pScene->render(pRenderer);
-
-	GUI::getInstance().endFrame();
-	SDL_RenderPresent(pRenderer);
+			pScene->render();
 }
 #pragma endregion PublicMethods

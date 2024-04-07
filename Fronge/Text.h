@@ -4,6 +4,8 @@
 
 #include <string>
 
+struct SDL_Texture;
+
 namespace fro
 {
 	template<typename TextType>
@@ -22,18 +24,27 @@ namespace fro
 	public:
 		template<typename TextType>
 			requires StringAssignable<TextType> || StringConvertible<TextType>
-		void setText(const TextType & text)
+		void setText(const TextType& text)
 		{
 			if constexpr (StringAssignable<TextType>)
 				m_Text = text;
 			else
 				m_Text = std::to_string(text);
+
+			updateTexture();
 		}
 
-		void setFont(const std::string& fileName, int size);
+		void setFont(const std::string& fontName, int fontSize);
+
+		SDL_Texture* getTexture() const;
 
 	private:
+		void updateTexture();
+
+		SDL_Texture* m_pTexture{};
+
 		std::string m_Text{};
-		std::pair<std::string, int> m_Font{};
+		std::string m_FontName{};
+		int m_FontSize{};
 	};
 }

@@ -110,7 +110,7 @@ namespace fro
 		// END HACK
 
 		void update() const;
-		void render(SDL_Renderer* const pRenderer) const;
+		void render() const;
 
 		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
 

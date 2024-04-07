@@ -18,8 +18,9 @@ namespace fro
 
 	public:
 		Scene& addScene(const std::string& name);
+
 		void update();
-		void render(SDL_Renderer* const pRenderer);
+		void render();
 
 	private:
 		std::vector<std::unique_ptr<Scene>> m_vpScenes{};

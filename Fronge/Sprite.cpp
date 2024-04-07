@@ -1,8 +1,8 @@
 #include "Sprite.h"
 
 #include "ResourceManager.h"
+#include "RenderContext.h"
 #include "GameObject.h"
-#include "Transform.h"
 
 #include <SDL2/SDL_render.h>
 
@@ -21,7 +21,12 @@ fro_GENERATED_RENDERABLE_DESTRUCTOR(Sprite)
 #pragma region PublicMethods
 void fro::Sprite::setFileName(const std::string& fileName)
 {
-	m_FileName = fileName;
+	m_pTexture = ResourceManager::getInstance().getImageTexture(RenderContext::getInstance().getRenderer(), fileName);
+}
+
+SDL_Texture* const fro::Sprite::getTexture() const
+{
+	return m_pTexture;
 }
 #pragma endregion PublicMethods
 
@@ -30,14 +35,6 @@ void fro::Sprite::setFileName(const std::string& fileName)
 #pragma region PrivateMethods
 fro_GENERATED_RENDERABLE_RENDER(Sprite)
 {
-	SDL_Texture* const pTexture{ fro::ResourceManager::getInstance().getImageTexture(pRenderer, m_FileName.c_str()) };
-	SDL_Rect destinationRectangle;
-	SDL_QueryTexture(pTexture, nullptr, nullptr, &destinationRectangle.w, &destinationRectangle.h);
-
-	const glm::vec2& worldPosition{ getParentingGameObject().getComponent<Transform>()->getWorldPosition() };
-	destinationRectangle.x = static_cast<int>(worldPosition.x) - destinationRectangle.w / 2;
-	destinationRectangle.y = static_cast<int>(worldPosition.y) - destinationRectangle.h / 2;
-
-	SDL_RenderCopy(pRenderer, pTexture, nullptr, &destinationRectangle);
+	RenderContext::getInstance().renderTexture(m_pTexture, getParentingGameObject().getComponent<Transform>()->getWorldPosition());
 }
 #pragma endregion PrivateMethods

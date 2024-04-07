@@ -52,9 +52,9 @@ void fro::GameObject::update() const
 		pair.second->update();
 }
 
-void fro::GameObject::render(SDL_Renderer* const pRenderer) const
+void fro::GameObject::render() const
 {
 	for (const auto& pair : m_mpRenderables)
-		pair.second->render(pRenderer);
+		pair.second->render();
 }
 #pragma endregion PrivateMethods

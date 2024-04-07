@@ -28,7 +28,7 @@ namespace fro
 		Scene& operator=(Scene&&) noexcept = delete;
 
 		void update() const;
-		void render(SDL_Renderer* const pRenderer) const;
+		void render() const;
 
 		bool m_IsActive{ true };
 		std::vector<std::unique_ptr<GameObject>> m_vpGameObjects{};

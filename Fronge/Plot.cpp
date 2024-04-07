@@ -29,7 +29,7 @@ fro_GENERATED_RENDERABLE_DESTRUCTOR(Plot)
 #pragma region PrivateMethods
 fro_GENERATED_RENDERABLE_RENDER(Plot)
 {
-	constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
+	/*constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
 	constexpr int amountOfStepSizes{ 11 };
 
 	ImGui::Begin("Exercise 1");
@@ -89,7 +89,7 @@ fro_GENERATED_RENDERABLE_RENDER(Plot)
 		}
 	}
 
-	ImGui::End();
+	ImGui::End();*/
 }
 #pragma endregion PrivateMethods
 #undef BUFFER_SIZE

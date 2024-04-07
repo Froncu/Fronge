@@ -24,9 +24,9 @@ void fro::Scene::update() const
 		pGameObject->update();
 }
 
-void fro::Scene::render(SDL_Renderer* const pRenderer) const
+void fro::Scene::render() const
 {
 	for (const auto& pGameObject : m_vpGameObjects)
-		pGameObject->render(pRenderer);
+		pGameObject->render();
 }
 #pragma endregion PrivateMethods

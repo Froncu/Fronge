@@ -25,9 +25,6 @@
     <ClCompile Include="Behaviour.cpp">
       <Filter>Component\Behaviour\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Renderable.cpp">
-      <Filter>Component\Renderable\Base</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Systems\ResourceManager</Filter>
     </ClCompile>
@@ -106,6 +103,9 @@
     <ClCompile Include="GUI.cpp">
       <Filter>Systems\GUI\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="Renderable.cpp">
+      <Filter>Component\Renderable\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -120,29 +120,17 @@
     <Filter Include="Component\Base">
       <UniqueIdentifier>{ad11a763-20b9-417e-a297-f6d77e8bec40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Renderable">
-      <UniqueIdentifier>{ae8ada6e-8713-4c92-958d-62a5b0ed8edb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Behaviour">
       <UniqueIdentifier>{e53dc83c-2140-42ad-a834-0e12d6207081}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Behaviour\Base">
       <UniqueIdentifier>{4b216bfb-9035-4ba7-85ae-516b7d09f766}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Renderable\Base">
-      <UniqueIdentifier>{d6ac9562-888e-4f50-99c0-d8a22469c159}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Renderable\Sprite">
-      <UniqueIdentifier>{0efc79a3-9896-4751-b694-df848b0da992}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Behaviour\Rotator">
       <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Renderable\Text">
-      <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Behaviour\Plot">
       <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
@@ -213,6 +201,18 @@
     <Filter Include="Systems\SceneManager">
       <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Renderable">
+      <UniqueIdentifier>{571b0beb-7504-4242-828b-509c292d8279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderable\Base">
+      <UniqueIdentifier>{cbe8d778-488c-46ff-8663-71cde373bfc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderable\Sprite">
+      <UniqueIdentifier>{0efc79a3-9896-4751-b694-df848b0da992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderable\Text">
+      <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -238,9 +238,6 @@
     </ClInclude>
     <ClInclude Include="Behaviour.h">
       <Filter>Component\Behaviour\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>Component\Renderable\Base</Filter>
     </ClInclude>
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="ResourceManager.h">
@@ -293,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Systems\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>Component\Renderable\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

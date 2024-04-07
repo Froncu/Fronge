@@ -1,8 +1,3 @@
-// HACK: this whole approach of rendering using "renderable" components is not good.
-// The engine should be able to render a predefined set of primitives, and that's it.
-// This approach enforces each renderable component to figure out how to render itself,
-// meaning taking the API used (OpenGL, SDL, Vulkan) into account etc.
-
 #pragma once
 
 #include "Component.h"
@@ -28,7 +23,7 @@ namespace fro
 		Renderable& operator=(const Renderable&) = delete;
 		Renderable& operator=(Renderable&&) noexcept = delete;
 
-		virtual void render(SDL_Renderer* const pRenderer) = 0;
+		virtual void render() const = 0;
 	};
 }
 
@@ -47,7 +42,7 @@ private:\
 	identifier& operator=(const identifier&) = delete;\
 	identifier& operator=(identifier&&) noexcept = delete;\
 \
-	virtual void render(SDL_Renderer* const pRenderer) override;
+	virtual void render() const override;
 #endif
 
 #ifndef fro_GENERATED_RENDERABLE_CONSTRUCTOR
@@ -63,6 +58,5 @@ fro_GENERATED_COMPONENT_DESTRUCTOR(identifier)
 
 #ifndef fro_GENERATED_RENDERABLE_RENDER
 #define fro_GENERATED_RENDERABLE_RENDER(identifier)\
-void fro::identifier::render([[maybe_unused]] SDL_Renderer* const pRenderer)
+void fro::identifier::render() const
 #endif
-// END HACK
