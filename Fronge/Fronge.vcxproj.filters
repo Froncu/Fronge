@@ -5,7 +5,7 @@
       <Filter>Systems\Console</Filter>
     </ClCompile>
     <ClCompile Include="Fronge.cpp">
-      <Filter>Systems\Fronge</Filter>
+      <Filter>Fronge</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Systems\EventManager</Filter>
@@ -18,12 +18,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Component\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Behaviour.cpp">
-      <Filter>Component\Behaviour\Base</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Systems\ResourceManager</Filter>
@@ -77,16 +71,16 @@
       <Filter>Component\GUI\Plot</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
-      <Filter>Command\Base</Filter>
+      <Filter>Patterns\Command\Base</Filter>
     </ClCompile>
     <ClCompile Include="ButtonInput.cpp">
       <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectCommand.cpp">
-      <Filter>Command\GameObjectCommand\Base</Filter>
+      <Filter>Patterns\Command\GameObjectCommand\Base</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
-      <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+      <Filter>Patterns\Command\GameObjectCommand\MoveCommand</Filter>
     </ClCompile>
     <ClCompile Include="XInput.cpp">
       <Filter>Systems\InputManager\Implementations</Filter>
@@ -109,49 +103,16 @@
     <ClCompile Include="GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Behaviour.cpp">
+      <Filter>Component\Behaviour\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Component\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
       <UniqueIdentifier>{37ae0f73-f61e-46b3-a08e-6219afa194c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{ff7889ff-ba96-4bf4-b0ca-0e5866fe2452}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{018443ba-d498-4dd2-94fc-8905eb244220}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Base">
-      <UniqueIdentifier>{ad11a763-20b9-417e-a297-f6d77e8bec40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour">
-      <UniqueIdentifier>{e53dc83c-2140-42ad-a834-0e12d6207081}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\Base">
-      <UniqueIdentifier>{4b216bfb-9035-4ba7-85ae-516b7d09f766}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\Rotator">
-      <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command">
-      <UniqueIdentifier>{be5aca59-aee0-40df-969e-fb5757bc3dde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\Base">
-      <UniqueIdentifier>{74775c7b-09b0-404c-a741-3ce97a0afcb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\FPSCounter">
-      <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\GameObjectCommand">
-      <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\GameObjectCommand\Base">
-      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Command\GameObjectCommand\MoveCommand">
-      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{155d828d-df90-4d40-a913-23871868d0bb}</UniqueIdentifier>
@@ -167,9 +128,6 @@
     </Filter>
     <Filter Include="Systems\Timer">
       <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Fronge">
-      <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\Console">
       <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
@@ -192,6 +150,60 @@
     <Filter Include="Systems\SceneManager">
       <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\GUIContext">
+      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Source">
+      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Interface">
+      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns">
+      <UniqueIdentifier>{7f36bc53-0626-4a8e-b92f-ad7e20509d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Command">
+      <UniqueIdentifier>{be5aca59-aee0-40df-969e-fb5757bc3dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Command\Base">
+      <UniqueIdentifier>{74775c7b-09b0-404c-a741-3ce97a0afcb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Command\GameObjectCommand">
+      <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Command\GameObjectCommand\Base">
+      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Command\GameObjectCommand\MoveCommand">
+      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fronge">
+      <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{ff7889ff-ba96-4bf4-b0ca-0e5866fe2452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{018443ba-d498-4dd2-94fc-8905eb244220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Base">
+      <UniqueIdentifier>{ad11a763-20b9-417e-a297-f6d77e8bec40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour">
+      <UniqueIdentifier>{e53dc83c-2140-42ad-a834-0e12d6207081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\Base">
+      <UniqueIdentifier>{4b216bfb-9035-4ba7-85ae-516b7d09f766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\Rotator">
+      <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\FPSCounter">
+      <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Component\Renderable">
       <UniqueIdentifier>{571b0beb-7504-4242-828b-509c292d8279}</UniqueIdentifier>
     </Filter>
@@ -203,15 +215,6 @@
     </Filter>
     <Filter Include="Component\Renderable\Text">
       <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext">
-      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext\Source">
-      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext\Interface">
-      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\GUI">
       <UniqueIdentifier>{1b4dd215-c1c3-45ac-9063-af34a90cd77f}</UniqueIdentifier>
@@ -228,7 +231,7 @@
       <Filter>Systems\Console</Filter>
     </ClInclude>
     <ClInclude Include="Fronge.h">
-      <Filter>Systems\Fronge</Filter>
+      <Filter>Fronge</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Systems\EventManager</Filter>
@@ -241,12 +244,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Component\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Behaviour.h">
-      <Filter>Component\Behaviour\Base</Filter>
     </ClInclude>
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="ResourceManager.h">
@@ -273,18 +270,17 @@
     <ClInclude Include="Plot.h">
       <Filter>Component\GUI\Plot</Filter>
     </ClInclude>
-    <ClInclude Include="DirtyData.hpp" />
     <ClInclude Include="Command.h">
-      <Filter>Command\Base</Filter>
+      <Filter>Patterns\Command\Base</Filter>
     </ClInclude>
     <ClInclude Include="ButtonInput.h">
       <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectCommand.h">
-      <Filter>Command\GameObjectCommand\Base</Filter>
+      <Filter>Patterns\Command\GameObjectCommand\Base</Filter>
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
-      <Filter>Command\GameObjectCommand\MoveCommand</Filter>
+      <Filter>Patterns\Command\GameObjectCommand\MoveCommand</Filter>
     </ClInclude>
     <ClInclude Include="Steam.h">
       <Filter>Systems\Steam</Filter>
@@ -292,8 +288,6 @@
     <ClInclude Include="RenderContext.h">
       <Filter>Systems\RenderContext</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.hpp" />
-    <ClInclude Include="Event.hpp" />
     <ClInclude Include="InputManager.h">
       <Filter>Systems\InputManager\Interface</Filter>
     </ClInclude>
@@ -305,6 +299,21 @@
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Component\GUI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DirtyData.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>Component\Behaviour\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Component\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
