@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "GUI.h"
 
 #include <deque>
 #include <vector>
@@ -10,9 +10,9 @@
 
 namespace fro
 {
-	class Plot final : public Renderable
+	class Plot final : public GUI
 	{
-		fro_GENERATED_RENDERABLE_BODY(Plot)
+		fro_GENERATED_GUI_BODY(Plot)
 
 	private:
 		struct Transform

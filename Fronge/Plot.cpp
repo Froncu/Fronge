@@ -12,14 +12,14 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro_GENERATED_RENDERABLE_CONSTRUCTOR(Plot)
+fro_GENERATED_GUI_CONSTRUCTOR(Plot)
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)
 	, m_vGameObjects3DAlt(BUFFER_SIZE)
 {
 }
 
-fro_GENERATED_RENDERABLE_DESTRUCTOR(Plot)
+fro_GENERATED_GUI_DESTRUCTOR(Plot)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -27,9 +27,9 @@ fro_GENERATED_RENDERABLE_DESTRUCTOR(Plot)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_RENDERABLE_RENDER(Plot)
+fro_GENERATED_GUI_DISPLAY(Plot)
 {
-	/*constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
+	constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
 	constexpr int amountOfStepSizes{ 11 };
 
 	ImGui::Begin("Exercise 1");
@@ -89,7 +89,7 @@ fro_GENERATED_RENDERABLE_RENDER(Plot)
 		}
 	}
 
-	ImGui::End();*/
+	ImGui::End();
 }
 #pragma endregion PrivateMethods
 #undef BUFFER_SIZE

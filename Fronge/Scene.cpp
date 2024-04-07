@@ -29,4 +29,10 @@ void fro::Scene::render() const
 	for (const auto& pGameObject : m_vpGameObjects)
 		pGameObject->render();
 }
+
+void fro::Scene::display() const
+{
+	for (const auto& pGameObject : m_vpGameObjects)
+		pGameObject->display();
+}
 #pragma endregion PrivateMethods

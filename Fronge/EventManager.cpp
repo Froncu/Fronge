@@ -1,6 +1,6 @@
 #include "EventManager.h"
 
-#include "GUI.h"
+#include "GUIContext.h"
 #include "InputManager.h"
 
 #include <SDL2/SDL_events.h>
@@ -31,7 +31,7 @@ bool fro::EventManager::processEvents() const
 
 		InputManager::getInstance().processInputEvent(event);
 
-		GUI::getInstance().processEvent(event);
+		GUIContext::getInstance().processEvent(event);
 	}
 
 	return true;

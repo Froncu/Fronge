@@ -2,7 +2,7 @@
 
 #include "EventManager.h"
 #include "SceneManager.h"
-#include "GUI.h"
+#include "GUIContext.h"
 #include "ResourceManager.h"
 #include "Timer.h"
 #include "SceneManager.h"
@@ -94,6 +94,8 @@ void fro::Fronge::run()
 	player1.addComponent<Sprite>()->setFileName("DigDug.png");
 	player1.getComponent<Transform>()->setLocalPosition({ 300, 300 });
 
+	scene.addGameObject().addComponent<Plot>();
+
 	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, ButtonInput::State::down }, "moveRight");
 	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, ButtonInput::State::down }, "moveLeft");
 	InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_W, ButtonInput::State::down }, "moveUp");
@@ -131,6 +133,11 @@ void fro::Fronge::run()
 
 		RenderContext::getInstance().clear();
 		SceneManager::getInstance().render();
+
+		GUIContext::getInstance().startFrame();
+		SceneManager::getInstance().display();
+
+		GUIContext::getInstance().endFrame();
 		RenderContext::getInstance().present();
 	}
 }

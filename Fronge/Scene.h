@@ -29,6 +29,7 @@ namespace fro
 
 		void update() const;
 		void render() const;
+		void display() const;
 
 		bool m_IsActive{ true };
 		std::vector<std::unique_ptr<GameObject>> m_vpGameObjects{};

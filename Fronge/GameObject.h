@@ -3,6 +3,7 @@
 #include "Defines.hpp"
 #include "Behaviour.h"
 #include "Renderable.h"
+#include "GUI.h"
 #include "Component.h"
 #include "Transform.h"
 
@@ -91,6 +92,9 @@ namespace fro
 			else if constexpr (std::derived_from<ComponentType, Renderable>)
 				return m_mpRenderables;
 
+			else if constexpr (std::derived_from<ComponentType, GUI>)
+				return m_mpGUIs;
+
 			else
 				return m_mpComponents;
 		}
@@ -104,6 +108,9 @@ namespace fro
 			else if constexpr (std::derived_from<ComponentType, Renderable>)
 				return m_mpRenderables;
 
+			else if constexpr (std::derived_from<ComponentType, GUI>)
+				return m_mpGUIs;
+
 			else
 				return m_mpComponents;
 		}
@@ -111,6 +118,7 @@ namespace fro
 
 		void update() const;
 		void render() const;
+		void display() const;
 
 		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
 
@@ -119,6 +127,7 @@ namespace fro
 
 		std::unordered_map<size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<size_t, std::unique_ptr<Renderable>> m_mpRenderables{};
+		std::unordered_map<size_t, std::unique_ptr<GUI>> m_mpGUIs{};
 		std::unordered_map<size_t, std::unique_ptr<Component>> m_mpComponents{};
 	};
 }

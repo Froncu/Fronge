@@ -1,20 +1,60 @@
 #pragma once
 
-#include "Singleton.hpp"
-
-struct SDL_Window;
-struct SDL_Renderer;
-typedef union SDL_Event SDL_Event;
+#include "Component.h"
 
 namespace fro
 {
-	class GUI final : public Singleton<GUI>
+	class GUI : public Component
 	{
-		fro_GENERATED_SINGLETON_BODY(GUI)
+		friend GameObject;
 
 	public:
-		void processEvent(const SDL_Event& event) const;
-		void startFrame() const;
-		void endFrame() const;
+		virtual ~GUI() = default;
+
+	protected:
+		GUI(const GameObject& parentingGameObject);
+
+	private:
+		GUI(const GUI&) = delete;
+		GUI(GUI&&) noexcept = delete;
+
+		GUI& operator=(const GUI&) = delete;
+		GUI& operator=(GUI&&) noexcept = delete;
+
+		virtual void display() = 0;
 	};
 }
+
+#ifndef fro_GENERATED_GUI_BODY
+#define fro_GENERATED_GUI_BODY(identifier)\
+friend GameObject;\
+\
+public:\
+	virtual ~identifier() override; \
+\
+private:\
+	identifier(const GameObject& parentingGameObject);\
+	identifier(const identifier&) = delete;\
+	identifier(identifier&&) noexcept = delete;\
+\
+	identifier& operator=(const identifier&) = delete;\
+	identifier& operator=(identifier&&) noexcept = delete;\
+\
+	virtual void display() override;
+#endif
+
+#ifndef fro_GENERATED_GUI_CONSTRUCTOR
+#define fro_GENERATED_GUI_CONSTRUCTOR(identifier)\
+fro::identifier::identifier(const GameObject& parentingGameObject)\
+	: GUI(parentingGameObject)
+#endif
+
+#ifndef fro_GENERATED_GUI_DESTRUCTOR
+#define fro_GENERATED_GUI_DESTRUCTOR(identifier)\
+fro_GENERATED_COMPONENT_DESTRUCTOR(identifier)
+#endif
+
+#ifndef fro_GENERATED_GUI_DISPLAY
+#define fro_GENERATED_GUI_DISPLAY(identifier)\
+void fro::identifier::display()
+#endif

@@ -39,4 +39,11 @@ void fro::SceneManager::render()
 		if (pScene->m_IsActive)
 			pScene->render();
 }
+
+void fro::SceneManager::display()
+{
+	for (const auto& pScene : m_vpScenes)
+		if (pScene->m_IsActive)
+			pScene->display();
+}
 #pragma endregion PublicMethods

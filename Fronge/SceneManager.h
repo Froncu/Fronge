@@ -21,6 +21,7 @@ namespace fro
 
 		void update();
 		void render();
+		void display();
 
 	private:
 		std::vector<std::unique_ptr<Scene>> m_vpScenes{};

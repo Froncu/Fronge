@@ -47,34 +47,34 @@
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImPlot\implot.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp">
-      <Filter>Systems\GUI\Source</Filter>
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
     <ClCompile Include="Plot.cpp">
-      <Filter>Component\Behaviour\Plot</Filter>
+      <Filter>Component\GUI\Plot</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Command\Base</Filter>
@@ -100,11 +100,14 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Systems\InputManager\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>Systems\GUI\Interface</Filter>
+    <ClCompile Include="GUIContext.cpp">
+      <Filter>Systems\GUIContext\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Renderable.cpp">
       <Filter>Component\Renderable\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Component\GUI\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +134,6 @@
     </Filter>
     <Filter Include="Component\Behaviour\Rotator">
       <UniqueIdentifier>{50083620-8af6-4d2b-be5c-91ad8de34e2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\Plot">
-      <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Command">
       <UniqueIdentifier>{be5aca59-aee0-40df-969e-fb5757bc3dde}</UniqueIdentifier>
@@ -168,12 +168,6 @@
     <Filter Include="Systems\Timer">
       <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\GUI">
-      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUI\Source">
-      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\Fronge">
       <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
     </Filter>
@@ -195,9 +189,6 @@
     <Filter Include="Systems\InputManager\ButtonInput">
       <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\GUI\Interface">
-      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\SceneManager">
       <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
     </Filter>
@@ -212,6 +203,24 @@
     </Filter>
     <Filter Include="Component\Renderable\Text">
       <UniqueIdentifier>{008497bd-5147-4067-aa87-7f7253e716bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext">
+      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Source">
+      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Interface">
+      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\GUI">
+      <UniqueIdentifier>{1b4dd215-c1c3-45ac-9063-af34a90cd77f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\GUI\Base">
+      <UniqueIdentifier>{453d8bb9-ce44-4c87-a5c8-6247289dd327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\GUI\Plot">
+      <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,7 +271,7 @@
       <Filter>Component\Renderable\Text</Filter>
     </ClInclude>
     <ClInclude Include="Plot.h">
-      <Filter>Component\Behaviour\Plot</Filter>
+      <Filter>Component\GUI\Plot</Filter>
     </ClInclude>
     <ClInclude Include="DirtyData.hpp" />
     <ClInclude Include="Command.h">
@@ -288,11 +297,14 @@
     <ClInclude Include="InputManager.h">
       <Filter>Systems\InputManager\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>Systems\GUI\Interface</Filter>
+    <ClInclude Include="GUIContext.h">
+      <Filter>Systems\GUIContext\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Renderable.h">
       <Filter>Component\Renderable\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Component\GUI\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -57,4 +57,10 @@ void fro::GameObject::render() const
 	for (const auto& pair : m_mpRenderables)
 		pair.second->render();
 }
+
+void fro::GameObject::display() const
+{
+	for (const auto& pair : m_mpGUIs)
+		pair.second->display();
+}
 #pragma endregion PrivateMethods
