@@ -27,11 +27,11 @@ namespace fro
 			m_vSubscribers.push_back(subscriber);
 		}
 
-		void notifySubscribers(Payload&&... payload)
+		void notifySubscribers(Payload... payload) const
 		{
 			for (Subscriber subscriber : m_vSubscribers)
 				subscriber(std::forward<Payload>(payload)...);
-		};
+		}
 
 	private:
 		std::vector<std::function<void(Payload&&...)>> m_vSubscribers{};
