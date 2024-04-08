@@ -35,25 +35,14 @@ public:
 	GameControllerInputImplementation& operator=(const GameControllerInputImplementation&) = delete;
 	GameControllerInputImplementation& operator=(GameControllerInputImplementation&&) noexcept = delete;
 
-	void processGamePadInputContinous(const std::map<ButtonInput, std::string>& mActions,
-		const std::map<std::string, std::vector<std::unique_ptr<Command>>>& mCommands)
+	void processGamePadInputContinous
+	(
+		const std::map<ButtonInput, std::string>& mActions,
+		const std::map<std::string, std::vector<std::unique_ptr<Command>>>& mCommands
+	)
 	{
 		updateController();
-
-		for (auto&& [buttonInput, actionName] : mActions)
-		{
-			auto optionalButton{ buttonInput.getButton<SDL_GameControllerButton>() };
-			if (!optionalButton.has_value())
-				continue;
-
-			if (!isButtonInState(convertSDLControllerButtonToXInput(*optionalButton), buttonInput.getState()))
-				continue;
-
-			if (const auto actionsIterator{ mActions.find(buttonInput) }; actionsIterator != mActions.end())
-				if (const auto commandsIterator{ mCommands.find(actionsIterator->second) }; commandsIterator != mCommands.end())
-					for (auto& pCommand : commandsIterator->second)
-						(*pCommand)();
-		}
+		executeCommands(mActions, mCommands);
 	}
 
 private:
@@ -136,6 +125,34 @@ private:
 
 		default:
 			return NULL;
+		}
+	}
+
+	void executeCommands
+	(
+		const std::map<ButtonInput, std::string>& mActions,
+		const std::map<std::string, std::vector<std::unique_ptr<Command>>>& mCommands
+	)
+	{
+		for (const auto& [buttonInput, actionName] : mActions)
+		{
+			auto optionalButton{ buttonInput.getButton<SDL_GameControllerButton>() };
+			if (!optionalButton.has_value())
+				continue;
+
+			if (!isButtonInState(convertSDLControllerButtonToXInput(*optionalButton), buttonInput.getState()))
+				continue;
+
+			const auto actionIterator{ mActions.find(buttonInput) };
+			if (actionIterator == mActions.end())
+				continue;
+
+			const auto commandIterator{ mCommands.find(actionIterator->second) };
+			if (commandIterator == mCommands.end())
+				continue;
+
+			for (auto& pCommand : commandIterator->second)
+				(*pCommand)();
 		}
 	}
 

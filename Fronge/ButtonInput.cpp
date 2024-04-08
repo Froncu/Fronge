@@ -22,9 +22,9 @@ fro_NODISCARD_GETTER fro::ButtonInput::State fro::ButtonInput::getState() const
 #pragma region Operators
 fro_NODISCARD bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
 {
-	if (this->m_Button != otherButtonInput.m_Button)
-		return this->m_Button < otherButtonInput.m_Button;
+	if (m_Button != otherButtonInput.m_Button)
+		return m_Button < otherButtonInput.m_Button;
 
-	return this->m_State < otherButtonInput.m_State;
+	return m_State < otherButtonInput.m_State;
 }
 #pragma endregion Operators

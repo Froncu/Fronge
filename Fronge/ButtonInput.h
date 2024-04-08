@@ -16,9 +16,9 @@ namespace fro
 
 		enum class State
 		{
-			pressed = 0b01,
-			released = 0b10,
-			down = 0b11
+			pressed = 0b00,
+			released = 0b01,
+			down = 0b10
 		};
 
 		ButtonInput(Button button, State state);
