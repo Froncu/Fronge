@@ -122,6 +122,8 @@ int fro::Fronge::run()
 
 		Timer::getInstance().update();
 
+		InputManager::getInstance().processKeyboardInputContinous();
+		InputManager::getInstance().processGamePadInputContinous();
 		if (!EventManager::getInstance().processEvents())
 			break;
 

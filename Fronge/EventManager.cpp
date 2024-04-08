@@ -26,9 +26,6 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(EventManager)
 #pragma region PublicMethods
 bool fro::EventManager::processEvents() const
 {
-	InputManager::getInstance().processKeyboardInputContinous();
-	InputManager::getInstance().processGamePadInputContinous();
-
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
