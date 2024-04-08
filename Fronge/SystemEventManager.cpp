@@ -1,7 +1,4 @@
-#include "EventManager.h"
-
-#include "GUIContext.h"
-#include "InputManager.h"
+#include "SystemEventManager.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -9,13 +6,13 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(EventManager)
+fro_GENERATED_SINGLETON_CONSTRUCTOR(SystemEventManager)
 {
 	if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0)
 		throw std::runtime_error(std::format("[ SDL_InitSubSystem() FAILED ] -> {}", SDL_GetError()));
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(EventManager)
+fro_GENERATED_SINGLETON_DESTRUCTOR(SystemEventManager)
 {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }
@@ -24,7 +21,7 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(EventManager)
 
 
 #pragma region PublicMethods
-bool fro::EventManager::processEvents() const
+bool fro::SystemEventManager::processSystemEvents() const
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -32,9 +29,7 @@ bool fro::EventManager::processEvents() const
 		if (event.type == SDL_EventType::SDL_QUIT)
 			return false;
 
-		InputManager::getInstance().processInputEvent(event);
-
-		GUIContext::getInstance().processEvent(event);
+		m_SystemEvent.notifySubscribers(event);
 	}
 
 	return true;

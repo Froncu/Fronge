@@ -27,6 +27,11 @@ namespace fro
 			m_vSubscribers.push_back(subscriber);
 		}
 
+		void addSubscribers(const std::initializer_list<Subscriber>& subscribers)
+		{
+			m_vSubscribers.insert(m_vSubscribers.end(), subscribers);
+		}
+
 		void notifySubscribers(Payload... payload) const
 		{
 			for (Subscriber subscriber : m_vSubscribers)
@@ -34,6 +39,6 @@ namespace fro
 		}
 
 	private:
-		std::vector<std::function<void(Payload&&...)>> m_vSubscribers{};
+		std::vector<Subscriber> m_vSubscribers{};
 	};
 }

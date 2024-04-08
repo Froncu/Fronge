@@ -1,6 +1,6 @@
 #include "Fronge.h"
 
-#include "EventManager.h"
+#include "SystemEventManager.h"
 #include "SceneManager.h"
 #include "GUIContext.h"
 #include "ResourceManager.h"
@@ -116,6 +116,12 @@ int fro::Fronge::run()
 	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveUpController", player2).setMoveDirection({ 0.0f, -1.0f });
 	InputManager::getInstance().bindActionToCommand<MoveCommand>("moveDownController", player2).setMoveDirection({ 0.0f, 1.0f });
 
+	SystemEventManager::getInstance().m_SystemEvent.addSubscribers
+	({
+		std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
+		std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1)
+	});
+
 	while (true)
 	{
 		Steam::getInstance().update();
@@ -124,7 +130,7 @@ int fro::Fronge::run()
 
 		InputManager::getInstance().processKeyboardInputContinous();
 		InputManager::getInstance().processGamePadInputContinous();
-		if (!EventManager::getInstance().processEvents())
+		if (!SystemEventManager::getInstance().processSystemEvents())
 			break;
 
 		SceneManager::getInstance().update();

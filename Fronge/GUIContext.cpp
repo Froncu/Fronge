@@ -34,7 +34,7 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(GUIContext)
 
 
 #pragma region PublicMethods
-void fro::GUIContext::processEvent(const SDL_Event& event) const
+void fro::GUIContext::processSystemEvent(const SDL_Event& event) const
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }

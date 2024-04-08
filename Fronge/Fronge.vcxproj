@@ -229,7 +229,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="SystemEventManager.cpp" />
     <ClCompile Include="FPSCounter.cpp" />
     <ClCompile Include="Fronge.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -260,7 +260,7 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     <ClInclude Include="Console.h" />
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="DirtyData.hpp" />
-    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="SystemEventManager.h" />
     <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="Fronge.h" />
     <ClInclude Include="GameObject.h" />

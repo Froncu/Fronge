@@ -7,8 +7,8 @@
     <ClCompile Include="Fronge.cpp">
       <Filter>Fronge</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Systems\EventManager</Filter>
+    <ClCompile Include="SystemEventManager.cpp">
+      <Filter>Systems\SystemEventManager</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Systems\SceneManager</Filter>
@@ -129,9 +129,6 @@
     <Filter Include="Systems\Console">
       <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\EventManager">
-      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\InputManager">
       <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
     </Filter>
@@ -146,15 +143,6 @@
     </Filter>
     <Filter Include="Systems\SceneManager">
       <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext">
-      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext\Source">
-      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext\Interface">
-      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Patterns">
       <UniqueIdentifier>{7f36bc53-0626-4a8e-b92f-ad7e20509d61}</UniqueIdentifier>
@@ -222,6 +210,18 @@
     <Filter Include="Component\GUI\Plot">
       <UniqueIdentifier>{2b9ad5db-9bce-4518-8315-91ac79aaca4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\GUIContext">
+      <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Source">
+      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GUIContext\Interface">
+      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SystemEventManager">
+      <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -230,8 +230,8 @@
     <ClInclude Include="Fronge.h">
       <Filter>Fronge</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Systems\EventManager</Filter>
+    <ClInclude Include="SystemEventManager.h">
+      <Filter>Systems\SystemEventManager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Systems\SceneManager</Filter>

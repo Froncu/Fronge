@@ -11,7 +11,7 @@ namespace fro
 		fro_GENERATED_SINGLETON_BODY(GUIContext)
 
 	public:
-		void processEvent(const SDL_Event& event) const;
+		void processSystemEvent(const SDL_Event& event) const;
 		void startFrame() const;
 		void endFrame() const;
 	};
