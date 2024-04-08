@@ -11,9 +11,9 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(GUIContext)
 {
 	ImGui::CreateContext();
 
-	RenderContext& renderContex{ RenderContext::getInstance() };
-	ImGui_ImplSDL2_InitForSDLRenderer(renderContex.getWindow(), renderContex.getRenderer());
-	ImGui_ImplSDLRenderer2_Init(renderContex.getRenderer());
+	const RenderContext& renderContext{ RenderContext::getInstance() };
+	ImGui_ImplSDL2_InitForSDLRenderer(renderContext.getWindow(), renderContext.getRenderer());
+	ImGui_ImplSDLRenderer2_Init(renderContext.getRenderer());
 
 	ImGui::StyleColorsClassic();
 
