@@ -21,32 +21,33 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{3ba4c87b-1a66-4a94-8c1b-c970e7f5f882}</ProjectGuid>
-    <RootNamespace>Fronge</RootNamespace>
+    <ProjectGuid>{546dc7cf-b98f-4812-b004-5a9a7cd1b4a3}</ProjectGuid>
+    <RootNamespace>DigDug</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>DigDug</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,37 +71,29 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
-    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
-    <SourcePath>
-    </SourcePath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
-    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(LibraryPath)</LibraryPath>
-    <SourcePath>
-    </SourcePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
-    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
-    <SourcePath>
-    </SourcePath>
+    <IncludePath>$(SolutionDir)Fronge\;$(SolutionDir)External\Includes\</IncludePath>
+    <LibraryPath>$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\;$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
     <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
-    <IncludePath>$(SolutionDir)External\Includes\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(LibraryPath)</LibraryPath>
-    <SourcePath>
-    </SourcePath>
+    <IncludePath>$(SolutionDir)Fronge\;$(SolutionDir)External\Includes\</IncludePath>
+    <LibraryPath>$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\;$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <IncludePath>$(SolutionDir)Fronge\;$(SolutionDir)External\Includes\</IncludePath>
+    <LibraryPath>$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\;$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Builds\$(ProjectName)\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(SolutionDir)Builds\$(ProjectName)\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <IncludePath>$(SolutionDir)Fronge\;$(SolutionDir)External\Includes\</IncludePath>
+    <LibraryPath>$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\;$(SolutionDir)External\Libraries\SDL2\$(Platform)\;$(SolutionDir)External\Libraries\Steam\$(Platform)\;$(SolutionDir)External\Libraries\VLD\$(Platform)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,23 +103,15 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shell32.lib;Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;vld.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\*" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,24 +124,19 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shell32.lib;Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\*" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,23 +147,15 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shell32.lib;Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;vld.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\VLD\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\*" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -196,94 +168,23 @@ xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shell32.lib;Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\Libraries\SDL2\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\Libraries\Steam\$(Platform)\*.txt" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+      <Command>xcopy "$(SolutionDir)Builds\Fronge\$(Configuration) ($(Platform))\*" "$(TargetDir)" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\External\Source\ImGui\imgui.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp" />
-    <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="..\External\Source\ImPlot\implot.cpp" />
-    <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp" />
-    <ClCompile Include="Behaviour.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Console.cpp" />
-    <ClCompile Include="SystemEventManager.cpp" />
-    <ClCompile Include="FPSCounter.cpp" />
-    <ClCompile Include="Fronge.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameObjectCommand.cpp" />
-    <ClCompile Include="GUIContext.cpp" />
-    <ClCompile Include="ButtonInput.cpp" />
-    <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Renderable.cpp" />
-    <ClCompile Include="Steam.cpp" />
-    <ClCompile Include="RenderContext.cpp" />
-    <ClCompile Include="XInput.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="Plot.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Rotator.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Text.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Behaviour.h" />
-    <ClInclude Include="Command.hpp" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="Console.h" />
-    <ClInclude Include="Defines.hpp" />
-    <ClInclude Include="DirtyData.hpp" />
-    <ClInclude Include="SystemEventManager.h" />
-    <ClInclude Include="FPSCounter.h" />
-    <ClInclude Include="Fronge.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectCommand.h" />
-    <ClInclude Include="GUIContext.h" />
-    <ClInclude Include="GUI.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="ButtonInput.h" />
-    <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="Plot.h" />
-    <ClInclude Include="Renderable.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Rotator.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Singleton.hpp" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Event.hpp" />
-    <ClInclude Include="Steam.h" />
-    <ClInclude Include="Text.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="RenderContext.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

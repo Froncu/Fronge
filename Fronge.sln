@@ -5,6 +5,11 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fronge", "Fronge\Fronge.vcxproj", "{3BA4C87B-1A66-4A94-8C1B-C970E7F5F882}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DigDug", "DigDug\DigDug.vcxproj", "{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3BA4C87B-1A66-4A94-8C1B-C970E7F5F882} = {3BA4C87B-1A66-4A94-8C1B-C970E7F5F882}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +26,14 @@ Global
 		{3BA4C87B-1A66-4A94-8C1B-C970E7F5F882}.Release|Win32.Build.0 = Release|Win32
 		{3BA4C87B-1A66-4A94-8C1B-C970E7F5F882}.Release|x64.ActiveCfg = Release|x64
 		{3BA4C87B-1A66-4A94-8C1B-C970E7F5F882}.Release|x64.Build.0 = Release|x64
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Debug|Win32.Build.0 = Debug|Win32
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Debug|x64.ActiveCfg = Debug|x64
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Debug|x64.Build.0 = Debug|x64
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Release|Win32.ActiveCfg = Release|Win32
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Release|Win32.Build.0 = Release|Win32
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Release|x64.ActiveCfg = Release|x64
+		{546DC7CF-B98F-4812-B004-5A9A7CD1B4A3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
