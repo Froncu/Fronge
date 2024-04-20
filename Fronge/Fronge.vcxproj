@@ -27,26 +27,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -95,9 +95,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,18 +102,7 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\External\SDL\lib\x86\;$(SolutionDir)\External\SDL_image\lib\x86\;$(SolutionDir)\External\SDL_ttf\lib\x86\;$(SolutionDir)\External\SteamSDK\redistributable_bin\;$(SolutionDir)\External\VLD\lib\Win32\;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\SDL\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_image\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_ttf\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win32\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\VLD\bin\Win32\*" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -125,10 +111,7 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,26 +121,13 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\External\SDL\lib\x86\;$(SolutionDir)\External\SDL_image\lib\x86\;$(SolutionDir)\External\SDL_ttf\lib\x86\;$(SolutionDir)\External\SteamSDK\redistributable_bin\;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\SDL\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_image\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_ttf\lib\x86\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win32\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,18 +135,7 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api64.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\External\SDL\lib\x64\;$(SolutionDir)\External\SDL_image\lib\x64\;$(SolutionDir)\External\SDL_ttf\lib\x64\;$(SolutionDir)\External\SteamSDK\redistributable_bin\win64\;$(SolutionDir)\External\VLD\lib\Win64\;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\SDL\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_image\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_ttf\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\win64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\VLD\bin\Win64\*" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -185,10 +144,7 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -198,17 +154,7 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\External\SDL\lib\x64\;$(SolutionDir)\External\SDL_image\lib\x64\;$(SolutionDir)\External\SDL_ttf\lib\x64\;$(SolutionDir)\External\SteamSDK\redistributable_bin\win64\;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)External\SDL\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_image\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SDL_ttf\lib\x64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\win64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win64\*.dll" "$(TargetDir)" /y /q
-xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
-
-mkdir "$(TargetDir)Resources"
-xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdl2.cpp" />
