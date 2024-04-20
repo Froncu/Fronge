@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 
+#include "Scene.h"
 #include "RenderContext.h"
 #include "GUI.h"
 

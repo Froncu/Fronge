@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Singleton.hpp"
-#include "Scene.h"
 
 #include <string>
 #include <vector>
