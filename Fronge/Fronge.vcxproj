@@ -71,26 +71,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(SolutionDir)Builds\Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
