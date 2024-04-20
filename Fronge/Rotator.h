@@ -2,7 +2,7 @@
 
 #include "Behaviour.h"
 
-#include <GLM/vec2.hpp>
+#include <vec2.hpp>
 
 namespace fro
 {

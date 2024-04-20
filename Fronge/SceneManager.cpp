@@ -4,9 +4,9 @@
 #include "RenderContext.h"
 #include "GUI.h"
 
-#include <SDL2/SDL_render.h>
-#include <ImGui/imgui.h>
-#include <ImPlot/implot.h>
+#include <SDL_render.h>
+#include <imgui.h>
+#include <implot.h>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_SINGLETON_CONSTRUCTOR(SceneManager)

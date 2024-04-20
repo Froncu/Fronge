@@ -1,7 +1,7 @@
 #include "Plot.h"
 
-#include <ImGui/imgui.h>
-#include <ImPlot/implot.h>
+#include <imgui.h>
+#include <implot.h>
 #include <chrono>
 #include <format>
 

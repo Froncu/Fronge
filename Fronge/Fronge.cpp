@@ -19,10 +19,10 @@
 #include "RenderContext.h"
 #include "Steam.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <VLD/vld.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <vld.h>
 #include <cassert>
 
 #pragma region EntryFunction

@@ -1,7 +1,7 @@
 #include "SystemEventManager.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
+#include <SDL.h>
+#include <SDL_events.h>
 #include <stdexcept>
 #include <format>
 

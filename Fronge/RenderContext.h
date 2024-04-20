@@ -3,7 +3,7 @@
 #include "Singleton.hpp"
 #include "Defines.hpp"
 
-#include <GLM/vec2.hpp>
+#include <vec2.hpp>
 #include <memory>
 #include <functional>
 #include <set>

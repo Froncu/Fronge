@@ -4,7 +4,7 @@
 #include "Transform.h"
 #include "Timer.h"
 
-#include <GLM/gtc/constants.hpp>
+#include <gtc/constants.hpp>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_BEHAVIOUR_CONSTRUCTOR(Rotator)

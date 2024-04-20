@@ -4,7 +4,7 @@
 #include "RenderContext.h"
 #include "GameObject.h"
 
-#include <SDL2/SDL_render.h>
+#include <SDL_render.h>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_RENDERABLE_CONSTRUCTOR(Text)

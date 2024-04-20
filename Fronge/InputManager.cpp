@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-#include <SDL2/SDL_events.h>
+#include <SDL_events.h>
 
 #pragma region PublicMethods
 void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)

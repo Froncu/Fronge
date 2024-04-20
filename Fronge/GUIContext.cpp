@@ -2,9 +2,9 @@
 
 #include "RenderContext.h"
 
-#include <ImGui/imgui_impl_sdl2.h>
-#include <ImGui/imgui_impl_sdlrenderer2.h>
-#include <ImPlot/implot.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+#include <implot.h>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_SINGLETON_CONSTRUCTOR(GUIContext)

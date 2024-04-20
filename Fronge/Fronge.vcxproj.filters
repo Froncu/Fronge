@@ -40,33 +40,6 @@
     <ClCompile Include="Text.cpp">
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_demo.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_draw.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdl2.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_impl_sdlrenderer2.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_tables.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImGui\imgui_widgets.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImPlot\implot.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\Source\ImPlot\implot_items.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
     </ClCompile>
@@ -105,6 +78,36 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Component\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_demo.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_draw.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_tables.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\imgui_widgets.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdl2.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdlrenderer2.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImPlot\implot.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImPlot\implot_demo.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\ImPlot\implot_items.cpp">
+      <Filter>Systems\GUIContext\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

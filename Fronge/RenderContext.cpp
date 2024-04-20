@@ -1,9 +1,9 @@
 #include "RenderContext.h"
 #include "Steam.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_render.h>
+#include <SDL.h>
+#include <SDL_video.h>
+#include <SDL_render.h>
 #include <stdexcept>
 #include <format>
 

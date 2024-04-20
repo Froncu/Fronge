@@ -3,8 +3,8 @@
 #include "Component.h"
 #include "Defines.hpp"
 
-#include <GLM/glm.hpp>
-#include <GLM/vec2.hpp>
+#include <glm.hpp>
+#include <vec2.hpp>
 
 namespace fro
 {

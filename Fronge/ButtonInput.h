@@ -2,8 +2,8 @@
 
 #include "Defines.hpp"
 
-#include <SDL2/SDL_Scancode.h>
-#include <SDL2/SDL_gamecontroller.h>
+#include <SDL_Scancode.h>
+#include <SDL_gamecontroller.h>
 #include <variant>
 #include <optional>
 

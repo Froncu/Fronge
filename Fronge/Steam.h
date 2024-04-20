@@ -3,7 +3,7 @@
 #include "Singleton.hpp"
 #include "Defines.hpp"
 
-#include <Steam/isteamuserstats.h>
+#include <isteamuserstats.h>
 #include <cstdint>
 #include <vector>
 #include <string>

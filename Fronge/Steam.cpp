@@ -4,10 +4,10 @@
 
 #pragma warning (push)
 #pragma warning (disable: 4996)
-#include <Steam/steam_api.h>
+#include <steam_api.h>
 #pragma warning (pop)
-#include <Steam/isteamutils.h>
-#include <Steam/isteamuser.h>
+#include <isteamutils.h>
+#include <isteamuser.h>
 #include <stdexcept>
 
 #pragma region Constructors/Destructor
