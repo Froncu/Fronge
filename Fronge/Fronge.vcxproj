@@ -122,7 +122,7 @@ xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\VLD\bin\Win32\*" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,7 +157,7 @@ xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win32\*.dll" "$(TargetDi
 xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -188,7 +188,7 @@ xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
 xcopy "$(SolutionDir)External\VLD\bin\Win64\*" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -223,7 +223,7 @@ xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win64\*.dll" "$(TargetDi
 xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
 
 mkdir "$(TargetDir)Resources"
-xcopy "$(SolutionDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
+xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -51,7 +51,7 @@ namespace fro
 
 		fro_NODISCARD_GETTER TTF_Font* getFont(const std::string& fileName, int size);
 
-		std::string m_ResourcesDirectory{ "../Resources/" };
+		std::string m_ResourcesDirectory{ "Resources/" };
 		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
 		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
 		std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
