@@ -59,50 +59,43 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\Global.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\Global.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\Global.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Properties\Global.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
-    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -127,15 +120,12 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -162,13 +152,10 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -193,15 +180,12 @@ xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\SDL\include\;$(SolutionDir)\External\SDL_image\include\;$(SolutionDir)\External\SDL_ttf\include\;$(SolutionDir)\External\GLM\;$(SolutionDir)\External\SteamSDK\public\steam\;$(SolutionDir)\External\VLD\include\;$(SolutionDir)\External\ImGui\;$(SolutionDir)\External\ImGui\backends\;$(SolutionDir)\External\ImPlot\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
