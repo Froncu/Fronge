@@ -26,7 +26,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL\include\;$(SolutionDir)External\SDL_image\include\;$(SolutionDir)External\SDL_ttf\include\;$(SolutionDir)External\GLM\;$(SolutionDir)External\SteamSDK\public\steam\;$(SolutionDir)External\VLD\include\;$(SolutionDir)External\ImGui\;$(SolutionDir)External\ImGui\backends\;$(SolutionDir)External\ImPlot\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL\include\;$(SolutionDir)External\SDL_image\include\;$(SolutionDir)External\SDL_ttf\include\;$(SolutionDir)External\SDL_mixer\include\;$(SolutionDir)External\GLM\;$(SolutionDir)External\SteamSDK\public\steam\;$(SolutionDir)External\VLD\include\;$(SolutionDir)External\ImGui\;$(SolutionDir)External\ImGui\backends\;$(SolutionDir)External\ImPlot\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>

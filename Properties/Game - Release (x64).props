@@ -14,8 +14,8 @@
     
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;$(SolutionDir)External\SDL\lib\x64\;$(SolutionDir)External\SDL_image\lib\x64\;$(SolutionDir)External\SDL_ttf\lib\x64\;$(SolutionDir)External\SteamSDK\redistributable_bin\win64\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;xinput.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;$(SolutionDir)External\SDL\lib\x64\;$(SolutionDir)External\SDL_image\lib\x64\;$(SolutionDir)External\SDL_ttf\lib\x64\;$(SolutionDir)External\SDL_mixer\lib\x64\;$(SolutionDir)External\SteamSDK\redistributable_bin\win64\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;xinput.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
 
     <PostBuildEvent>
@@ -23,6 +23,7 @@
         xcopy "$(SolutionDir)External\SDL\lib\x64\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SDL_image\lib\x64\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SDL_ttf\lib\x64\*.dll" "$(TargetDir)" /y /q
+        xcopy "$(SolutionDir)External\SDL_mixer\lib\x64\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\win64\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win64\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
