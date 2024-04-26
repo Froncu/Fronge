@@ -10,8 +10,8 @@ namespace fro
 	class DirtyData final
 	{
 	public:
-		DirtyData(std::function<void(PrimaryDataType const&, DerivedDataType&)> derivedDataCalculator) :
-			m_DerivedDataCalculator{ derivedDataCalculator }
+		DirtyData(std::function<void(PrimaryDataType const&, DerivedDataType&)> derivedDataCalculator)
+			: m_DerivedDataCalculator{ derivedDataCalculator }
 		{
 		};
 
