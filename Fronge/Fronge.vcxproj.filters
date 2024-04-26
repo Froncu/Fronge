@@ -53,7 +53,7 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Code\GameObjectCommand.cpp">
-      <Filter>Patterns\Command\GameObjectCommand\Base</Filter>
+      <Filter>GameObjectCommand\Base</Filter>
     </ClCompile>
     <ClCompile Include="Code\GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
@@ -65,7 +65,7 @@
       <Filter>Systems\InputManager\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Code\MoveCommand.cpp">
-      <Filter>Patterns\Command\GameObjectCommand\MoveCommand</Filter>
+      <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClCompile>
     <ClCompile Include="Code\Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
@@ -109,8 +109,12 @@
     <ClCompile Include="Code\XInput.cpp">
       <Filter>Systems\InputManager\Implementations</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AudioSDL.cpp" />
-    <ClCompile Include="Code\AudioService.cpp" />
+    <ClCompile Include="Code\AudioService.cpp">
+      <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AudioSDL.cpp">
+      <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -151,21 +155,6 @@
     </Filter>
     <Filter Include="Patterns">
       <UniqueIdentifier>{7f36bc53-0626-4a8e-b92f-ad7e20509d61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Patterns\Command">
-      <UniqueIdentifier>{be5aca59-aee0-40df-969e-fb5757bc3dde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Patterns\Command\Base">
-      <UniqueIdentifier>{74775c7b-09b0-404c-a741-3ce97a0afcb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Patterns\Command\GameObjectCommand">
-      <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Patterns\Command\GameObjectCommand\Base">
-      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Patterns\Command\GameObjectCommand\MoveCommand">
-      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Fronge">
       <UniqueIdentifier>{a531d893-4267-45aa-b8ac-49f2b821f18e}</UniqueIdentifier>
@@ -227,6 +216,33 @@
     <Filter Include="Systems\SystemEventManager">
       <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjectCommand">
+      <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectCommand\Base">
+      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectCommand\MoveCommand">
+      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers">
+      <UniqueIdentifier>{7e9300c5-0fe9-41c2-a62b-c4d3607cbd4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers\Services">
+      <UniqueIdentifier>{c61c17a8-d3c8-4d37-8064-087449cf625c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers\Providers">
+      <UniqueIdentifier>{36330c0e-23a5-410b-8f90-6853c2ee39fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers\Providers\Audio">
+      <UniqueIdentifier>{7c108532-6705-442b-8e58-1e08aeaadd52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers\Providers\Audio\AudioSDL">
+      <UniqueIdentifier>{0e2013f2-ca76-4775-87e3-1b219c8b8478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Services &amp; Providers\Services\Audio">
+      <UniqueIdentifier>{18779ffc-38dc-4e95-bf4e-e335f0af45cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Defines.hpp" />
@@ -235,9 +251,6 @@
     </ClInclude>
     <ClInclude Include="Code\ButtonInput.h">
       <Filter>Systems\InputManager\ButtonInput</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Command.hpp">
-      <Filter>Patterns\Command\Base</Filter>
     </ClInclude>
     <ClInclude Include="Code\Component.h">
       <Filter>Component\Base</Filter>
@@ -261,7 +274,7 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Code\GameObjectCommand.h">
-      <Filter>Patterns\Command\GameObjectCommand\Base</Filter>
+      <Filter>GameObjectCommand\Base</Filter>
     </ClInclude>
     <ClInclude Include="Code\GUI.h">
       <Filter>Component\GUI\Base</Filter>
@@ -273,7 +286,7 @@
       <Filter>Systems\InputManager\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Code\MoveCommand.h">
-      <Filter>Patterns\Command\GameObjectCommand\MoveCommand</Filter>
+      <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClInclude>
     <ClInclude Include="Code\Plot.h">
       <Filter>Component\GUI\Plot</Filter>
@@ -320,8 +333,17 @@
     <ClInclude Include="Code\EventQueue.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AudioSDL.h" />
-    <ClInclude Include="Code\AudioService.h" />
-    <ClInclude Include="Code\ServiceLocator.hpp" />
+    <ClInclude Include="Code\Command.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\ServiceLocator.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AudioService.h">
+      <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AudioSDL.h">
+      <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
