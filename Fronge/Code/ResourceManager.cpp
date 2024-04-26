@@ -37,16 +37,16 @@ void fro::ResourceManager::clearCaches()
 	m_mpAudioEffects.clear();
 }
 
-void fro::ResourceManager::setResourcesDirectory(const std::string& resourcesDirectory)
+void fro::ResourceManager::setResourcesDirectory(std::string const& resourcesDirectory)
 {
 	m_ResourcesDirectory = resourcesDirectory;
 }
 
-SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
+SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
 {
 	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }]};
 
-	auto iterator{ mpTextTextures.find(text) };
+	auto const iterator{ mpTextTextures.find(text) };
 
 	if (iterator == mpTextTextures.end())
 	{
@@ -61,7 +61,7 @@ SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer,
 	return iterator->second.get();
 }
 
-SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
+SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName)
 {
 	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
@@ -71,7 +71,7 @@ SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer
 	return pTexture.get();
 }
 
-Mix_Music* fro::ResourceManager::getMusic(const std::string& audioFileName)
+Mix_Music* fro::ResourceManager::getMusic(std::string const& audioFileName)
 {
 	auto& pMusic{ m_mpAudioMusics[audioFileName] };
 
@@ -81,7 +81,7 @@ Mix_Music* fro::ResourceManager::getMusic(const std::string& audioFileName)
 	return pMusic.get();
 }
 
-Mix_Chunk* fro::ResourceManager::getEffect(const std::string& audioFileName)
+Mix_Chunk* fro::ResourceManager::getEffect(std::string const& audioFileName)
 {
 	auto& pEffect{ m_mpAudioEffects[audioFileName] };
 
@@ -95,7 +95,7 @@ Mix_Chunk* fro::ResourceManager::getEffect(const std::string& audioFileName)
 
 
 #pragma region PrivateMethods
-TTF_Font* fro::ResourceManager::getFont(const std::string& fileName, int size)
+TTF_Font* fro::ResourceManager::getFont(std::string const& fileName, int const size)
 {
 	auto& pFont{ m_mpFonts[{ fileName, size }] };
 

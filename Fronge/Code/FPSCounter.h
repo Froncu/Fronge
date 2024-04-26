@@ -7,17 +7,17 @@ namespace fro
 	class FPSCounter final : public Behaviour
 	{
 	public:
-		FPSCounter(const GameObject& parentingGameObject);
+		FPSCounter(GameObject const& parentingGameObject);
 
 		virtual ~FPSCounter() override = default;
 
 		virtual void update() override;
 
 	private:
-		FPSCounter(const FPSCounter&) = delete;
+		FPSCounter(FPSCounter const&)  = delete;
 		FPSCounter(FPSCounter&&) noexcept = delete;
 
-		FPSCounter& operator=(const FPSCounter&) = delete;
+		FPSCounter& operator=(FPSCounter const&) = delete;
 		FPSCounter& operator=(FPSCounter&&) noexcept = delete;
 
 		int m_Ticks{};

@@ -5,11 +5,11 @@ void fro::AudioService::update()
 {
 }
 
-void fro::AudioService::playMusic(const std::string&, float)
+void fro::AudioService::playMusic(std::string const&, float const)
 {
 }
 
-void fro::AudioService::playEffect(const std::string&, float)
+void fro::AudioService::playEffect(std::string const&, float const)
 {
 }
 
@@ -17,7 +17,7 @@ void fro::AudioService::pauseMusic()
 {
 }
 
-void fro::AudioService::pauseEffect(const std::string&)
+void fro::AudioService::pauseEffect(std::string const&)
 {
 }
 

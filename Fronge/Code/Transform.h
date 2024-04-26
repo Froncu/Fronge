@@ -9,27 +9,27 @@ namespace fro
 	class Transform final : public Component
 	{
 	public:
-		Transform(const GameObject& parentingGameObject);
+		Transform(GameObject const& parentingGameObject);
 
 		virtual ~Transform() override = default;
 
-		void localTranslate(const glm::vec2& localTranslator);
-		void worldTranslate(const glm::vec2& worldTranslator);
+		void localTranslate(glm::vec2 const& localTranslator);
+		void worldTranslate(glm::vec2 const& worldTranslator);
 
-		void setLocalPosition(const glm::vec2& localPosition);
-		void setWorldPosition(const glm::vec2& worldPosition);
+		void setLocalPosition(glm::vec2 const& localPosition);
+		void setWorldPosition(glm::vec2 const& worldPosition);
 
-		fro_NODISCARD const glm::vec2& getLocalPosition();
-		fro_NODISCARD const glm::vec2& getWorldPosition();
+		fro_NODISCARD glm::vec2 const& getLocalPosition();
+		fro_NODISCARD glm::vec2 const& getWorldPosition();
 
 		fro_NODISCARD bool isLocalPositionDirty() const;
 		fro_NODISCARD bool isWorldPositionDirty() const;
 
 	private:
-		Transform(const Transform&) = delete;
+		Transform(Transform const&) = delete;
 		Transform(Transform&&) noexcept = delete;
 
-		Transform& operator=(const Transform&) = delete;
+		Transform& operator=(Transform const&) = delete;
 		Transform& operator=(Transform&&) noexcept = delete;
 
 		void calculateLocalPosition();

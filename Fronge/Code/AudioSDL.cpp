@@ -39,7 +39,7 @@ public:
 		m_EventProcessingThread = std::jthread(std::bind(&decltype(m_EventQueue)::processEvents, &m_EventQueue));
 	}
 
-	void playMusic(const std::string& fileName, float volume)
+	void playMusic(std::string const& fileName, float const volume)
 	{
 		m_EventQueue.pushEvent(AudioEvent
 			{
@@ -50,7 +50,7 @@ public:
 			});
 	}
 
-	void playEffect(const std::string& fileName, float volume)
+	void playEffect(std::string const& fileName, float const volume)
 	{
 		m_EventQueue.pushEvent(AudioEvent
 			{
@@ -69,7 +69,7 @@ public:
 			});
 	}
 
-	void pauseEffect(const std::string& fileName)
+	void pauseEffect(std::string const& fileName)
 	{
 		m_EventQueue.pushEvent(AudioEvent
 			{
@@ -87,11 +87,11 @@ public:
 	}
 
 private:
-	AudioSDLImplementation(AudioSDLImplementation&) = delete;
-	AudioSDLImplementation(const AudioSDLImplementation&&) noexcept = delete;
+	AudioSDLImplementation(AudioSDLImplementation const&) = delete;
+	AudioSDLImplementation(AudioSDLImplementation&&) noexcept = delete;
 
-	AudioSDLImplementation& operator=(AudioSDLImplementation&) = delete;
-	AudioSDLImplementation& operator=(const AudioSDLImplementation&&) noexcept = delete;
+	AudioSDLImplementation& operator=(AudioSDLImplementation const&) = delete;
+	AudioSDLImplementation& operator=(AudioSDLImplementation&&) noexcept = delete;
 
 	struct AudioEvent final
 	{
@@ -101,7 +101,7 @@ private:
 		bool isMusic{};
 		bool play{};
 
-		bool operator==(const AudioEvent& event) const
+		bool operator==(AudioEvent const& event) const
 		{
 			return
 				this->fileName == event.fileName &&
@@ -111,9 +111,9 @@ private:
 	};
 
 	std::jthread m_EventProcessingThread{};
-	EventQueue<AudioEvent, std::function<void(AudioEvent&)>> m_EventQueue
+	EventQueue<AudioEvent, std::function<void(AudioEvent const&)>> m_EventQueue
 	{
-		[this](AudioEvent& event)
+		[this](AudioEvent const& event)
 		{
 			if (event.isMusic)
 			{
@@ -138,7 +138,7 @@ private:
 				}
 				else if (!event.fileName.empty())
 				{
-					const auto iterator{ m_mEFFECT_CHANNELS.find(event.fileName) };
+					auto const iterator{ m_mEFFECT_CHANNELS.find(event.fileName) };
 					if (iterator == m_mEFFECT_CHANNELS.end())
 						return;
 
@@ -160,12 +160,12 @@ void fro::AudioSDL::update()
 	m_pAudioSDLImplementation->update();
 }
 
-void fro::AudioSDL::playMusic(const std::string& fileName, float volume)
+void fro::AudioSDL::playMusic(std::string const& fileName, float const volume)
 {
 	m_pAudioSDLImplementation->playMusic(fileName, volume);
 }
 
-void fro::AudioSDL::playEffect(const std::string& fileName, float volume)
+void fro::AudioSDL::playEffect(std::string const& fileName, float const volume)
 {
 	m_pAudioSDLImplementation->playEffect(fileName, volume);
 }
@@ -175,7 +175,7 @@ void fro::AudioSDL::pauseMusic()
 	m_pAudioSDLImplementation->pauseMusic();
 }
 
-void fro::AudioSDL::pauseEffect(const std::string& fileName)
+void fro::AudioSDL::pauseEffect(std::string const& fileName)
 {
 	m_pAudioSDLImplementation->pauseEffect(fileName);
 }

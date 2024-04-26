@@ -9,20 +9,20 @@ namespace fro
 	class MoveCommand final : public GameObjectCommand
 	{
 	public:
-		MoveCommand(const GameObject& commandedGameObject);
+		MoveCommand(GameObject const& commandedGameObject);
 
 		virtual ~MoveCommand() override = default;
 
 		virtual void operator()() override;
 
-		void setMoveDirection(const glm::vec2& moveDirection);
-		void setMoveSpeed(float moveSpeed);
+		void setMoveDirection(glm::vec2 const& moveDirection);
+		void setMoveSpeed(float const moveSpeed);
 
 	private:
-		MoveCommand(const MoveCommand&) = delete;
+		MoveCommand(MoveCommand const&) = delete;
 		MoveCommand(MoveCommand&&) noexcept = delete;
 
-		MoveCommand& operator=(const MoveCommand&) = delete;
+		MoveCommand& operator=(MoveCommand const&) = delete;
 		MoveCommand& operator=(MoveCommand&&) noexcept = delete;
 
 		glm::vec2 m_MoveDirection{};

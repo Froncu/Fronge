@@ -1,7 +1,7 @@
 #include "GameObjectCommand.h"
 
 #pragma region Constructors/Destructor
-fro::GameObjectCommand::GameObjectCommand(const GameObject& commandedGameObject)
+fro::GameObjectCommand::GameObjectCommand(GameObject const& commandedGameObject)
 	: m_CommandedGameObject{ commandedGameObject }
 {
 }
@@ -10,7 +10,7 @@ fro::GameObjectCommand::GameObjectCommand(const GameObject& commandedGameObject)
 
 
 #pragma region PublicMethods
-fro_NODISCARD const fro::GameObject& fro::GameObjectCommand::getCommandedGameObject() const
+fro_NODISCARD fro::GameObject const& fro::GameObjectCommand::getCommandedGameObject() const
 {
 	return m_CommandedGameObject;
 }

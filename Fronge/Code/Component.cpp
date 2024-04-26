@@ -1,8 +1,8 @@
 #include "Component.h"
 
 #pragma region Constructors/Destructor
-fro::Component::Component(const GameObject& parentingGameObject) :
-	m_ParentingGameObject{ parentingGameObject }
+fro::Component::Component(GameObject const& parentingGameObject)
+	: m_ParentingGameObject{ parentingGameObject }
 {
 }
 #pragma endregion Constructors/Destructor
@@ -10,7 +10,7 @@ fro::Component::Component(const GameObject& parentingGameObject) :
 
 
 #pragma region PublicMethods
-const fro::GameObject& fro::Component::getParentingGameObject() const
+fro::GameObject const& fro::Component::getParentingGameObject() const
 {
 	return m_ParentingGameObject;
 }

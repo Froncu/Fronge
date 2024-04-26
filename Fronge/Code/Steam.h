@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#define fro_STEAM_ACHIEVEMENT_ID( ID, name ) { ID, #ID, name, "", 0, 0 }
+#define fro_STEAM_ACHIEVEMENT_ID(ID, name){ ID, #ID, name, "", 0, 0 }
 
 namespace fro
 {
@@ -26,19 +26,19 @@ namespace fro
 
 		void update() const;
 		bool requestStats() const;
-		bool unlockAchievement(AchievementID achievementID) const;
+		bool unlockAchievement(AchievementID const achievementID) const;
 
 	private:
-		Steam(const Steam&) = delete;
+		Steam(Steam const&) = delete;
 		Steam(Steam&&) noexcept = delete;
 
-		Steam& operator=(const Steam&) = delete;
+		Steam& operator=(Steam const&) = delete;
 		Steam& operator=(Steam&&) noexcept = delete;
 
 		struct Achievement
 		{
 			AchievementID achievementID;
-			const char* pAchievementID;
+			char const* pAchievementID;
 			char aName[128];
 			char aDescription[256];
 			bool achieved;
@@ -47,12 +47,12 @@ namespace fro
 
 		STEAM_CALLBACK(Steam, onUserStatsReceived, UserStatsReceived_t, m_CallbackUserStatsReceived);
 		STEAM_CALLBACK(Steam, onUserStatsStored, UserStatsStored_t, m_CallbackUserStatsStored);
-		STEAM_CALLBACK(Steam, onAchievementStored , UserAchievementStored_t, m_CallbackAchievementStored);
+		STEAM_CALLBACK(Steam, onAchievementStored, UserAchievementStored_t, m_CallbackAchievementStored);
 
-		fro_NODISCARD std::string getAchievementName(AchievementID achievementID) const;
+		fro_NODISCARD std::string getAchievementName(AchievementID const achievementID) const;
 
 		std::vector<Achievement> m_vAchievements
-		{ 
+		{
 			fro_STEAM_ACHIEVEMENT_ID(ACH_WIN_ONE_GAME, "Winner")
 		};
 

@@ -6,16 +6,16 @@
 void fro::InputManager::processKeyboardInputContinous() const
 {
 	auto pKeyboardState{ SDL_GetKeyboardState(nullptr) };
-	for (const auto& [buttonInput, actionName] : m_mActions)
+	for (auto const& [buttonInput, actionName] : m_mActions)
 	{
-		const auto& key{ buttonInput.getButton<SDL_Scancode>() };
+		auto const& key{ buttonInput.getButton<SDL_Scancode>() };
 		if (!key.has_value())
 			continue;
 
 		if (!pKeyboardState[key.value()])
 			continue;
 
-		const auto commandIterator{ m_mCommands.find(actionName) };
+		auto const commandIterator{ m_mCommands.find(actionName) };
 		if (commandIterator == m_mCommands.end())
 			continue;
 
@@ -24,9 +24,9 @@ void fro::InputManager::processKeyboardInputContinous() const
 	}
 }
 
-void fro::InputManager::processInputEvent(const SDL_Event& event) const
+void fro::InputManager::processInputEvent(SDL_Event const& event) const
 {
-	const auto& eventType{ event.type };
+	auto const& eventType{ event.type };
 
 	switch (eventType)
 	{
@@ -38,17 +38,17 @@ void fro::InputManager::processInputEvent(const SDL_Event& event) const
 
 	case SDL_KEYUP:
 	{
-		const ButtonInput keyInput
+		ButtonInput const keyInput
 		{
 			event.key.keysym.scancode,
 			eventType == SDL_KEYDOWN ? ButtonInput::State::pressed : ButtonInput::State::released
 		};
 
-		const auto actionIterator{ m_mActions.find(keyInput) };
+		auto const actionIterator{ m_mActions.find(keyInput) };
 		if (actionIterator == m_mActions.end())
 			return;
 
-		const auto commandIterator{ m_mCommands.find(actionIterator->second) };
+		auto const commandIterator{ m_mCommands.find(actionIterator->second) };
 		if (commandIterator == m_mCommands.end())
 			return;
 
@@ -58,7 +58,7 @@ void fro::InputManager::processInputEvent(const SDL_Event& event) const
 	}
 }
 
-void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)
+void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, std::string const& actionName)
 {
 	m_mActions.insert({ keyInput, actionName });
 }

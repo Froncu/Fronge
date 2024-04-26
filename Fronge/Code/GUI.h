@@ -12,13 +12,13 @@ namespace fro
 		virtual void display() = 0;
 
 	protected:
-		GUI(const GameObject& parentingGameObject);
+		GUI(GameObject const& parentingGameObject);
 
 	private:
-		GUI(const GUI&) = delete;
+		GUI(GUI& const) = delete;
 		GUI(GUI&&) noexcept = delete;
 
-		GUI& operator=(const GUI&) = delete;
+		GUI& operator=(GUI& const) = delete;
 		GUI& operator=(GUI&&) noexcept = delete;
 	};
 }

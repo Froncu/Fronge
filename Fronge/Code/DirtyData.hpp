@@ -10,17 +10,17 @@ namespace fro
 	class DirtyData final
 	{
 	public:
-		DirtyData(std::function<void(PrimaryDataType&, DerivedDataType&)> derivedDataCalculator) :
+		DirtyData(std::function<void(PrimaryDataType const&, DerivedDataType&)> derivedDataCalculator) :
 			m_DerivedDataCalculator{ derivedDataCalculator }
 		{
 		};
 
-		DirtyData(const DirtyData&) = default;
+		DirtyData(DirtyData const&) = default;
 		DirtyData(DirtyData&&) noexcept = default;
 
 		~DirtyData() = default;
 
-		DirtyData& operator=(const DirtyData&) = default;
+		DirtyData& operator=(DirtyData const&) = default;
 		DirtyData& operator=(DirtyData&&) noexcept = default;
 
 		void calculateDerivedData()
@@ -34,12 +34,12 @@ namespace fro
 			m_IsDerivedDataDirty = true;
 		}
 
-		fro_NODISCARD const DerivedDataType& getPrimaryData() const
+		fro_NODISCARD DerivedDataType const& getPrimaryData() const
 		{
 			return m_PrimaryData;
 		}
 
-		fro_NODISCARD const PrimaryDataType& getDerivedData()
+		fro_NODISCARD PrimaryDataType const& getDerivedData()
 		{
 			if (m_IsDerivedDataDirty)
 				calculateDerivedData();
@@ -55,7 +55,7 @@ namespace fro
 	private:
 		PrimaryDataType m_PrimaryData;
 		DerivedDataType m_DerivedData;
-		std::function<void(const PrimaryDataType&, DerivedDataType&)> m_DerivedDataCalculator;
+		std::function<void(PrimaryDataType const&, DerivedDataType&)> m_DerivedDataCalculator;
 
 		bool m_IsDerivedDataDirty{ true };
 	};

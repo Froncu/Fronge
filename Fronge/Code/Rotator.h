@@ -9,21 +9,21 @@ namespace fro
 	class Rotator final : public Behaviour
 	{
 	public:
-		Rotator(const GameObject& parentingGameObject);
+		Rotator(GameObject const& parentingGameObject);
 
 		virtual ~Rotator() override = default;
 
 		virtual void update() override;
 
-		void setCenter(const glm::vec2& center);
-		void setRadius(float radius);
-		void setPeriod(float period);
+		void setCenter(glm::vec2 const& center);
+		void setRadius(float const radius);
+		void setPeriod(float const period);
 
 	private:
-		Rotator(const Rotator&) = delete;
+		Rotator(Rotator const&) = delete;
 		Rotator(Rotator&&) noexcept = delete;
 
-		Rotator& operator=(const Rotator&) = delete;
+		Rotator& operator=(Rotator const&) = delete;
 		Rotator& operator=(Rotator&&) noexcept = delete;
 
 		glm::vec2 m_Center{};

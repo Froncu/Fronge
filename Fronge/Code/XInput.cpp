@@ -27,21 +27,19 @@ public:
 
 	~GameControllerInputImplementation() = default;
 
-	void processGamePadInputContinous
-	(
-		const std::map<ButtonInput, std::string>& mActions,
-		const std::map<std::string, std::vector<std::unique_ptr<Command>>>& mCommands
-	)
+	void processGamePadInputContinous(
+		std::map<ButtonInput, std::string> const& mActions,
+		std::map<std::string, std::vector<std::unique_ptr<Command>>> const& mCommands)
 	{
 		updateController();
 		executeCommands(mActions, mCommands);
 	}
 
 private:
-	GameControllerInputImplementation(const GameControllerInputImplementation&) = delete;
+	GameControllerInputImplementation(GameControllerInputImplementation const&) = delete;
 	GameControllerInputImplementation(GameControllerInputImplementation&&) noexcept = delete;
 
-	GameControllerInputImplementation& operator=(const GameControllerInputImplementation&) = delete;
+	GameControllerInputImplementation& operator=(GameControllerInputImplementation const&) = delete;
 	GameControllerInputImplementation& operator=(GameControllerInputImplementation&&) noexcept = delete;
 
 	void updateController()
@@ -50,7 +48,7 @@ private:
 		ZeroMemory(&currentGamePadState, sizeof(decltype(currentGamePadState)));
 		XInputGetState(0, &currentGamePadState);
 
-		const auto buttonChanges{ currentGamePadState.Gamepad.wButtons ^ m_PreviousGamePadState.Gamepad.wButtons };
+		auto const buttonChanges{ currentGamePadState.Gamepad.wButtons ^ m_PreviousGamePadState.Gamepad.wButtons };
 		m_PreviousGamePadState = currentGamePadState;
 
 		m_ButtonsPressed = buttonChanges & currentGamePadState.Gamepad.wButtons;
@@ -58,7 +56,7 @@ private:
 		m_ButtonsDown = currentGamePadState.Gamepad.wButtons;
 	}
 
-	fro_NODISCARD bool isButtonInState(WORD button, ButtonInput::State state) const
+	fro_NODISCARD bool isButtonInState(WORD const button, ButtonInput::State const state) const
 	{
 		switch (state)
 		{
@@ -75,7 +73,7 @@ private:
 		return false;
 	}
 
-	fro_NODISCARD WORD convertSDLControllerButtonToXInput(SDL_GameControllerButton gameControllerButton) const
+	fro_NODISCARD WORD convertSDLControllerButtonToXInput(SDL_GameControllerButton const gameControllerButton) const
 	{
 		switch (gameControllerButton)
 		{
@@ -128,24 +126,24 @@ private:
 
 	void executeCommands
 	(
-		const std::map<ButtonInput, std::string>& mActions,
-		const std::map<std::string, std::vector<std::unique_ptr<Command>>>& mCommands
+		std::map<ButtonInput, std::string> const& mActions,
+		std::map<std::string, std::vector<std::unique_ptr<Command>>> const& mCommands
 	)
 	{
-		for (const auto& [buttonInput, actionName] : mActions)
+		for (auto const& [buttonInput, actionName] : mActions)
 		{
-			auto optionalButton{ buttonInput.getButton<SDL_GameControllerButton>() };
+			auto const optionalButton{ buttonInput.getButton<SDL_GameControllerButton>() };
 			if (!optionalButton.has_value())
 				continue;
 
 			if (!isButtonInState(convertSDLControllerButtonToXInput(*optionalButton), buttonInput.getState()))
 				continue;
 
-			const auto actionIterator{ mActions.find(buttonInput) };
+			auto const actionIterator{ mActions.find(buttonInput) };
 			if (actionIterator == mActions.end())
 				continue;
 
-			const auto commandIterator{ mCommands.find(actionIterator->second) };
+			auto const commandIterator{ mCommands.find(actionIterator->second) };
 			if (commandIterator == mCommands.end())
 				continue;
 

@@ -13,10 +13,10 @@ namespace fro
 
 		virtual void update();
 
-		virtual void playMusic(const std::string& fileName, float volume = 1.0f);
-		virtual void playEffect(const std::string& fileName, float volume = 1.0f);
+		virtual void playMusic(std::string const& fileName, float const volume = 1.0f);
+		virtual void playEffect(std::string const& fileName, float const volume = 1.0f);
 		virtual void pauseMusic();
-		virtual void pauseEffect(const std::string& fileName);
+		virtual void pauseEffect(std::string const& fileName);
 		virtual void pauseAllEffects();
 
 	private:

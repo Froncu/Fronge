@@ -7,7 +7,7 @@
 #include <SDL_render.h>
 
 #pragma region Constructors/Destructor
-fro::Text::Text(const GameObject& parentingGameObject) :
+fro::Text::Text(GameObject const& parentingGameObject) :
 	Renderable(parentingGameObject)
 {
 }
@@ -21,7 +21,7 @@ void fro::Text::render() const
 	RenderContext::getInstance().renderTexture(m_pTexture, getParentingGameObject().getComponent<Transform>()->getWorldPosition());
 }
 
-void fro::Text::setFont(const std::string& fontName, int fontSize)
+void fro::Text::setFont(std::string const& fontName, int const fontSize)
 {
 	m_FontName = fontName;
 	m_FontSize = fontSize;

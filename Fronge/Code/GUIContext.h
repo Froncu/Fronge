@@ -13,15 +13,15 @@ namespace fro
 
 		virtual ~GUIContext() override;
 
-		void processSystemEvent(const SDL_Event& event) const;
+		void processSystemEvent(SDL_Event const& event) const;
 		void startFrame() const;
 		void endFrame() const;
 
 	private:
-		GUIContext(const GUIContext&) = delete;
+		GUIContext(GUIContext const&) = delete;
 		GUIContext(GUIContext&&) noexcept = delete;
 
-		GUIContext& operator=(const GUIContext&) = delete;
+		GUIContext& operator=(GUIContext const&) = delete;
 		GUIContext& operator=(GUIContext&&) noexcept = delete;
 	};
 }

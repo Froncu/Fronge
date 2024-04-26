@@ -12,20 +12,20 @@ namespace fro
 	public:
 		virtual ~GameObjectCommand() override = default;
 
-		fro_NODISCARD const GameObject& getCommandedGameObject() const;
+		fro_NODISCARD GameObject const& getCommandedGameObject() const;
 
 		virtual void operator()() = 0;
 
 	protected:
-		GameObjectCommand(const GameObject& commandedGameObject);
+		GameObjectCommand(GameObject const& commandedGameObject);
 
 	private:
-		GameObjectCommand(const GameObjectCommand&) = delete;
+		GameObjectCommand(GameObjectCommand const&) = delete;
 		GameObjectCommand(GameObjectCommand&&) noexcept = delete;
 
-		GameObjectCommand& operator=(const GameObjectCommand&) = delete;
+		GameObjectCommand& operator=(GameObjectCommand const&) = delete;
 		GameObjectCommand& operator=(GameObjectCommand&&) noexcept = delete;
 
-		const GameObject& m_CommandedGameObject;
+		GameObject const& m_CommandedGameObject;
 	};
 }

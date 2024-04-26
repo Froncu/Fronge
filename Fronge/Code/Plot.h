@@ -14,17 +14,17 @@ namespace fro
 	class Plot final : public GUI
 	{
 	public:
-		Plot(const GameObject& parentingGameObject);
+		Plot(GameObject const& parentingGameObject);
 
 		virtual ~Plot() override = default;
 		
 		virtual void display() override;
 
 	private:
-		Plot(const Plot&) = delete;
+		Plot(Plot const&) = delete;
 		Plot(Plot&&) noexcept = delete;
 
-		Plot& operator=(const Plot&) = delete;
+		Plot& operator=(Plot const&) = delete;
 		Plot& operator=(Plot&&) noexcept = delete;
 
 		struct Transform
@@ -75,12 +75,12 @@ namespace fro
 
 				for (auto& sample : dSamples)
 				{
-					const auto beginTimePoint{ std::chrono::steady_clock::now() };
+					auto const beginTimePoint{ std::chrono::steady_clock::now() };
 
 					for (std::size_t index{}; index < vData.size(); index += stepSize)
 						vData[index] *= 2;
 
-					const auto endTimePoint{ std::chrono::steady_clock::now() };
+					auto const endTimePoint{ std::chrono::steady_clock::now() };
 
 					sample = std::chrono::duration_cast<std::chrono::milliseconds>(endTimePoint - beginTimePoint);
 				}

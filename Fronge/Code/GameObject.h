@@ -26,11 +26,11 @@ namespace fro
 		void render() const;
 		void display() const;
 
-		void setParent(GameObject* const pParent, bool keepWorldPosition = true);
+		void setParent(GameObject* const pParent, bool const keepWorldPosition = true);
 
-		fro_NODISCARD bool owns(const GameObject* const pGameObject) const;
-		fro_NODISCARD const GameObject* const getParent() const;
-		fro_NODISCARD const std::set<const GameObject*>& getChildren() const;
+		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
+		fro_NODISCARD GameObject const* getParent() const;
+		fro_NODISCARD std::set<GameObject const*> const& getChildren() const;
 
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
@@ -39,7 +39,7 @@ namespace fro
 				return nullptr;
 			else
 			{
-				const auto resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
+				auto const resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
 				if (!resultPair.second)
 					return nullptr;
 
@@ -64,9 +64,9 @@ namespace fro
 				return m_pTranform.get();
 			else
 			{
-				const auto& mpComponents{ getComponentMapConstant<ComponentType>() };
+				auto const& mpComponents{ getComponentMapConstant<ComponentType>() };
 
-				const auto& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
+				auto const& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
 				if (iterator == mpComponents.end())
 					return nullptr;
 
@@ -76,15 +76,15 @@ namespace fro
 		// END TODO
 
 	private:
-		GameObject(const GameObject&) = delete;
+		GameObject(GameObject const&) = delete;
 		GameObject(GameObject&&) noexcept = delete;
 
-		GameObject& operator=(const GameObject&) = delete;
+		GameObject& operator=(GameObject const&) = delete;
 		GameObject& operator=(GameObject&&) noexcept = delete;
 
 		// HACK: there shouldn't be two methods for getting the component map
 		template<ComponentDerived ComponentType>
-		fro_NODISCARD const auto& getComponentMapConstant() const
+		fro_NODISCARD auto const& getComponentMapConstant() const
 		{
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
@@ -119,7 +119,7 @@ namespace fro
 		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
 
 		GameObject* m_pParent{};
-		std::set<const GameObject*> m_spChildren{};
+		std::set<GameObject const*> m_spChildren{};
 
 		std::unordered_map<std::size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<std::size_t, std::unique_ptr<Renderable>> m_mpRenderables{};

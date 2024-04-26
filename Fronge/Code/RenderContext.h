@@ -23,16 +23,16 @@ namespace fro
 
 		void clear() const;
 		void present() const;
-		void renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const;
+		void renderTexture(SDL_Texture* const pTexture, glm::vec2 const& position) const;
 
 		fro_NODISCARD SDL_Window* getWindow() const;
 		fro_NODISCARD SDL_Renderer* getRenderer() const;
 
 	private:
-		RenderContext(const RenderContext&) = delete;
+		RenderContext(RenderContext const&) = delete;
 		RenderContext(RenderContext&&) noexcept = delete;
 
-		RenderContext& operator=(const RenderContext&) = delete;
+		RenderContext& operator=(RenderContext const&) = delete;
 		RenderContext& operator=(RenderContext&&) noexcept = delete;
 
 		SDLUniquePointer<SDL_Window> m_pWindow;

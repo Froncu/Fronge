@@ -22,10 +22,10 @@ namespace fro
 		bool isActive() const;
 
 	private:
-		Scene(const Scene&) = delete;
+		Scene(Scene const&) = delete;
 		Scene(Scene&&) noexcept = delete;
 
-		Scene& operator=(const Scene&) = delete;
+		Scene& operator=(Scene const&) = delete;
 		Scene& operator=(Scene&&) noexcept = delete;
 
 		bool m_IsActive{ true };

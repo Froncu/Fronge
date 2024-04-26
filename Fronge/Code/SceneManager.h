@@ -10,7 +10,6 @@ struct SDL_Renderer;
 
 namespace fro
 {
-
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -24,10 +23,10 @@ namespace fro
 		Scene& addScene();
 
 	private:
-		SceneManager(const SceneManager&) = delete;
+		SceneManager(SceneManager const&) = delete;
 		SceneManager(SceneManager&&) noexcept = delete;
 
-		SceneManager& operator=(const SceneManager&) = delete;
+		SceneManager& operator=(SceneManager const&) = delete;
 		SceneManager& operator=(SceneManager&&) noexcept = delete;
 
 		std::vector<std::unique_ptr<Scene>> m_vpScenes{};

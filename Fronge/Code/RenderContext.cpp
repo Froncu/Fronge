@@ -36,7 +36,7 @@ fro::RenderContext::~RenderContext()
 #pragma region PublicMethods
 void fro::RenderContext::clear() const
 {
-	constexpr SDL_Color clearColor{ 32, 32, 32, 255 };
+	SDL_Color constexpr clearColor{ 32, 32, 32, 255 };
 
 	SDL_SetRenderDrawColor(m_pRenderer.get(), clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	SDL_RenderClear(m_pRenderer.get());
@@ -48,7 +48,7 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, glm::vec2 const& position) const
 {
 	int textureWidth;
 	int textureHeight;

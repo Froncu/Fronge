@@ -45,7 +45,7 @@ bool fro::Steam::requestStats() const
 	return SteamUserStats()->RequestCurrentStats();
 }
 
-bool fro::Steam::unlockAchievement(AchievementID achievementID) const
+bool fro::Steam::unlockAchievement(AchievementID const achievementID) const
 {
 	if (m_IsInitialized)
 	{
@@ -66,7 +66,7 @@ void fro::Steam::update() const
 
 
 #pragma region PrivateMethods
-void fro::Steam::onUserStatsReceived(UserStatsReceived_t* pCallback)
+void fro::Steam::onUserStatsReceived(UserStatsReceived_t* const pCallback)
 {
 	if (pCallback->m_nGameID == m_AppID)
 	{
@@ -105,7 +105,7 @@ void fro::Steam::onUserStatsReceived(UserStatsReceived_t* pCallback)
 	}
 }
 
-void fro::Steam::onUserStatsStored(UserStatsStored_t* pCallback)
+void fro::Steam::onUserStatsStored(UserStatsStored_t* const pCallback)
 {
 	if (m_AppID == pCallback->m_nGameID)
 	{
@@ -120,13 +120,13 @@ void fro::Steam::onUserStatsStored(UserStatsStored_t* pCallback)
 	}
 }
 
-void fro::Steam::onAchievementStored(UserAchievementStored_t* pCallback)
+void fro::Steam::onAchievementStored(UserAchievementStored_t* const pCallback)
 {
 	if (pCallback->m_nGameID == m_AppID)
 		Console::getInstance().log("Stored Achievement for Steam");
 }
 
-fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID achievementID) const
+fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const achievementID) const
 {
 	switch (achievementID)
 	{

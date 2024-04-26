@@ -21,16 +21,16 @@ namespace fro
 			m_pService.reset(new ProviderType());
 		}
 
-		ServiceType& getService()
+		ServiceType& getService() const
 		{
 			return *m_pService.get();
 		}
 
 	private:
-		ServiceLocator(const ServiceLocator&) = delete;
+		ServiceLocator(ServiceLocator const&) = delete;
 		ServiceLocator(ServiceLocator&&) = delete;
 
-		ServiceLocator& operator=(const ServiceLocator&) = delete;
+		ServiceLocator& operator=(ServiceLocator const&) = delete;
 		ServiceLocator& operator=(ServiceLocator&&) = delete;
 
 		std::unique_ptr<ServiceType> m_pService{ new ServiceType() };

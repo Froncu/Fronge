@@ -16,13 +16,13 @@ namespace fro
 
 		[[nodiscard("eventual SDL_QUIT event ignored")]] bool processSystemEvents() const;
 
-		Event<const SDL_Event&> m_SystemEvent{};
+		Event<SDL_Event const&> m_SystemEvent{};
 
 	private:
-		SystemEventManager(const SystemEventManager&) = delete;
+		SystemEventManager(SystemEventManager const&) = delete;
 		SystemEventManager(SystemEventManager&&) noexcept = delete;
 
-		SystemEventManager& operator=(const SystemEventManager&) = delete;
+		SystemEventManager& operator=(SystemEventManager const&) = delete;
 		SystemEventManager& operator=(SystemEventManager&&) noexcept = delete;
 	};
 }

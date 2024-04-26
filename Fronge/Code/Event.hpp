@@ -14,12 +14,12 @@ namespace fro
 
 	public:
 		Event() = default;
-		Event(const Event&) = default;
+		Event(Event const&) = default;
 		Event(Event&&) noexcept = default;
 
 		~Event() = default;
 
-		Event& operator=(const Event&) = default;
+		Event& operator=(Event const&) = default;
 		Event& operator=(Event&&) noexcept = default;
 
 		void addSubscriber(Subscriber subscriber)
@@ -27,7 +27,7 @@ namespace fro
 			m_vSubscribers.push_back(subscriber);
 		}
 
-		void addSubscribers(const std::initializer_list<Subscriber>& subscribers)
+		void addSubscribers(std::initializer_list<Subscriber> const& subscribers)
 		{
 			m_vSubscribers.insert(m_vSubscribers.end(), subscribers);
 		}

@@ -14,10 +14,10 @@ namespace fro
 		virtual ~AudioSDL() override;
 
 		virtual void update() override;
-		virtual void playMusic(const std::string& fileName, float volume = 1.0f) override;
-		virtual void playEffect(const std::string& fileName, float volume = 1.0f) override;
+		virtual void playMusic(std::string const& fileName, float const volume = 1.0f) override;
+		virtual void playEffect(std::string const& fileName, float const volume = 1.0f) override;
 		virtual void pauseMusic() override;
-		virtual void pauseEffect(const std::string& fileName) override;
+		virtual void pauseEffect(std::string const& fileName) override;
 		virtual void pauseAllEffects() override;
 
 	private:

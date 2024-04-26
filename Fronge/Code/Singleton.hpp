@@ -21,10 +21,10 @@ namespace fro
 		virtual ~Singleton() = default;
 
 	private:
-		Singleton(const Singleton&) = delete;
+		Singleton(Singleton const&) = delete;
 		Singleton(Singleton&&) noexcept = delete;
 
-		Singleton& operator=(const Singleton&) = delete;
+		Singleton& operator=(Singleton const&) = delete;
 		Singleton& operator=(Singleton&&) noexcept = delete;
 	};
 }

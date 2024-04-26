@@ -12,13 +12,13 @@ namespace fro
 		virtual void update() = 0;
 
 	protected:
-		Behaviour(const GameObject& parentingGameObject);
+		Behaviour(GameObject const& parentingGameObject);
 
 	private:
-		Behaviour(const Behaviour&) = delete;
+		Behaviour(Behaviour const&) = delete;
 		Behaviour(Behaviour&&) noexcept = delete;
 
-		Behaviour& operator=(const Behaviour&) = delete;
+		Behaviour& operator=(Behaviour const&) = delete;
 		Behaviour& operator=(Behaviour&&) noexcept = delete;
 	};
 }

@@ -60,7 +60,7 @@ namespace fro
 			White = 0xf0
 		};
 
-		void setColor([[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
+		void setColor([[maybe_unused]] TextColor const textColor, [[maybe_unused]] BackgroundColor const backgroundColor)
 		{
 #ifdef _CONSOLE
 			m_TextColor = textColor;
@@ -69,14 +69,14 @@ namespace fro
 #endif
 		}
 
-		void setColor([[maybe_unused]] TextColor textColor)
+		void setColor([[maybe_unused]] TextColor const textColor)
 		{
 #ifdef _CONSOLE
 			setColor(textColor, m_BackgroundColor);
 #endif
 		}
 
-		void setColor([[maybe_unused]] BackgroundColor backgroundColor)
+		void setColor([[maybe_unused]] BackgroundColor const backgroundColor)
 		{
 #ifdef _CONSOLE
 			setColor(m_TextColor, backgroundColor);
@@ -90,18 +90,18 @@ namespace fro
 #endif
 		}
 
-		void log([[maybe_unused]] const Printable auto& value) const
+		void log([[maybe_unused]] Printable auto const& value) const
 		{
 #ifdef _CONSOLE
 			std::cout << value << std::endl;
 #endif
 		}
 
-		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor, [[maybe_unused]] BackgroundColor backgroundColor)
+		void log([[maybe_unused]] Printable auto const& value, [[maybe_unused]] TextColor const textColor, [[maybe_unused]] BackgroundColor const backgroundColor)
 		{
 #ifdef _CONSOLE
-			const TextColor oldTextColor{ m_TextColor };
-			const BackgroundColor oldBackgroundColor{ m_BackgroundColor };
+			TextColor const oldTextColor{ m_TextColor };
+			BackgroundColor const oldBackgroundColor{ m_BackgroundColor };
 
 			setColor(textColor, backgroundColor);
 			log(value);
@@ -109,14 +109,14 @@ namespace fro
 #endif
 		};
 
-		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] TextColor textColor)
+		void log([[maybe_unused]] Printable auto const& value, [[maybe_unused]] TextColor const textColor)
 		{
 #ifdef _CONSOLE
 			log(value, textColor, m_BackgroundColor);
 #endif
 		};
 
-		void log([[maybe_unused]] const Printable auto& value, [[maybe_unused]] BackgroundColor backgroundColor)
+		void log([[maybe_unused]] Printable auto const& value, [[maybe_unused]] BackgroundColor const backgroundColor)
 		{
 #ifdef _CONSOLE
 			log(value, m_TextColor, backgroundColor);
@@ -131,10 +131,10 @@ namespace fro
 		}
 
 	private:
-		Console(const Console&) = delete;
+		Console(Console const&) = delete;
 		Console(Console&&) noexcept = delete;
 
-		Console& operator=(const Console&) = delete;
+		Console& operator=(Console const&) = delete;
 		Console& operator=(Console&&) noexcept = delete;
 
 #ifdef _CONSOLE

@@ -8,8 +8,8 @@
 #include <glm.hpp>
 
 #pragma region Constructors/Destructor
-fro::Rotator::Rotator(const GameObject& parentingGameObject) :
-	Behaviour(parentingGameObject)
+fro::Rotator::Rotator(GameObject const& parentingGameObject)
+	: Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -19,7 +19,7 @@ fro::Rotator::Rotator(const GameObject& parentingGameObject) :
 #pragma region PublicMethods
 void fro::Rotator::update()
 {
-	constexpr float twoPi{ 2 * glm::pi<float>() };
+	float constexpr twoPi{ 2 * glm::pi<float>() };
 
 	m_Angle += Timer::getInstance().getDeltaSeconds() * twoPi / m_Period;
 
@@ -28,17 +28,17 @@ void fro::Rotator::update()
 	getParentingGameObject().getComponent<Transform>()->setLocalPosition(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
 }
 
-void fro::Rotator::setCenter(const glm::vec2& center)
+void fro::Rotator::setCenter(glm::vec2 const& center)
 {
 	m_Center = center;
 }
 
-void fro::Rotator::setRadius(float radius)
+void fro::Rotator::setRadius(float const radius)
 {
 	m_Radius = radius;
 }
 
-void fro::Rotator::setPeriod(float period)
+void fro::Rotator::setPeriod(float const period)
 {
 	m_Period = period;
 }

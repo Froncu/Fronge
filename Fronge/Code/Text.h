@@ -20,17 +20,17 @@ namespace fro
 	class Text final : public Renderable
 	{
 	public:
-		Text(const GameObject& parentingGameObject);
+		Text(GameObject const& parentingGameObject);
 
 		virtual ~Text() override = default;
 
 		virtual void render() const override;
 
-		void setFont(const std::string& fontName, int fontSize);
+		void setFont(std::string const& fontName, int const fontSize);
 
 		template<typename TextType>
 			requires StringAssignable<TextType> || StringConvertible<TextType>
-		void setText(const TextType & text)
+		void setText(TextType const& text)
 		{
 			if constexpr (StringAssignable<TextType>)
 				m_Text = text;
@@ -41,10 +41,10 @@ namespace fro
 		}
 
 	private:
-		Text(const Text&) = delete;
+		Text(Text const&) = delete;
 		Text(Text&&) noexcept = delete;
 
-		Text& operator=(const Text&) = delete;
+		Text& operator=(Text const&) = delete;
 		Text& operator=(Text&&) noexcept = delete;
 
 		void updateTexture();

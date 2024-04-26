@@ -11,18 +11,18 @@ namespace fro
 	public:
 		virtual ~Component() = default;
 
-		fro_NODISCARD const GameObject& getParentingGameObject() const;
+		fro_NODISCARD GameObject const& getParentingGameObject() const;
 
 	protected:
-		Component(const GameObject& parentingGameObject);
+		Component(GameObject const& parentingGameObject);
 
 	private:
-		Component(const Component&) = delete;
+		Component(Component const&) = delete;
 		Component(Component&&) noexcept = delete;
 
-		Component& operator=(const Component&) = delete;
+		Component& operator=(Component const&) = delete;
 		Component& operator=(Component&&) noexcept = delete;
 
-		const GameObject& m_ParentingGameObject;
+		GameObject const& m_ParentingGameObject;
 	};
 }

@@ -7,8 +7,8 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro::FPSCounter::FPSCounter(const GameObject& parentingGameObject) :
-	Behaviour(parentingGameObject)
+fro::FPSCounter::FPSCounter(GameObject const& parentingGameObject)
+	: Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -18,7 +18,7 @@ fro::FPSCounter::FPSCounter(const GameObject& parentingGameObject) :
 #pragma region PublicMethods
 void fro::FPSCounter::update()
 {
-	constexpr float maxElapsedSeconds{ 0.2f };
+	float constexpr maxElapsedSeconds{ 0.2f };
 
 	++m_Ticks;
 	m_ElapsedSeconds += Timer::getInstance().getDeltaSeconds();

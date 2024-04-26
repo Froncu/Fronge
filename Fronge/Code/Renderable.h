@@ -12,13 +12,13 @@ namespace fro
 		virtual void render() const = 0;
 
 	protected:
-		Renderable(const GameObject& parentingGameObject);
+		Renderable(GameObject const& parentingGameObject);
 
 	private:
-		Renderable(const Renderable&) = delete;
+		Renderable(Renderable const&) = delete;
 		Renderable(Renderable&&) noexcept = delete;
 
-		Renderable& operator=(const Renderable&) = delete;
+		Renderable& operator=(Renderable const&) = delete;
 		Renderable& operator=(Renderable&&) noexcept = delete;
 	};
 }

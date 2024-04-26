@@ -23,24 +23,24 @@ namespace fro
 
 		void processGamePadInputContinous() const;
 		void processKeyboardInputContinous() const;
-		void processInputEvent(const SDL_Event& event) const;
+		void processInputEvent(SDL_Event const& event) const;
 
 		template<typename CommandType, typename... Arguments>
 			requires std::derived_from<CommandType, Command>
-		CommandType& bindActionToCommand(const std::string& actionName, Arguments&&... arguments)
+		CommandType& bindActionToCommand(std::string const& actionName, Arguments&&... arguments)
 		{
 			CommandType* const pCommand{ new CommandType(std::forward<Arguments>(arguments))... };
 			m_mCommands[actionName].emplace_back(std::unique_ptr<CommandType>(pCommand));
 			return *pCommand;
 		}
 
-		void bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName);
+		void bindKeyInputToAction(ButtonInput keyInput, std::string const& actionName);
 
 	private:
-		InputManager(const InputManager&) = delete;
+		InputManager(InputManager const&) = delete;
 		InputManager(InputManager&&) noexcept = delete;
 
-		InputManager& operator=(const InputManager&) = delete;
+		InputManager& operator=(InputManager const&) = delete;
 		InputManager& operator=(InputManager&&) noexcept = delete;
 
 		std::map<ButtonInput, std::string> m_mActions{};

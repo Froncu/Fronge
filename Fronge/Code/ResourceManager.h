@@ -27,27 +27,27 @@ namespace fro
 
 		void clearCaches();
 
-		void setResourcesDirectory(const std::string& resourcesDirectory);
+		void setResourcesDirectory(std::string const& resourcesDirectory);
 
-		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
-		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
-		fro_NODISCARD Mix_Music* getMusic(const std::string& audioFileName);
-		fro_NODISCARD Mix_Chunk* getEffect(const std::string& audioFileName);
+		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
+		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName);
+		fro_NODISCARD Mix_Music* getMusic(std::string const& audioFileName);
+		fro_NODISCARD Mix_Chunk* getEffect(std::string const& audioFileName);
 
 	private:
-		ResourceManager(const ResourceManager&) = delete;
+		ResourceManager(ResourceManager const&) = delete;
 		ResourceManager(ResourceManager&&) noexcept = delete;
 
-		ResourceManager& operator=(const ResourceManager&) = delete;
+		ResourceManager& operator=(ResourceManager const&) = delete;
 		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
 
 		struct PairHash
 		{
 			template <class Type1, class Type2>
-			std::size_t operator()(const std::pair<Type1, Type2>& pair) const
+			std::size_t operator()(std::pair<Type1, Type2> const& pair) const
 			{
-				const auto hash1{ std::hash<Type1>{}(pair.first) };
-				const auto hash2{ std::hash<Type2>{}(pair.second) };
+				auto const hash1{ std::hash<Type1>{}(pair.first) };
+				auto const hash2{ std::hash<Type2>{}(pair.second) };
 				return hash1 ^ hash2;
 			}
 		};
@@ -55,13 +55,13 @@ namespace fro
 		struct PairEqual
 		{
 			template <class Type1, class Type2>
-			bool operator()(const std::pair<Type1, Type2>& pair1, const std::pair<Type1, Type2>& pair2) const
+			bool operator()(std::pair<Type1, Type2> const& pair1, std::pair<Type1, Type2> const& pair2) const
 			{
 				return pair1.first == pair2.first && pair1.second == pair2.second;
 			}
 		};
 
-		fro_NODISCARD TTF_Font* getFont(const std::string& fileName, int size);
+		fro_NODISCARD TTF_Font* getFont(std::string const& fileName, int const size);
 
 		std::string m_ResourcesDirectory{ "Resources/" };
 		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};

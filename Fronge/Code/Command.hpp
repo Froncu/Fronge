@@ -13,10 +13,10 @@ namespace fro
 		Command() = default;
 
 	private:
-		Command(const Command&) = delete;
+		Command(Command const&) = delete;
 		Command(Command&&) noexcept = delete;
 
-		Command& operator=(const Command&) = delete;
+		Command& operator=(Command const&) = delete;
 		Command& operator=(Command&&) noexcept = delete;
 	};
 }

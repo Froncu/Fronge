@@ -34,7 +34,7 @@ fro::GUIContext::~GUIContext()
 
 
 #pragma region PublicMethods
-void fro::GUIContext::processSystemEvent(const SDL_Event& event) const
+void fro::GUIContext::processSystemEvent(SDL_Event const& event) const
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }

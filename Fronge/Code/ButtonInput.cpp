@@ -1,7 +1,7 @@
 #include "ButtonInput.h"
 
 #pragma region Constructors/Destructor
-fro::ButtonInput::ButtonInput(Button button, State state)
+fro::ButtonInput::ButtonInput(Button const button, State const state)
 	: m_Button{ button }
 	, m_State{ state }
 {
@@ -20,7 +20,7 @@ fro::ButtonInput::State fro::ButtonInput::getState() const
 
 
 #pragma region Operators
-bool fro::ButtonInput::operator<(const ButtonInput& otherButtonInput) const
+bool fro::ButtonInput::operator<(ButtonInput const& otherButtonInput) const
 {
 	if (m_Button != otherButtonInput.m_Button)
 		return m_Button < otherButtonInput.m_Button;

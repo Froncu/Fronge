@@ -11,8 +11,8 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro::Plot::Plot(const GameObject& parentingGameObject) :
-	GUI(parentingGameObject)
+fro::Plot::Plot(GameObject const& parentingGameObject) 
+	: GUI(parentingGameObject)
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)
 	, m_vGameObjects3DAlt(BUFFER_SIZE)
@@ -25,8 +25,8 @@ fro::Plot::Plot(const GameObject& parentingGameObject) :
 #pragma region PrivateMethods
 void fro::Plot::display()
 {
-	constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
-	constexpr int amountOfStepSizes{ 11 };
+	double constexpr aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
+	int constexpr amountOfStepSizes{ 11 };
 
 	ImGui::Begin("Exercise 1");
 	ImGui::SliderInt("Amount Of Samples", &m_AmountOfSamplesInteger, 10, 100);

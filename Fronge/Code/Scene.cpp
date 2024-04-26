@@ -3,19 +3,19 @@
 #pragma region PublicMethods
 void fro::Scene::update() const
 {
-	for (const auto& pGameObject : m_vpGameObjects)
+	for (auto const& pGameObject : m_vpGameObjects)
 		pGameObject->update();
 }
 
 void fro::Scene::render() const
 {
-	for (const auto& pGameObject : m_vpGameObjects)
+	for (auto const& pGameObject : m_vpGameObjects)
 		pGameObject->render();
 }
 
 void fro::Scene::display() const
 {
-	for (const auto& pGameObject : m_vpGameObjects)
+	for (auto const& pGameObject : m_vpGameObjects)
 		pGameObject->display();
 }
 

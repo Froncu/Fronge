@@ -21,16 +21,16 @@ namespace fro
 			down = 0b10
 		};
 
-		ButtonInput(Button button, State state);
-		ButtonInput(const ButtonInput&) = default;
+		ButtonInput(Button const button, State const state);
+		ButtonInput(ButtonInput const&) = default;
 		ButtonInput(ButtonInput&&) noexcept = default;
 
 		~ButtonInput() = default;
 
-		ButtonInput& operator=(const ButtonInput&) = default;
+		ButtonInput& operator=(ButtonInput const&) = default;
 		ButtonInput& operator=(ButtonInput&&) noexcept = default;
 
-		fro_NODISCARD bool operator<(const ButtonInput& otherButtonInput) const;
+		fro_NODISCARD bool operator<(ButtonInput const& otherButtonInput) const;
 
 		fro_NODISCARD State getState() const;
 
@@ -45,7 +45,7 @@ namespace fro
 		};
 
 	private:
-		const Button m_Button;
-		const State m_State;
+		Button const m_Button;
+		State const m_State;
 	};
 }

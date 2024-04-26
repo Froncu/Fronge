@@ -1,8 +1,8 @@
 #include "Behaviour.h"
 
 #pragma region Constructors/Destructor
-fro::Behaviour::Behaviour(const GameObject& parentingGameObject) :
-	Component(parentingGameObject)
+fro::Behaviour::Behaviour(GameObject const& parentingGameObject)
+	: Component(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

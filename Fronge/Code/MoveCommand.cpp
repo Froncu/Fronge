@@ -6,8 +6,8 @@
 #include <glm.hpp>
 
 #pragma region Constructors/Destructor
-fro::MoveCommand::MoveCommand(const GameObject& commandedGameObject) :
-	GameObjectCommand(commandedGameObject)
+fro::MoveCommand::MoveCommand(GameObject const& commandedGameObject)
+	: GameObjectCommand(commandedGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -24,12 +24,12 @@ void fro::MoveCommand::operator()()
 
 
 #pragma region PublicMethods
-void fro::MoveCommand::setMoveDirection(const glm::vec2& moveDirection)
+void fro::MoveCommand::setMoveDirection(glm::vec2 const& moveDirection)
 {
 	m_MoveDirection = glm::normalize(moveDirection);
 }
 
-void fro::MoveCommand::setMoveSpeed(float moveSpeed)
+void fro::MoveCommand::setMoveSpeed(float const moveSpeed)
 {
 	m_MoveSpeed = moveSpeed;
 }

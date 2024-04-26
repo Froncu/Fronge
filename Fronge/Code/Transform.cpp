@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 #pragma region Constructors/Destructor
-fro::Transform::Transform(const GameObject& parentingGameObject) :
+fro::Transform::Transform(GameObject const& parentingGameObject) :
 	Component(parentingGameObject)
 {
 }
@@ -12,21 +12,21 @@ fro::Transform::Transform(const GameObject& parentingGameObject) :
 
 
 #pragma region PublicMethods
-void fro::Transform::localTranslate(const glm::vec2& localTranslator)
+void fro::Transform::localTranslate(glm::vec2 const& localTranslator)
 {
 	getLocalPositionInternal() += localTranslator;
 
 	setWorldPositionDirty();
 }
 
-void fro::Transform::worldTranslate(const glm::vec2& worldTranslator)
+void fro::Transform::worldTranslate(glm::vec2 const& worldTranslator)
 {
 	getWorldPositionInternal() += worldTranslator;
 
 	setLocalPositionDirty();
 }
 
-void fro::Transform::setLocalPosition(const glm::vec2& localPosition)
+void fro::Transform::setLocalPosition(glm::vec2 const& localPosition)
 {
 	m_LocalPosition = localPosition;
 	m_IsLocalPositionDirty = false;
@@ -34,7 +34,7 @@ void fro::Transform::setLocalPosition(const glm::vec2& localPosition)
 	setWorldPositionDirty();
 }
 
-void fro::Transform::setWorldPosition(const glm::vec2& worldPosition)
+void fro::Transform::setWorldPosition(glm::vec2 const& worldPosition)
 {
 	m_WorldPosition = worldPosition;
 	m_IsWorldPositionDirty = false;
@@ -42,12 +42,12 @@ void fro::Transform::setWorldPosition(const glm::vec2& worldPosition)
 	setLocalPositionDirty();
 }
 
-const glm::vec2& fro::Transform::getLocalPosition()
+glm::vec2 const& fro::Transform::getLocalPosition()
 {
 	return getLocalPositionInternal();
 }
 
-const glm::vec2& fro::Transform::getWorldPosition()
+glm::vec2 const& fro::Transform::getWorldPosition()
 {
 	return getWorldPositionInternal();
 }
@@ -68,7 +68,7 @@ bool fro::Transform::isWorldPositionDirty() const
 #pragma region PrivateMethods
 void fro::Transform::calculateLocalPosition()
 {
-	const GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
 		m_LocalPosition = getWorldPosition() - pParentingGameObjectsParent->getComponent<Transform>()->getWorldPosition();
 	else
@@ -77,7 +77,7 @@ void fro::Transform::calculateLocalPosition()
 
 void fro::Transform::calculateWorldPosition()
 {
-	const GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
 		m_WorldPosition = getLocalPosition() + pParentingGameObjectsParent->getComponent<Transform>()->getWorldPosition();
 	else
@@ -94,7 +94,7 @@ void fro::Transform::setLocalPositionDirty()
 
 	m_IsLocalPositionDirty = true;
 
-	for (const GameObject* const pChild : getParentingGameObject().getChildren())
+	for (GameObject const* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
 		if (!childTransform.isWorldPositionDirty())
@@ -112,7 +112,7 @@ void fro::Transform::setWorldPositionDirty()
 
 	m_IsWorldPositionDirty = true;
 
-	for (const GameObject* const pChild : getParentingGameObject().getChildren())
+	for (GameObject const* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
 		if (!childTransform.isWorldPositionDirty())

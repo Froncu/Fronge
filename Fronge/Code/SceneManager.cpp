@@ -3,21 +3,21 @@
 #pragma region PublicMethods
 void fro::SceneManager::update() const
 {
-	for (const auto& pScene : m_vpScenes)
+	for (auto const& pScene : m_vpScenes)
 		if (pScene->isActive())
 			pScene->update();
 }
 
 void fro::SceneManager::render() const
 {
-	for (const auto& pScene : m_vpScenes)
+	for (auto const& pScene : m_vpScenes)
 		if (pScene->isActive())
 			pScene->render();
 }
 
 void fro::SceneManager::display() const
 {
-	for (const auto& pScene : m_vpScenes)
+	for (auto const& pScene : m_vpScenes)
 		if (pScene->isActive())
 			pScene->display();
 }
