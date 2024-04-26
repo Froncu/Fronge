@@ -109,6 +109,8 @@
     <ClCompile Include="Code\XInput.cpp">
       <Filter>Systems\InputManager\Implementations</Filter>
     </ClCompile>
+    <ClCompile Include="Code\AudioSDL.cpp" />
+    <ClCompile Include="Code\AudioService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -318,5 +320,8 @@
     <ClInclude Include="Code\EventQueue.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
+    <ClInclude Include="Code\AudioSDL.h" />
+    <ClInclude Include="Code\AudioService.h" />
+    <ClInclude Include="Code\ServiceLocator.hpp" />
   </ItemGroup>
 </Project>

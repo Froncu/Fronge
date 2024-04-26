@@ -10,10 +10,13 @@
 
 struct SDL_Renderer;
 struct SDL_Texture;
+typedef struct _Mix_Music Mix_Music;
+struct Mix_Chunk;
 typedef struct _TTF_Font TTF_Font;
 
 namespace fro
 {
+	// TODO: this whole class feels messy
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
 		fro_GENERATED_SINGLETON_BODY(ResourceManager)
@@ -21,6 +24,8 @@ namespace fro
 	public:
 		fro_NODISCARD_GETTER SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
 		fro_NODISCARD_GETTER SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
+		fro_NODISCARD_GETTER Mix_Music* getMusic(const std::string& audioFileName);
+		fro_NODISCARD_GETTER Mix_Chunk* getEffect(const std::string& audioFileName);
 		
 		void setResourcesDirectory(const std::string& resourcesDirectory);
 		void clearCaches();
@@ -55,5 +60,8 @@ namespace fro
 		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
 		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
 		std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
+		std::unordered_map<std::string, SDLUniquePointer<Mix_Music>> m_mpAudioMusics{};
+		std::unordered_map<std::string, SDLUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
 	};
+	// END TODO
 }

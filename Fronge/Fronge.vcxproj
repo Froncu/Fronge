@@ -163,6 +163,8 @@
     <ClCompile Include="..\External\ImPlot\implot.cpp" />
     <ClCompile Include="..\External\ImPlot\implot_demo.cpp" />
     <ClCompile Include="..\External\ImPlot\implot_items.cpp" />
+    <ClCompile Include="Code\AudioSDL.cpp" />
+    <ClCompile Include="Code\AudioService.cpp" />
     <ClCompile Include="Code\Behaviour.cpp" />
     <ClCompile Include="Code\ButtonInput.cpp" />
     <ClCompile Include="Code\Component.cpp" />
@@ -191,6 +193,8 @@
     <ClCompile Include="Code\XInput.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\AudioSDL.h" />
+    <ClInclude Include="Code\AudioService.h" />
     <ClInclude Include="Code\Behaviour.h" />
     <ClInclude Include="Code\ButtonInput.h" />
     <ClInclude Include="Code\Command.hpp" />
@@ -215,6 +219,7 @@
     <ClInclude Include="Code\Rotator.h" />
     <ClInclude Include="Code\Scene.h" />
     <ClInclude Include="Code\SceneManager.h" />
+    <ClInclude Include="Code\ServiceLocator.hpp" />
     <ClInclude Include="Code\Singleton.hpp" />
     <ClInclude Include="Code\Sprite.h" />
     <ClInclude Include="Code\Steam.h" />

@@ -2,6 +2,7 @@
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <stdexcept>
 #include <format>
 
@@ -56,6 +57,26 @@ fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Rend
 	return pTexture.get();
 }
 
+fro_NODISCARD_GETTER Mix_Music* fro::ResourceManager::getMusic(const std::string& audioFileName)
+{
+	auto& pMusic{ m_mpAudioMusics[audioFileName] };
+
+	if (!pMusic.get())
+		pMusic = SDLUniquePointer<Mix_Music>(Mix_LoadMUS((m_ResourcesDirectory + audioFileName).c_str()), Mix_FreeMusic);
+
+	return pMusic.get();
+}
+
+fro_NODISCARD_GETTER Mix_Chunk* fro::ResourceManager::getEffect(const std::string& audioFileName)
+{
+	auto& pEffect{ m_mpAudioEffects[audioFileName] };
+
+	if (!pEffect.get())
+		pEffect = SDLUniquePointer<Mix_Chunk>(Mix_LoadWAV((m_ResourcesDirectory + audioFileName).c_str()), Mix_FreeChunk);
+
+	return pEffect.get(); 
+}
+
 void fro::ResourceManager::setResourcesDirectory(const std::string& resourcesDirectory)
 {
 	m_ResourcesDirectory = resourcesDirectory;
@@ -66,6 +87,8 @@ void fro::ResourceManager::clearCaches()
 	m_mpFonts.clear();
 	m_mmpTextTexturesMap.clear();
 	m_mpImageTextures.clear();
+	m_mpAudioMusics.clear();
+	m_mpAudioEffects.clear();
 }
 #pragma region PublicMethods
 
