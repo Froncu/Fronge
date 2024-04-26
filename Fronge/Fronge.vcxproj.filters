@@ -315,5 +315,8 @@
     <ClInclude Include="Code\Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="Code\EventQueue.hpp">
+      <Filter>Patterns</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

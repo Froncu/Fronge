@@ -199,6 +199,7 @@
     <ClInclude Include="Code\Defines.hpp" />
     <ClInclude Include="Code\DirtyData.hpp" />
     <ClInclude Include="Code\Event.hpp" />
+    <ClInclude Include="Code\EventQueue.hpp" />
     <ClInclude Include="Code\FPSCounter.h" />
     <ClInclude Include="Code\Fronge.h" />
     <ClInclude Include="Code\GameObject.h" />
