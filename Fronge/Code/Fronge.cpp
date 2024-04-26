@@ -1,36 +1,30 @@
 #include "Fronge.h"
 
 #include "SystemEventManager.h"
-#include "SceneManager.h"
-#include "GUIContext.h"
-#include "ResourceManager.h"
-#include "Timer.h"
-#include "SceneManager.h"
-#include "Scene.h"
-#include "GameObject.h"
-#include "Sprite.h"
-#include "Rotator.h"
-#include "Text.h"
-#include "FPSCounter.h"
-#include "Plot.h"
 #include "InputManager.h"
-#include "MoveCommand.h"
-#include "Console.h"
-#include "RenderContext.h"
-#include "Steam.h"
+#include "GUIContext.h"
 #include "ServiceLocator.hpp"
 #include "AudioService.h"
+#include "Steam.h"
+#include "Timer.h"
+#include "SceneManager.h"
+#include "RenderContext.h"
+#include "ResourceManager.h"
 
 #include <SDL.h>
 #include <vld.h>
-#include <cassert>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(Fronge)
+fro::Fronge::Fronge()
 {
+	SystemEventManager::getInstance().m_SystemEvent.addSubscribers
+	({
+		std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
+		std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1)
+	});
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(Fronge)
+fro::Fronge::~Fronge()
 {
 	SDL_Quit();
 }
@@ -41,12 +35,6 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(Fronge)
 #pragma region PublicMethods
 int fro::Fronge::run()
 {
-	SystemEventManager::getInstance().m_SystemEvent.addSubscribers
-	({
-		std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
-		std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1)
-	});
-
 	while (true)
 	{
 		ServiceLocator<AudioService>::getInstance().getService().update();

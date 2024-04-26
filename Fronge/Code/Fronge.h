@@ -2,19 +2,22 @@
 
 #include "Singleton.hpp"
 
-#include <memory>
-#include <functional>
-
-struct SDL_Window;
-struct SDL_Renderer;
-
 namespace fro
 {
 	class Fronge final : public Singleton<Fronge>
 	{
-		fro_GENERATED_SINGLETON_BODY(Fronge)
-
 	public:
+		Fronge();
+
+		virtual ~Fronge() override;
+
 		int run();
+
+	private:
+		Fronge(Fronge const&) = delete;
+		Fronge(Fronge&&) noexcept = delete;
+
+		Fronge& operator=(Fronge const&) = delete;
+		Fronge& operator=(Fronge&&) noexcept = delete;
 	};
 }

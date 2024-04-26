@@ -2,6 +2,7 @@
 
 #include "Singleton.hpp"
 #include "Defines.hpp"
+#include "Typenames.hpp"
 
 #include <memory>
 #include <string>
@@ -19,18 +20,27 @@ namespace fro
 	// TODO: this whole class feels messy
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
-		fro_GENERATED_SINGLETON_BODY(ResourceManager)
-
 	public:
-		fro_NODISCARD_GETTER SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
-		fro_NODISCARD_GETTER SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
-		fro_NODISCARD_GETTER Mix_Music* getMusic(const std::string& audioFileName);
-		fro_NODISCARD_GETTER Mix_Chunk* getEffect(const std::string& audioFileName);
-		
-		void setResourcesDirectory(const std::string& resourcesDirectory);
+		ResourceManager();
+
+		virtual ~ResourceManager() override;
+
 		void clearCaches();
 
+		void setResourcesDirectory(const std::string& resourcesDirectory);
+
+		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text);
+		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName);
+		fro_NODISCARD Mix_Music* getMusic(const std::string& audioFileName);
+		fro_NODISCARD Mix_Chunk* getEffect(const std::string& audioFileName);
+
 	private:
+		ResourceManager(const ResourceManager&) = delete;
+		ResourceManager(ResourceManager&&) noexcept = delete;
+
+		ResourceManager& operator=(const ResourceManager&) = delete;
+		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
+
 		struct PairHash
 		{
 			template <class Type1, class Type2>
@@ -51,10 +61,7 @@ namespace fro
 			}
 		};
 
-		template<typename ResourceType>
-		using SDLUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
-
-		fro_NODISCARD_GETTER TTF_Font* getFont(const std::string& fileName, int size);
+		fro_NODISCARD TTF_Font* getFont(const std::string& fileName, int size);
 
 		std::string m_ResourcesDirectory{ "Resources/" };
 		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};

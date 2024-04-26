@@ -3,11 +3,8 @@
 #include "GameObject.h"
 
 #pragma region Constructors/Destructor
-fro_GENERATED_COMPONENT_CONSTRUCTOR(Transform)
-{
-}
-
-fro_GENERATED_COMPONENT_DESTRUCTOR(Transform)
+fro::Transform::Transform(const GameObject& parentingGameObject) :
+	Component(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -45,22 +42,22 @@ void fro::Transform::setWorldPosition(const glm::vec2& worldPosition)
 	setLocalPositionDirty();
 }
 
-fro_NODISCARD_GETTER const glm::vec2& fro::Transform::getLocalPosition()
+const glm::vec2& fro::Transform::getLocalPosition()
 {
 	return getLocalPositionInternal();
 }
 
-fro_NODISCARD_GETTER const glm::vec2& fro::Transform::getWorldPosition()
+const glm::vec2& fro::Transform::getWorldPosition()
 {
 	return getWorldPositionInternal();
 }
 
-fro_NODISCARD_GETTER bool fro::Transform::isLocalPositionDirty() const
+bool fro::Transform::isLocalPositionDirty() const
 {
 	return m_IsLocalPositionDirty;
 }
 
-fro_NODISCARD_GETTER bool fro::Transform::isWorldPositionDirty() const
+bool fro::Transform::isWorldPositionDirty() const
 {
 	return m_IsWorldPositionDirty;
 }
@@ -123,7 +120,7 @@ void fro::Transform::setWorldPositionDirty()
 	}
 }
 
-fro_NODISCARD_GETTER glm::vec2& fro::Transform::getLocalPositionInternal()
+glm::vec2& fro::Transform::getLocalPositionInternal()
 {
 	if (m_IsLocalPositionDirty)
 	{
@@ -134,7 +131,7 @@ fro_NODISCARD_GETTER glm::vec2& fro::Transform::getLocalPositionInternal()
 	return m_LocalPosition;
 }
 
-fro_NODISCARD_GETTER glm::vec2& fro::Transform::getWorldPositionInternal()
+glm::vec2& fro::Transform::getWorldPositionInternal()
 {
 	if (m_IsWorldPositionDirty)
 	{

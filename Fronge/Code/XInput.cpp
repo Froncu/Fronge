@@ -1,21 +1,18 @@
 #include "InputManager.h"
 
 #include "ButtonInput.h"
-#include "Defines.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <xinput.h>
-#include <thread>
-#include <iostream>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(InputManager)
+fro::InputManager::InputManager()
 	: m_pImplementation{ std::make_unique<InputManager::GameControllerInputImplementation>() }
 {
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(InputManager)
+fro::InputManager::~InputManager()
 {
 }
 #pragma endregion Constructors/Destructor
@@ -27,13 +24,8 @@ class fro::InputManager::GameControllerInputImplementation final
 {
 public:
 	GameControllerInputImplementation() = default;
-	GameControllerInputImplementation(const GameControllerInputImplementation&) = delete;
-	GameControllerInputImplementation(GameControllerInputImplementation&&) noexcept = delete;
 
 	~GameControllerInputImplementation() = default;
-
-	GameControllerInputImplementation& operator=(const GameControllerInputImplementation&) = delete;
-	GameControllerInputImplementation& operator=(GameControllerInputImplementation&&) noexcept = delete;
 
 	void processGamePadInputContinous
 	(
@@ -46,6 +38,12 @@ public:
 	}
 
 private:
+	GameControllerInputImplementation(const GameControllerInputImplementation&) = delete;
+	GameControllerInputImplementation(GameControllerInputImplementation&&) noexcept = delete;
+
+	GameControllerInputImplementation& operator=(const GameControllerInputImplementation&) = delete;
+	GameControllerInputImplementation& operator=(GameControllerInputImplementation&&) noexcept = delete;
+
 	void updateController()
 	{
 		XINPUT_STATE currentGamePadState;

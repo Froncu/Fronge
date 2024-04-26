@@ -6,13 +6,13 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(SystemEventManager)
+fro::SystemEventManager::SystemEventManager()
 {
 	if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0)
 		throw std::runtime_error(std::format("[ SDL_InitSubSystem() FAILED ] -> {}", SDL_GetError()));
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(SystemEventManager)
+fro::SystemEventManager::~SystemEventManager()
 {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }

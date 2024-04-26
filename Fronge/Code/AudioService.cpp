@@ -9,11 +9,11 @@ void fro::AudioService::playMusic(const std::string&, float)
 {
 }
 
-void fro::AudioService::pauseMusic()
+void fro::AudioService::playEffect(const std::string&, float)
 {
 }
 
-void fro::AudioService::playEffect(const std::string&, float)
+void fro::AudioService::pauseMusic()
 {
 }
 

@@ -14,21 +14,27 @@ namespace fro
 {
 	class Steam final : public Singleton<Steam>
 	{
-		fro_GENERATED_SINGLETON_BODY(Steam)
-
 	public:
 		enum AchievementID
 		{
 			ACH_WIN_ONE_GAME = 0
 		};
 
-		bool requestStats() const;
+		Steam();
 
-		bool unlockAchievement(AchievementID achievementID) const;
+		virtual ~Steam() override;
 
 		void update() const;
+		bool requestStats() const;
+		bool unlockAchievement(AchievementID achievementID) const;
 
 	private:
+		Steam(const Steam&) = delete;
+		Steam(Steam&&) noexcept = delete;
+
+		Steam& operator=(const Steam&) = delete;
+		Steam& operator=(Steam&&) noexcept = delete;
+
 		struct Achievement
 		{
 			AchievementID achievementID;
@@ -43,7 +49,7 @@ namespace fro
 		STEAM_CALLBACK(Steam, onUserStatsStored, UserStatsStored_t, m_CallbackUserStatsStored);
 		STEAM_CALLBACK(Steam, onAchievementStored , UserAchievementStored_t, m_CallbackAchievementStored);
 
-		fro_NODISCARD_GETTER std::string getAchievementName(AchievementID achievementID) const;
+		fro_NODISCARD std::string getAchievementName(AchievementID achievementID) const;
 
 		std::vector<Achievement> m_vAchievements
 		{ 

@@ -7,7 +7,7 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(ResourceManager)
+fro::ResourceManager::ResourceManager()
 {
 	if (constexpr int imageFlags{ NULL }; IMG_Init(imageFlags) != imageFlags)
 		throw std::runtime_error(std::format("[ IMG_Init FAILED ] -> {}", IMG_GetError()));
@@ -16,7 +16,7 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(ResourceManager)
 		throw std::runtime_error(std::format("[ TTF_Init FAILED ] -> {}", TTF_GetError()));
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(ResourceManager)
+fro::ResourceManager::~ResourceManager()
 {
 	clearCaches(); // TODO: the caches need to be cleared before quiting the subsystems, I would prefer this to not be necessary
 
@@ -28,7 +28,21 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(ResourceManager)
 
 
 #pragma region PublicMethods
-fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
+void fro::ResourceManager::clearCaches()
+{
+	m_mpFonts.clear();
+	m_mmpTextTexturesMap.clear();
+	m_mpImageTextures.clear();
+	m_mpAudioMusics.clear();
+	m_mpAudioEffects.clear();
+}
+
+void fro::ResourceManager::setResourcesDirectory(const std::string& resourcesDirectory)
+{
+	m_ResourcesDirectory = resourcesDirectory;
+}
+
+SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, const std::string& fileName, int size, const std::string& text)
 {
 	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }]};
 
@@ -47,7 +61,7 @@ fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Rende
 	return iterator->second.get();
 }
 
-fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
+SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, const std::string& imageFileName)
 {
 	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
@@ -57,7 +71,7 @@ fro_NODISCARD_GETTER SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Rend
 	return pTexture.get();
 }
 
-fro_NODISCARD_GETTER Mix_Music* fro::ResourceManager::getMusic(const std::string& audioFileName)
+Mix_Music* fro::ResourceManager::getMusic(const std::string& audioFileName)
 {
 	auto& pMusic{ m_mpAudioMusics[audioFileName] };
 
@@ -67,7 +81,7 @@ fro_NODISCARD_GETTER Mix_Music* fro::ResourceManager::getMusic(const std::string
 	return pMusic.get();
 }
 
-fro_NODISCARD_GETTER Mix_Chunk* fro::ResourceManager::getEffect(const std::string& audioFileName)
+Mix_Chunk* fro::ResourceManager::getEffect(const std::string& audioFileName)
 {
 	auto& pEffect{ m_mpAudioEffects[audioFileName] };
 
@@ -76,26 +90,12 @@ fro_NODISCARD_GETTER Mix_Chunk* fro::ResourceManager::getEffect(const std::strin
 
 	return pEffect.get(); 
 }
-
-void fro::ResourceManager::setResourcesDirectory(const std::string& resourcesDirectory)
-{
-	m_ResourcesDirectory = resourcesDirectory;
-}
-
-void fro::ResourceManager::clearCaches()
-{
-	m_mpFonts.clear();
-	m_mmpTextTexturesMap.clear();
-	m_mpImageTextures.clear();
-	m_mpAudioMusics.clear();
-	m_mpAudioEffects.clear();
-}
 #pragma region PublicMethods
 
 
 
 #pragma region PrivateMethods
-fro_NODISCARD_GETTER TTF_Font* fro::ResourceManager::getFont(const std::string& fileName, int size)
+TTF_Font* fro::ResourceManager::getFont(const std::string& fileName, int size)
 {
 	auto& pFont{ m_mpFonts[{ fileName, size }] };
 

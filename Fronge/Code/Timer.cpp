@@ -2,18 +2,6 @@
 
 #include <chrono>
 
-#pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(Timer)
-{
-}
-
-fro_GENERATED_SINGLETON_DESTRUCTOR(Timer)
-{
-}
-#pragma endregion Constructors/Destructor
-
-
-
 #pragma region PublicMethods
 void fro::Timer::update()
 {
@@ -24,7 +12,7 @@ void fro::Timer::update()
 	oldTimePoint = currentTimePoint;
 }
 
-fro_NODISCARD_GETTER float fro::Timer::getDeltaSeconds() const
+fro_NODISCARD float fro::Timer::getDeltaSeconds() const
 {
 	return m_DeltaSeconds;
 }

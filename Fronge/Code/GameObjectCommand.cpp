@@ -9,9 +9,9 @@ fro::GameObjectCommand::GameObjectCommand(const GameObject& commandedGameObject)
 
 
 
-#pragma region ProtectedMethods
-fro_NODISCARD_GETTER const fro::GameObject& fro::GameObjectCommand::getCommandedGameObject() const
+#pragma region PublicMethods
+fro_NODISCARD const fro::GameObject& fro::GameObjectCommand::getCommandedGameObject() const
 {
 	return m_CommandedGameObject;
 }
-#pragma endregion ProtectedMethods
+#pragma endregion PublicMethods

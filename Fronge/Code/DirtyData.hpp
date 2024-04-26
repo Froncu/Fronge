@@ -34,12 +34,12 @@ namespace fro
 			m_IsDerivedDataDirty = true;
 		}
 
-		fro_NODISCARD_GETTER const DerivedDataType& getPrimaryData() const
+		fro_NODISCARD const DerivedDataType& getPrimaryData() const
 		{
 			return m_PrimaryData;
 		}
 
-		fro_NODISCARD_GETTER const PrimaryDataType& getDerivedData()
+		fro_NODISCARD const PrimaryDataType& getDerivedData()
 		{
 			if (m_IsDerivedDataDirty)
 				calculateDerivedData();
@@ -47,7 +47,7 @@ namespace fro
 			return m_DerivedData;
 		}
 
-		fro_NODISCARD_GETTER bool isDirty() const
+		fro_NODISCARD bool isDirty() const
 		{
 			return m_IsDerivedDataDirty;
 		}

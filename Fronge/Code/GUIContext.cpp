@@ -7,7 +7,7 @@
 #include <implot.h>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(GUIContext)
+fro::GUIContext::GUIContext()
 {
 	ImGui::CreateContext();
 
@@ -20,7 +20,7 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(GUIContext)
 	ImPlot::CreateContext();
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(GUIContext)
+fro::GUIContext::~GUIContext()
 {
 	ImPlot::DestroyContext();
 

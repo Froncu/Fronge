@@ -3,15 +3,23 @@
 #include "GameObject.h"
 #include "Timer.h"
 
-#pragma region Constructors/Destructor
-fro_GENERATED_GAME_OBJECT_COMMAND_CONSTRUCTOR(MoveCommand)
-{
-}
+#include <glm.hpp>
 
-fro_GENERATED_GAME_OBJECT_COMMAND_DESTRUCTOR(MoveCommand)
+#pragma region Constructors/Destructor
+fro::MoveCommand::MoveCommand(const GameObject& commandedGameObject) :
+	GameObjectCommand(commandedGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
+
+
+
+#pragma region Operators
+void fro::MoveCommand::operator()()
+{
+	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * m_MoveDirection);
+}
+#pragma endregion Operators
 
 
 
@@ -26,12 +34,3 @@ void fro::MoveCommand::setMoveSpeed(float moveSpeed)
 	m_MoveSpeed = moveSpeed;
 }
 #pragma endregion PublicMethods
-
-
-
-#pragma region Operators
-fro_GENERATED_GAME_OBJECT_COMMAND_OPERATOR(MoveCommand)
-{
-	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * m_MoveDirection);
-}
-#pragma endregion Operators

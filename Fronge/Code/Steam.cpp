@@ -1,6 +1,6 @@
 #include "Steam.h"
 
-#include "Console.h"
+#include "Console.hpp"
 
 #pragma warning (push)
 #pragma warning (disable: 4996)
@@ -11,7 +11,7 @@
 #include <stdexcept>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(Steam)
+fro::Steam::Steam()
 	: m_CallbackUserStatsReceived{ this, &Steam::onUserStatsReceived }
 	, m_CallbackUserStatsStored{ this, &Steam::onUserStatsStored }
 	, m_CallbackAchievementStored{ this, &Steam::onAchievementStored }
@@ -25,7 +25,7 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(Steam)
 	m_AppID = SteamUtils()->GetAppID();
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(Steam)
+fro::Steam::~Steam()
 {
 	SteamAPI_Shutdown();
 }
@@ -126,7 +126,7 @@ void fro::Steam::onAchievementStored(UserAchievementStored_t* pCallback)
 		Console::getInstance().log("Stored Achievement for Steam");
 }
 
-fro_NODISCARD_GETTER std::string fro::Steam::getAchievementName(AchievementID achievementID) const
+fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID achievementID) const
 {
 	switch (achievementID)
 	{

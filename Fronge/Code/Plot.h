@@ -3,8 +3,8 @@
 #include "GUI.h"
 #include "Defines.hpp"
 
-#include <deque>
 #include <vector>
+#include <deque>
 #include <chrono>
 #include <algorithm>
 #include <numeric>
@@ -13,9 +13,20 @@ namespace fro
 {
 	class Plot final : public GUI
 	{
-		fro_GENERATED_GUI_BODY(Plot)
+	public:
+		Plot(const GameObject& parentingGameObject);
+
+		virtual ~Plot() override = default;
+		
+		virtual void display() override;
 
 	private:
+		Plot(const Plot&) = delete;
+		Plot(Plot&&) noexcept = delete;
+
+		Plot& operator=(const Plot&) = delete;
+		Plot& operator=(Plot&&) noexcept = delete;
+
 		struct Transform
 		{
 			float matrix[16]
@@ -66,7 +77,7 @@ namespace fro
 				{
 					const auto beginTimePoint{ std::chrono::steady_clock::now() };
 
-					for (size_t index{}; index < vData.size(); index += stepSize)
+					for (std::size_t index{}; index < vData.size(); index += stepSize)
 						vData[index] *= 2;
 
 					const auto endTimePoint{ std::chrono::steady_clock::now() };

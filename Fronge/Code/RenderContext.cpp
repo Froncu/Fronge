@@ -1,14 +1,13 @@
 #include "RenderContext.h"
+
 #include "Steam.h"
 
 #include <SDL.h>
-#include <SDL_video.h>
-#include <SDL_render.h>
 #include <stdexcept>
 #include <format>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_SINGLETON_CONSTRUCTOR(RenderContext)
+fro::RenderContext::RenderContext()
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0)
 		throw std::runtime_error(std::format("[ SDL_InitSubSystem() FAILED ] -> {}", SDL_GetError()));
@@ -26,7 +25,7 @@ fro_GENERATED_SINGLETON_CONSTRUCTOR(RenderContext)
 		throw std::runtime_error(std::format("[ SDL_CreateRenderer() FAILED ] -> {}", SDL_GetError()));
 }
 
-fro_GENERATED_SINGLETON_DESTRUCTOR(RenderContext)
+fro::RenderContext::~RenderContext()
 {
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
@@ -35,23 +34,6 @@ fro_GENERATED_SINGLETON_DESTRUCTOR(RenderContext)
 
 
 #pragma region PublicMethods
-void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const
-{
-	int textureWidth;
-	int textureHeight;
-	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
-
-	const SDL_Rect destinationRectangle
-	{ 
-		static_cast<int>(position.x) - textureWidth / 2, 
-		static_cast<int>(position.y) - textureHeight / 2, 
-		textureWidth, 
-		textureHeight 
-	};
-
-	SDL_RenderCopy(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle);
-}
-
 void fro::RenderContext::clear() const
 {
 	constexpr SDL_Color clearColor{ 32, 32, 32, 255 };
@@ -66,12 +48,29 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-fro_NODISCARD_GETTER SDL_Window* fro::RenderContext::getWindow() const
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, const glm::vec2& position) const
+{
+	int textureWidth;
+	int textureHeight;
+	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
+
+	const SDL_Rect destinationRectangle
+	{
+		static_cast<int>(position.x) - textureWidth / 2,
+		static_cast<int>(position.y) - textureHeight / 2,
+		textureWidth,
+		textureHeight
+	};
+
+	SDL_RenderCopy(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle);
+}
+
+SDL_Window* fro::RenderContext::getWindow() const
 {
 	return m_pWindow.get();
 }
 
-fro_NODISCARD_GETTER SDL_Renderer* fro::RenderContext::getRenderer() const
+SDL_Renderer* fro::RenderContext::getRenderer() const
 {
 	return m_pRenderer.get();
 }

@@ -1,22 +1,24 @@
 #include "AudioSDL.h"
+
 #include "ResourceManager.h"
 #include "EventQueue.hpp"
 
 #include <SDL_mixer.h>
-#include <cassert>
+#include <stdexcept>
+#include <format>
 #include <string>
 #include <map>
 #include <thread>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_AUDIO_SERVICE_CONSTRUCTOR(AudioSDL)
+fro::AudioSDL::AudioSDL()
 	: m_pAudioSDLImplementation{ std::make_unique<AudioSDLImplementation>() }
 {
-	[[maybe_unused]] const int result{ Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) };
-	assert(result == 0);
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0)
+		throw std::runtime_error(std::format("[ Mix_OpenAudio() FAILED ] -> {}", Mix_GetError()));
 }
 
-fro_GENERATED_AUDIO_SERVICE_DESTRUCTOR(AudioSDL)
+fro::AudioSDL::~AudioSDL()
 {
 	Mix_CloseAudio();
 }
@@ -48,15 +50,6 @@ public:
 			});
 	}
 
-	void pauseMusic()
-	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.isMusic{ true },
-				.play{ false }
-			});
-	}
-
 	void playEffect(const std::string& fileName, float volume)
 	{
 		m_EventQueue.pushEvent(AudioEvent
@@ -64,6 +57,15 @@ public:
 				.fileName{ fileName },
 				.volume{ volume },
 				.play{ true }
+			});
+	}
+
+	void pauseMusic()
+	{
+		m_EventQueue.pushEvent(AudioEvent
+			{
+				.isMusic{ true },
+				.play{ false }
 			});
 	}
 
@@ -153,32 +155,32 @@ private:
 
 
 #pragma region PublicMethods
-fro_GENERATED_AUDIO_SERVICE_UPDATE(AudioSDL)
+void fro::AudioSDL::update()
 {
 	m_pAudioSDLImplementation->update();
 }
 
-fro_GENERATED_AUDIO_SERVICE_PLAY_MUSIC(AudioSDL)
+void fro::AudioSDL::playMusic(const std::string& fileName, float volume)
 {
 	m_pAudioSDLImplementation->playMusic(fileName, volume);
 }
 
-fro_GENERATED_AUDIO_SERVICE_PAUSE_MUSIC(AudioSDL)
-{
-	m_pAudioSDLImplementation->pauseMusic();
-}
-
-fro_GENERATED_AUDIO_SERVICE_PLAY_EFFECT(AudioSDL)
+void fro::AudioSDL::playEffect(const std::string& fileName, float volume)
 {
 	m_pAudioSDLImplementation->playEffect(fileName, volume);
 }
 
-fro_GENERATED_AUDIO_SERVICE_PAUSE_EFFECT(AudioSDL)
+void fro::AudioSDL::pauseMusic()
+{
+	m_pAudioSDLImplementation->pauseMusic();
+}
+
+void fro::AudioSDL::pauseEffect(const std::string& fileName)
 {
 	m_pAudioSDLImplementation->pauseEffect(fileName);
 }
 
-fro_GENERATED_AUDIO_SERVICE_PAUSE_ALL_EFFECTS(AudioSDL)
+void fro::AudioSDL::pauseAllEffects()
 {
 	m_pAudioSDLImplementation->pauseAllEffects();
 }

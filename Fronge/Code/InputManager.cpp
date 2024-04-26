@@ -3,15 +3,6 @@
 #include <SDL_events.h>
 
 #pragma region PublicMethods
-void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)
-{
-	m_mActions.insert({ keyInput, actionName });
-}
-#pragma endregion PublicMethods
-
-
-
-#pragma region PrivateMethods
 void fro::InputManager::processKeyboardInputContinous() const
 {
 	auto pKeyboardState{ SDL_GetKeyboardState(nullptr) };
@@ -66,4 +57,9 @@ void fro::InputManager::processInputEvent(const SDL_Event& event) const
 	}
 	}
 }
-#pragma endregion PrivateMethods
+
+void fro::InputManager::bindKeyInputToAction(ButtonInput keyInput, const std::string& actionName)
+{
+	m_mActions.insert({ keyInput, actionName });
+}
+#pragma endregion PublicMethods

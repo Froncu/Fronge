@@ -168,7 +168,6 @@
     <ClCompile Include="Code\Behaviour.cpp" />
     <ClCompile Include="Code\ButtonInput.cpp" />
     <ClCompile Include="Code\Component.cpp" />
-    <ClCompile Include="Code\Console.cpp" />
     <ClCompile Include="Code\FPSCounter.cpp" />
     <ClCompile Include="Code\Fronge.cpp" />
     <ClCompile Include="Code\GameObject.cpp" />
@@ -199,7 +198,7 @@
     <ClInclude Include="Code\ButtonInput.h" />
     <ClInclude Include="Code\Command.hpp" />
     <ClInclude Include="Code\Component.h" />
-    <ClInclude Include="Code\Console.h" />
+    <ClInclude Include="Code\Console.hpp" />
     <ClInclude Include="Code\Defines.hpp" />
     <ClInclude Include="Code\DirtyData.hpp" />
     <ClInclude Include="Code\Event.hpp" />
@@ -227,6 +226,7 @@
     <ClInclude Include="Code\Text.h" />
     <ClInclude Include="Code\Timer.h" />
     <ClInclude Include="Code\Transform.h" />
+    <ClInclude Include="Code\Typenames.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

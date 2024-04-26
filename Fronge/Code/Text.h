@@ -19,12 +19,18 @@ namespace fro
 
 	class Text final : public Renderable
 	{
-		fro_GENERATED_RENDERABLE_BODY(Text)
-
 	public:
+		Text(const GameObject& parentingGameObject);
+
+		virtual ~Text() override = default;
+
+		virtual void render() const override;
+
+		void setFont(const std::string& fontName, int fontSize);
+
 		template<typename TextType>
 			requires StringAssignable<TextType> || StringConvertible<TextType>
-		void setText(const TextType& text)
+		void setText(const TextType & text)
 		{
 			if constexpr (StringAssignable<TextType>)
 				m_Text = text;
@@ -34,9 +40,13 @@ namespace fro
 			updateTexture();
 		}
 
-		void setFont(const std::string& fontName, int fontSize);
-
 	private:
+		Text(const Text&) = delete;
+		Text(Text&&) noexcept = delete;
+
+		Text& operator=(const Text&) = delete;
+		Text& operator=(Text&&) noexcept = delete;
+
 		void updateTexture();
 
 		SDL_Texture* m_pTexture{};

@@ -10,14 +10,14 @@
 
 int main(int, char**)
 {
-	fro::Scene& scene{ fro::SceneManager::getInstance().addScene("Test") };
+	fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
 	fro::GameObject* pGameObject;
 	pGameObject = &scene.addGameObject();
 	pGameObject->addComponent<fro::Sprite>()->setFileName("logo.tga");
 	pGameObject->getComponent<fro::Transform>()->setLocalPosition({ 320, 240 });
 
-	for (size_t index{}; index < 500; ++index)
+	for (std::size_t index{}; index < 500; ++index)
 	{
 		constexpr float basePeriod{ 2.0f };
 		constexpr float childPeriodDelayMultiplier{ 0.002f };

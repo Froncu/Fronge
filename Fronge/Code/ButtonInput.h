@@ -32,17 +32,17 @@ namespace fro
 
 		fro_NODISCARD bool operator<(const ButtonInput& otherButtonInput) const;
 
+		fro_NODISCARD State getState() const;
+
 		template<typename ButtonType>
-		requires std::same_as<ButtonType, SDL_Scancode> or std::same_as<ButtonType, SDL_GameControllerButton>
-		fro_NODISCARD_GETTER std::optional<ButtonType> getButton() const
+			requires std::same_as<ButtonType, SDL_Scancode> or std::same_as<ButtonType, SDL_GameControllerButton>
+		fro_NODISCARD std::optional<ButtonType> getButton() const
 		{
 			if (std::holds_alternative<ButtonType>(m_Button))
 				return std::get<ButtonType>(m_Button);
 
 			return std::nullopt;
 		};
-
-		fro_NODISCARD_GETTER State getState() const;
 
 	private:
 		const Button m_Button;

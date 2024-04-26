@@ -7,11 +7,8 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro_GENERATED_BEHAVIOUR_CONSTRUCTOR(FPSCounter)
-{
-}
-
-fro_GENERATED_BEHAVIOUR_DESTRUCTOR(FPSCounter)
+fro::FPSCounter::FPSCounter(const GameObject& parentingGameObject) :
+	Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -19,13 +16,7 @@ fro_GENERATED_BEHAVIOUR_DESTRUCTOR(FPSCounter)
 
 
 #pragma region PublicMethods
-
-#pragma endregion PublicMethods
-
-
-
-#pragma region PrivateMethods
-fro_GENERATED_BEHAVIOUR_UPDATE(FPSCounter)
+void fro::FPSCounter::update()
 {
 	constexpr float maxElapsedSeconds{ 0.2f };
 
@@ -39,4 +30,4 @@ fro_GENERATED_BEHAVIOUR_UPDATE(FPSCounter)
 		m_ElapsedSeconds -= maxElapsedSeconds;
 	};
 }
-#pragma endregion PrivateMethods
+#pragma endregion PublicMethods

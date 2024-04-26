@@ -30,7 +30,7 @@ int main(int, char**)
 
 	constexpr bool loadFPSCounter{ true };
 
-	fro::Scene& scene{ fro::SceneManager::getInstance().addScene("Test") };
+	fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
 	[[maybe_unused]] fro::GameObject* pGameObject;
 

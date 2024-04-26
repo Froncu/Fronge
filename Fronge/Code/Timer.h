@@ -7,14 +7,22 @@ namespace fro
 {
 	class Timer final : public Singleton<Timer>
 	{
-		fro_GENERATED_SINGLETON_BODY(Timer)
-
 	public:
+		Timer() = default;
+
+		virtual ~Timer() override = default;
+
 		void update();
 
-		fro_NODISCARD_GETTER float getDeltaSeconds() const;
+		fro_NODISCARD float getDeltaSeconds() const;
 
 	private:
+		Timer(const Timer&) = delete;
+		Timer(Timer&&) noexcept = delete;
+
+		Timer& operator=(const Timer&) = delete;
+		Timer& operator=(Timer&&) noexcept = delete;
+
 		float m_DeltaSeconds{};
 	};
 }

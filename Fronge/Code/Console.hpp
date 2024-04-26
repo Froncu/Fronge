@@ -15,9 +15,11 @@ namespace fro
 
 	class Console final : public Singleton<Console>
 	{
-		fro_GENERATED_SINGLETON_BODY(Console)
-
 	public:
+		Console() = default;
+
+		virtual ~Console() override = default;
+
 		enum class TextColor
 		{
 			Black = 0x00,
@@ -129,6 +131,12 @@ namespace fro
 		}
 
 	private:
+		Console(const Console&) = delete;
+		Console(Console&&) noexcept = delete;
+
+		Console& operator=(const Console&) = delete;
+		Console& operator=(Console&&) noexcept = delete;
+
 #ifdef _CONSOLE
 		TextColor m_TextColor{ TextColor::Gray };
 		BackgroundColor m_BackgroundColor{ BackgroundColor::Black };

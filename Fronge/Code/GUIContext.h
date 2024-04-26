@@ -8,11 +8,20 @@ namespace fro
 {
 	class GUIContext final : public Singleton<GUIContext>
 	{
-		fro_GENERATED_SINGLETON_BODY(GUIContext)
-
 	public:
+		GUIContext();
+
+		virtual ~GUIContext() override;
+
 		void processSystemEvent(const SDL_Event& event) const;
 		void startFrame() const;
 		void endFrame() const;
+
+	private:
+		GUIContext(const GUIContext&) = delete;
+		GUIContext(GUIContext&&) noexcept = delete;
+
+		GUIContext& operator=(const GUIContext&) = delete;
+		GUIContext& operator=(GUIContext&&) noexcept = delete;
 	};
 }

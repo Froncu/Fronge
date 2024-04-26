@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Console.h"
+#include "Console.hpp"
 
 #include <functional>
 #include <vector>

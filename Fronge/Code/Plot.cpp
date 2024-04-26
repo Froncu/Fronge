@@ -2,7 +2,6 @@
 
 #include <imgui.h>
 #include <implot.h>
-#include <chrono>
 #include <format>
 
 #if defined WIN32
@@ -12,14 +11,11 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro_GENERATED_GUI_CONSTRUCTOR(Plot)
+fro::Plot::Plot(const GameObject& parentingGameObject) :
+	GUI(parentingGameObject)
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)
 	, m_vGameObjects3DAlt(BUFFER_SIZE)
-{
-}
-
-fro_GENERATED_GUI_DESTRUCTOR(Plot)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -27,7 +23,7 @@ fro_GENERATED_GUI_DESTRUCTOR(Plot)
 
 
 #pragma region PrivateMethods
-fro_GENERATED_GUI_DISPLAY(Plot)
+void fro::Plot::display()
 {
 	constexpr double aStepSizes[]{ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
 	constexpr int amountOfStepSizes{ 11 };

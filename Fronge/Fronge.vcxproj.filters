@@ -40,9 +40,6 @@
     <ClCompile Include="Code\Component.cpp">
       <Filter>Component\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Console.cpp">
-      <Filter>Systems\Console</Filter>
-    </ClCompile>
     <ClCompile Include="Code\FPSCounter.cpp">
       <Filter>Component\Behaviour\FPSCounter</Filter>
     </ClCompile>
@@ -134,9 +131,6 @@
     </Filter>
     <Filter Include="Systems\Timer">
       <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Console">
-      <UniqueIdentifier>{05eff45b-4d30-4455-b77b-5ae49b4c150a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\InputManager">
       <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
@@ -255,9 +249,6 @@
     <ClInclude Include="Code\Component.h">
       <Filter>Component\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Console.h">
-      <Filter>Systems\Console</Filter>
-    </ClInclude>
     <ClInclude Include="Code\DirtyData.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
@@ -345,5 +336,9 @@
     <ClInclude Include="Code\AudioSDL.h">
       <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Console.hpp">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Typenames.hpp" />
   </ItemGroup>
 </Project>

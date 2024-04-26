@@ -8,14 +8,24 @@ namespace fro
 {
 	class Rotator final : public Behaviour
 	{
-		fro_GENERATED_BEHAVIOUR_BODY(Rotator)
-
 	public:
+		Rotator(const GameObject& parentingGameObject);
+
+		virtual ~Rotator() override = default;
+
+		virtual void update() override;
+
 		void setCenter(const glm::vec2& center);
 		void setRadius(float radius);
 		void setPeriod(float period);
 
 	private:
+		Rotator(const Rotator&) = delete;
+		Rotator(Rotator&&) noexcept = delete;
+
+		Rotator& operator=(const Rotator&) = delete;
+		Rotator& operator=(Rotator&&) noexcept = delete;
+
 		glm::vec2 m_Center{};
 		float m_Radius{ 50.0f };
 		float m_Period{ 1 };

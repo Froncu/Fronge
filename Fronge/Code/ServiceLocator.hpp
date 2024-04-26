@@ -1,19 +1,17 @@
 #pragma once
 
 #include "Singleton.hpp"
-#include "AudioSDL.h"
 
 #include <memory>
 
 namespace fro
 {
-	// TODO: avoided using the singleton generated defines since it cause problems; do something about it
 	template<typename ServiceType>
 	class ServiceLocator final : public Singleton<ServiceLocator<ServiceType>>
 	{
-		friend class Singleton<ServiceLocator<ServiceType>>;
-
 	public:
+		ServiceLocator() = default;
+
 		virtual ~ServiceLocator() override = default;
 
 		template<typename ProviderType>
@@ -29,7 +27,6 @@ namespace fro
 		}
 
 	private:
-		ServiceLocator() = default;
 		ServiceLocator(const ServiceLocator&) = delete;
 		ServiceLocator(ServiceLocator&&) = delete;
 
@@ -38,5 +35,4 @@ namespace fro
 
 		std::unique_ptr<ServiceType> m_pService{ new ServiceType() };
 	};
-	// END TODO
 }
