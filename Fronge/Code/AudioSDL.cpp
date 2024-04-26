@@ -6,6 +6,7 @@
 #include <cassert>
 #include <string>
 #include <map>
+#include <thread>
 
 #pragma region Constructors/Destructor
 fro_GENERATED_AUDIO_SERVICE_CONSTRUCTOR(AudioSDL)
@@ -33,7 +34,7 @@ public:
 
 	void update()
 	{
-		m_EventQueue.processEvents();
+		m_EventProcessingThread = std::jthread(std::bind(&decltype(m_EventQueue)::processEvents, &m_EventQueue));
 	}
 
 	void playMusic(const std::string& fileName, float volume)
@@ -107,6 +108,7 @@ private:
 		}
 	};
 
+	std::jthread m_EventProcessingThread{};
 	EventQueue<AudioEvent, std::function<void(AudioEvent&)>> m_EventQueue
 	{
 		[this](AudioEvent& event)
