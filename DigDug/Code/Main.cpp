@@ -26,14 +26,7 @@ int main(int, char**)
 {
 	fro::ServiceLocator<fro::AudioService>::getInstance().setProvider<fro::AudioSDL>();
 
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playMusic("BGM #01.mp3", 0.1f);
 
 	constexpr bool loadFPSCounter{ true };
 
