@@ -15,11 +15,26 @@
 #include "Timer.h"
 #include "RenderContext.h"
 #include "Fronge.h"
+#include "ServiceLocator.hpp"
+#include "AudioService.h"
+#include "AudioSDL.h"
 
 #include <SDL_main.h>
+#include <SDL_mixer.h>
 
 int main(int, char**)
 {
+	fro::ServiceLocator<fro::AudioService>::getInstance().setProvider<fro::AudioSDL>();
+
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playEffect("BGM #01.mp3", 0.1f);
+
 	constexpr bool loadFPSCounter{ true };
 
 	fro::Scene& scene{ fro::SceneManager::getInstance().addScene("Test") };

@@ -18,6 +18,8 @@
 #include "Console.h"
 #include "RenderContext.h"
 #include "Steam.h"
+#include "ServiceLocator.hpp"
+#include "AudioService.h"
 
 #include <SDL.h>
 #include <vld.h>
@@ -47,6 +49,8 @@ int fro::Fronge::run()
 
 	while (true)
 	{
+		ServiceLocator<AudioService>::getInstance().getService().update();
+
 		Steam::getInstance().update();
 
 		Timer::getInstance().update();
