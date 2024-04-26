@@ -15,10 +15,10 @@ namespace fro
 		GUI(GameObject const& parentingGameObject);
 
 	private:
-		GUI(GUI& const) = delete;
+		GUI(GUI const&) = delete;
 		GUI(GUI&&) noexcept = delete;
 
-		GUI& operator=(GUI& const) = delete;
+		GUI& operator=(GUI const&) = delete;
 		GUI& operator=(GUI&&) noexcept = delete;
 	};
 }
