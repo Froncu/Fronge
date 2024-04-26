@@ -27,8 +27,7 @@ public:
 
 	~GameControllerInputImplementation() = default;
 
-	void processGamePadInputContinous(
-		std::map<ButtonInput, std::string> const& mActions,
+	void processGamePadInputContinous(std::map<ButtonInput, std::string> const& mActions,
 		std::map<std::string, std::vector<std::unique_ptr<Command>>> const& mCommands)
 	{
 		updateController();

@@ -132,7 +132,7 @@ private:
 				if (event.play)
 				{
 					Mix_Chunk* const pEffect{ ResourceManager::getInstance().getEffect(event.fileName) };
-					
+
 					Mix_VolumeChunk(pEffect, static_cast<int>(event.volume * MIX_MAX_VOLUME));
 					m_mEFFECT_CHANNELS[event.fileName] = Mix_PlayChannel(-1, pEffect, 0);
 				}

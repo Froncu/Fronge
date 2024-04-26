@@ -14,7 +14,7 @@ namespace fro
 		virtual void update() override;
 
 	private:
-		FPSCounter(FPSCounter const&)  = delete;
+		FPSCounter(FPSCounter const&) = delete;
 		FPSCounter(FPSCounter&&) noexcept = delete;
 
 		FPSCounter& operator=(FPSCounter const&) = delete;

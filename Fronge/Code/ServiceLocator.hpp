@@ -15,7 +15,7 @@ namespace fro
 		virtual ~ServiceLocator() override = default;
 
 		template<typename ProviderType>
-		requires std::derived_from<ProviderType, ServiceType>
+			requires std::derived_from<ProviderType, ServiceType>
 		void setProvider()
 		{
 			m_pService.reset(new ProviderType());

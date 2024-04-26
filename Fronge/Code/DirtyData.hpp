@@ -43,7 +43,7 @@ namespace fro
 		{
 			if (m_IsDerivedDataDirty)
 				calculateDerivedData();
-			
+
 			return m_DerivedData;
 		}
 

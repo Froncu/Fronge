@@ -17,7 +17,7 @@ namespace fro
 		Plot(GameObject const& parentingGameObject);
 
 		virtual ~Plot() override = default;
-		
+
 		virtual void display() override;
 
 	private:

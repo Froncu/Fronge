@@ -11,7 +11,7 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro::Plot::Plot(GameObject const& parentingGameObject) 
+fro::Plot::Plot(GameObject const& parentingGameObject)
 	: GUI(parentingGameObject)
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)
@@ -32,14 +32,14 @@ void fro::Plot::display()
 	ImGui::SliderInt("Amount Of Samples", &m_AmountOfSamplesInteger, 10, 100);
 
 	if (ImGui::Button("Trash the cache"))
-	m_vIntegersResults = measure(m_vIntegers);
+		m_vIntegersResults = measure(m_vIntegers);
 
 	if (!m_vIntegersResults.empty() && ImPlot::BeginPlot("Integers"))
 	{
 		ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
 		ImPlot::SetupAxisTicks(ImAxis_X1, aStepSizes, amountOfStepSizes);
 		ImPlot::PlotLine("", aStepSizes, m_vIntegersResults.data(), amountOfStepSizes);
-	
+
 		ImPlot::EndPlot();
 	}
 
@@ -61,7 +61,7 @@ void fro::Plot::display()
 			ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
 			ImPlot::SetupAxisTicks(ImAxis_X1, aStepSizes, amountOfStepSizes);
 			ImPlot::PlotLine("", aStepSizes, m_vGameObject3DResults.data(), amountOfStepSizes);
-	
+
 			ImPlot::EndPlot();
 		}
 
@@ -70,7 +70,7 @@ void fro::Plot::display()
 			ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
 			ImPlot::SetupAxisTicks(ImAxis_X1, aStepSizes, amountOfStepSizes);
 			ImPlot::PlotLine("", aStepSizes, m_vGameObject3DAltResults.data(), amountOfStepSizes);
-	
+
 			ImPlot::EndPlot();
 		}
 
@@ -80,7 +80,7 @@ void fro::Plot::display()
 			ImPlot::SetupAxisTicks(ImAxis_X1, aStepSizes, amountOfStepSizes);
 			ImPlot::PlotLine("GameObject3D", aStepSizes, m_vGameObject3DResults.data(), amountOfStepSizes);
 			ImPlot::PlotLine("GameObject3DAlt", aStepSizes, m_vGameObject3DAltResults.data(), amountOfStepSizes);
-	
+
 			ImPlot::EndPlot();
 		}
 	}

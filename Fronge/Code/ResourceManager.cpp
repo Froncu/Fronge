@@ -44,7 +44,7 @@ void fro::ResourceManager::setResourcesDirectory(std::string const& resourcesDir
 
 SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
 {
-	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }]};
+	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }] };
 
 	auto const iterator{ mpTextTextures.find(text) };
 
@@ -57,7 +57,7 @@ SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer,
 		auto resultPair{ mpTextTextures.insert({ text, std::move(pTextTexture) }) };
 		return resultPair.first->second.get();
 	}
-	
+
 	return iterator->second.get();
 }
 
@@ -88,7 +88,7 @@ Mix_Chunk* fro::ResourceManager::getEffect(std::string const& audioFileName)
 	if (!pEffect.get())
 		pEffect = SDLUniquePointer<Mix_Chunk>(Mix_LoadWAV((m_ResourcesDirectory + audioFileName).c_str()), Mix_FreeChunk);
 
-	return pEffect.get(); 
+	return pEffect.get();
 }
 #pragma region PublicMethods
 
