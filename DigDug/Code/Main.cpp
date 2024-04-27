@@ -18,8 +18,8 @@
 #include "Timer.h"
 #include "Transform.h"
 
-#include <SDL_main.h>
-#include <SDL_mixer.h>
+#include <sdl_main.h>
+#include <sdl_mixer.h>
 
 int main(int, char**)
 {
