@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <set>
+#include <typeindex>
 #include <unordered_map>
 
 namespace fro
@@ -40,7 +41,7 @@ namespace fro
 				return nullptr;
 			else
 			{
-				auto const resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(typeid(ComponentType).hash_code(), new ComponentType(*this))) };
+				auto const resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(std::type_index(typeid(ComponentType)), std::make_unique<ComponentType>(*this))) };
 				if (!resultPair.second)
 					return nullptr;
 
@@ -54,7 +55,7 @@ namespace fro
 			if constexpr (std::same_as<ComponentType, Transform>)
 				return false;
 			else
-				return getComponentMap<ComponentType>().erase(typeid(ComponentType).hash_code());
+				return getComponentMap<ComponentType>().erase(typeid(ComponentType));
 		}
 
 		// TODO: this is very slow plus I am not a fan of holding references to components inside other components (fixed for the Transform component)
@@ -67,7 +68,7 @@ namespace fro
 			{
 				auto const& mpComponents{ getComponentMapConstant<ComponentType>() };
 
-				auto const& iterator{ mpComponents.find(typeid(ComponentType).hash_code()) };
+				auto const& iterator{ mpComponents.find(typeid(ComponentType)) };
 				if (iterator == mpComponents.end())
 					return nullptr;
 
@@ -122,10 +123,10 @@ namespace fro
 		GameObject* m_pParent{};
 		std::set<GameObject const*> m_spChildren{};
 
-		std::unordered_map<std::size_t, std::unique_ptr<Behaviour>> m_mpBehaviours{};
-		std::unordered_map<std::size_t, std::unique_ptr<Renderable>> m_mpRenderables{};
-		std::unordered_map<std::size_t, std::unique_ptr<GUI>> m_mpGUIs{};
-		std::unordered_map<std::size_t, std::unique_ptr<Component>> m_mpComponents{};
+		std::unordered_map<std::type_index, std::unique_ptr<Behaviour>> m_mpBehaviours{};
+		std::unordered_map<std::type_index, std::unique_ptr<Renderable>> m_mpRenderables{};
+		std::unordered_map<std::type_index, std::unique_ptr<GUI>> m_mpGUIs{};
+		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 	};
 }
 
