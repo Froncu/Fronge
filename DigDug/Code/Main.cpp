@@ -22,24 +22,12 @@
 
 int main(int, char**)
 {
-	fro::ServiceLocator<fro::AudioService>::getInstance().setProvider<fro::AudioSDL>();
+	auto& audioService{ fro::ServiceLocator<fro::AudioService>::getInstance() };
 
-	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playMusic("BGM #01.mp3", 0.1f);
-
-	bool constexpr loadFPSCounter{ true };
+	audioService.setProvider<fro::AudioSDL>();
+	audioService.getService().playMusic("BGM #01.mp3", 0.1f);
 
 	fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
-
-	[[maybe_unused]] fro::GameObject* pGameObject;
-
-	if constexpr (loadFPSCounter)
-	{
-		pGameObject = &scene.addGameObject();
-		fro::Text& text{ *pGameObject->addComponent<fro::Text>() };
-		text.setFont("Lingua.otf", 64);
-		pGameObject->addComponent<fro::FPSCounter>();
-		pGameObject->getComponent<fro::Transform>()->setLocalPosition({ 320, 30 });
-	}
 
 	fro::GameObject& player1{ scene.addGameObject() };
 	player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
