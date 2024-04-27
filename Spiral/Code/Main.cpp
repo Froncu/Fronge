@@ -41,7 +41,7 @@ int main(int, char**)
 	}
 	catch (std::runtime_error const& exception)
 	{
-		fro::Console::getInstance().log(exception.what(), fro::Console::BackgroundColor::DarkRed);
+		fro::Console::getInstance().log(exception.what(), fro::Console::BackgroundColor::darkRed);
 		return 1;
 	}
 }

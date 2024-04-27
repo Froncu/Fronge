@@ -23,42 +23,42 @@ namespace fro
 
 		enum class TextColor
 		{
-			Black = 0x00,
-			DarkerBlue = 0x01,
-			DarkGreen = 0x02,
-			LightBlue = 0x03,
-			DarkRed = 0x04,
-			Purple = 0x05,
-			Orange = 0x06,
-			Gray = 0x07,
-			DarkGray = 0x08,
-			DarkBlue = 0x09,
-			Green = 0x0a,
-			LighterBlue = 0x0b,
-			Red = 0x0c,
-			Pink = 0x0d,
-			Yellow = 0x0e,
-			White = 0x0f
+			black = 0x00,
+			darkerBlue = 0x01,
+			darkGreen = 0x02,
+			lightBlue = 0x03,
+			darkRed = 0x04,
+			purple = 0x05,
+			orange = 0x06,
+			gray = 0x07,
+			darkGray = 0x08,
+			darkBlue = 0x09,
+			green = 0x0a,
+			lighterBlue = 0x0b,
+			red = 0x0c,
+			pink = 0x0d,
+			yellow = 0x0e,
+			white = 0x0f
 		};
 
 		enum class BackgroundColor
 		{
-			Black = 0x00,
-			DarkerBlue = 0x10,
-			DarkGreen = 0x20,
-			LightBlue = 0x30,
-			DarkRed = 0x40,
-			Purple = 0x50,
-			Orange = 0x60,
-			Gray = 0x70,
-			DarkGray = 0x80,
-			DarkBlue = 0x90,
-			Green = 0xa0,
-			LighterBlue = 0xb0,
-			Red = 0xc0,
-			Pink = 0xd0,
-			Yellow = 0xe0,
-			White = 0xf0
+			black = 0x00,
+			darkerBlue = 0x10,
+			darkGreen = 0x20,
+			lightBlue = 0x30,
+			darkRed = 0x40,
+			purple = 0x50,
+			orange = 0x60,
+			gray = 0x70,
+			darkGray = 0x80,
+			darkBlue = 0x90,
+			green = 0xa0,
+			lighterBlue = 0xb0,
+			red = 0xc0,
+			pink = 0xd0,
+			yellow = 0xe0,
+			white = 0xf0
 		};
 
 		void setColor([[maybe_unused]] TextColor const textColor, [[maybe_unused]] BackgroundColor const backgroundColor)
@@ -87,7 +87,7 @@ namespace fro
 		void resetColor()
 		{
 #ifdef _CONSOLE
-			setColor(TextColor::Gray, BackgroundColor::Black);
+			setColor(TextColor::gray, BackgroundColor::black);
 #endif
 		}
 
@@ -139,8 +139,8 @@ namespace fro
 		Console& operator=(Console&&) noexcept = delete;
 
 #ifdef _CONSOLE
-		TextColor m_TextColor{ TextColor::Gray };
-		BackgroundColor m_BackgroundColor{ BackgroundColor::Black };
+		TextColor m_TextColor{ TextColor::gray };
+		BackgroundColor m_BackgroundColor{ BackgroundColor::black };
 #endif
 	};
 }
