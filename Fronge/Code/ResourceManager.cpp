@@ -11,10 +11,10 @@
 fro::ResourceManager::ResourceManager()
 {
 	if (constexpr int imageFlags{ NULL }; IMG_Init(imageFlags) != imageFlags)
-		throw std::runtime_error(std::format("[ IMG_Init FAILED ] -> {}", IMG_GetError()));
+		throw std::runtime_error(std::format("IMG_Init() failed: {}", IMG_GetError()));
 
 	if (TTF_Init() == -1)
-		throw std::runtime_error(std::format("[ TTF_Init FAILED ] -> {}", TTF_GetError()));
+		throw std::runtime_error(std::format("TTF_Init() failed: {}", TTF_GetError()));
 }
 
 fro::ResourceManager::~ResourceManager()

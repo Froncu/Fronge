@@ -12,11 +12,11 @@
 fro::RenderContext::RenderContext()
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0)
-		throw std::runtime_error(std::format("[ SDL_InitSubSystem() FAILED ] -> {}", SDL_GetError()));
+		throw std::runtime_error(std::format("SDL_InitSubSystem() failed: {}", SDL_GetError()));
 
 	m_pWindow = { SDL_CreateWindow("Fronge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, NULL), SDL_DestroyWindow };
 	if (!m_pWindow.get())
-		throw std::runtime_error(std::format("[ SDL_CreateWindow() FAILED ] -> {}", SDL_GetError()));
+		throw std::runtime_error(std::format("SDL_CreateWindow() failed: {}", SDL_GetError()));
 
 	// HACK: Steam must be initialized before the renderer, otherwise the overlay does not work for some reason
 	std::ignore = Steam::getInstance();
@@ -24,7 +24,7 @@ fro::RenderContext::RenderContext()
 
 	m_pRenderer = { SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer };
 	if (!m_pRenderer.get())
-		throw std::runtime_error(std::format("[ SDL_CreateRenderer() FAILED ] -> {}", SDL_GetError()));
+		throw std::runtime_error(std::format("SDL_CreateRenderer() failed: -> {}", SDL_GetError()));
 }
 
 fro::RenderContext::~RenderContext()

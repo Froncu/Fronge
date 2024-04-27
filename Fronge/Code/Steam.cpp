@@ -9,6 +9,7 @@
 #include <steam_api.h>
 #pragma warning (pop)
 
+#include <format>
 #include <stdexcept>
 
 #pragma region Constructors/Destructor
@@ -18,10 +19,10 @@ fro::Steam::Steam()
 	, m_CallbackAchievementStored{ this, &Steam::onAchievementStored }
 {
 	if (SteamAPI_Init() == 0)
-		throw std::runtime_error("[ SteamAPI_Init() FAILED ]");
+		throw std::runtime_error("SteamAPI_Init() failed");
 
 	if (!requestStats())
-		throw std::runtime_error("[ requestStats() FAILED ]");
+		throw std::runtime_error("couldn't retrieve Steam stats");
 
 	m_AppID = SteamUtils()->GetAppID();
 }
@@ -135,7 +136,7 @@ fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const ach
 		return "ACH_WIN_ONE_GAME";
 
 	default:
-		throw std::runtime_error("Achievement ID not mapped to a string name");
+		throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", achievementID));
 	}
 }
 #pragma endregion PrivateMethods

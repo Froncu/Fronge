@@ -17,7 +17,7 @@ fro::AudioSDL::AudioSDL()
 	: m_pAudioSDLImplementation{ std::make_unique<AudioSDLImplementation>() }
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0)
-		throw std::runtime_error(std::format("[ Mix_OpenAudio() FAILED ] -> {}", Mix_GetError()));
+		throw std::runtime_error(std::format("Mix_OpenAudio() failed: {}", Mix_GetError()));
 }
 
 fro::AudioSDL::~AudioSDL()
