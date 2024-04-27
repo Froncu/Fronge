@@ -1,12 +1,10 @@
 #include "Fronge.h"
 
-#include "AudioService.h"
 #include "GUIContext.h"
 #include "InputManager.h"
 #include "RenderContext.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "ServiceLocator.hpp"
 #include "Steam.h"
 #include "SystemEventManager.h"
 #include "Timer.h"
@@ -35,8 +33,6 @@ int fro::Fronge::run()
 {
 	while (true)
 	{
-		ServiceLocator<AudioService>::getInstance().getService().update();
-
 		Steam::getInstance().update();
 
 		Timer::getInstance().update();

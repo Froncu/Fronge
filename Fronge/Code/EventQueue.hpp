@@ -42,13 +42,16 @@ namespace fro
 			m_dEvents.push_back(event);
 		}
 
-		void processEvents()
+		void processEvent()
+		{
+			m_EventProcesser(m_dEvents.front());
+			m_dEvents.pop_front();
+		}
+
+		void processAllEvents()
 		{
 			while (!m_dEvents.empty())
-			{
-				m_EventProcesser(m_dEvents.front());
-				m_dEvents.pop_front();
-			}
+				processEvent();
 		}
 
 		std::deque<EventType> const& getQueue() const

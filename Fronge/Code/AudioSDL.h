@@ -14,7 +14,6 @@ namespace fro
 
 		virtual ~AudioSDL() override;
 
-		virtual void update() override;
 		virtual void playMusic(std::string const& fileName, float const volume = 1.0f) override;
 		virtual void playEffect(std::string const& fileName, float const volume = 1.0f) override;
 		virtual void pauseMusic() override;

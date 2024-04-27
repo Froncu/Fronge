@@ -5,6 +5,7 @@
 
 #include <sdl_mixer.h>
 
+#include <condition_variable>
 #include <format>
 #include <map>
 #include <stdexcept>
@@ -33,58 +34,82 @@ class fro::AudioSDL::AudioSDLImplementation final
 public:
 	AudioSDLImplementation() = default;
 
-	~AudioSDLImplementation() = default;
-
-	void update()
+	~AudioSDLImplementation()
 	{
-		m_EventProcessingThread = std::jthread(std::bind(&decltype(m_EventQueue)::processEvents, &m_EventQueue));
+		m_RunThread = false;
+		m_ConditionVariable.notify_one();
 	}
 
 	void playMusic(std::string const& fileName, float const volume)
 	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.fileName{ fileName },
-				.volume{ volume },
-				.isMusic{ true },
-				.play{ true }
-			});
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{ fileName },
+					.volume{ volume },
+					.isMusic{ true },
+					.play{ true }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
 	}
 
 	void playEffect(std::string const& fileName, float const volume)
 	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.fileName{ fileName },
-				.volume{ volume },
-				.play{ true }
-			});
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{ fileName },
+					.volume{ volume },
+					.play{ true }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
 	}
 
 	void pauseMusic()
 	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.isMusic{ true },
-				.play{ false }
-			});
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.isMusic{ true },
+					.play{ false }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
 	}
 
 	void pauseEffect(std::string const& fileName)
 	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.fileName{ fileName },
-				.play{ false }
-			});
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{ fileName },
+					.play{ false }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
 	}
 
 	void pauseAllEffects()
 	{
-		m_EventQueue.pushEvent(AudioEvent
-			{
-				.play{ false }
-			});
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.play{ false }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
 	}
 
 private:
@@ -111,8 +136,11 @@ private:
 		}
 	};
 
-	std::jthread m_EventProcessingThread{};
-	EventQueue<AudioEvent, std::function<void(AudioEvent const&)>> m_EventQueue
+	bool m_RunThread{ true };
+	std::mutex m_Mutex{};
+	std::condition_variable m_ConditionVariable{};
+
+	EventQueue<AudioEvent, std::function<void(AudioEvent const&)>, false> m_EventQueue
 	{
 		[this](AudioEvent const& event)
 		{
@@ -150,17 +178,34 @@ private:
 			}
 		}
 	};
+
+	std::jthread m_EventProcessingThread
+	{
+		[this]()
+		{
+			while (true)
+			{
+				std::unique_lock uniqueLock{ m_Mutex };
+
+				m_ConditionVariable.wait(uniqueLock, 
+					[this]() 
+					{ 
+						return not m_EventQueue.getQueue().empty() or not m_RunThread;
+					});
+
+				if (not m_RunThread)
+					break;
+
+				m_EventQueue.processAllEvents();
+			}
+		}
+	};
 };
 #pragma endregion Implementation
 
 
 
 #pragma region PublicMethods
-void fro::AudioSDL::update()
-{
-	m_pAudioSDLImplementation->update();
-}
-
 void fro::AudioSDL::playMusic(std::string const& fileName, float const volume)
 {
 	m_pAudioSDLImplementation->playMusic(fileName, volume);
