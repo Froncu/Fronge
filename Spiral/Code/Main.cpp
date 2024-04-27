@@ -19,8 +19,8 @@ int main(int, char**)
 
 	for (std::size_t index{}; index < 500; ++index)
 	{
-		constexpr float basePeriod{ 2.0f };
-		constexpr float childPeriodDelayMultiplier{ 0.002f };
+		float constexpr basePeriod{ 2.0f };
+		float constexpr childPeriodDelayMultiplier{ 0.002f };
 
 		fro::GameObject& gameObject{ scene.addGameObject() };
 		gameObject.addComponent<fro::Sprite>()->setFileName("logo.tga");

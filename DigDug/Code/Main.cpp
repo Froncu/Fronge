@@ -26,7 +26,7 @@ int main(int, char**)
 
 	fro::ServiceLocator<fro::AudioService>::getInstance().getService().playMusic("BGM #01.mp3", 0.1f);
 
-	constexpr bool loadFPSCounter{ true };
+	bool constexpr loadFPSCounter{ true };
 
 	fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
