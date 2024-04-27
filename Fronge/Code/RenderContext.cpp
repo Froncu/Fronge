@@ -6,6 +6,7 @@
 
 #include <format>
 #include <stdexcept>
+#include <tuple>
 
 #pragma region Constructors/Destructor
 fro::RenderContext::RenderContext()
@@ -18,7 +19,7 @@ fro::RenderContext::RenderContext()
 		throw std::runtime_error(std::format("[ SDL_CreateWindow() FAILED ] -> {}", SDL_GetError()));
 
 	// HACK: Steam must be initialized before the renderer, otherwise the overlay does not work for some reason
-	[[maybe_unused]] const Steam& steamInstance{ Steam::getInstance() };
+	std::ignore = Steam::getInstance();
 	// END HACK
 
 	m_pRenderer = { SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer };
