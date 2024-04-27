@@ -2,22 +2,44 @@
 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
-  
+
   <PropertyGroup Label="UserMacros" />
-  
+
   <PropertyGroup />
-  
+
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Fronge\Code\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+        $(SolutionDir)Fronge\Code\;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
     </ClCompile>
-    
+
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;$(SolutionDir)External\SDL\lib\x86\;$(SolutionDir)External\SDL_image\lib\x86\;$(SolutionDir)External\SDL_ttf\lib\x86\;$(SolutionDir)External\SDL_mixer\lib\x86\;$(SolutionDir)External\SteamSDK\redistributable_bin\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;xinput.lib;steam_api.lib;%(AdditionalDependencies)</AdditionalDependencies>
+
+      <AdditionalLibraryDirectories>
+        $(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;
+        $(SolutionDir)External\SDL\lib\x86\;
+        $(SolutionDir)External\SDL_image\lib\x86\;
+        $(SolutionDir)External\SDL_ttf\lib\x86\;
+        $(SolutionDir)External\SDL_mixer\lib\x86\;
+        $(SolutionDir)External\SteamSDK\redistributable_bin\
+      </AdditionalLibraryDirectories>
+
+      <AdditionalDependencies>
+        Fronge.lib;
+        SDL2.lib;
+        SDL2main.lib;
+        SDL2_image.lib;
+        SDL2_ttf.lib;
+        SDL2_mixer.lib;
+        xinput.lib;
+        steam_api.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
     </Link>
-    
+
     <PostBuildEvent>
       <Command>
         xcopy "$(SolutionDir)External\SDL\lib\x86\*.dll" "$(TargetDir)" /y /q
@@ -27,12 +49,12 @@
         xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win32\*.dll" "$(TargetDir)" /y /q
         xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(TargetDir)" /y /q
-        
+
         mkdir "$(TargetDir)Resources"
         xcopy "$(ProjectDir)Resources\" "$(TargetDir)Resources" /y /q
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  
+
   <ItemGroup />
 </Project>

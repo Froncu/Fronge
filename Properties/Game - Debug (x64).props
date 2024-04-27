@@ -2,20 +2,44 @@
 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
-  
+
   <PropertyGroup Label="UserMacros" />
-  
+
   <PropertyGroup />
-  
+
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Fronge\Code\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+        $(SolutionDir)Fronge\Code\;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
     </ClCompile>
 
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;$(SolutionDir)External\SDL\lib\x64\;$(SolutionDir)External\SDL_image\lib\x64\;$(SolutionDir)External\SDL_ttf\lib\x64\;$(SolutionDir)External\SDL_mixer\lib\x64\;$(SolutionDir)External\SteamSDK\redistributable_bin\win64\;$(SolutionDir)External\VLD\lib\Win64\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Fronge.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;xinput.lib;steam_api64.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+
+      <AdditionalLibraryDirectories>
+        $(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;
+        $(SolutionDir)External\SDL\lib\x64\;
+        $(SolutionDir)External\SDL_image\lib\x64\;
+        $(SolutionDir)External\SDL_ttf\lib\x64\;
+        $(SolutionDir)External\SDL_mixer\lib\x64\;
+        $(SolutionDir)External\SteamSDK\redistributable_bin\win64\;
+        $(SolutionDir)External\VLD\lib\Win64\
+      </AdditionalLibraryDirectories>
+
+      <AdditionalDependencies>
+        Fronge.lib;
+        SDL2.lib;
+        SDL2main.lib;
+        SDL2_image.lib;
+        SDL2_ttf.lib;
+        SDL2_mixer.lib;
+        xinput.lib;
+        steam_api64.lib;
+        vld.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
     </Link>
 
     <PostBuildEvent>
@@ -34,6 +58,6 @@
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  
+
   <ItemGroup />
 </Project>
