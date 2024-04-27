@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_RENDERABLE_H
+#define fro_RENDERABLE_H
 
 #include "Component.h"
 
@@ -22,3 +23,5 @@ namespace fro
 		Renderable& operator=(Renderable&&) noexcept = delete;
 	};
 }
+
+#endif

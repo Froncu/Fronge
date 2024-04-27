@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_GAME_OBJECT_COMMAND_H
+#define fro_GAME_OBJECT_COMMAND_H
 
 #include "Command.hpp"
 #include "Defines.hpp"
@@ -29,3 +30,5 @@ namespace fro
 		GameObject const& m_CommandedGameObject;
 	};
 }
+
+#endif

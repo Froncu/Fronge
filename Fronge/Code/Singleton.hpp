@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_SINGLETON_H
+#define fro_SINGLETON_H
 
 #include "Defines.hpp"
 
@@ -28,3 +29,5 @@ namespace fro
 		Singleton& operator=(Singleton&&) noexcept = delete;
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_RENDER_CONTEXT_H
+#define fro_RENDER_CONTEXT_H
 
 #include "Singleton.hpp"
 #include "Defines.hpp"
@@ -39,3 +40,5 @@ namespace fro
 		SDLUniquePointer<SDL_Renderer> m_pRenderer;
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_GUI_CONTEXT_H
+#define fro_GUI_CONTEXT_H
 
 #include "Singleton.hpp"
 
@@ -25,3 +26,5 @@ namespace fro
 		GUIContext& operator=(GUIContext&&) noexcept = delete;
 	};
 }
+
+#endif

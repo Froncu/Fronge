@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_COMMAND_H
+#define fro_COMMAND_H
 
 namespace fro
 {
@@ -20,3 +21,5 @@ namespace fro
 		Command& operator=(Command&&) noexcept = delete;
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_SERVICE_LOCATOR_H
+#define fro_SERVICE_LOCATOR_H
 
 #include "Singleton.hpp"
 
@@ -36,3 +37,5 @@ namespace fro
 		std::unique_ptr<ServiceType> m_pService{ new ServiceType() };
 	};
 }
+
+#endif

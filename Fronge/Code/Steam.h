@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_STEAM_H
+#define fro_STEAM_H
 
 #include "Singleton.hpp"
 #include "Defines.hpp"
@@ -61,3 +62,5 @@ namespace fro
 		std::uint32_t m_AppID;
 	};
 }
+
+#endif

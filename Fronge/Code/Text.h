@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_TEXT_H
+#define fro_TEXT_H
 
 #include "Renderable.h"
 
@@ -56,3 +57,5 @@ namespace fro
 		int m_FontSize{};
 	};
 }
+
+#endif

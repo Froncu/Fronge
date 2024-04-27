@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_EVENT_QUEUE_H
+#define fro_EVENT_QUEUE_H
 
 #include <functional>
 #include <deque>
@@ -69,3 +70,5 @@ namespace fro
 		std::deque<EventType> m_dEvents{};
 	};
 }
+
+#endif

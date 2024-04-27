@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_ROTATOR_H
+#define fro_ROTATOR_H
 
 #include "Behaviour.h"
 
@@ -32,3 +33,5 @@ namespace fro
 		float m_Angle{};
 	};
 }
+
+#endif

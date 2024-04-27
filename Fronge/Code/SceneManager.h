@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_SCENE_MANAGER_H
+#define fro_SCENE_MANAGER_H
 
 #include "Singleton.hpp"
 #include "Scene.h"
@@ -32,3 +33,5 @@ namespace fro
 		std::vector<std::unique_ptr<Scene>> m_vpScenes{};
 	};
 }
+
+#endif

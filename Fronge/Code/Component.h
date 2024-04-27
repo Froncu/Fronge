@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_COMPONENT_H
+#define fro_COMPONENT_H
 
 #include "Defines.hpp"
 
@@ -26,3 +27,5 @@ namespace fro
 		GameObject const& m_ParentingGameObject;
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_BEHAVIOUR_H
+#define fro_BEHAVIOUR_H
 
 #include "Component.h"
 
@@ -22,3 +23,5 @@ namespace fro
 		Behaviour& operator=(Behaviour&&) noexcept = delete;
 	};
 }
+
+#endif

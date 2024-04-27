@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_DIRTY_DATA_H
+#define fro_DIRTY_DATA_H
 
 #include "Defines.hpp"
 
@@ -60,3 +61,5 @@ namespace fro
 		bool m_IsDerivedDataDirty{ true };
 	};
 }
+
+#endif

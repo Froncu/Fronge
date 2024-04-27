@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_FRONGE_H
+#define fro_FRONGE_H
 
 #include "Singleton.hpp"
 
@@ -21,3 +22,5 @@ namespace fro
 		Fronge& operator=(Fronge&&) noexcept = delete;
 	};
 }
+
+#endif

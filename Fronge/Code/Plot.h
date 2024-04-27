@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_PLOT_H
+#define fro_PLOT_H
 
 #include "GUI.h"
 #include "Defines.hpp"
@@ -110,3 +111,5 @@ namespace fro
 		std::vector<double> m_vGameObject3DAltResults;
 	};
 }
+
+#endif

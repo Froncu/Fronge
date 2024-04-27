@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_RESOURCE_MANAGER_H
+#define fro_RESOURCE_MANAGER_H
 
 #include "Singleton.hpp"
 #include "Defines.hpp"
@@ -72,3 +73,5 @@ namespace fro
 	};
 	// END TODO
 }
+
+#endif

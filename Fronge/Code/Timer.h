@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_TIMER_H
+#define fro_TIMER_H
 
 #include "Singleton.hpp"
 #include "Defines.hpp"
@@ -29,3 +30,5 @@ namespace fro
 		std::chrono::steady_clock::time_point m_OldTimePoint{ std::chrono::steady_clock::now() };
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_AUDIO_SERVICE_H
+#define fro_AUDIO_SERVICE_H
 
 #include <string>
 
@@ -27,3 +28,5 @@ namespace fro
 		AudioService& operator=(AudioService&&) noexcept = delete;
 	};
 }
+
+#endif

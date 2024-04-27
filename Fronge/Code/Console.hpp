@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_CONSOLE_H
+#define fro_CONSOLE_H
 
 #include "Singleton.hpp"
 

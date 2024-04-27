@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_AUDIO_SDL_H
+#define fro_AUDIO_SDL_H
 
 #include "AudioService.h"
 
@@ -31,3 +32,5 @@ namespace fro
 		std::unique_ptr<AudioSDLImplementation> m_pAudioSDLImplementation;
 	};
 }
+
+#endif

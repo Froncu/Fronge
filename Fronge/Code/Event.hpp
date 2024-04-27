@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_EVENT_H
+#define fro_EVENT_H
 
 #include "Console.hpp"
 
@@ -42,3 +43,5 @@ namespace fro
 		std::vector<Subscriber> m_vSubscribers{};
 	};
 }
+
+#endif

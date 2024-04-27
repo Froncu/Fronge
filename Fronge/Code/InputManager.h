@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_INPUT_MANAGER_H
+#define fro_INPUT_MANAGER_H
 
 #include "Singleton.hpp"
 #include "ButtonInput.h"
@@ -50,3 +51,5 @@ namespace fro
 		std::unique_ptr<GameControllerInputImplementation> m_pImplementation;
 	};
 }
+
+#endif

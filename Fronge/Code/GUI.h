@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_GUI_H
+#define fro_GUI_H
 
 #include "Component.h"
 
@@ -22,3 +23,5 @@ namespace fro
 		GUI& operator=(GUI&&) noexcept = delete;
 	};
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_TRANSFORM_H
+#define fro_TRANSFORM_H
 
 #include "Component.h"
 
@@ -48,3 +49,5 @@ namespace fro
 		glm::vec2 m_WorldPosition{ 0.0f, 0.0f };
 	};
 }
+
+#endif

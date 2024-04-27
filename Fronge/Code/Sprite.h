@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_SPRITE_H
+#define fro_SPRITE_H
 
 #include "Renderable.h"
 #include "Defines.hpp"
@@ -30,3 +31,5 @@ namespace fro
 		SDL_Texture* m_pTexture{};
 	};
 }
+
+#endif

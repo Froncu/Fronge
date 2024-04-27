@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_MOVE_COMMAND_H
+#define fro_MOVE_COMMAND_H
 
 #include "GameObjectCommand.h"
 
@@ -29,3 +30,5 @@ namespace fro
 		float m_MoveSpeed{ 100.0f };
 	};
 }
+
+#endif

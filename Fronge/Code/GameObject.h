@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_GAME_OBJECT_H
+#define fro_GAME_OBJECT_H
 
 #include "Defines.hpp"
 #include "Transform.h"
@@ -127,3 +128,5 @@ namespace fro
 		std::unordered_map<std::size_t, std::unique_ptr<Component>> m_mpComponents{};
 	};
 }
+
+#endif

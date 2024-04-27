@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_FPS_COUNTER_H
+#define fro_FPS_COUNTER_H
 
 #include "Behaviour.h"
 
@@ -24,3 +25,5 @@ namespace fro
 		float m_ElapsedSeconds{};
 	};
 }
+
+#endif

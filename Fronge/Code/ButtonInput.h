@@ -1,4 +1,5 @@
-#pragma once
+#if not defined fro_BUTTON_INPUT_H
+#define fro_BUTTON_INPUT_H
 
 #include "Defines.hpp"
 
@@ -49,3 +50,5 @@ namespace fro
 		State const m_State;
 	};
 }
+
+#endif
