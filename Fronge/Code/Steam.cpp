@@ -136,7 +136,7 @@ fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const ach
 		return "ACH_WIN_ONE_GAME";
 
 	default:
-		throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", achievementID));
+		throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", static_cast<int>(achievementID)));
 	}
 }
 #pragma endregion PrivateMethods
