@@ -16,8 +16,8 @@
 fro::Fronge::Fronge()
 {
 	SystemEventManager::getInstance().m_SystemEvent.addSubscribers({
-			std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
-			std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1) });
+		std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
+		std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1) });
 }
 
 fro::Fronge::~Fronge()
