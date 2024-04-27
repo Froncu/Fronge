@@ -1,12 +1,12 @@
+#include "Fronge.h"
+#include "GameObject.h"
+#include "Rotator.h"
 #include "Scene.h"
 #include "SceneManager.h"
-#include "GameObject.h"
 #include "Sprite.h"
 #include "Transform.h"
-#include "Rotator.h"
-#include "Fronge.h"
 
-#include <SDL_main.h>
+#include <sdl_main.h>
 
 int main(int, char**)
 {

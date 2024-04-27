@@ -1,11 +1,11 @@
 #if not defined fro_GAME_OBJECT_H
 #define fro_GAME_OBJECT_H
 
-#include "Defines.hpp"
-#include "Transform.h"
 #include "Behaviour.h"
-#include "Renderable.h"
+#include "Defines.hpp"
 #include "GUI.h"
+#include "Renderable.h"
+#include "Transform.h"
 
 #include <memory>
 #include <set>

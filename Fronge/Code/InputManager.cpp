@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-#include <SDL_events.h>
+#include <sdl_events.h>
 
 #pragma region PublicMethods
 void fro::InputManager::processKeyboardInputContinous() const

@@ -1,8 +1,6 @@
 #if not defined fro_EVENT_H
 #define fro_EVENT_H
 
-#include "Console.hpp"
-
 #include <functional>
 #include <vector>
 

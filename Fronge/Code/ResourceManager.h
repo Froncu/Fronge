@@ -1,14 +1,14 @@
 #if not defined fro_RESOURCE_MANAGER_H
 #define fro_RESOURCE_MANAGER_H
 
-#include "Singleton.hpp"
 #include "Defines.hpp"
+#include "Singleton.hpp"
 #include "Typenames.hpp"
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include <functional>
 
 struct SDL_Renderer;
 struct SDL_Texture;

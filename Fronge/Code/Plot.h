@@ -1,14 +1,14 @@
 #if not defined fro_PLOT_H
 #define fro_PLOT_H
 
-#include "GUI.h"
 #include "Defines.hpp"
+#include "GUI.h"
 
-#include <vector>
-#include <deque>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
+#include <deque>
 #include <numeric>
+#include <vector>
 
 namespace fro
 {

@@ -1,10 +1,11 @@
 #include "ResourceManager.h"
 
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <stdexcept>
+#include <sdl_image.h>
+#include <sdl_mixer.h>
+#include <sdl_ttf.h>
+
 #include <format>
+#include <stdexcept>
 
 #pragma region Constructors/Destructor
 fro::ResourceManager::ResourceManager()

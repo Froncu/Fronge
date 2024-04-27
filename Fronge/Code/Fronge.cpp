@@ -1,17 +1,17 @@
 #include "Fronge.h"
 
-#include "SystemEventManager.h"
-#include "InputManager.h"
-#include "GUIContext.h"
-#include "ServiceLocator.hpp"
 #include "AudioService.h"
-#include "Steam.h"
-#include "Timer.h"
-#include "SceneManager.h"
+#include "GUIContext.h"
+#include "InputManager.h"
 #include "RenderContext.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
+#include "ServiceLocator.hpp"
+#include "Steam.h"
+#include "SystemEventManager.h"
+#include "Timer.h"
 
-#include <SDL.h>
+#include <sdl.h>
 #include <vld.h>
 
 #pragma region Constructors/Destructor

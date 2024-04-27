@@ -1,11 +1,11 @@
 #include "Rotator.h"
 
-#include "Timer.h"
 #include "GameObject.h"
+#include "Timer.h"
 #include "Transform.h"
 
-#include <gtc/constants.hpp>
 #include <glm.hpp>
+#include <gtc/constants.hpp>
 
 #pragma region Constructors/Destructor
 fro::Rotator::Rotator(GameObject const& parentingGameObject)

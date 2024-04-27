@@ -3,10 +3,11 @@
 
 #include "Defines.hpp"
 
-#include <SDL_Scancode.h>
-#include <SDL_gamecontroller.h>
-#include <variant>
+#include <sdl_scancode.h>
+#include <sdl_gamecontroller.h>
+
 #include <optional>
+#include <variant>
 
 namespace fro
 {

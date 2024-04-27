@@ -1,8 +1,8 @@
 #if not defined froSYSTEM_EVENT_MANAGERT_H
 #define fro_SYSTEM_EVENT_MANAGER_H
 
-#include "Singleton.hpp"
 #include "Event.hpp"
+#include "Singleton.hpp"
 
 typedef union SDL_Event SDL_Event;
 

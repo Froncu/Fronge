@@ -6,6 +6,7 @@
 #include "Typenames.hpp"
 
 #include <vec2.hpp>
+
 #include <memory>
 #include <functional>
 

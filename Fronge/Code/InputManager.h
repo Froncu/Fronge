@@ -1,15 +1,15 @@
 #if not defined fro_INPUT_MANAGER_H
 #define fro_INPUT_MANAGER_H
 
-#include "Singleton.hpp"
 #include "ButtonInput.h"
 #include "Command.hpp"
 #include "Defines.hpp"
+#include "Singleton.hpp"
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 union SDL_Event;
 

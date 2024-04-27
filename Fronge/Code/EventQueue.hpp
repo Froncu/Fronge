@@ -1,9 +1,9 @@
 #if not defined fro_EVENT_QUEUE_H
 #define fro_EVENT_QUEUE_H
 
-#include <functional>
-#include <deque>
 #include <algorithm>
+#include <concepts>
+#include <deque>
 
 namespace fro
 {

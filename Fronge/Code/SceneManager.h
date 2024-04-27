@@ -1,11 +1,11 @@
 #if not defined fro_SCENE_MANAGER_H
 #define fro_SCENE_MANAGER_H
 
-#include "Singleton.hpp"
 #include "Scene.h"
+#include "Singleton.hpp"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 struct SDL_Renderer;
 

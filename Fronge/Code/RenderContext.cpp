@@ -2,9 +2,10 @@
 
 #include "Steam.h"
 
-#include <SDL.h>
-#include <stdexcept>
+#include <sdl.h>
+
 #include <format>
+#include <stdexcept>
 
 #pragma region Constructors/Destructor
 fro::RenderContext::RenderContext()

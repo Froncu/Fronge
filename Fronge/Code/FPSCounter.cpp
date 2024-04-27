@@ -1,8 +1,8 @@
 #include "FPSCounter.h"
 
-#include "Timer.h"
 #include "GameObject.h"
 #include "Text.h"
+#include "Timer.h"
 
 #include <format>
 

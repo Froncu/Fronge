@@ -1,10 +1,10 @@
 #include "Sprite.h"
 
-#include "ResourceManager.h"
-#include "RenderContext.h"
 #include "GameObject.h"
+#include "RenderContext.h"
+#include "ResourceManager.h"
 
-#include <SDL_render.h>
+#include <sdl_render.h>
 
 #pragma region Constructors/Destructor
 fro::Sprite::Sprite(GameObject const& parentingGameObject)

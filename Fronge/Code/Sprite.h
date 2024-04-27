@@ -1,8 +1,8 @@
 #if not defined fro_SPRITE_H
 #define fro_SPRITE_H
 
-#include "Renderable.h"
 #include "Defines.hpp"
+#include "Renderable.h"
 
 #include <string>
 

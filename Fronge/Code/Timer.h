@@ -1,8 +1,8 @@
 #if not defined fro_TIMER_H
 #define fro_TIMER_H
 
-#include "Singleton.hpp"
 #include "Defines.hpp"
+#include "Singleton.hpp"
 
 #include <chrono>
 

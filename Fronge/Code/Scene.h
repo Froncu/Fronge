@@ -3,8 +3,8 @@
 
 #include "GameObject.h"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace fro
 {

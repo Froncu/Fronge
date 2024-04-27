@@ -1,13 +1,14 @@
 #if not defined fro_STEAM_H
 #define fro_STEAM_H
 
-#include "Singleton.hpp"
 #include "Defines.hpp"
+#include "Singleton.hpp"
 
 #include <isteamuserstats.h>
+
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 #define fro_STEAM_ACHIEVEMENT_ID(ID, name){ ID, #ID, name, "", 0, 0 }
 

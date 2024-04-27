@@ -1,13 +1,14 @@
 #include "AudioSDL.h"
 
-#include "ResourceManager.h"
 #include "EventQueue.hpp"
+#include "ResourceManager.h"
 
-#include <SDL_mixer.h>
-#include <stdexcept>
+#include <sdl_mixer.h>
+
 #include <format>
-#include <string>
 #include <map>
+#include <stdexcept>
+#include <string>
 #include <thread>
 
 #pragma region Constructors/Destructor

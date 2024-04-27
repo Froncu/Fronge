@@ -1,9 +1,10 @@
 #include "SystemEventManager.h"
 
-#include <SDL.h>
-#include <SDL_events.h>
-#include <stdexcept>
+#include <sdl.h>
+#include <sdl_events.h>
+
 #include <format>
+#include <stdexcept>
 
 #pragma region Constructors/Destructor
 fro::SystemEventManager::SystemEventManager()

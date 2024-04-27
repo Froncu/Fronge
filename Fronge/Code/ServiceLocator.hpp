@@ -3,6 +3,7 @@
 
 #include "Singleton.hpp"
 
+#include <concepts>
 #include <memory>
 
 namespace fro

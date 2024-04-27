@@ -2,12 +2,13 @@
 
 #include "Console.hpp"
 
+#include <isteamuser.h>
+#include <isteamutils.h>
 #pragma warning (push)
 #pragma warning (disable: 4996)
 #include <steam_api.h>
 #pragma warning (pop)
-#include <isteamutils.h>
-#include <isteamuser.h>
+
 #include <stdexcept>
 
 #pragma region Constructors/Destructor

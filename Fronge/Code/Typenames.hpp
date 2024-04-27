@@ -1,8 +1,8 @@
 #if not defined fro_TYPENAMES_H
 #define fro_TYPENAMES_H
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 namespace fro
 {
