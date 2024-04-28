@@ -11,7 +11,7 @@
     </ImPlot_IncludeDirectories>
 
     <ImPlot_LibraryDirectories>
-      $(SolutionDir)ImPlot\$(AbsoluteOutDir)
+      $(SolutionDir)Engine\ImPlot\$(AbsoluteOutDir)
     </ImPlot_LibraryDirectories>
 
     <ImPlot_Dependecies>

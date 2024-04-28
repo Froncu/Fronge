@@ -9,11 +9,11 @@
 
   <PropertyGroup>
     <Fronge_IncludeDirectories>
-      $(SolutionDir)Fronge\Code\
+      $(SolutionDir)Engine\Fronge\Code\
     </Fronge_IncludeDirectories>
 
     <Fronge_LibraryDirectories>
-      $(SolutionDir)Fronge\$(AbsoluteOutDir)
+      $(SolutionDir)Engine\Fronge\$(AbsoluteOutDir)
     </Fronge_LibraryDirectories>
 
     <Fronge_Dependecies>

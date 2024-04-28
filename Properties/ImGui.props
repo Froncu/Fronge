@@ -14,7 +14,7 @@
     </ImGui_IncludeDirectories>
 
     <ImGui_LibraryDirectories>
-      $(SolutionDir)ImGui\$(AbsoluteOutDir)
+      $(SolutionDir)Engine\ImGui\$(AbsoluteOutDir)
     </ImGui_LibraryDirectories>
 
     <ImGui_Dependecies>

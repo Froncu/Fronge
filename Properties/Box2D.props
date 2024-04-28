@@ -15,7 +15,7 @@
     </Box2D_IncludeDirectories>
 
     <Box2D_LibraryDirectories>
-      $(SolutionDir)Box2D\$(AbsoluteOutDir)
+      $(SolutionDir)Engine\Box2D\$(AbsoluteOutDir)
     </Box2D_LibraryDirectories>
 
     <Box2D_Dependecies>
