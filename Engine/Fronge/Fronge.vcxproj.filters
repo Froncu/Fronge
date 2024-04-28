@@ -1,88 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Code\Behaviour.cpp">
+    <ClCompile Include="Source\Behaviour.cpp">
       <Filter>Component\Behaviour\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ButtonInput.cpp">
+    <ClCompile Include="Source\ButtonInput.cpp">
       <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Component.cpp">
+    <ClCompile Include="Source\Component.cpp">
       <Filter>Component\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\FPSCounter.cpp">
+    <ClCompile Include="Source\FPSCounter.cpp">
       <Filter>Component\Behaviour\FPSCounter</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Fronge.cpp">
+    <ClCompile Include="Source\Fronge.cpp">
       <Filter>Fronge</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameObject.cpp">
+    <ClCompile Include="Source\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GameObjectCommand.cpp">
+    <ClCompile Include="Source\GameObjectCommand.cpp">
       <Filter>GameObjectCommand\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GUI.cpp">
+    <ClCompile Include="Source\GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\InputManager.cpp">
+    <ClCompile Include="Source\InputManager.cpp">
       <Filter>Systems\InputManager\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Code\MoveCommand.cpp">
+    <ClCompile Include="Source\MoveCommand.cpp">
       <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Plot.cpp">
+    <ClCompile Include="Source\Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Renderable.cpp">
+    <ClCompile Include="Source\Renderable.cpp">
       <Filter>Component\Renderable\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Code\RenderContext.cpp">
+    <ClCompile Include="Source\RenderContext.cpp">
       <Filter>Systems\RenderContext</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ResourceManager.cpp">
+    <ClCompile Include="Source\ResourceManager.cpp">
       <Filter>Systems\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Rotator.cpp">
+    <ClCompile Include="Source\Rotator.cpp">
       <Filter>Component\Behaviour\Rotator</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Scene.cpp">
+    <ClCompile Include="Source\Scene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Code\SceneManager.cpp">
+    <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Systems\SceneManager</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Sprite.cpp">
+    <ClCompile Include="Source\Sprite.cpp">
       <Filter>Component\Renderable\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Steam.cpp">
+    <ClCompile Include="Source\Steam.cpp">
       <Filter>Systems\Steam</Filter>
     </ClCompile>
-    <ClCompile Include="Code\SystemEventManager.cpp">
+    <ClCompile Include="Source\SystemEventManager.cpp">
       <Filter>Systems\SystemEventManager</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Text.cpp">
+    <ClCompile Include="Source\Text.cpp">
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Timer.cpp">
+    <ClCompile Include="Source\Timer.cpp">
       <Filter>Systems\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Transform.cpp">
+    <ClCompile Include="Source\Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Code\XInput.cpp">
+    <ClCompile Include="Source\XInput.cpp">
       <Filter>Systems\InputManager\Implementations</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AudioService.cpp">
+    <ClCompile Include="Source\AudioService.cpp">
       <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AudioSDL.cpp">
+    <ClCompile Include="Source\AudioSDL.cpp">
       <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
     </ClCompile>
-    <ClCompile Include="Code\GUIContext.cpp">
+    <ClCompile Include="Source\GUIContext.cpp">
       <Filter>Systems\GUIContext</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PhysicsManager.cpp">
+    <ClCompile Include="Source\PhysicsManager.cpp">
       <Filter>Systems\PhysicsManager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,108 +209,108 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Defines.hpp" />
-    <ClInclude Include="Code\Behaviour.h">
+    <ClInclude Include="Include\Defines.hpp" />
+    <ClInclude Include="Include\Behaviour.h">
       <Filter>Component\Behaviour\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ButtonInput.h">
+    <ClInclude Include="Include\ButtonInput.h">
       <Filter>Systems\InputManager\ButtonInput</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Component.h">
+    <ClInclude Include="Include\Component.h">
       <Filter>Component\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\DirtyData.hpp">
+    <ClInclude Include="Include\DirtyData.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Event.hpp">
+    <ClInclude Include="Include\Event.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\FPSCounter.h">
+    <ClInclude Include="Include\FPSCounter.h">
       <Filter>Component\Behaviour\FPSCounter</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Fronge.h">
+    <ClInclude Include="Include\Fronge.h">
       <Filter>Fronge</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameObject.h">
+    <ClInclude Include="Include\GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GameObjectCommand.h">
+    <ClInclude Include="Include\GameObjectCommand.h">
       <Filter>GameObjectCommand\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\GUI.h">
+    <ClInclude Include="Include\GUI.h">
       <Filter>Component\GUI\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\InputManager.h">
+    <ClInclude Include="Include\InputManager.h">
       <Filter>Systems\InputManager\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Code\MoveCommand.h">
+    <ClInclude Include="Include\MoveCommand.h">
       <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Plot.h">
+    <ClInclude Include="Include\Plot.h">
       <Filter>Component\GUI\Plot</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Renderable.h">
+    <ClInclude Include="Include\Renderable.h">
       <Filter>Component\Renderable\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Code\RenderContext.h">
+    <ClInclude Include="Include\RenderContext.h">
       <Filter>Systems\RenderContext</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ResourceManager.h">
+    <ClInclude Include="Include\ResourceManager.h">
       <Filter>Systems\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Rotator.h">
+    <ClInclude Include="Include\Rotator.h">
       <Filter>Component\Behaviour\Rotator</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Scene.h">
+    <ClInclude Include="Include\Scene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Code\SceneManager.h">
+    <ClInclude Include="Include\SceneManager.h">
       <Filter>Systems\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Singleton.hpp">
+    <ClInclude Include="Include\Singleton.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Sprite.h">
+    <ClInclude Include="Include\Sprite.h">
       <Filter>Component\Renderable\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Steam.h">
+    <ClInclude Include="Include\Steam.h">
       <Filter>Systems\Steam</Filter>
     </ClInclude>
-    <ClInclude Include="Code\SystemEventManager.h">
+    <ClInclude Include="Include\SystemEventManager.h">
       <Filter>Systems\SystemEventManager</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Text.h">
+    <ClInclude Include="Include\Text.h">
       <Filter>Component\Renderable\Text</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Timer.h">
+    <ClInclude Include="Include\Timer.h">
       <Filter>Systems\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Transform.h">
+    <ClInclude Include="Include\Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Code\EventQueue.hpp">
+    <ClInclude Include="Include\EventQueue.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Command.hpp">
+    <ClInclude Include="Include\Command.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ServiceLocator.hpp">
+    <ClInclude Include="Include\ServiceLocator.hpp">
       <Filter>Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AudioService.h">
+    <ClInclude Include="Include\AudioService.h">
       <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AudioSDL.h">
+    <ClInclude Include="Include\AudioSDL.h">
       <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Console.hpp">
+    <ClInclude Include="Include\Console.hpp">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Typenames.hpp" />
-    <ClInclude Include="Code\GUIContext.h">
+    <ClInclude Include="Include\Typenames.hpp" />
+    <ClInclude Include="Include\GUIContext.h">
       <Filter>Systems\GUIContext</Filter>
     </ClInclude>
-    <ClInclude Include="Code\PhysicsManager.h">
+    <ClInclude Include="Include\PhysicsManager.h">
       <Filter>Systems\PhysicsManager</Filter>
     </ClInclude>
   </ItemGroup>

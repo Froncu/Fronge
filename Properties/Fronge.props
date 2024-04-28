@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <Fronge_IncludeDirectories>
-      $(SolutionDir)Engine\Fronge\Code\
+      $(SolutionDir)Engine\Fronge\Include\
     </Fronge_IncludeDirectories>
 
     <Fronge_LibraryDirectories>
