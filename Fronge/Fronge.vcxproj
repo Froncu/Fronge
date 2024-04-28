@@ -59,19 +59,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -94,6 +94,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +127,7 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +144,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -19,46 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_api.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_block_allocator.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_body.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_broad_phase.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_chain_shape.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_circle_shape.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_collision.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_common.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_contact.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_contact_manager.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_distance.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_distance_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_draw.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_dynamic_tree.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_edge_shape.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_fixture.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_friction_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_gear_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_growable_stack.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_math.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_motor_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_mouse_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_polygon_shape.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_prismatic_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_pulley_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_revolute_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_rope.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_settings.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_shape.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_stack_allocator.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_timer.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_time_of_impact.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_time_step.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_types.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_weld_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_wheel_joint.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_world.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\b2_world_callbacks.h" />
-    <ClInclude Include="..\External\Box2D\include\box2d\box2d.h" />
     <ClInclude Include="..\External\Box2D\src\dynamics\b2_chain_circle_contact.h" />
     <ClInclude Include="..\External\Box2D\src\dynamics\b2_chain_polygon_contact.h" />
     <ClInclude Include="..\External\Box2D\src\dynamics\b2_circle_contact.h" />
@@ -157,26 +117,27 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Properties\Global.props" />
+    <Import Project="..\Properties\General.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -190,7 +151,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -204,7 +166,8 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -218,7 +181,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
