@@ -20,6 +20,7 @@
 
       <AdditionalLibraryDirectories>
         $(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;
+        $(SolutionDir)Box2D\Builds\$(Configuration) ($(Platform))\;
         $(SolutionDir)External\SDL\lib\x86\;
         $(SolutionDir)External\SDL_image\lib\x86\;
         $(SolutionDir)External\SDL_ttf\lib\x86\;
@@ -29,6 +30,7 @@
 
       <AdditionalDependencies>
         Fronge.lib;
+        Box2D.lib;
         SDL2.lib;
         SDL2main.lib;
         SDL2_image.lib;

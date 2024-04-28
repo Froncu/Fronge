@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_api.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_block_allocator.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_body.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_broad_phase.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_chain_shape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_circle_shape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_collision.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_common.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_contact.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_contact_manager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_distance.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_distance_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_draw.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_dynamic_tree.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_edge_shape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_fixture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_friction_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_gear_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_growable_stack.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_math.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_motor_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_mouse_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_polygon_shape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_prismatic_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_pulley_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_revolute_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_rope.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_settings.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_shape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_stack_allocator.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_time_of_impact.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_time_step.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_types.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_weld_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_wheel_joint.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_world.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\b2_world_callbacks.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\include\box2d\box2d.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_chain_circle_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_chain_polygon_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_circle_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_contact_solver.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_edge_circle_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_edge_polygon_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_island.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_polygon_circle_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\Box2D\src\dynamics\b2_polygon_contact.h">
+      <Filter>Source\Dynamics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{40f354f8-ae82-46dc-b9b1-fcbe7c62dd56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{918db1bc-94a2-48ff-b4f3-3be035180831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Dynamics">
+      <UniqueIdentifier>{30cb09c5-3ee3-44bb-b35c-65937cb43348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{2332d267-df6b-4787-98db-3d165ac27d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Rope">
+      <UniqueIdentifier>{981689ad-162c-4ca8-afad-d32a1b7cf72c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{d2590346-8abb-467e-bccf-b9eb83ad53e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_body.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_chain_circle_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_chain_polygon_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_circle_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact_manager.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact_solver.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_distance_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_edge_circle_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_edge_polygon_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_fixture.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_friction_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_gear_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_island.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_motor_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_mouse_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_polygon_circle_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_polygon_contact.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_prismatic_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_pulley_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_revolute_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_weld_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_wheel_joint.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_world.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\dynamics\b2_world_callbacks.cpp">
+      <Filter>Source\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_timer.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_block_allocator.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_draw.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_math.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_settings.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\common\b2_stack_allocator.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\rope\b2_rope.cpp">
+      <Filter>Source\Rope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_broad_phase.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_chain_shape.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_circle_shape.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_circle.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_edge.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_polygon.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_collision.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_distance.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_dynamic_tree.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_edge_shape.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_polygon_shape.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\Box2D\src\collision\b2_time_of_impact.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

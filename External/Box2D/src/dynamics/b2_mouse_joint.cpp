@@ -84,9 +84,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	b2Rot qB(aB);
 
-	// HACK: I would like to prevent poking around external library's source files
-	// float mass = m_bodyB->GetMass();
-	// END HACK
+	float mass = m_bodyB->GetMass();
 
 	float d = m_damping;
 	float k = m_stiffness;
