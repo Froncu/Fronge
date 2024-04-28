@@ -14,17 +14,9 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-    </ClCompile>
-  </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup>
-    <ClCompile>
       <TreatWarningAsError>true</TreatWarningAsError>
-    </ClCompile>
-  </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup>
-    <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
 
       <SDLCheck>true</SDLCheck>
@@ -34,7 +26,7 @@
         $(SolutionDir)External\SDL_image\include\;
         $(SolutionDir)External\SDL_ttf\include\;
         $(SolutionDir)External\SDL_mixer\include\;
-        $(SolutionDir)External\GLM\;$(SolutionDir)External\ImGui\;
+        $(SolutionDir)External\GLM\;
         $(SolutionDir)External\Box2D\include\;
         $(SolutionDir)External\Box2D\include\box2d\;
         $(SolutionDir)External\Box2D\src\;
@@ -42,13 +34,11 @@
         $(SolutionDir)External\ImGui\backends\;
         $(SolutionDir)External\ImPlot\;
         $(SolutionDir)External\SteamSDK\public\steam\;
-        $(SolutionDir)External\VLD\include\
+        $(SolutionDir)External\VLD\include\;
+        %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
 
       <LanguageStandard>stdcpp20</LanguageStandard>
-
     </ClCompile>
   </ItemDefinitionGroup>
-
-  <ItemGroup />
 </Project>

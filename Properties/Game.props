@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="Global.props" />
+
+  <ImportGroup Label="PropertySheets" />
+
+  <PropertyGroup Label="UserMacros" />
+
+  <PropertyGroup>
+    <AdditionalLibraryDirectories_Common>
+      $(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;
+      $(SolutionDir)Box2D\Builds\$(Configuration) ($(Platform))\
+    </AdditionalLibraryDirectories_Common>
+
+    <AdditionalLibraryDirectories_Release>
+    </AdditionalLibraryDirectories_Release>
+
+    <AdditionalLibraryDirectories_Debug>
+    </AdditionalLibraryDirectories_Debug>
+
+    <AdditionalLibraryDirectories_x64>
+      $(SolutionDir)External\SDL\lib\x64\;
+      $(SolutionDir)External\SDL_image\lib\x64\;
+      $(SolutionDir)External\SDL_ttf\lib\x64\;
+      $(SolutionDir)External\SDL_mixer\lib\x64\;
+      $(SolutionDir)External\SteamSDK\redistributable_bin\win64\
+    </AdditionalLibraryDirectories_x64>
+
+    <AdditionalLibraryDirectories_Win32>
+      $(AdditionalLibraryDirectories_Common);
+      $(SolutionDir)External\SDL\lib\x86\;
+      $(SolutionDir)External\SDL_image\lib\x86\;
+      $(SolutionDir)External\SDL_ttf\lib\x86\;
+      $(SolutionDir)External\SDL_mixer\lib\x86\;
+      $(SolutionDir)External\SteamSDK\redistributable_bin\
+    </AdditionalLibraryDirectories_Win32>
+
+    <AdditionalLibraryDirectories_Release_x64>
+    </AdditionalLibraryDirectories_Release_x64>
+
+    <AdditionalLibraryDirectories_Release_Win32>
+    </AdditionalLibraryDirectories_Release_Win32>
+
+    <AdditionalLibraryDirectories_Debug_x64>
+      $(SolutionDir)External\VLD\lib\Win64\
+    </AdditionalLibraryDirectories_Debug_x64>
+
+    <AdditionalLibraryDirectories_Debug_Win32>
+      $(SolutionDir)External\VLD\lib\Win32\
+    </AdditionalLibraryDirectories_Debug_Win32>
+
+    <AdditionalDependencies_Common>
+      Fronge.lib;
+      Box2D.lib;
+      SDL2.lib;
+      SDL2main.lib;
+      SDL2_image.lib;
+      SDL2_ttf.lib;
+      SDL2_mixer.lib;
+      xinput.lib
+    </AdditionalDependencies_Common>
+
+    <AdditionalDependencies_Release>
+    </AdditionalDependencies_Release>
+
+    <AdditionalDependencies_Debug>
+      vld.lib
+    </AdditionalDependencies_Debug>
+
+    <AdditionalDependencies_x64>
+      steam_api64.lib
+    </AdditionalDependencies_x64>
+
+    <AdditionalDependencies_Win32>
+      steam_api.lib
+    </AdditionalDependencies_Win32>
+
+    <AdditionalDependencies_Release_x64>
+    </AdditionalDependencies_Release_x64>
+
+    <AdditionalDependencies_Release_Win32>
+    </AdditionalDependencies_Release_Win32>
+
+    <AdditionalDependencies_Debug_x64>
+    </AdditionalDependencies_Debug_x64>
+
+    <AdditionalDependencies_Debug_Win32>
+    </AdditionalDependencies_Debug_Win32>
+
+    <PostBuildEventCommand_Common>
+      mkdir "$(OutDir)Resources"
+      xcopy "$(ProjectDir)Resources\" "$(OutDir)Resources" /y /q
+      xcopy "$(SolutionDir)External\SteamSDK\steam_appid.txt" "$(OutDir)" /y /q
+    </PostBuildEventCommand_Common>
+
+    <PostBuildEventCommand_Release>
+    </PostBuildEventCommand_Release>
+
+    <PostBuildEventCommand_Debug>
+    </PostBuildEventCommand_Debug>
+
+    <PostBuildEventCommand_x64>
+      xcopy "$(SolutionDir)External\SDL\lib\x64\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_image\lib\x64\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_ttf\lib\x64\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_mixer\lib\x64\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\win64\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win64\*.dll" "$(OutDir)" /y /q
+    </PostBuildEventCommand_x64>
+
+    <PostBuildEventCommand_Win32>
+      xcopy "$(SolutionDir)External\SDL\lib\x86\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_image\lib\x86\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_ttf\lib\x86\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SDL_mixer\lib\x86\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SteamSDK\redistributable_bin\*.dll" "$(OutDir)" /y /q
+      xcopy "$(SolutionDir)External\SteamSDK\public\steam\lib\win32\*.dll" "$(OutDir)" /y /q
+    </PostBuildEventCommand_Win32>
+
+    <PostBuildEventCommand_Release_x64>
+    </PostBuildEventCommand_Release_x64>
+
+    <PostBuildEventCommand_Release_Win32>
+    </PostBuildEventCommand_Release_Win32>
+
+    <PostBuildEventCommand_Debug_x64>
+      xcopy "$(SolutionDir)External\VLD\bin\Win64\*" "$(OutDir)" /y /q
+    </PostBuildEventCommand_Debug_x64>
+
+    <PostBuildEventCommand_Debug_Win32>
+      xcopy "$(SolutionDir)External\VLD\bin\Win32\*" "$(OutDir)" /y /q
+    </PostBuildEventCommand_Debug_Win32>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(SolutionDir)Fronge\Code\;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+
+    <Link>
+      <SubSystem Condition="'$(Configuration)' == 'Release'">Windows</SubSystem>
+      <SubSystem Condition="'$(Configuration)' == 'Debug'">Console</SubSystem>
+
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'x64'">
+        $(AdditionalLibraryDirectories_Common);
+        $(AdditionalLibraryDirectories_Release);
+        $(AdditionalLibraryDirectories_x64);
+        $(AdditionalLibraryDirectories_Release_x64);
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'Win32'">
+        $(AdditionalLibraryDirectories_Common);
+        $(AdditionalLibraryDirectories_Release);
+        $(AdditionalLibraryDirectories_Win32);
+        $(AdditionalLibraryDirectories_Release_Win32);
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'x64'">
+        $(AdditionalLibraryDirectories_Common);
+        $(AdditionalLibraryDirectories_Debug);
+        $(AdditionalLibraryDirectories_x64);
+        $(AdditionalLibraryDirectories_Debug_x64);
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+
+      <AdditionalLibraryDirectories Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'Win32'">
+        $(AdditionalLibraryDirectories_Common);
+        $(AdditionalLibraryDirectories_Debug);
+        $(AdditionalLibraryDirectories_Win32);
+        $(AdditionalLibraryDirectories_Debug_Win32);
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'x64'">
+        $(AdditionalDependencies_Common);
+        $(AdditionalDependencies_Release);
+        $(AdditionalDependencies_x64);
+        $(AdditionalDependencies_Release_x64);
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'Win32'">
+        $(AdditionalDependencies_Common);
+        $(AdditionalDependencies_Release);
+        $(AdditionalDependencies_Win32);
+        $(AdditionalDependencies_Release_Win32);
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'x64'">
+        $(AdditionalDependencies_Common);
+        $(AdditionalDependencies_Debug);
+        $(AdditionalDependencies_x64);
+        $(AdditionalDependencies_Debug_x64);
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'Win32'">
+        $(AdditionalDependencies_Common);
+        $(AdditionalDependencies_Debug);
+        $(AdditionalDependencies_Win32);
+        $(AdditionalDependencies_Debug_Win32);
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+    </Link>
+
+    <PostBuildEvent>
+      <Command Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'x64'">
+        $(PostBuildEventCommand_Common)
+        $(PostBuildEventCommand_Release)
+        $(PostBuildEventCommand_x64)
+        $(PostBuildEventCommand_Release_x64)
+      </Command>
+
+      <Command Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'Win32'">
+        $(PostBuildEventCommand_Common)
+        $(PostBuildEventCommand_Release)
+        $(PostBuildEventCommand_Win32)
+        $(PostBuildEventCommand_Release_Win32)
+      </Command>
+
+      <Command Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'x64'">
+        $(PostBuildEventCommand_Common)
+        $(PostBuildEventCommand_Debug)
+        $(PostBuildEventCommand_x64)
+        $(PostBuildEventCommand_Debug_x64)
+      </Command>
+
+      <Command Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'Win32'">
+        $(PostBuildEventCommand_Common)
+        $(PostBuildEventCommand_Debug)
+        $(PostBuildEventCommand_Win32)
+        $(PostBuildEventCommand_Debug_Win32)
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+</Project>
