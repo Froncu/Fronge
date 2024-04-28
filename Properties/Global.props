@@ -35,6 +35,10 @@
         $(SolutionDir)External\SDL_ttf\include\;
         $(SolutionDir)External\SDL_mixer\include\;
         $(SolutionDir)External\GLM\;$(SolutionDir)External\ImGui\;
+        $(SolutionDir)External\Box2D\include\;
+        $(SolutionDir)External\Box2D\include\box2d\;
+        $(SolutionDir)External\Box2D\src\;
+        $(SolutionDir)External\ImGui\;
         $(SolutionDir)External\ImGui\backends\;
         $(SolutionDir)External\ImPlot\;
         $(SolutionDir)External\SteamSDK\public\steam\;
