@@ -2,6 +2,7 @@
 
 #include "GUIContext.h"
 #include "InputManager.h"
+#include "PhysicsManager.h"
 #include "RenderContext.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
@@ -41,6 +42,8 @@ int fro::Fronge::run()
 		InputManager::getInstance().processGamePadInputContinous();
 		if (!SystemEventManager::getInstance().processSystemEvents())
 			break;
+
+		PhysicsManager::getInstance().update(Timer::getInstance().getDeltaSeconds());
 
 		SceneManager::getInstance().update();
 

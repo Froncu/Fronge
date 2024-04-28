@@ -82,6 +82,9 @@
     <ClCompile Include="Code\GUIContext.cpp">
       <Filter>Systems\GUIContext</Filter>
     </ClCompile>
+    <ClCompile Include="Code\PhysicsManager.cpp">
+      <Filter>Systems\PhysicsManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -201,6 +204,9 @@
     <Filter Include="Systems\Services &amp; Providers\Services\Audio">
       <UniqueIdentifier>{18779ffc-38dc-4e95-bf4e-e335f0af45cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\PhysicsManager">
+      <UniqueIdentifier>{e6e6d8f8-cee2-4d77-ac8c-38fdb15c7a22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Defines.hpp" />
@@ -303,6 +309,9 @@
     <ClInclude Include="Code\Typenames.hpp" />
     <ClInclude Include="Code\GUIContext.h">
       <Filter>Systems\GUIContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\PhysicsManager.h">
+      <Filter>Systems\PhysicsManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
