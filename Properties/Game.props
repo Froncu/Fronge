@@ -9,8 +9,8 @@
 
   <PropertyGroup>
     <AdditionalLibraryDirectories_Common>
-      $(SolutionDir)Fronge\Builds\$(Configuration) ($(Platform))\;
-      $(SolutionDir)Box2D\Builds\$(Configuration) ($(Platform))\
+      $(SolutionDir)Fronge\$(AbsoluteOutDir)\;
+      $(SolutionDir)Box2D\$(AbsoluteOutDir)\
     </AdditionalLibraryDirectories_Common>
 
     <AdditionalLibraryDirectories_Release>
@@ -28,7 +28,6 @@
     </AdditionalLibraryDirectories_x64>
 
     <AdditionalLibraryDirectories_Win32>
-      $(AdditionalLibraryDirectories_Common);
       $(SolutionDir)External\SDL\lib\x86\;
       $(SolutionDir)External\SDL_image\lib\x86\;
       $(SolutionDir)External\SDL_ttf\lib\x86\;

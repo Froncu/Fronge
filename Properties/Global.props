@@ -6,9 +6,15 @@
   <PropertyGroup Label="UserMacros" />
 
   <PropertyGroup>
-    <OutDir>$(ProjectDir)Builds\$(Configuration) ($(Platform))\</OutDir>
+    <ConfigurationPlatform>$(Configuration) ($(Platform))\</ConfigurationPlatform>
+    
+    <AbsoluteOutDir>Output\$(ConfigurationPlatform)</AbsoluteOutDir>
+    
+    <AbsoluteIntDir>Intermediate\$(ConfigurationPlatform)</AbsoluteIntDir>
+    
+    <OutDir>$(ProjectDir)$(AbsoluteOutDir)</OutDir>
 
-    <IntDir>$(ProjectDir)Intermediate\$(Configuration) ($(Platform))\</IntDir>
+    <IntDir>$(ProjectDir)$(AbsoluteIntDir)</IntDir>
   </PropertyGroup>
 
   <ItemDefinitionGroup>
