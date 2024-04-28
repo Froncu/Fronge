@@ -81,12 +81,12 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(External_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(External_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -98,6 +98,10 @@ $(SDL_ttf_PostBuildEvent)
 $(Steam_PostBuildEvent)
 $(VLD_PostBuildEvent)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\" "$(OutDir)Resources" /y /q</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -105,14 +109,14 @@ $(VLD_PostBuildEvent)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(External_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(External_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -124,17 +128,21 @@ $(SDL_ttf_PostBuildEvent)
 $(Steam_PostBuildEvent)
 $(VLD_PostBuildEvent)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\" "$(OutDir)Resources" /y /q</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(External_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(External_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -146,6 +154,10 @@ $(SDL_ttf_PostBuildEvent)
 $(Steam_PostBuildEvent)
 $(VLD_PostBuildEvent)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\" "$(OutDir)Resources" /y /q</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -153,14 +165,14 @@ $(VLD_PostBuildEvent)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(External_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(External_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -173,6 +185,10 @@ $(SDL_ttf_PostBuildEvent)
 $(Steam_PostBuildEvent)
 $(VLD_PostBuildEvent)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>mkdir "$(OutDir)Resources"
+xcopy "$(ProjectDir)Resources\" "$(OutDir)Resources" /y /q</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

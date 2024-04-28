@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <Import Project="AbsoluteDirectories.props" Condition="'$(AbsoluteDirectories_Imported)' != 'true'" />
-    
+
   <PropertyGroup>
     <Box2D_IncludeDirectories>
       $(SolutionDir)External\Box2D\include\;

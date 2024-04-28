@@ -94,7 +94,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,7 +111,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,7 +127,7 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);$(Fronge_IncludeDirectories);$(GLM_IncludeDirectories);$(ImGui_IncludeDirectories);$(ImPlot_IncludeDirectories);$(SDL_IncludeDirectories);$(SDL_image_IncludeDirectories);$(SDL_mixer_IncludeDirectories);$(SDL_ttf_IncludeDirectories);$(Steam_IncludeDirectories);$(VLD_IncludeDirectories);$(Xinput_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(External_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

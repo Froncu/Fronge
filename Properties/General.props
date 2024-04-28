@@ -11,7 +11,7 @@
     <IntDir>$(ProjectDir)$(AbsoluteIntDir)</IntDir>
     <OutDir>$(ProjectDir)$(AbsoluteOutDir)</OutDir>
   </PropertyGroup>
-  
+
   <Import Project="Box2D.props" Condition="'$(Box2D_Imported)' != 'true'" />
   <Import Project="Fronge.props" Condition="'$(Fronge_Imported)' != 'true'" />
   <Import Project="GLM.props" Condition="'$(GLM_Imported)' != 'true'" />
@@ -24,6 +24,51 @@
   <Import Project="Steam.props" Condition="'$(Steam_Imported)' != 'true'" />
   <Import Project="VLD.props" Condition="'$(VLD_Imported)' != 'true'" />
   <Import Project="Xinput.props" Condition="'$(Xinput_Imported)' != 'true'" />
+
+  <PropertyGroup>
+    <External_IncludeDirectories>
+      $(Box2D_IncludeDirectories);
+      $(Fronge_IncludeDirectories);
+      $(GLM_IncludeDirectories);
+      $(ImGui_IncludeDirectories);
+      $(ImPlot_IncludeDirectories);
+      $(SDL_IncludeDirectories);
+      $(SDL_image_IncludeDirectories);
+      $(SDL_mixer_IncludeDirectories);
+      $(SDL_ttf_IncludeDirectories);
+      $(Steam_IncludeDirectories);
+      $(VLD_IncludeDirectories);
+      $(Xinput_IncludeDirectories)
+    </External_IncludeDirectories>
+
+    <External_LibraryDirectories>
+      $(Box2D_LibraryDirectories);
+      $(Fronge_LibraryDirectories);
+      $(ImGui_LibraryDirectories);
+      $(ImPlot_LibraryDirectories);
+      $(SDL_LibraryDirectories);
+      $(SDL_image_LibraryDirectories);
+      $(SDL_mixer_LibraryDirectories);
+      $(SDL_ttf_LibraryDirectories);
+      $(Steam_LibraryDirectories);
+      $(VLD_LibraryDirectories);
+      $(Xinput_LibraryDirectories)
+    </External_LibraryDirectories>
+
+    <External_Dependecies>
+      $(Box2D_Dependecies);
+      $(Fronge_Dependecies);
+      $(ImGui_Dependecies);
+      $(ImPlot_Dependecies);
+      $(SDL_Dependecies);
+      $(SDL_image_Dependecies);
+      $(SDL_mixer_Dependecies);
+      $(SDL_ttf_Dependecies);
+      $(Steam_Dependecies);
+      $(VLD_Dependecies);
+      $(Xinput_Dependecies)
+    </External_Dependecies>
+  </PropertyGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
