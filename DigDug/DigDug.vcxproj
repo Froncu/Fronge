@@ -85,8 +85,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(GLM_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(GLMDependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -111,8 +111,8 @@ $(VLD_PostBuildEvent)</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(GLM_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(GLMDependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -133,8 +133,8 @@ $(VLD_PostBuildEvent)</Command>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(GLM_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(GLMDependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent />
@@ -159,8 +159,8 @@ $(VLD_PostBuildEvent)</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(GLM_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(GLMDependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(Box2D_LibraryDirectories);$(Fronge_LibraryDirectories);$(ImGui_LibraryDirectories);$(ImPlot_LibraryDirectories);$(SDL_LibraryDirectories);$(SDL_image_LibraryDirectories);$(SDL_mixer_LibraryDirectories);$(SDL_ttf_LibraryDirectories);$(Steam_LibraryDirectories);$(VLD_LibraryDirectories);$(Xinput_LibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Box2D_Dependecies);$(Fronge_Dependecies);$(ImGui_Dependecies);$(ImPlot_Dependecies);$(SDL_Dependecies);$(SDL_image_Dependecies);$(SDL_mixer_Dependecies);$(SDL_ttf_Dependecies);$(Steam_Dependecies);$(VLD_Dependecies);$(Xinput_Dependecies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent />

@@ -9,5 +9,13 @@
     <ImPlot_IncludeDirectories>
       $(SolutionDir)External\ImPlot\
     </ImPlot_IncludeDirectories>
+
+    <ImPlot_LibraryDirectories>
+      $(SolutionDir)ImPlot\$(AbsoluteOutDir)
+    </ImPlot_LibraryDirectories>
+
+    <ImPlot_Dependecies>
+      ImPlot.lib
+    </ImPlot_Dependecies>
   </PropertyGroup>
 </Project>

@@ -1,36 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\External\ImGui\imgui.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\imgui_demo.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\imgui_draw.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\imgui_tables.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\imgui_widgets.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdl2.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdlrenderer2.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImPlot\implot.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImPlot\implot_demo.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\External\ImPlot\implot_items.cpp">
-      <Filter>Systems\GUIContext\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Behaviour.cpp">
       <Filter>Component\Behaviour\Base</Filter>
     </ClCompile>
@@ -54,9 +24,6 @@
     </ClCompile>
     <ClCompile Include="Code\GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\GUIContext.cpp">
-      <Filter>Systems\GUIContext\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Code\InputManager.cpp">
       <Filter>Systems\InputManager\Interface</Filter>
@@ -111,6 +78,9 @@
     </ClCompile>
     <ClCompile Include="Code\AudioSDL.cpp">
       <Filter>Systems\Services &amp; Providers\Providers\Audio\AudioSDL</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\GUIContext.cpp">
+      <Filter>Systems\GUIContext</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,12 +171,6 @@
     <Filter Include="Systems\GUIContext">
       <UniqueIdentifier>{7e244a65-9991-4e0f-ba4c-8938af1b3e7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\GUIContext\Source">
-      <UniqueIdentifier>{43f04d5c-5f8e-46bb-8f6f-e67a4aeb1e0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\GUIContext\Interface">
-      <UniqueIdentifier>{f59afa66-3910-4736-a369-d3124597c1bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\SystemEventManager">
       <UniqueIdentifier>{972e675d-00ad-4424-88e4-cbd8026756d6}</UniqueIdentifier>
     </Filter>
@@ -269,9 +233,6 @@
     </ClInclude>
     <ClInclude Include="Code\GUI.h">
       <Filter>Component\GUI\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\GUIContext.h">
-      <Filter>Systems\GUIContext\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Code\InputManager.h">
       <Filter>Systems\InputManager\Interface</Filter>
@@ -340,5 +301,8 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Code\Typenames.hpp" />
+    <ClInclude Include="Code\GUIContext.h">
+      <Filter>Systems\GUIContext</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

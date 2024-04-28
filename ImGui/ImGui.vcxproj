@@ -19,57 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\External\Box2D\src\collision\b2_broad_phase.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_chain_shape.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_circle_shape.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_circle.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_edge.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_collide_polygon.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_collision.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_distance.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_dynamic_tree.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_edge_shape.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_polygon_shape.cpp" />
-    <ClCompile Include="..\External\Box2D\src\collision\b2_time_of_impact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_block_allocator.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_draw.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_math.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_settings.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_stack_allocator.cpp" />
-    <ClCompile Include="..\External\Box2D\src\common\b2_timer.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_body.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_chain_circle_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_chain_polygon_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_circle_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact_manager.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_contact_solver.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_distance_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_edge_circle_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_edge_polygon_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_fixture.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_friction_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_gear_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_island.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_motor_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_mouse_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_polygon_circle_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_polygon_contact.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_prismatic_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_pulley_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_revolute_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_weld_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_wheel_joint.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_world.cpp" />
-    <ClCompile Include="..\External\Box2D\src\dynamics\b2_world_callbacks.cpp" />
-    <ClCompile Include="..\External\Box2D\src\rope\b2_rope.cpp" />
+    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="..\External\ImGui\backends\imgui_impl_sdlrenderer2.cpp" />
+    <ClCompile Include="..\External\ImGui\imgui.cpp" />
+    <ClCompile Include="..\External\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="..\External\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="..\External\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="..\External\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1f5f2a4a-2e46-4bed-ad7e-fcf31ba9838b}</ProjectGuid>
-    <RootNamespace>Box2D</RootNamespace>
+    <ProjectGuid>{d4c23a46-4bc8-435d-a7ee-11fb3cc6d26c}</ProjectGuid>
+    <RootNamespace>ImGui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,10 +85,10 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ImGui_IncludeDirectories);$(SDL_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -136,12 +98,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ImGui_IncludeDirectories);$(SDL_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,10 +115,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ImGui_IncludeDirectories);$(SDL_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -166,12 +128,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <AdditionalIncludeDirectories>$(Box2D_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ImGui_IncludeDirectories);$(SDL_IncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
