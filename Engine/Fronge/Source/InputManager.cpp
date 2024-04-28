@@ -8,6 +8,9 @@ void fro::InputManager::processKeyboardInputContinous() const
 	auto pKeyboardState{ SDL_GetKeyboardState(nullptr) };
 	for (auto const& [buttonInput, actionName] : m_mActions)
 	{
+		if (buttonInput.getState() != ButtonInput::State::down)
+			continue;
+
 		auto const& key{ buttonInput.getButton<SDL_Scancode>() };
 		if (!key.has_value())
 			continue;
