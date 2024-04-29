@@ -13,11 +13,11 @@ namespace fro
 	class EventQueue final
 	{
 	public:
-		EventQueue(EventProcesserType const& eventProcesser = {})
-			: m_EventProcesser{ eventProcesser }
+		EventQueue(EventProcesserType const& eventProcessor = {})
+			: m_EventProcessor{ eventProcessor }
 		{
 			if constexpr (std::_Is_specialization_v<EventProcesserType, std::function>)
-				assert(m_EventProcesser not_eq nullptr);
+				assert(m_EventProcessor not_eq nullptr);
 		}
 
 		EventQueue(EventQueue const&) = default;
@@ -34,7 +34,7 @@ namespace fro
 				if (!isEventUnqiue(event))
 					return;
 
-			m_dEvents.emplace_back(std::move(event));
+			m_dQueue.emplace_back(std::move(event));
 		}
 
 		void pushEvent(EventType const& event)
@@ -43,13 +43,13 @@ namespace fro
 				if (!isEventUnqiue(event))
 					return;
 
-			m_dEvents.push_back(event);
+			m_dQueue.push_back(event);
 		}
 
 		void fetchNextEvent()
 		{
-			m_NextEvent = std::move(m_dEvents.front());
-			m_dEvents.pop_front();
+			m_NextEvent = std::move(m_dQueue.front());
+			m_dQueue.pop_front();
 
 			m_IsNextEventFetched = true;
 		}
@@ -59,33 +59,33 @@ namespace fro
 			if (not m_IsNextEventFetched)
 				fetchNextEvent();
 
-			m_EventProcesser(std::move(m_NextEvent));
+			m_EventProcessor(std::move(m_NextEvent));
 			m_IsNextEventFetched = false;
 		}
 
 		void processAllEvents()
 		{
-			while (!m_dEvents.empty())
+			while (!m_dQueue.empty())
 				processEvent();
 		}
 
 		std::deque<EventType> const& getQueue() const
 		{
-			return m_dEvents;
+			return m_dQueue;
 		}
 
 	private:
 		bool isEventUnqiue(EventType const& event)
 		{
-			return std::none_of(m_dEvents.begin(), m_dEvents.end(),
+			return std::none_of(m_dQueue.begin(), m_dQueue.end(),
 				[&event](EventType const& queuedEvent)
 				{
 					return event == queuedEvent;
 				});
 		}
 
-		EventProcesserType m_EventProcesser{};
-		std::deque<EventType> m_dEvents{};
+		EventProcesserType m_EventProcessor{};
+		std::deque<EventType> m_dQueue{};
 
 		EventType m_NextEvent{};
 		bool m_IsNextEventFetched{};
