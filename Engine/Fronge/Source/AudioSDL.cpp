@@ -187,9 +187,9 @@ private:
 			{
 				std::unique_lock uniqueLock{ m_Mutex };
 
-				m_ConditionVariable.wait(uniqueLock, 
-					[this]() 
-					{ 
+				m_ConditionVariable.wait(uniqueLock,
+					[this]()
+					{
 						return not m_EventQueue.getQueue().empty() or not m_RunThread;
 					});
 
