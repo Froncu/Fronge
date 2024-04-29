@@ -140,9 +140,9 @@ private:
 	std::mutex m_Mutex{};
 	std::condition_variable m_ConditionVariable{};
 
-	EventQueue<AudioEvent, std::function<void(AudioEvent const&)>, false> m_EventQueue
+	EventQueue<AudioEvent, std::function<void(AudioEvent)>, false> m_EventQueue
 	{
-		[this](AudioEvent const& event)
+		[](AudioEvent&& event)
 		{
 			if (event.isMusic)
 			{
@@ -196,7 +196,11 @@ private:
 				if (not m_RunThread)
 					break;
 
-				m_EventQueue.processAllEvents();
+				m_EventQueue.fetchNextEvent();
+
+				uniqueLock.unlock();
+
+				m_EventQueue.processEvent();
 			}
 		}
 	};

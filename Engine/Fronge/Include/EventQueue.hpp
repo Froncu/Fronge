@@ -2,18 +2,22 @@
 #define fro_EVENT_QUEUE_H
 
 #include <algorithm>
+#include <cassert>
 #include <concepts>
 #include <deque>
+#include <functional>
 
 namespace fro
 {
-	template<typename EventType, std::invocable<EventType&> EventProcesserType, bool unique = std::equality_comparable<EventType>>
+	template<std::copyable EventType, std::invocable<EventType> EventProcesserType, bool unique = std::equality_comparable<EventType>>
 	class EventQueue final
 	{
 	public:
-		EventQueue(EventProcesserType eventProcesser)
+		EventQueue(EventProcesserType const& eventProcesser = {})
 			: m_EventProcesser{ eventProcesser }
 		{
+			if constexpr (std::_Is_specialization_v<EventProcesserType, std::function>)
+				assert(m_EventProcesser not_eq nullptr);
 		}
 
 		EventQueue(EventQueue const&) = default;
@@ -42,10 +46,21 @@ namespace fro
 			m_dEvents.push_back(event);
 		}
 
+		void fetchNextEvent()
+		{
+			m_NextEvent = std::move(m_dEvents.front());
+			m_dEvents.pop_front();
+
+			m_IsNextEventFetched = true;
+		}
+
 		void processEvent()
 		{
-			m_EventProcesser(m_dEvents.front());
-			m_dEvents.pop_front();
+			if (not m_IsNextEventFetched)
+				fetchNextEvent();
+
+			m_EventProcesser(std::move(m_NextEvent));
+			m_IsNextEventFetched = false;
 		}
 
 		void processAllEvents()
@@ -71,6 +86,9 @@ namespace fro
 
 		EventProcesserType m_EventProcesser{};
 		std::deque<EventType> m_dEvents{};
+
+		EventType m_NextEvent{};
+		bool m_IsNextEventFetched{};
 	};
 }
 
