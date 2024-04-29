@@ -20,10 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Main.cpp" />
-    <ClCompile Include="Code\PlaySoundEffect.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Code\PlaySoundEffect.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

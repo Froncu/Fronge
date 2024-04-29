@@ -7,7 +7,6 @@
 #include "GUIContext.h"
 #include "InputManager.h"
 #include "MoveCommand.h"
-#include "PlaySoundEffect.h"
 #include "RenderContext.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -31,17 +30,8 @@ int main(int, char**)
 		audioService.setProvider<fro::AudioSDL>();
 		audioService.getService().playMusic("BGM #01.mp3", 0.1f);
 
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_SPACE, fro::ButtonInput::State::pressed }, "playSoundEffect");
-		fro::InputManager::getInstance().bindActionToCommand<fro::PlaySoundEffect>("playSoundEffect", 0.5f);
-
 		fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
-		fro::GameObject& text{ scene.addGameObject() };
-		fro::Text* const pTextComponent{ text.addComponent<fro::Text>() };
-		pTextComponent->setFont("Lingua.otf", 32);
-		pTextComponent->setText("Press [space] to play sound effect");
-		text.getComponent<fro::Transform>()->setWorldPosition({ 256.0f, 32.0f });
-		
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player1.getComponent<fro::Transform>()->setLocalPosition({ 300, 300 });
