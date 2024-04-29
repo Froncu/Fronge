@@ -140,7 +140,7 @@ private:
 	std::mutex m_Mutex{};
 	std::condition_variable m_ConditionVariable{};
 
-	EventQueue<AudioEvent, std::function<void(AudioEvent)>, false> m_EventQueue
+	EventQueue<AudioEvent, std::function<void(AudioEvent)>> m_EventQueue
 	{
 		[](AudioEvent&& event)
 		{
