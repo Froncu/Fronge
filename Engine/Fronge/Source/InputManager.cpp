@@ -8,14 +8,14 @@ void fro::InputManager::processKeyboardInputContinous() const
 	auto pKeyboardState{ SDL_GetKeyboardState(nullptr) };
 	for (auto const& [buttonInput, actionName] : m_mActions)
 	{
-		if (buttonInput.getState() != ButtonInput::State::down)
+		if (buttonInput.getState() not_eq ButtonInput::State::down)
 			continue;
 
 		auto const& key{ buttonInput.getButton<SDL_Scancode>() };
-		if (!key.has_value())
+		if (not key.has_value())
 			continue;
 
-		if (!pKeyboardState[key.value()])
+		if (not pKeyboardState[key.value()])
 			continue;
 
 		auto const commandIterator{ m_mCommands.find(actionName) };

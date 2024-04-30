@@ -16,7 +16,7 @@
 fro::AudioSDL::AudioSDL()
 	: m_pAudioSDLImplementation{ std::make_unique<AudioSDLImplementation>() }
 {
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0)
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) not_eq 0)
 		throw std::runtime_error(std::format("Mix_OpenAudio() failed: {}", Mix_GetError()));
 }
 
@@ -165,7 +165,7 @@ private:
 					Mix_VolumeChunk(pEffect, static_cast<int>(event.volume * MIX_MAX_VOLUME));
 					m_mEFFECT_CHANNELS[event.fileName] = Mix_PlayChannel(-1, pEffect, 0);
 				}
-				else if (!event.fileName.empty())
+				else if (not event.fileName.empty())
 				{
 					auto const iterator{ m_mEFFECT_CHANNELS.find(event.fileName) };
 					if (iterator == m_mEFFECT_CHANNELS.end())

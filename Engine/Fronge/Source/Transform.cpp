@@ -97,7 +97,7 @@ void fro::Transform::setLocalPositionDirty()
 	for (GameObject const* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
-		if (!childTransform.isWorldPositionDirty())
+		if (not childTransform.isWorldPositionDirty())
 			childTransform.setWorldPositionDirty();
 	}
 }
@@ -115,7 +115,7 @@ void fro::Transform::setWorldPositionDirty()
 	for (GameObject const* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
-		if (!childTransform.isWorldPositionDirty())
+		if (not childTransform.isWorldPositionDirty())
 			childTransform.setWorldPositionDirty();
 	}
 }

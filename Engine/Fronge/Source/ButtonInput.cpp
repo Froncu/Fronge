@@ -22,7 +22,7 @@ fro::ButtonInput::State fro::ButtonInput::getState() const
 #pragma region Operators
 bool fro::ButtonInput::operator<(ButtonInput const& otherButtonInput) const
 {
-	if (m_Button != otherButtonInput.m_Button)
+	if (m_Button not_eq otherButtonInput.m_Button)
 		return m_Button < otherButtonInput.m_Button;
 
 	return m_State < otherButtonInput.m_State;

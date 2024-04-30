@@ -10,7 +10,7 @@
 #pragma region Constructors/Destructor
 fro::ResourceManager::ResourceManager()
 {
-	if (constexpr int imageFlags{ NULL }; IMG_Init(imageFlags) != imageFlags)
+	if (int constexpr imageFlags{ NULL }; IMG_Init(imageFlags) not_eq imageFlags)
 		throw std::runtime_error(std::format("IMG_Init() failed: {}", IMG_GetError()));
 
 	if (TTF_Init() == -1)
@@ -66,7 +66,7 @@ SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer
 {
 	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
-	if (!pTexture.get())
+	if (not pTexture.get())
 		pTexture = SDLUniquePointer<SDL_Texture>(IMG_LoadTexture(pRenderer, (m_ResourcesDirectory + imageFileName).c_str()), SDL_DestroyTexture);
 
 	return pTexture.get();
@@ -76,7 +76,7 @@ Mix_Music* fro::ResourceManager::getMusic(std::string const& audioFileName)
 {
 	auto& pMusic{ m_mpAudioMusics[audioFileName] };
 
-	if (!pMusic.get())
+	if (not pMusic.get())
 		pMusic = SDLUniquePointer<Mix_Music>(Mix_LoadMUS((m_ResourcesDirectory + audioFileName).c_str()), Mix_FreeMusic);
 
 	return pMusic.get();
@@ -86,7 +86,7 @@ Mix_Chunk* fro::ResourceManager::getEffect(std::string const& audioFileName)
 {
 	auto& pEffect{ m_mpAudioEffects[audioFileName] };
 
-	if (!pEffect.get())
+	if (not pEffect.get())
 		pEffect = SDLUniquePointer<Mix_Chunk>(Mix_LoadWAV((m_ResourcesDirectory + audioFileName).c_str()), Mix_FreeChunk);
 
 	return pEffect.get();
@@ -100,7 +100,7 @@ TTF_Font* fro::ResourceManager::getFont(std::string const& fileName, int const s
 {
 	auto& pFont{ m_mpFonts[{ fileName, size }] };
 
-	if (!pFont.get())
+	if (not pFont.get())
 		pFont = SDLUniquePointer<TTF_Font>(TTF_OpenFont((m_ResourcesDirectory + fileName).c_str(), size), TTF_CloseFont);
 
 	return pFont.get();

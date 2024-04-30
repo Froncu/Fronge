@@ -35,7 +35,7 @@ void fro::Plot::display()
 	if (ImGui::Button("Trash the cache"))
 		m_vIntegersResults = measure(m_vIntegers);
 
-	if (!m_vIntegersResults.empty() && ImPlot::BeginPlot("Integers"))
+	if (not m_vIntegersResults.empty() and ImPlot::BeginPlot("Integers"))
 	{
 		ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
 		ImPlot::SetupAxisTicks(ImAxis_X1, aStepSizes, amountOfStepSizes);
@@ -55,7 +55,7 @@ void fro::Plot::display()
 		m_vGameObject3DAltResults = measure(m_vGameObjects3DAlt);
 	}
 
-	if (!m_vGameObject3DResults.empty() && !m_vGameObject3DAltResults.empty())
+	if (not m_vGameObject3DResults.empty() and not m_vGameObject3DAltResults.empty())
 	{
 		if (ImPlot::BeginPlot("GameObject3D"))
 		{

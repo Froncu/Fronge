@@ -42,7 +42,7 @@ namespace fro
 			else
 			{
 				auto const resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(std::type_index(typeid(ComponentType)), std::make_unique<ComponentType>(*this))) };
-				if (!resultPair.second)
+				if (not resultPair.second)
 					return nullptr;
 
 				return static_cast<ComponentType*>(resultPair.first->second.get());

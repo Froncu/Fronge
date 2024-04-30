@@ -9,7 +9,7 @@
 #pragma region Constructors/Destructor
 fro::SystemEventManager::SystemEventManager()
 {
-	if (SDL_InitSubSystem(SDL_INIT_EVENTS) != 0)
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) not_eq 0)
 		throw std::runtime_error(std::format("SDL_InitSubSystem() failed: {}", SDL_GetError()));
 }
 

@@ -34,7 +34,7 @@ namespace fro
 		void pushEvent(EventType&& event)
 		{
 			if constexpr (unique)
-				if (!isEventUnqiue(event))
+				if (not isEventUnqiue(event))
 					return;
 
 			m_dQueue.emplace_back(std::move(event));
@@ -43,7 +43,7 @@ namespace fro
 		void pushEvent(EventType const& event)
 		{
 			if constexpr (unique)
-				if (!isEventUnqiue(event))
+				if (not isEventUnqiue(event))
 					return;
 
 			m_dQueue.push_back(event);
@@ -68,7 +68,7 @@ namespace fro
 
 		void processAllEvents()
 		{
-			while (!m_dQueue.empty())
+			while (not m_dQueue.empty())
 				processEvent();
 		}
 

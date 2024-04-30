@@ -132,10 +132,10 @@ private:
 		for (auto const& [buttonInput, actionName] : mActions)
 		{
 			auto const optionalButton{ buttonInput.getButton<SDL_GameControllerButton>() };
-			if (!optionalButton.has_value())
+			if (not optionalButton.has_value())
 				continue;
 
-			if (!isButtonInState(convertSDLControllerButtonToXInput(*optionalButton), buttonInput.getState()))
+			if (not isButtonInState(convertSDLControllerButtonToXInput(*optionalButton), buttonInput.getState()))
 				continue;
 
 			auto const actionIterator{ mActions.find(buttonInput) };

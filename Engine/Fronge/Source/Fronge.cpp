@@ -40,7 +40,7 @@ int fro::Fronge::run()
 
 		InputManager::getInstance().processKeyboardInputContinous();
 		InputManager::getInstance().processGamePadInputContinous();
-		if (!SystemEventManager::getInstance().processSystemEvents())
+		if (not SystemEventManager::getInstance().processSystemEvents())
 			break;
 
 		PhysicsManager::getInstance().update(Timer::getInstance().getDeltaSeconds());

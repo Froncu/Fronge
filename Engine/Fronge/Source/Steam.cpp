@@ -21,7 +21,7 @@ fro::Steam::Steam()
 	if (SteamAPI_Init() == 0)
 		throw std::runtime_error("SteamAPI_Init() failed");
 
-	if (!requestStats())
+	if (not requestStats())
 		throw std::runtime_error("couldn't retrieve Steam stats");
 
 	m_AppID = SteamUtils()->GetAppID();
@@ -38,10 +38,10 @@ fro::Steam::~Steam()
 #pragma region PublicMethods
 bool fro::Steam::requestStats() const
 {
-	if (SteamUserStats() == NULL || SteamUser() == NULL)
+	if (SteamUserStats() == NULL or SteamUser() == NULL)
 		return false;
 
-	if (!SteamUser()->BLoggedOn())
+	if (not SteamUser()->BLoggedOn())
 		return false;
 
 	return SteamUserStats()->RequestCurrentStats();
