@@ -169,7 +169,6 @@
     <ClCompile Include="Source\GUI.cpp" />
     <ClCompile Include="Source\GUIContext.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
-    <ClCompile Include="Source\MoveCommand.cpp" />
     <ClCompile Include="Source\PhysicsManager.cpp" />
     <ClCompile Include="Source\Plot.cpp" />
     <ClCompile Include="Source\Renderable.cpp" />
@@ -205,7 +204,6 @@
     <ClInclude Include="Include\GUI.h" />
     <ClInclude Include="Include\GUIContext.h" />
     <ClInclude Include="Include\InputManager.h" />
-    <ClInclude Include="Include\MoveCommand.h" />
     <ClInclude Include="Include\PhysicsManager.h" />
     <ClInclude Include="Include\Plot.h" />
     <ClInclude Include="Include\Renderable.h" />

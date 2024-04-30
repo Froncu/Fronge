@@ -19,17 +19,11 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObjectCommand.cpp">
-      <Filter>GameObjectCommand\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
     </ClCompile>
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>Systems\InputManager\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MoveCommand.cpp">
-      <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClCompile>
     <ClCompile Include="Source\Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
@@ -84,6 +78,9 @@
     </ClCompile>
     <ClCompile Include="Source\PhysicsManager.cpp">
       <Filter>Systems\PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjectCommand.cpp">
+      <Filter>GameObjectCommand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,12 +177,6 @@
     <Filter Include="GameObjectCommand">
       <UniqueIdentifier>{67d36914-0c7b-456d-b269-1688232ff165}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObjectCommand\Base">
-      <UniqueIdentifier>{7d607c10-f242-4e17-982f-cc6ad522abe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjectCommand\MoveCommand">
-      <UniqueIdentifier>{29115244-a906-48f5-b522-5107c6fcf93a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\Services &amp; Providers">
       <UniqueIdentifier>{7e9300c5-0fe9-41c2-a62b-c4d3607cbd4f}</UniqueIdentifier>
     </Filter>
@@ -234,17 +225,11 @@
     <ClInclude Include="Include\GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Include\GameObjectCommand.h">
-      <Filter>GameObjectCommand\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Include\GUI.h">
       <Filter>Component\GUI\Base</Filter>
     </ClInclude>
     <ClInclude Include="Include\InputManager.h">
       <Filter>Systems\InputManager\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\MoveCommand.h">
-      <Filter>GameObjectCommand\MoveCommand</Filter>
     </ClInclude>
     <ClInclude Include="Include\Plot.h">
       <Filter>Component\GUI\Plot</Filter>
@@ -312,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="Include\PhysicsManager.h">
       <Filter>Systems\PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameObjectCommand.h">
+      <Filter>GameObjectCommand</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
