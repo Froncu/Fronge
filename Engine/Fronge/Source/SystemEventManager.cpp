@@ -1,5 +1,8 @@
 #include "SystemEventManager.h"
 
+#include "Console.hpp"
+#include "RenderContext.h"
+
 #include <sdl.h>
 #include <sdl_events.h>
 

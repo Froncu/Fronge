@@ -30,11 +30,16 @@ int main(int, char**)
 		audioService.setProvider<fro::AudioSDL>();
 		audioService.getService().playMusic("BGM #01.mp3", 0.1f);
 
+		fro::RenderContext::getInstance().setScalingMode(fro::RenderContext::ScalingMode::fill);
+		fro::RenderContext::getInstance().setWindowResizeable(false);
+		fro::RenderContext::getInstance().setResolution(160, 144);
+		fro::RenderContext::getInstance().setWindowSize(1280, 960);
+
 		fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
-		player1.getComponent<fro::Transform>()->setLocalPosition({ 300, 300 });
+		player1.getComponent<fro::Transform>()->setLocalPosition({ 8, 8 });
 
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, fro::ButtonInput::State::down }, "moveRight");
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, fro::ButtonInput::State::down }, "moveLeft");
@@ -48,7 +53,7 @@ int main(int, char**)
 
 		fro::GameObject& player2{ scene.addGameObject() };
 		player2.addComponent<fro::Sprite>()->setFileName("DigDug.png");
-		player2.getComponent<fro::Transform>()->setLocalPosition({ 200, 300 });
+		player2.getComponent<fro::Transform>()->setLocalPosition({ 24, 8 });
 
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, fro::ButtonInput::State::down }, "moveRightController");
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, fro::ButtonInput::State::down }, "moveLeftController");
