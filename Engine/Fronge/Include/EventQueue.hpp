@@ -12,6 +12,9 @@ namespace fro
 	template<std::copyable EventType, std::invocable<EventType> EventProcesserType, bool unique = std::equality_comparable<EventType>>
 	class EventQueue final
 	{
+		static_assert(not unique or std::equality_comparable<EventType>, 
+			"queue declared unique, but event is not equality comparable");
+
 	public:
 		EventQueue(EventProcesserType const& eventProcessor = {})
 			: m_EventProcessor{ eventProcessor }
