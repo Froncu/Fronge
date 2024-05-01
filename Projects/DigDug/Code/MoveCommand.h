@@ -27,7 +27,7 @@ namespace fro
 		MoveCommand& operator=(MoveCommand&&) noexcept = delete;
 
 		glm::vec2 m_MoveDirection{};
-		float m_MoveSpeed{ 100.0f };
+		float m_MoveSpeed{ 32.0f };
 	};
 }
 
