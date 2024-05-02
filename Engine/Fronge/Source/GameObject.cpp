@@ -21,7 +21,7 @@ void fro::GameObject::display() const
 		pair.second->display();
 }
 
-void fro::GameObject::setParent(GameObject* const pParent, bool const keepWorldPosition)
+void fro::GameObject::setParent(GameObject* const pParent, bool const keepWorldTransform)
 {
 	if (pParent == this || pParent == m_pParent || owns(pParent))
 		return;
@@ -30,17 +30,19 @@ void fro::GameObject::setParent(GameObject* const pParent, bool const keepWorldP
 		m_pParent->m_spChildren.erase(this);
 
 	Transform& transform{ *getComponent<Transform>() };
-	glm::vec2 const* pOldWorldPosition{};
-	if (keepWorldPosition)
-		pOldWorldPosition = &transform.getWorldPosition();
+	Matrix2D oldWorldTransform;
+	if (keepWorldTransform)
+		oldWorldTransform = transform.getWorldTransform();
 
 	m_pParent = pParent;
 
 	if (m_pParent)
 		m_pParent->m_spChildren.insert(this);
 
-	if (pOldWorldPosition)
-		transform.setLocalPosition(*pOldWorldPosition);
+	if (m_pParent && keepWorldTransform)
+		transform.setWorldTransformation(oldWorldTransform);
+	else
+		transform.setWorldTransformDirty();
 }
 
 bool fro::GameObject::owns(GameObject const* const pGameObject) const

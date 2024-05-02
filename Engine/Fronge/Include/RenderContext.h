@@ -1,11 +1,12 @@
 #if not defined fro_RENDER_CONTEXT_H
 #define fro_RENDER_CONTEXT_H
 
-#include "Singleton.hpp"
 #include "Defines.hpp"
+#include "Matrix2D.h"
+#include "Singleton.hpp"
 #include "Typenames.hpp"
 
-#include <vec2.hpp>
+#include <mat3x3.hpp>
 
 #include <memory>
 #include <functional>
@@ -34,7 +35,7 @@ namespace fro
 		void processSystemEvent(SDL_Event const& event);
 		void clear() const;
 		void present() const;
-		void renderTexture(SDL_Texture* const pTexture, glm::vec2 const& position) const;
+		void renderTexture(SDL_Texture* const pTexture, Matrix2D const& transform) const;
 
 		fro_NODISCARD SDL_Window* getWindow() const;
 		fro_NODISCARD SDL_Renderer* getRenderer() const;
@@ -59,7 +60,7 @@ namespace fro
 		SDLUniquePointer<SDL_Renderer> m_pRenderer;
 
 		ScalingMode m_ScalingMode{ ScalingMode::fill };
-		glm::ivec2 m_ViewportSize{ 720, 480 };
+		glm::ivec2 m_ViewportSize{ 640, 480 };
 	};
 }
 

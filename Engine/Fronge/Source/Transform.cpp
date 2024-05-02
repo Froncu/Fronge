@@ -3,8 +3,8 @@
 #include "GameObject.h"
 
 #pragma region Constructors/Destructor
-fro::Transform::Transform(GameObject const& parentingGameObject) :
-	Component(parentingGameObject)
+fro::Transform::Transform(GameObject const& parentingGameObject)
+	: Component(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
@@ -12,133 +12,135 @@ fro::Transform::Transform(GameObject const& parentingGameObject) :
 
 
 #pragma region PublicMethods
-void fro::Transform::localTranslate(glm::vec2 const& localTranslator)
+void fro::Transform::setLocalTransformation(Matrix2D const& transformation)
 {
-	getLocalPositionInternal() += localTranslator;
+	m_LocalTransform = transformation;
 
-	setWorldPositionDirty();
+	setWorldTransformDirty();
 }
 
-void fro::Transform::worldTranslate(glm::vec2 const& worldTranslator)
+void fro::Transform::setLocalTranslation(glm::vec2 const& translation)
 {
-	getWorldPositionInternal() += worldTranslator;
+	calculateLocalTransform();
+	m_LocalTransform.setTranslation(translation);
 
-	setLocalPositionDirty();
+	setWorldTransformDirty();
 }
 
-void fro::Transform::setLocalPosition(glm::vec2 const& localPosition)
+void fro::Transform::setLocalRotation(float const rotation)
 {
-	m_LocalPosition = localPosition;
-	m_IsLocalPositionDirty = false;
+	calculateLocalTransform();
+	m_LocalTransform.setRotation(rotation);
 
-	setWorldPositionDirty();
+	setWorldTransformDirty();
 }
 
-void fro::Transform::setWorldPosition(glm::vec2 const& worldPosition)
+void fro::Transform::setLocalScale(glm::vec2 const& scale)
 {
-	m_WorldPosition = worldPosition;
-	m_IsWorldPositionDirty = false;
+	calculateLocalTransform();
+	m_LocalTransform.setScale(scale);
 
-	setLocalPositionDirty();
+	setWorldTransformDirty();
 }
 
-glm::vec2 const& fro::Transform::getLocalPosition()
+void fro::Transform::setWorldTransformDirty()
 {
-	return getLocalPositionInternal();
+	calculateLocalTransform();
+	m_IsWorldTransformDirty = true;
+
+	for (GameObject const* const pChild : getParentingGameObject().getChildren())
+	{
+		Transform& childTransform{ *pChild->getComponent<Transform>() };
+		if (not childTransform.m_IsWorldTransformDirty)
+			childTransform.setWorldTransformDirty();
+	}
 }
 
-glm::vec2 const& fro::Transform::getWorldPosition()
+void fro::Transform::setWorldTransformation(Matrix2D const& transformation)
 {
-	return getWorldPositionInternal();
+	m_WorldTransform = transformation;
+
+	setLocalTransformDirty();
 }
 
-bool fro::Transform::isLocalPositionDirty() const
+void fro::Transform::setWorldTranslation(glm::vec2 const& translation)
 {
-	return m_IsLocalPositionDirty;
+	calculateWorldTransform();
+	m_WorldTransform.setTranslation(translation);
+
+	setLocalTransformDirty();
 }
 
-bool fro::Transform::isWorldPositionDirty() const
+void fro::Transform::setWorldRotation(float const rotation)
 {
-	return m_IsWorldPositionDirty;
+	calculateWorldTransform();
+	m_WorldTransform.setRotation(rotation);
+
+	setLocalTransformDirty();
+}
+
+void fro::Transform::setWorldScale(glm::vec2 const& scale)
+{
+	calculateWorldTransform();
+	m_WorldTransform.setScale(scale);;
+
+	setLocalTransformDirty();
+}
+
+fro::Matrix2D const& fro::Transform::getLocalTransform()
+{
+	calculateLocalTransform();
+	return m_LocalTransform;
+}
+
+fro::Matrix2D const& fro::Transform::getWorldTransform()
+{
+	calculateWorldTransform();
+	return m_WorldTransform;
 }
 #pragma endregion PublicMethods
 
 
 
 #pragma region PrivateMethods
-void fro::Transform::calculateLocalPosition()
+void fro::Transform::setLocalTransformDirty()
 {
-	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
-	if (pParentingGameObjectsParent)
-		m_LocalPosition = getWorldPosition() - pParentingGameObjectsParent->getComponent<Transform>()->getWorldPosition();
-	else
-		m_LocalPosition = getWorldPosition();
-}
-
-void fro::Transform::calculateWorldPosition()
-{
-	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
-	if (pParentingGameObjectsParent)
-		m_WorldPosition = getLocalPosition() + pParentingGameObjectsParent->getComponent<Transform>()->getWorldPosition();
-	else
-		m_WorldPosition = getLocalPosition();
-}
-
-void fro::Transform::setLocalPositionDirty()
-{
-	if (m_IsWorldPositionDirty)
-	{
-		calculateWorldPosition();
-		m_IsLocalPositionDirty = false;
-	}
-
-	m_IsLocalPositionDirty = true;
+	calculateWorldTransform();
+	m_IsLocalTransformDirty = true;
 
 	for (GameObject const* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
-		if (not childTransform.isWorldPositionDirty())
-			childTransform.setWorldPositionDirty();
+		if (not childTransform.m_IsWorldTransformDirty)
+			childTransform.setWorldTransformDirty();
 	}
 }
 
-void fro::Transform::setWorldPositionDirty()
+void fro::Transform::calculateLocalTransform()
 {
-	if (m_IsLocalPositionDirty)
-	{
-		calculateLocalPosition();
-		m_IsLocalPositionDirty = false;
-	}
+	if (not m_IsLocalTransformDirty)
+		return;
 
-	m_IsWorldPositionDirty = true;
+	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	if (pParentingGameObjectsParent)
+		m_LocalTransform = pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform() / getWorldTransform();
+	else
+		m_LocalTransform = getWorldTransform();
 
-	for (GameObject const* const pChild : getParentingGameObject().getChildren())
-	{
-		Transform& childTransform{ *pChild->getComponent<Transform>() };
-		if (not childTransform.isWorldPositionDirty())
-			childTransform.setWorldPositionDirty();
-	}
+	m_IsLocalTransformDirty = false;
 }
 
-glm::vec2& fro::Transform::getLocalPositionInternal()
+void fro::Transform::calculateWorldTransform()
 {
-	if (m_IsLocalPositionDirty)
-	{
-		calculateLocalPosition();
-		m_IsLocalPositionDirty = false;
-	}
+	if (not m_IsWorldTransformDirty)
+		return;
 
-	return m_LocalPosition;
-}
+	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	if (pParentingGameObjectsParent)
+		m_WorldTransform = getLocalTransform() * pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
+	else
+		m_WorldTransform = getLocalTransform();
 
-glm::vec2& fro::Transform::getWorldPositionInternal()
-{
-	if (m_IsWorldPositionDirty)
-	{
-		calculateWorldPosition();
-		m_IsWorldPositionDirty = false;
-	}
-
-	return m_WorldPosition;
+	m_IsWorldTransformDirty = false;
 }
 #pragma endregion PrivateMethods

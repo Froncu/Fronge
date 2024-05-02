@@ -2,8 +2,7 @@
 #define fro_TRANSFORM_H
 
 #include "Component.h"
-
-#include <vec2.hpp>
+#include "Matrix2D.h"
 
 namespace fro
 {
@@ -14,17 +13,18 @@ namespace fro
 
 		virtual ~Transform() override = default;
 
-		void localTranslate(glm::vec2 const& localTranslator);
-		void worldTranslate(glm::vec2 const& worldTranslator);
+		void setLocalTransformation(Matrix2D const& transformation);
+		void setLocalTranslation(glm::vec2 const& translation);
+		void setLocalRotation(float const rotation);
+		void setLocalScale(glm::vec2 const& scale);
+		void setWorldTransformDirty();
+		void setWorldTransformation(Matrix2D const& transformation);
+		void setWorldTranslation(glm::vec2 const& translation);
+		void setWorldRotation(float const rotation);
+		void setWorldScale(glm::vec2 const& scale);
 
-		void setLocalPosition(glm::vec2 const& localPosition);
-		void setWorldPosition(glm::vec2 const& worldPosition);
-
-		fro_NODISCARD glm::vec2 const& getLocalPosition();
-		fro_NODISCARD glm::vec2 const& getWorldPosition();
-
-		fro_NODISCARD bool isLocalPositionDirty() const;
-		fro_NODISCARD bool isWorldPositionDirty() const;
+		fro_NODISCARD Matrix2D const& getLocalTransform();
+		fro_NODISCARD Matrix2D const& getWorldTransform();
 
 	private:
 		Transform(Transform const&) = delete;
@@ -33,20 +33,16 @@ namespace fro
 		Transform& operator=(Transform const&) = delete;
 		Transform& operator=(Transform&&) noexcept = delete;
 
-		void calculateLocalPosition();
-		void calculateWorldPosition();
+		void calculateLocalTransform();
+		void calculateWorldTransform();
 
-		void setLocalPositionDirty();
-		void setWorldPositionDirty();
+		void setLocalTransformDirty();
 
-		fro_NODISCARD glm::vec2& getLocalPositionInternal();
-		fro_NODISCARD glm::vec2& getWorldPositionInternal();
+		Matrix2D m_LocalTransform{};
+		Matrix2D m_WorldTransform{};
 
-		bool m_IsLocalPositionDirty{};
-		bool m_IsWorldPositionDirty{};
-
-		glm::vec2 m_LocalPosition{ 0.0f, 0.0f };
-		glm::vec2 m_WorldPosition{ 0.0f, 0.0f };
+		bool m_IsLocalTransformDirty{};
+		bool m_IsWorldTransformDirty{};
 	};
 }
 

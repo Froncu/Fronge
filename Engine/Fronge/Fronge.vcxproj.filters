@@ -82,6 +82,7 @@
     <ClCompile Include="Source\GameObjectCommand.cpp">
       <Filter>GameObjectCommand</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Matrix2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -301,5 +302,6 @@
     <ClInclude Include="Include\GameObjectCommand.h">
       <Filter>GameObjectCommand</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Matrix2D.h" />
   </ItemGroup>
 </Project>

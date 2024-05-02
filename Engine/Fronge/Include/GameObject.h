@@ -28,7 +28,7 @@ namespace fro
 		void render() const;
 		void display() const;
 
-		void setParent(GameObject* const pParent, bool const keepWorldPosition = true);
+		void setParent(GameObject* const pParent, bool const keepWorldTransform = true);
 
 		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
 		fro_NODISCARD GameObject const* getParent() const;

@@ -18,7 +18,7 @@ fro::Sprite::Sprite(GameObject const& parentingGameObject)
 #pragma region PublicMethods
 void fro::Sprite::render() const
 {
-	RenderContext::getInstance().renderTexture(m_pTexture, getParentingGameObject().getComponent<Transform>()->getWorldPosition());
+	RenderContext::getInstance().renderTexture(m_pTexture, getParentingGameObject().getComponent<Transform>()->getWorldTransform());
 }
 
 void fro::Sprite::setFileName(std::string const& fileName)

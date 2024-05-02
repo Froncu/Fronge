@@ -11,7 +11,7 @@
 #include "Timer.h"
 
 #include <sdl.h>
-#include <vld.h>
+//#include <vld.h>
 
 #pragma region Constructors/Destructor
 fro::Fronge::Fronge()

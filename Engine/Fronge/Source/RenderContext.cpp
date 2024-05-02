@@ -14,8 +14,7 @@ fro::RenderContext::RenderContext()
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) not_eq 0)
 		throw std::runtime_error(std::format("SDL_InitSubSystem() failed: {}", SDL_GetError()));
 
-	glm::ivec2 constexpr initialWindowSize{ 640, 480 };
-	m_pWindow = { SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, initialWindowSize.x, initialWindowSize.y, NULL), SDL_DestroyWindow };
+	m_pWindow = { SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_ViewportSize.x, m_ViewportSize.y, NULL), SDL_DestroyWindow };
 	if (not m_pWindow.get())
 		throw std::runtime_error(std::format("SDL_CreateWindow() failed: {}", SDL_GetError()));
 
@@ -60,21 +59,24 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, glm::vec2 const& position) const
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Matrix2D const& transform) const
 {
 	int textureWidth;
 	int textureHeight;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
 
-	const SDL_Rect destinationRectangle
+	glm::vec2 const translation{ transform.getTranslation() };
+	glm::vec2 const destinationSize{ textureWidth * transform.getScale().x, textureHeight * transform.getScale().y };
+
+	const SDL_FRect destinationRectangle
 	{
-		static_cast<int>(position.x) - textureWidth / 2,
-		static_cast<int>(position.y) - textureHeight / 2,
-		textureWidth,
-		textureHeight
+		translation.x - destinationSize.x / 2,
+		translation.y - destinationSize.y / 2,
+		destinationSize.x,
+		destinationSize.y
 	};
 
-	SDL_RenderCopy(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle);
+	SDL_RenderCopyExF(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle, glm::degrees(transform.getRotation()), nullptr, SDL_RendererFlip::SDL_FLIP_NONE);
 }
 
 SDL_Window* fro::RenderContext::getWindow() const
