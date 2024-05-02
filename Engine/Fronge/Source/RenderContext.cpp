@@ -4,6 +4,7 @@
 
 #include <sdl.h>
 
+#include <array>
 #include <format>
 #include <stdexcept>
 #include <tuple>
@@ -64,19 +65,41 @@ void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Matrix2D con
 	int textureWidth;
 	int textureHeight;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
+	float const halfWidth{ textureWidth / 2.0f };
+	float const halfHeight{ textureHeight / 2.0f };
 
-	glm::vec2 const translation{ transform.getTranslation() };
-	glm::vec2 const destinationSize{ textureWidth * transform.getScale().x, textureHeight * transform.getScale().y };
-
-	const SDL_FRect destinationRectangle
+	SDL_Color constexpr vertexColor
 	{
-		translation.x - destinationSize.x / 2,
-		translation.y - destinationSize.y / 2,
-		destinationSize.x,
-		destinationSize.y
+		.r{ 255 },
+		.g{ 255 },
+		.b{ 255 },
+		.a{ 255 }
 	};
 
-	SDL_RenderCopyExF(m_pRenderer.get(), pTexture, nullptr, &destinationRectangle, glm::degrees(transform.getRotation()), nullptr, SDL_RendererFlip::SDL_FLIP_NONE);
+	std::array<SDL_Vertex, 4> vVertices
+	{
+		SDL_Vertex({ -halfWidth, -halfHeight }, vertexColor, { 0, 0 }),
+		SDL_Vertex({ +halfWidth, -halfHeight }, vertexColor, { 1, 0 }),
+		SDL_Vertex({ +halfWidth, +halfHeight }, vertexColor, { 1, 1 }),
+		SDL_Vertex({ -halfWidth, +halfHeight }, vertexColor, { 0, 1 })
+	};
+
+	for (SDL_Vertex& vertex : vVertices)
+	{
+		glm::vec3 position{ vertex.position.x, vertex.position.y, 1.0f };
+
+		position = position * transform.getTransformation();
+		vertex.position.x = position.x;
+		vertex.position.y = position.y;
+	}
+
+	std::array<int, 6> constexpr vIndices
+	{
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	SDL_RenderGeometry(m_pRenderer.get(), pTexture, vVertices.data(), static_cast<int>(vVertices.size()), vIndices.data(), static_cast<int>(vIndices.size()));
 }
 
 SDL_Window* fro::RenderContext::getWindow() const
