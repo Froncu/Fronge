@@ -17,7 +17,7 @@ fro::MoveCommand::MoveCommand(GameObject const& commandedGameObject)
 #pragma region Operators
 void fro::MoveCommand::operator()()
 {
-	glm::ivec2 const worldPosition{ getCommandedGameObject().getComponent<Transform>()->getWorldPosition() };
+	glm::ivec2 const worldPosition{ getCommandedGameObject().getComponent<Transform>()->getWorldTransform().getTranslation() };
 
 	glm::vec2 correctedMoveDirection{};
 	if (m_MoveDirection.x)
@@ -39,7 +39,7 @@ void fro::MoveCommand::operator()()
 			correctedMoveDirection = m_MoveDirection;
 	}
 
-	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * correctedMoveDirection);
+	getCommandedGameObject().getComponent<Transform>()->setLocalTranslation(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * correctedMoveDirection);
 }
 #pragma endregion Operators
 

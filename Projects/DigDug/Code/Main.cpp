@@ -39,7 +39,7 @@ int main(int, char**)
 
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
-		player1.getComponent<fro::Transform>()->setLocalPosition({ 8, 8 });
+		player1.getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
 
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, fro::ButtonInput::State::down }, "moveRight");
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, fro::ButtonInput::State::down }, "moveLeft");
@@ -53,7 +53,7 @@ int main(int, char**)
 
 		fro::GameObject& player2{ scene.addGameObject() };
 		player2.addComponent<fro::Sprite>()->setFileName("DigDug.png");
-		player2.getComponent<fro::Transform>()->setLocalPosition({ 24, 8 });
+		player2.getComponent<fro::Transform>()->setLocalTranslation({ 24, 8 });
 
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, fro::ButtonInput::State::down }, "moveRightController");
 		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, fro::ButtonInput::State::down }, "moveLeftController");
