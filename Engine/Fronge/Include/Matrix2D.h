@@ -33,6 +33,9 @@ namespace fro
 		glm::vec2 const& getScale() const;
 
 	private:
+		void calculateRotation() const;
+		void calculateScale() const;
+
 		mutable glm::mat3x3 m_Transformation
 		{
 			1.0f, 0.0f, 0.0f,

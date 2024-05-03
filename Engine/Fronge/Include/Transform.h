@@ -36,12 +36,9 @@ namespace fro
 		void calculateLocalTransform();
 		void calculateWorldTransform();
 
-		void setLocalTransformDirty();
-
 		Matrix2D m_LocalTransform{};
 		Matrix2D m_WorldTransform{};
 
-		bool m_IsLocalTransformDirty{};
 		bool m_IsWorldTransformDirty{};
 	};
 }

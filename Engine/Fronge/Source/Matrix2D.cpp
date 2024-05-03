@@ -57,6 +57,12 @@ void fro::Matrix2D::setTranslation(glm::vec2 const& translation)
 
 void fro::Matrix2D::setRotation(float const rotation)
 {
+	if (m_IsScaleDirty)
+	{
+		calculateScale();
+		m_IsScaleDirty = false;
+	}
+
 	m_Rotation = rotation;
 	m_IsRotationDirty = false;
 
@@ -66,6 +72,12 @@ void fro::Matrix2D::setRotation(float const rotation)
 
 void fro::Matrix2D::setScale(glm::vec2 const& scale)
 {
+	if (m_IsRotationDirty)
+	{
+		calculateRotation();
+		m_IsRotationDirty = false;
+	}
+
 	m_Scale = scale;
 	m_IsScaleDirty = false;
 
@@ -78,16 +90,18 @@ glm::mat3x3 const& fro::Matrix2D::getTransformation() const
 	{
 		if (m_AreTrigonometricValuesDirty)
 		{
-			m_RotationCosine = glm::cos(getRotation());
-			m_RotationSine = glm::sin(getRotation());
+			float const rotation{ getRotation() };
+			m_RotationCosine = glm::cos(rotation);
+			m_RotationSine = glm::sin(rotation);
 
 			m_AreTrigonometricValuesDirty = false;
 		}
 
-		m_Transformation[0][0] = getScale().x * m_RotationCosine;
-		m_Transformation[0][1] = -getScale().y * m_RotationSine;
-		m_Transformation[1][0] = getScale().x * m_RotationSine;
-		m_Transformation[1][1] = getScale().y * m_RotationCosine;
+		glm::vec2 const& scale{ getScale() };
+		m_Transformation[0][0] = scale.x * m_RotationCosine;
+		m_Transformation[0][1] = -scale.y * m_RotationSine;
+		m_Transformation[1][0] = scale.x * m_RotationSine;
+		m_Transformation[1][1] = scale.y * m_RotationCosine;
 
 		m_IsTransformationDirty = false;
 	}
@@ -104,8 +118,7 @@ float fro::Matrix2D::getRotation() const
 {
 	if (m_IsRotationDirty)
 	{
-		m_Rotation = glm::atan(getTransformation()[1][0], getTransformation()[0][0]);
-
+		calculateRotation();
 		m_IsRotationDirty = false;
 	}
 
@@ -116,12 +129,27 @@ glm::vec2 const& fro::Matrix2D::getScale() const
 {
 	if (m_IsScaleDirty)
 	{
-		m_Scale.x = glm::sqrt(getTransformation()[0][0] * getTransformation()[0][0] + getTransformation()[1][0] * getTransformation()[1][0]);
-		m_Scale.y = glm::sqrt(getTransformation()[0][1] * getTransformation()[0][1] + getTransformation()[1][1] * getTransformation()[1][1]);
-
+		calculateScale();
 		m_IsScaleDirty = false;
 	}
 
 	return m_Scale;
 }
 #pragma endregion PublicMethods
+
+
+
+#pragma region PrivateMethods
+void fro::Matrix2D::calculateRotation() const
+{
+	glm::mat3x3 const& transformation{ getTransformation() };
+	m_Rotation = glm::atan(transformation[1][0], transformation[0][0]);
+}
+
+void fro::Matrix2D::calculateScale() const
+{
+	glm::mat3x3 const& transformation{ getTransformation() };
+	m_Scale.x = glm::sqrt(transformation[0][0] * transformation[0][0] + transformation[1][0] * transformation[1][0]);
+	m_Scale.y = glm::sqrt(transformation[0][1] * transformation[0][1] + transformation[1][1] * transformation[1][1]);
+}
+#pragma endregion PrivateMethods

@@ -21,7 +21,6 @@ void fro::Transform::setLocalTransformation(Matrix2D const& transformation)
 
 void fro::Transform::setLocalTranslation(glm::vec2 const& translation)
 {
-	calculateLocalTransform();
 	m_LocalTransform.setTranslation(translation);
 
 	setWorldTransformDirty();
@@ -29,7 +28,6 @@ void fro::Transform::setLocalTranslation(glm::vec2 const& translation)
 
 void fro::Transform::setLocalRotation(float const rotation)
 {
-	calculateLocalTransform();
 	m_LocalTransform.setRotation(rotation);
 
 	setWorldTransformDirty();
@@ -37,7 +35,6 @@ void fro::Transform::setLocalRotation(float const rotation)
 
 void fro::Transform::setLocalScale(glm::vec2 const& scale)
 {
-	calculateLocalTransform();
 	m_LocalTransform.setScale(scale);
 
 	setWorldTransformDirty();
@@ -45,7 +42,6 @@ void fro::Transform::setLocalScale(glm::vec2 const& scale)
 
 void fro::Transform::setWorldTransformDirty()
 {
-	calculateLocalTransform();
 	m_IsWorldTransformDirty = true;
 
 	for (GameObject const* const pChild : getParentingGameObject().getChildren())
@@ -59,43 +55,63 @@ void fro::Transform::setWorldTransformDirty()
 void fro::Transform::setWorldTransformation(Matrix2D const& transformation)
 {
 	m_WorldTransform = transformation;
+	m_IsWorldTransformDirty = false;
 
-	setLocalTransformDirty();
+	calculateLocalTransform();
 }
 
 void fro::Transform::setWorldTranslation(glm::vec2 const& translation)
 {
-	calculateWorldTransform();
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
 	m_WorldTransform.setTranslation(translation);
 
-	setLocalTransformDirty();
+	calculateLocalTransform();
 }
 
 void fro::Transform::setWorldRotation(float const rotation)
 {
-	calculateWorldTransform();
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform(); 
+		m_IsWorldTransformDirty = false;
+	}
+
 	m_WorldTransform.setRotation(rotation);
 
-	setLocalTransformDirty();
+	calculateLocalTransform();
 }
 
 void fro::Transform::setWorldScale(glm::vec2 const& scale)
 {
-	calculateWorldTransform();
-	m_WorldTransform.setScale(scale);;
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
 
-	setLocalTransformDirty();
+	m_WorldTransform.setScale(scale);
+
+	calculateLocalTransform();
 }
 
 fro::Matrix2D const& fro::Transform::getLocalTransform()
 {
-	calculateLocalTransform();
 	return m_LocalTransform;
 }
 
 fro::Matrix2D const& fro::Transform::getWorldTransform()
 {
-	calculateWorldTransform();
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
 	return m_WorldTransform;
 }
 #pragma endregion PublicMethods
@@ -103,44 +119,21 @@ fro::Matrix2D const& fro::Transform::getWorldTransform()
 
 
 #pragma region PrivateMethods
-void fro::Transform::setLocalTransformDirty()
-{
-	calculateWorldTransform();
-	m_IsLocalTransformDirty = true;
-
-	for (GameObject const* const pChild : getParentingGameObject().getChildren())
-	{
-		Transform& childTransform{ *pChild->getComponent<Transform>() };
-		if (not childTransform.m_IsWorldTransformDirty)
-			childTransform.setWorldTransformDirty();
-	}
-}
-
 void fro::Transform::calculateLocalTransform()
 {
-	if (not m_IsLocalTransformDirty)
-		return;
-
 	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
-		m_LocalTransform = pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform() / getWorldTransform();
+		m_LocalTransform = getWorldTransform() / pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
 	else
 		m_LocalTransform = getWorldTransform();
-
-	m_IsLocalTransformDirty = false;
 }
 
 void fro::Transform::calculateWorldTransform()
 {
-	if (not m_IsWorldTransformDirty)
-		return;
-
 	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
 		m_WorldTransform = getLocalTransform() * pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
 	else
 		m_WorldTransform = getLocalTransform();
-
-	m_IsWorldTransformDirty = false;
 }
 #pragma endregion PrivateMethods

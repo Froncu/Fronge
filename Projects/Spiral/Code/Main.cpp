@@ -21,7 +21,7 @@ int main(int, char**)
 		pGameObject = &scene.addGameObject();
 		pGameObject->addComponent<fro::Sprite>()->setFileName("logo.tga");
 		pGameObject->getComponent<fro::Transform>()->setLocalTranslation({ 320, 240 });
-		pGameObject->getComponent<fro::Transform>()->setLocalScale({ 0.25f, 2.0f });
+		pGameObject->getComponent<fro::Transform>()->setLocalScale({ 0.2f, 2.0f });
 		pGameObject->getComponent<fro::Transform>()->setLocalRotation(0);
 
 		for (std::size_t index{}; index < 1; ++index)
@@ -33,7 +33,7 @@ int main(int, char**)
 			gameObject.addComponent<fro::Sprite>()->setFileName("logo.tga");
 			fro::Rotator* const pRotator{ gameObject.addComponent<fro::Rotator>() };
 			pRotator->setPeriod(basePeriod + index * childPeriodDelayMultiplier);
-			pRotator->setRadius(100.0f);
+			pRotator->setRadius(300.0f);
 
 			gameObject.setParent(pGameObject, false);
 			pGameObject = &gameObject;
