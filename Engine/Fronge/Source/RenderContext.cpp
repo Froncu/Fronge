@@ -86,11 +86,11 @@ void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Transformati
 
 	for (SDL_Vertex& vertex : vVertices)
 	{
-		glm::vec3 position{ vertex.position.x, vertex.position.y, 1.0f };
+		glm::ivec3 position{ vertex.position.x, vertex.position.y, 1.0f };
 
 		position = position * transform.getTransformation();
-		vertex.position.x = position.x;
-		vertex.position.y = position.y;
+		vertex.position.x = static_cast<float>(position.x);
+		vertex.position.y = static_cast<float>(position.y);
 	}
 
 	std::array<int, 6> constexpr vIndices
