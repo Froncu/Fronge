@@ -9,18 +9,17 @@
 
 namespace fro
 {
-	template<std::copyable EventType, std::invocable<EventType> EventProcessorType, bool unique = std::equality_comparable<EventType>>
+	template<std::copyable EventType, bool unique = std::equality_comparable<EventType>>
 	class EventQueue final
 	{
 		static_assert(not unique or std::equality_comparable<EventType>, 
 			"queue declared unique, but event is not equality comparable");
 
 	public:
-		EventQueue(EventProcessorType const& eventProcessor = {})
-			: m_EventProcessor{ eventProcessor }
+		EventQueue(std::function<void(EventType)> eventProcessor)
+			: m_EventProcessor{ std::move(eventProcessor) }
 		{
-			if constexpr (std::_Is_specialization_v<EventProcessorType, std::function>)
-				assert(m_EventProcessor not_eq nullptr);
+			assert(m_EventProcessor not_eq nullptr);
 		}
 
 		EventQueue(EventQueue const&) = default;
@@ -31,22 +30,13 @@ namespace fro
 		EventQueue& operator=(EventQueue const&) = default;
 		EventQueue& operator=(EventQueue&&) noexcept = default;
 
-		void pushEvent(EventType&& event)
+		void pushEvent(EventType event)
 		{
 			if constexpr (unique)
 				if (not isEventUnqiue(event))
 					return;
 
 			m_dQueue.emplace_back(std::move(event));
-		}
-
-		void pushEvent(EventType const& event)
-		{
-			if constexpr (unique)
-				if (not isEventUnqiue(event))
-					return;
-
-			m_dQueue.push_back(event);
 		}
 
 		void fetchNextEvent()
@@ -87,7 +77,7 @@ namespace fro
 				});
 		}
 
-		EventProcessorType m_EventProcessor{};
+		std::function<void(EventType)> m_EventProcessor{};
 		std::deque<EventType> m_dQueue{};
 
 		EventType m_NextEvent{};
