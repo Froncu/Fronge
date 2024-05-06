@@ -30,7 +30,7 @@ void fro::GameObject::setParent(GameObject* const pParent, bool const keepWorldT
 		m_pParent->m_spChildren.erase(this);
 
 	Transform& transform{ *getComponent<Transform>() };
-	Matrix2D oldWorldTransform;
+	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
 		oldWorldTransform = transform.getWorldTransform();
 

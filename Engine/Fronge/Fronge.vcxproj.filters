@@ -82,7 +82,9 @@
     <ClCompile Include="Source\GameObjectCommand.cpp">
       <Filter>GameObjectCommand</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Matrix2D.cpp" />
+    <ClCompile Include="Source\TransformationMatrix2D.cpp">
+      <Filter>TransformationMatrix2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -199,6 +201,9 @@
     <Filter Include="Systems\PhysicsManager">
       <UniqueIdentifier>{e6e6d8f8-cee2-4d77-ac8c-38fdb15c7a22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TransformationMatrix2D">
+      <UniqueIdentifier>{38362cf2-1624-40b0-8814-67def0914a1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -302,6 +307,8 @@
     <ClInclude Include="Include\GameObjectCommand.h">
       <Filter>GameObjectCommand</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Matrix2D.h" />
+    <ClInclude Include="Include\TransformationMatrix2D.h">
+      <Filter>TransformationMatrix2D</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

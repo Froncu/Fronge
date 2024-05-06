@@ -60,7 +60,7 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Matrix2D const& transform) const
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform) const
 {
 	int textureWidth;
 	int textureHeight;

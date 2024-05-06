@@ -2,7 +2,7 @@
 #define fro_RENDER_CONTEXT_H
 
 #include "Defines.hpp"
-#include "Matrix2D.h"
+#include "TransformationMatrix2D.h"
 #include "Singleton.hpp"
 #include "Typenames.hpp"
 
@@ -35,7 +35,7 @@ namespace fro
 		void processSystemEvent(SDL_Event const& event);
 		void clear() const;
 		void present() const;
-		void renderTexture(SDL_Texture* const pTexture, Matrix2D const& transform) const;
+		void renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform) const;
 
 		fro_NODISCARD SDL_Window* getWindow() const;
 		fro_NODISCARD SDL_Renderer* getRenderer() const;

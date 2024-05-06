@@ -12,7 +12,7 @@ fro::Transform::Transform(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::Transform::setLocalTransformation(Matrix2D const& transformation)
+void fro::Transform::setLocalTransformation(TransformationMatrix2D const& transformation)
 {
 	m_LocalTransform = transformation;
 
@@ -52,7 +52,7 @@ void fro::Transform::setWorldTransformDirty()
 	}
 }
 
-void fro::Transform::setWorldTransformation(Matrix2D const& transformation)
+void fro::Transform::setWorldTransformation(TransformationMatrix2D const& transformation)
 {
 	m_WorldTransform = transformation;
 	m_IsWorldTransformDirty = false;
@@ -99,12 +99,12 @@ void fro::Transform::setWorldScale(glm::vec2 const& scale)
 	calculateLocalTransform();
 }
 
-fro::Matrix2D const& fro::Transform::getLocalTransform()
+fro::TransformationMatrix2D const& fro::Transform::getLocalTransform()
 {
 	return m_LocalTransform;
 }
 
-fro::Matrix2D const& fro::Transform::getWorldTransform()
+fro::TransformationMatrix2D const& fro::Transform::getWorldTransform()
 {
 	if (m_IsWorldTransformDirty)
 	{

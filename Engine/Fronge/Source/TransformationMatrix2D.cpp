@@ -1,7 +1,7 @@
-#include "Matrix2D.h"
+#include "TransformationMatrix2D.h"
 
 #pragma region Constructors/Destructor
-fro::Matrix2D::Matrix2D(glm::mat3x3 const& transformation)
+fro::TransformationMatrix2D::TransformationMatrix2D(glm::mat3x3 const& transformation)
 	: m_Transformation{ transformation }
 	, m_IsRotationDirty{ true }
 	, m_IsScaleDirty{ true }
@@ -12,26 +12,26 @@ fro::Matrix2D::Matrix2D(glm::mat3x3 const& transformation)
 
 
 #pragma region Operators
-fro::Matrix2D& fro::Matrix2D::operator*=(Matrix2D const& other)
+fro::TransformationMatrix2D& fro::TransformationMatrix2D::operator*=(TransformationMatrix2D const& other)
 {
 	*this = *this * other;
 
 	return *this;
 }
 
-fro::Matrix2D& fro::Matrix2D::operator/=(Matrix2D const& other)
+fro::TransformationMatrix2D& fro::TransformationMatrix2D::operator/=(TransformationMatrix2D const& other)
 {
 	*this = *this / other;
 
 	return *this;
 }
 
-fro::Matrix2D fro::operator*(Matrix2D const& matrix1, Matrix2D const& matrix2)
+fro::TransformationMatrix2D fro::operator*(TransformationMatrix2D const& matrix1, TransformationMatrix2D const& matrix2)
 {
 	return matrix1.getTransformation() * matrix2.getTransformation();
 }
 
-fro::Matrix2D fro::operator/(Matrix2D const& matrix1, Matrix2D const& matrix2)
+fro::TransformationMatrix2D fro::operator/(TransformationMatrix2D const& matrix1, TransformationMatrix2D const& matrix2)
 {
 	return matrix1.getTransformation() * glm::inverse(matrix2.getTransformation());
 }
@@ -40,7 +40,7 @@ fro::Matrix2D fro::operator/(Matrix2D const& matrix1, Matrix2D const& matrix2)
 
 
 #pragma region PublicMethods
-void fro::Matrix2D::setTransformation(glm::mat3x3 const& transformation)
+void fro::TransformationMatrix2D::setTransformation(glm::mat3x3 const& transformation)
 {
 	m_Transformation = transformation;
 	m_IsTransformationDirty = false;
@@ -49,13 +49,13 @@ void fro::Matrix2D::setTransformation(glm::mat3x3 const& transformation)
 	m_IsScaleDirty = true;
 }
 
-void fro::Matrix2D::setTranslation(glm::vec2 const& translation)
+void fro::TransformationMatrix2D::setTranslation(glm::vec2 const& translation)
 {
 	m_Transformation[0][2] = translation.x;
 	m_Transformation[1][2] = translation.y;
 }
 
-void fro::Matrix2D::setRotation(float const rotation)
+void fro::TransformationMatrix2D::setRotation(float const rotation)
 {
 	if (m_IsScaleDirty)
 	{
@@ -70,7 +70,7 @@ void fro::Matrix2D::setRotation(float const rotation)
 	m_IsTransformationDirty = true;
 }
 
-void fro::Matrix2D::setScale(glm::vec2 const& scale)
+void fro::TransformationMatrix2D::setScale(glm::vec2 const& scale)
 {
 	if (m_IsRotationDirty)
 	{
@@ -84,7 +84,7 @@ void fro::Matrix2D::setScale(glm::vec2 const& scale)
 	m_IsTransformationDirty = true;
 }
 
-glm::mat3x3 const& fro::Matrix2D::getTransformation() const
+glm::mat3x3 const& fro::TransformationMatrix2D::getTransformation() const
 {
 	if (m_IsTransformationDirty)
 	{
@@ -109,12 +109,12 @@ glm::mat3x3 const& fro::Matrix2D::getTransformation() const
 	return m_Transformation;
 }
 
-glm::vec2 fro::Matrix2D::getTranslation() const
+glm::vec2 fro::TransformationMatrix2D::getTranslation() const
 {
 	return { m_Transformation[0][2], m_Transformation[1][2] };
 }
 
-float fro::Matrix2D::getRotation() const
+float fro::TransformationMatrix2D::getRotation() const
 {
 	if (m_IsRotationDirty)
 	{
@@ -125,7 +125,7 @@ float fro::Matrix2D::getRotation() const
 	return m_Rotation;
 }
 
-glm::vec2 const& fro::Matrix2D::getScale() const
+glm::vec2 const& fro::TransformationMatrix2D::getScale() const
 {
 	if (m_IsScaleDirty)
 	{
@@ -140,13 +140,13 @@ glm::vec2 const& fro::Matrix2D::getScale() const
 
 
 #pragma region PrivateMethods
-void fro::Matrix2D::calculateRotation() const
+void fro::TransformationMatrix2D::calculateRotation() const
 {
 	glm::mat3x3 const& transformation{ getTransformation() };
 	m_Rotation = glm::atan(transformation[1][0], transformation[0][0]);
 }
 
-void fro::Matrix2D::calculateScale() const
+void fro::TransformationMatrix2D::calculateScale() const
 {
 	glm::mat3x3 const& transformation{ getTransformation() };
 	m_Scale.x = glm::sqrt(transformation[0][0] * transformation[0][0] + transformation[1][0] * transformation[1][0]);

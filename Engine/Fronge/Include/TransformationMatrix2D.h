@@ -7,20 +7,20 @@
 
 namespace fro
 {
-	class Matrix2D final
+	class TransformationMatrix2D final
 	{
 	public:
-		Matrix2D(glm::mat3x3 const& transformation);
-		Matrix2D() = default;
-		Matrix2D(Matrix2D const&) = default;
-		Matrix2D(Matrix2D&&) noexcept = default;
+		TransformationMatrix2D(glm::mat3x3 const& transformation);
+		TransformationMatrix2D() = default;
+		TransformationMatrix2D(TransformationMatrix2D const&) = default;
+		TransformationMatrix2D(TransformationMatrix2D&&) noexcept = default;
 
-		~Matrix2D() = default;
+		~TransformationMatrix2D() = default;
 
-		Matrix2D& operator=(Matrix2D const&) = default;
-		Matrix2D& operator=(Matrix2D&&) noexcept = default;
-		Matrix2D& operator*=(Matrix2D const& other);
-		Matrix2D& operator/=(Matrix2D const& other);
+		TransformationMatrix2D& operator=(TransformationMatrix2D const&) = default;
+		TransformationMatrix2D& operator=(TransformationMatrix2D&&) noexcept = default;
+		TransformationMatrix2D& operator*=(TransformationMatrix2D const& other);
+		TransformationMatrix2D& operator/=(TransformationMatrix2D const& other);
 
 		void setTransformation(glm::mat3x3 const& transformation);
 		void setTranslation(glm::vec2 const& translation);
@@ -54,8 +54,8 @@ namespace fro
 		mutable bool m_IsScaleDirty{};
 	};
 
-	Matrix2D operator*(Matrix2D const& matrix1, Matrix2D const& matrix2);
-	Matrix2D operator/(Matrix2D const& matrix1, Matrix2D const& matrix2);
+	TransformationMatrix2D operator*(TransformationMatrix2D const& matrix1, TransformationMatrix2D const& matrix2);
+	TransformationMatrix2D operator/(TransformationMatrix2D const& matrix1, TransformationMatrix2D const& matrix2);
 }
 
 #endif
