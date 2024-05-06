@@ -18,18 +18,18 @@ fro::Steam::Steam()
 	, m_CallbackUserStatsStored{ this, &Steam::onUserStatsStored }
 	, m_CallbackAchievementStored{ this, &Steam::onAchievementStored }
 {
-	if (SteamAPI_Init() == 0)
-		throw std::runtime_error("SteamAPI_Init() failed");
+	//if (SteamAPI_Init() == 0)
+	//	throw std::runtime_error("SteamAPI_Init() failed");
 
-	if (not requestStats())
-		throw std::runtime_error("couldn't retrieve Steam stats");
+	//if (not requestStats())
+	//	throw std::runtime_error("couldn't retrieve Steam stats");
 
-	m_AppID = SteamUtils()->GetAppID();
+	//m_AppID = SteamUtils()->GetAppID();
 }
 
 fro::Steam::~Steam()
 {
-	SteamAPI_Shutdown();
+	//SteamAPI_Shutdown();
 }
 #pragma endregion Constructors/Destructor
 
@@ -38,105 +38,111 @@ fro::Steam::~Steam()
 #pragma region PublicMethods
 bool fro::Steam::requestStats() const
 {
-	if (SteamUserStats() == NULL or SteamUser() == NULL)
-		return false;
+	//if (SteamUserStats() == NULL or SteamUser() == NULL)
+	//	return false;
 
-	if (not SteamUser()->BLoggedOn())
-		return false;
+	//if (not SteamUser()->BLoggedOn())
+	//	return false;
 
-	return SteamUserStats()->RequestCurrentStats();
+	//return SteamUserStats()->RequestCurrentStats();
+
+	return false;
 }
 
-bool fro::Steam::unlockAchievement(AchievementID const achievementID) const
+bool fro::Steam::unlockAchievement(AchievementID const /*achievementID*/) const
 {
-	if (m_IsInitialized)
-	{
-		SteamUserStats()->SetAchievement(getAchievementName(achievementID).c_str());
+	//if (m_IsInitialized)
+	//{
+	//	SteamUserStats()->SetAchievement(getAchievementName(achievementID).c_str());
 
-		return SteamUserStats()->StoreStats();
-	}
+	//	return SteamUserStats()->StoreStats();
+	//}
+
+	//return false;
 
 	return false;
 }
 
 void fro::Steam::update() const
 {
-	SteamAPI_RunCallbacks();
+	//SteamAPI_RunCallbacks();
 }
 #pragma endregion PublicMethods
 
 
 
 #pragma region PrivateMethods
-void fro::Steam::onUserStatsReceived(UserStatsReceived_t* const pCallback)
+void fro::Steam::onUserStatsReceived(UserStatsReceived_t* const /*pCallback*/)
 {
-	if (pCallback->m_nGameID == m_AppID)
-	{
-		if (pCallback->m_eResult == k_EResultOK)
-		{
-			Console::getInstance().log("Received stats and achievements from Steam");
-			m_IsInitialized = true;
+	//if (pCallback->m_nGameID == m_AppID)
+	//{
+	//	if (pCallback->m_eResult == k_EResultOK)
+	//	{
+	//		Console::getInstance().log("Received stats and achievements from Steam");
+	//		m_IsInitialized = true;
 
-			for (auto& achievement : m_vAchievements)
-			{
-				SteamUserStats()->GetAchievement(achievement.pAchievementID, &achievement.achieved);
+	//		for (auto& achievement : m_vAchievements)
+	//		{
+	//			SteamUserStats()->GetAchievement(achievement.pAchievementID, &achievement.achieved);
 
-				_snprintf_s
-				(
-					achievement.aName,
-					sizeof(achievement.aName),
-					"%s",
-					SteamUserStats()->GetAchievementDisplayAttribute(achievement.pAchievementID, "name")
-				);
+	//			_snprintf_s
+	//			(
+	//				achievement.aName,
+	//				sizeof(achievement.aName),
+	//				"%s",
+	//				SteamUserStats()->GetAchievementDisplayAttribute(achievement.pAchievementID, "name")
+	//			);
 
-				_snprintf_s
-				(
-					achievement.aDescription,
-					sizeof(achievement.aDescription),
-					"%s",
-					SteamUserStats()->GetAchievementDisplayAttribute(achievement.pAchievementID, "desc")
-				);
-			}
-		}
-		else
-		{
-			char buffer[128];
-			_snprintf_s(buffer, 128, "Failed to receive stats and achievements from Steam, %d", pCallback->m_eResult);
-			Console::getInstance().log(buffer);
-		}
-	}
+	//			_snprintf_s
+	//			(
+	//				achievement.aDescription,
+	//				sizeof(achievement.aDescription),
+	//				"%s",
+	//				SteamUserStats()->GetAchievementDisplayAttribute(achievement.pAchievementID, "desc")
+	//			);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		char buffer[128];
+	//		_snprintf_s(buffer, 128, "Failed to receive stats and achievements from Steam, %d", pCallback->m_eResult);
+	//		Console::getInstance().log(buffer);
+	//	}
+	//}
 }
 
-void fro::Steam::onUserStatsStored(UserStatsStored_t* const pCallback)
+void fro::Steam::onUserStatsStored(UserStatsStored_t* const /*pCallback*/)
 {
-	if (m_AppID == pCallback->m_nGameID)
-	{
-		if (pCallback->m_eResult == k_EResultOK)
-			Console::getInstance().log("Stored stats for Steam");
-		else
-		{
-			char buffer[128];
-			_snprintf_s(buffer, 128, "Failed to store stats for Steam, %d", pCallback->m_eResult);
-			Console::getInstance().log(buffer);
-		}
-	}
+	//if (m_AppID == pCallback->m_nGameID)
+	//{
+	//	if (pCallback->m_eResult == k_EResultOK)
+	//		Console::getInstance().log("Stored stats for Steam");
+	//	else
+	//	{
+	//		char buffer[128];
+	//		_snprintf_s(buffer, 128, "Failed to store stats for Steam, %d", pCallback->m_eResult);
+	//		Console::getInstance().log(buffer);
+	//	}
+	//}
 }
 
-void fro::Steam::onAchievementStored(UserAchievementStored_t* const pCallback)
+void fro::Steam::onAchievementStored(UserAchievementStored_t* const /*pCallback*/)
 {
-	if (pCallback->m_nGameID == m_AppID)
-		Console::getInstance().log("Stored Achievement for Steam");
+	//if (pCallback->m_nGameID == m_AppID)
+	//	Console::getInstance().log("Stored Achievement for Steam");
 }
 
-fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const achievementID) const
+fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const /*achievementID*/) const
 {
-	switch (achievementID)
-	{
-	case ACH_WIN_ONE_GAME:
-		return "ACH_WIN_ONE_GAME";
+	//switch (achievementID)
+	//{
+	//case ACH_WIN_ONE_GAME:
+	//	return "ACH_WIN_ONE_GAME";
 
-	default:
-		throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", static_cast<int>(achievementID)));
-	}
+	//default:
+	//	throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", static_cast<int>(achievementID)));
+	//}
+
+	return {};
 }
 #pragma endregion PrivateMethods

@@ -60,7 +60,7 @@ namespace fro
 
 		bool m_IsInitialized{ false };
 
-		std::uint32_t m_AppID;
+		std::uint32_t m_AppID{};
 	};
 }
 
