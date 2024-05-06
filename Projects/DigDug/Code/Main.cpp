@@ -33,7 +33,7 @@ int main(int, char**)
 		fro::RenderContext::getInstance().setScalingMode(fro::RenderContext::ScalingMode::fill);
 		fro::RenderContext::getInstance().setWindowResizeable(false);
 		fro::RenderContext::getInstance().setResolution(160, 144);
-		fro::RenderContext::getInstance().setWindowSize(1280, 960);
+		fro::RenderContext::getInstance().setWindowSize(1000, 900);
 
 		fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
 
