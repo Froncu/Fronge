@@ -13,6 +13,15 @@ namespace fro
 
 		virtual ~Transform() override = default;
 
+		void localTransform(TransformationMatrix2D const& transformation);
+		void localTranslate(glm::vec2 const& translation);
+		void localRotate(float const rotation);
+		void localScale(glm::vec2 const& scale);
+		void worldTransform(TransformationMatrix2D const& transformation);
+		void worldTranslate(glm::vec2 const& translation);
+		void worldRotate(float const rotation);
+		void worldScale(glm::vec2 const& scale);
+
 		void setLocalTransformation(TransformationMatrix2D const& transformation);
 		void setLocalTranslation(glm::vec2 const& translation);
 		void setLocalRotation(float const rotation);

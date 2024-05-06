@@ -39,7 +39,7 @@ void fro::MoveCommand::operator()()
 			correctedMoveDirection = m_MoveDirection;
 	}
 
-	getCommandedGameObject().getComponent<Transform>()->setLocalTranslation(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * correctedMoveDirection);
+	getCommandedGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * correctedMoveDirection);
 }
 #pragma endregion Operators
 

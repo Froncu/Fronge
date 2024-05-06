@@ -22,6 +22,11 @@ namespace fro
 		TransformationMatrix2D& operator*=(TransformationMatrix2D const& other);
 		TransformationMatrix2D& operator/=(TransformationMatrix2D const& other);
 
+		void transform(glm::mat3x3 const& transformation);
+		void translate(glm::vec2 const& translation);
+		void rotate(float const rotation);
+		void scale(glm::vec2 const& scale);
+
 		void setTransformation(glm::mat3x3 const& transformation);
 		void setTranslation(glm::vec2 const& translation);
 		void setRotation(float const rotation);

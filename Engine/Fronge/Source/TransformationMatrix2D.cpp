@@ -40,6 +40,31 @@ fro::TransformationMatrix2D fro::operator/(TransformationMatrix2D const& matrix1
 
 
 #pragma region PublicMethods
+void fro::TransformationMatrix2D::transform(glm::mat3x3 const& transformation)
+{
+	m_Transformation *= transformation;
+	m_IsTransformationDirty = false;
+
+	m_IsRotationDirty = true;
+	m_IsScaleDirty = true;
+}
+
+void fro::TransformationMatrix2D::translate(glm::vec2 const& translation)
+{
+	m_Transformation[0][2] += translation.x;
+	m_Transformation[1][2] += translation.y;
+}
+
+void fro::TransformationMatrix2D::rotate(float const rotation)
+{
+	setRotation(getRotation() + rotation);
+}
+
+void fro::TransformationMatrix2D::scale(glm::vec2 const& scale)
+{
+	setScale(getScale() * scale);
+}
+
 void fro::TransformationMatrix2D::setTransformation(glm::mat3x3 const& transformation)
 {
 	m_Transformation = transformation;
