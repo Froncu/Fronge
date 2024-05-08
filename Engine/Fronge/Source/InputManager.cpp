@@ -43,6 +43,12 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 			static_cast<MouseButton>(event.button.button));
 		break;
 
+	case SDL_MOUSEWHEEL:
+		// TODO: add support for handling mouse wheel input
+		
+		// END TODO
+		break;
+
 	case SDL_CONTROLLERBUTTONDOWN:
 	case SDL_CONTROLLERBUTTONUP:
 		setInputStrength(eventType == SDL_CONTROLLERBUTTONDOWN,
@@ -102,17 +108,19 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positive
 	};
 }
 
+// TODO: the relative input strength is never reset to zero in case no relative change was registered; needs to be fixed
 float fro::InputManager::getInputRelativeStrength(Input const input)
 {
 	return m_mInputs[input].second;
 }
+// END TODO
 
+// TODO: to be implemented
 float fro::InputManager::getActionRelativeStrength(std::string const& /*actionName*/)
 {
-	// TODO: to be implemented
 	return 0.0f;
-	// END TODO
 }
+// END TODO
 #pragma endregion PublicMethods
 
 
