@@ -63,7 +63,7 @@ void fro::InputManager::bindActionToInput(std::string const& actionName, Input c
 
 float fro::InputManager::getInputStrength(Input const input)
 {
-	return getInputStrengths(input).first;
+	return m_mInputs[input].first;
 }
 
 float fro::InputManager::getActionStrength(std::string const& actionName)
@@ -104,7 +104,7 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positive
 
 float fro::InputManager::getInputRelativeStrength(Input const input)
 {
-	return getInputStrengths(input).second;
+	return m_mInputs[input].second;
 }
 
 float fro::InputManager::getActionRelativeStrength(std::string const& /*actionName*/)
@@ -120,23 +120,8 @@ float fro::InputManager::getActionRelativeStrength(std::string const& /*actionNa
 #pragma region PrivateMethods
 void fro::InputManager::setInputStrength(float const newStrength, Input const input)
 {
-	auto& inputStrengths{ getInputStrengths(input) };
+	auto& inputStrengths{ m_mInputs[input] };
 	inputStrengths.second = newStrength - inputStrengths.first;
 	inputStrengths.first = newStrength;
-}
-
-std::pair<float, float>& fro::InputManager::getInputStrengths(Input const input)
-{
-	if (std::holds_alternative<SDL_Scancode>(input))
-		return m_mKeys[std::get<SDL_Scancode>(input)];
-
-	else if (std::holds_alternative<MouseButton>(input))
-		return m_mMouseButtons[std::get<MouseButton>(input)];
-
-	else if (std::holds_alternative<JoypadInput<SDL_GameControllerButton>>(input))
-		return m_mJoypadButtons[std::get<JoypadInput<SDL_GameControllerButton>>(input)];
-
-	else
-		return m_mJoypadAxis[std::get<JoypadInput<SDL_GameControllerAxis>>(input)];
 }
 #pragma endregion PrivateMethods

@@ -23,9 +23,9 @@ namespace fro
 	public:
 		enum class MouseButton
 		{
-			left,
-			right,
-			middle,
+			left = 1,
+			middle = 2,
+			right = 3,
 			wheelUp,
 			wheelDown
 		};
@@ -79,12 +79,7 @@ namespace fro
 
 		void setInputStrength(float const newStrength, Input const input);
 
-		std::pair<float, float>& getInputStrengths(Input const input);
-
-		std::map<SDL_Scancode, std::pair<float, float>> m_mKeys{};
-		std::map<MouseButton, std::pair<float, float>> m_mMouseButtons{};
-		std::map<JoypadInput<SDL_GameControllerButton>, std::pair<float, float>> m_mJoypadButtons{};
-		std::map<JoypadInput<SDL_GameControllerAxis>, std::pair<float, float>> m_mJoypadAxis{};
+		std::map<Input, std::pair<float, float>> m_mInputs{};
 		std::map<std::string, std::set<Input>> m_mActions{};
 	};
 }
