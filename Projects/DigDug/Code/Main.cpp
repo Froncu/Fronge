@@ -51,10 +51,10 @@ int main(int, char**)
 		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", SDL_SCANCODE_W);
 		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", SDL_SCANCODE_S);
 
-		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", SDL_CONTROLLER_BUTTON_DPAD_UP);
-		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT });
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_LEFT });
+		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_UP });
+		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_DOWN });
 
 		return fro::Fronge::getInstance().run();
 	}

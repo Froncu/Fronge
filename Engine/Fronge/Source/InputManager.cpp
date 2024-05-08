@@ -46,12 +46,12 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 	case SDL_CONTROLLERBUTTONDOWN:
 	case SDL_CONTROLLERBUTTONUP:
 		setInputStrength(eventType == SDL_CONTROLLERBUTTONDOWN,
-			static_cast<SDL_GameControllerButton>(event.cbutton.button));
+			JoypadInput(event.cbutton.which, static_cast<SDL_GameControllerButton>(event.cbutton.button)));
 		break;
 
 	case SDL_CONTROLLERAXISMOTION:
 		setInputStrength(static_cast<float>(event.caxis.value) / std::numeric_limits<decltype(event.caxis.value)>::max(),
-			static_cast<SDL_GameControllerAxis>(event.caxis.axis));
+			JoypadInput(event.caxis.which, static_cast<SDL_GameControllerAxis>(event.caxis.axis)));
 		break;
 	}
 }
@@ -133,10 +133,10 @@ std::pair<float, float>& fro::InputManager::getInputStrengths(Input const input)
 	else if (std::holds_alternative<MouseButton>(input))
 		return m_mMouseButtons[std::get<MouseButton>(input)];
 
-	else if (std::holds_alternative<SDL_GameControllerButton>(input))
-		return m_mJoypadButtons[std::get<SDL_GameControllerButton>(input)];
+	else if (std::holds_alternative<JoypadInput<SDL_GameControllerButton>>(input))
+		return m_mJoypadButtons[std::get<JoypadInput<SDL_GameControllerButton>>(input)];
 
 	else
-		return m_mJoypadAxis[std::get<SDL_GameControllerAxis>(input)];
+		return m_mJoypadAxis[std::get<JoypadInput<SDL_GameControllerAxis>>(input)];
 }
 #pragma endregion PrivateMethods

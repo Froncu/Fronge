@@ -30,7 +30,28 @@ namespace fro
 			wheelDown
 		};
 
-		using Input = std::variant<SDL_Scancode, MouseButton, SDL_GameControllerButton, SDL_GameControllerAxis>;
+		template<typename InputType>
+		struct JoypadInput
+		{
+			JoypadInput(int ID, InputType input)
+				: ID{ ID }
+				, input{ input }
+			{
+			}
+
+			SDL_JoystickID ID;
+			InputType input;
+
+			fro_NODISCARD bool operator<(JoypadInput const& other) const
+			{
+				return
+					ID == other.ID ?
+					input < other.input :
+					ID < other.ID;
+			}
+		};
+
+		using Input = std::variant<SDL_Scancode, MouseButton, JoypadInput<SDL_GameControllerButton>, JoypadInput<SDL_GameControllerAxis>>;
 
 		InputManager();
 
@@ -62,8 +83,8 @@ namespace fro
 
 		std::map<SDL_Scancode, std::pair<float, float>> m_mKeys{};
 		std::map<MouseButton, std::pair<float, float>> m_mMouseButtons{};
-		std::map<SDL_GameControllerButton, std::pair<float, float>> m_mJoypadButtons{};
-		std::map<SDL_GameControllerAxis, std::pair<float, float>> m_mJoypadAxis{};
+		std::map<JoypadInput<SDL_GameControllerButton>, std::pair<float, float>> m_mJoypadButtons{};
+		std::map<JoypadInput<SDL_GameControllerAxis>, std::pair<float, float>> m_mJoypadAxis{};
 		std::map<std::string, std::set<Input>> m_mActions{};
 	};
 }
