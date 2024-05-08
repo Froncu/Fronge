@@ -160,7 +160,6 @@
     <ClCompile Include="Source\AudioSDL.cpp" />
     <ClCompile Include="Source\AudioService.cpp" />
     <ClCompile Include="Source\Behaviour.cpp" />
-    <ClCompile Include="Source\ButtonInput.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\FPSCounter.cpp" />
     <ClCompile Include="Source\Fronge.cpp" />
@@ -184,13 +183,11 @@
     <ClCompile Include="Source\Text.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
-    <ClCompile Include="Source\XInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\AudioSDL.h" />
     <ClInclude Include="Include\AudioService.h" />
     <ClInclude Include="Include\Behaviour.h" />
-    <ClInclude Include="Include\ButtonInput.h" />
     <ClInclude Include="Include\Command.hpp" />
     <ClInclude Include="Include\Component.h" />
     <ClInclude Include="Include\Console.hpp" />

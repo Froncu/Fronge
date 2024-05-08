@@ -11,7 +11,7 @@
 #include "Timer.h"
 
 #include <sdl.h>
-#include <vld.h>
+//#include <vld.h>
 
 #pragma region Constructors/Destructor
 fro::Fronge::Fronge()
@@ -39,8 +39,6 @@ int fro::Fronge::run()
 
 		Timer::getInstance().update();
 
-		InputManager::getInstance().processKeyboardInputContinous();
-		InputManager::getInstance().processGamePadInputContinous();
 		if (not SystemEventManager::getInstance().processSystemEvents())
 			break;
 

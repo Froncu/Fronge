@@ -4,9 +4,6 @@
     <ClCompile Include="Source\Behaviour.cpp">
       <Filter>Component\Behaviour\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ButtonInput.cpp">
-      <Filter>Systems\InputManager\ButtonInput</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component.cpp">
       <Filter>Component\Base</Filter>
     </ClCompile>
@@ -21,9 +18,6 @@
     </ClCompile>
     <ClCompile Include="Source\GUI.cpp">
       <Filter>Component\GUI\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\InputManager.cpp">
-      <Filter>Systems\InputManager\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Source\Plot.cpp">
       <Filter>Component\GUI\Plot</Filter>
@@ -64,9 +58,6 @@
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\XInput.cpp">
-      <Filter>Systems\InputManager\Implementations</Filter>
-    </ClCompile>
     <ClCompile Include="Source\AudioService.cpp">
       <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
     </ClCompile>
@@ -84,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="Source\TransformationMatrix2D.cpp">
       <Filter>TransformationMatrix2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputManager.cpp">
+      <Filter>Systems\InputManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,15 +101,6 @@
     </Filter>
     <Filter Include="Systems\InputManager">
       <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\InputManager\Interface">
-      <UniqueIdentifier>{b4f97f11-3edd-4a1a-b763-155c8e61495e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\InputManager\Implementations">
-      <UniqueIdentifier>{5a36b74e-3164-4bd1-b7d6-916d1455a13f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\InputManager\ButtonInput">
-      <UniqueIdentifier>{d12a0d13-219f-4226-8e8c-2e1d742a4edf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\SceneManager">
       <UniqueIdentifier>{dd7d1c3a-5a7f-435c-8f41-25d71d28d334}</UniqueIdentifier>
@@ -210,9 +195,6 @@
     <ClInclude Include="Include\Behaviour.h">
       <Filter>Component\Behaviour\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ButtonInput.h">
-      <Filter>Systems\InputManager\ButtonInput</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Component.h">
       <Filter>Component\Base</Filter>
     </ClInclude>
@@ -233,9 +215,6 @@
     </ClInclude>
     <ClInclude Include="Include\GUI.h">
       <Filter>Component\GUI\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\InputManager.h">
-      <Filter>Systems\InputManager\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Include\Plot.h">
       <Filter>Component\GUI\Plot</Filter>
@@ -309,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="Include\TransformationMatrix2D.h">
       <Filter>TransformationMatrix2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\InputManager.h">
+      <Filter>Systems\InputManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

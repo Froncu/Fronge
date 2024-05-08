@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "GUIContext.h"
 #include "InputManager.h"
-#include "MoveCommand.h"
+#include "Movement.h"
 #include "RenderContext.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -40,30 +40,21 @@ int main(int, char**)
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player1.getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
-
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_D, fro::ButtonInput::State::down }, "moveRight");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_A, fro::ButtonInput::State::down }, "moveLeft");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_W, fro::ButtonInput::State::down }, "moveUp");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_SCANCODE_S, fro::ButtonInput::State::down }, "moveDown");
-
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveRight", player1).setMoveDirection({ 1.0f, 0.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveLeft", player1).setMoveDirection({ -1.0f, 0.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveUp", player1).setMoveDirection({ 0.0f, -1.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveDown", player1).setMoveDirection({ 0.0f, 1.0f });
+		player1.addComponent<fro::Movement>();
 
 		fro::GameObject& player2{ scene.addGameObject() };
 		player2.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player2.getComponent<fro::Transform>()->setLocalTranslation({ 24, 8 });
 
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_RIGHT, fro::ButtonInput::State::down }, "moveRightController");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_LEFT, fro::ButtonInput::State::down }, "moveLeftController");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_UP, fro::ButtonInput::State::down }, "moveUpController");
-		fro::InputManager::getInstance().bindKeyInputToAction({ SDL_CONTROLLER_BUTTON_DPAD_DOWN, fro::ButtonInput::State::down }, "moveDownController");
+		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", SDL_SCANCODE_D);
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", SDL_SCANCODE_A);
+		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", SDL_SCANCODE_W);
+		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", SDL_SCANCODE_S);
 
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveRightController", player2).setMoveDirection({ 1.0f, 0.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveLeftController", player2).setMoveDirection({ -1.0f, 0.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveUpController", player2).setMoveDirection({ 0.0f, -1.0f });
-		fro::InputManager::getInstance().bindActionToCommand<fro::MoveCommand>("moveDownController", player2).setMoveDirection({ 0.0f, 1.0f });
+		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", SDL_CONTROLLER_BUTTON_DPAD_UP);
+		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", SDL_CONTROLLER_BUTTON_DPAD_DOWN);
 
 		return fro::Fronge::getInstance().run();
 	}

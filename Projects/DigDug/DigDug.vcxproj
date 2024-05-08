@@ -20,10 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Main.cpp" />
-    <ClCompile Include="Code\MoveCommand.cpp" />
+    <ClCompile Include="Code\Movement.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\MoveCommand.h" />
+    <ClInclude Include="Code\Movement.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

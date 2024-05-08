@@ -2,18 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Code\Main.cpp" />
-    <ClCompile Include="Code\MoveCommand.cpp">
-      <Filter>MoveCommand</Filter>
+    <ClCompile Include="Code\Movement.cpp">
+      <Filter>Movement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="MoveCommand">
+    <Filter Include="Movement">
       <UniqueIdentifier>{3c63623a-fc5c-4d52-83e0-fb7d85628ae7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\MoveCommand.h">
-      <Filter>MoveCommand</Filter>
+    <ClInclude Include="Code\Movement.h">
+      <Filter>Movement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
