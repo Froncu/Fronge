@@ -31,7 +31,7 @@ namespace fro
 		template<typename InputType>
 		struct JoypadInput
 		{
-			JoypadInput(int ID, InputType input)
+			JoypadInput(SDL_JoystickID ID, InputType input)
 				: ID{ ID }
 				, input{ input }
 			{
@@ -49,7 +49,21 @@ namespace fro
 			}
 		};
 
-		using Input = std::variant<SDL_Scancode, MouseButton, JoypadInput<SDL_GameControllerButton>, JoypadInput<SDL_GameControllerAxis>>;
+		enum class JoypadAxis
+		{
+			leftStickLeft,
+			leftStickRight,
+			leftStickUp,
+			leftStickDown,
+			rightStickLeft,
+			rightStickRight,
+			rightStickUp,
+			rightStickDown,
+			leftTrigger,
+			rightTrigger
+		};
+
+		using Input = std::variant<SDL_Scancode, MouseButton, JoypadInput<SDL_GameControllerButton>, JoypadInput<JoypadAxis>>;
 
 		InputManager();
 
@@ -72,6 +86,8 @@ namespace fro
 		fro_NODISCARD bool isActionJustReleased(std::string const& actionName);
 
 	private:
+		static JoypadAxis SDLToJoypadAxis(float const strength, Uint8 const SDLAxis);
+
 		InputManager(InputManager const&) = delete;
 		InputManager(InputManager&&) noexcept = delete;
 
@@ -92,7 +108,7 @@ namespace fro
 		};
 
 		std::map<Input, InputInfo> m_mInputs{};
-		std::map<std::string, std::set<Input>> m_mActions{};
+		std::map<std::string, std::set<InputInfo const*>> m_mActions{};
 	};
 }
 

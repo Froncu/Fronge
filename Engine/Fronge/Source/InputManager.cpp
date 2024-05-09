@@ -3,7 +3,7 @@
 #include <sdl.h>
 #include <sdl_events.h>
 
-#include <optional>
+#include <stdexcept>
 
 #pragma region Constructors/Destructor
 fro::InputManager::InputManager()
@@ -62,15 +62,28 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 		break;
 
 	case SDL_CONTROLLERAXISMOTION:
-		setInputState(static_cast<float>(event.caxis.value) / std::numeric_limits<decltype(event.caxis.value)>::max(),
-			JoypadInput(event.caxis.which, static_cast<SDL_GameControllerAxis>(event.caxis.axis)));
+		if (float const inputStrength
+			{ 
+				static_cast<float>(event.caxis.value) / 
+				(event.caxis.value > 0 ? 
+				std::numeric_limits<decltype(event.caxis.value)>::max() :
+				std::numeric_limits<decltype(event.caxis.value)>::lowest())
+			};
+			inputStrength != 0.0f)
+			setInputState(std::fabs(inputStrength),
+				JoypadInput(event.caxis.which, SDLToJoypadAxis(inputStrength, event.caxis.axis)));
+		else
+		{
+			setInputState(0.0f, JoypadInput(event.caxis.which, SDLToJoypadAxis(1.0f, event.caxis.axis)));
+			setInputState(0.0f, JoypadInput(event.caxis.which, SDLToJoypadAxis(-1.0f, event.caxis.axis)));
+		}
 		break;
 	}
 }
 
 void fro::InputManager::bindActionToInput(std::string const& actionName, Input const input)
 {
-	m_mActions[actionName].insert(input);
+	m_mActions[actionName].insert(&m_mInputs[input]);
 }
 
 float fro::InputManager::getInputStrength(Input const input)
@@ -80,15 +93,14 @@ float fro::InputManager::getInputStrength(Input const input)
 
 float fro::InputManager::getActionStrength(std::string const& actionName)
 {
-	auto const& sBoundInputs{ m_mActions[actionName] };
+	auto const& spBoundInputInfos{ m_mActions[actionName] };
 
 	float largestStrength{};
-	for (Input const boundInput : sBoundInputs)
+	for (InputInfo const* const pBoundInputInfo : spBoundInputInfos)
 	{
-		if (float const boundInputStrength{ getInputStrength(boundInput) };
-			boundInputStrength > largestStrength)
+		if (pBoundInputInfo->strength > largestStrength)
 		{
-			largestStrength = boundInputStrength;
+			largestStrength = pBoundInputInfo->strength;
 			if (largestStrength == 1.0f)
 				break;
 		};
@@ -122,12 +134,12 @@ bool fro::InputManager::isInputJustPressed(Input const input)
 
 bool fro::InputManager::isActionJustPressed(std::string const& actionName)
 {
-	auto const& sBoundInputs{ m_mActions[actionName] };
+	auto const& spBoundInputInfos{ m_mActions[actionName] };
 
 	bool justPressedInputPresent{};
-	for (Input const& boundInput : sBoundInputs)
-		if (getInputStrength(boundInput) > 0.0f)
-			if (isInputJustPressed(boundInput))
+	for (InputInfo const* const pBoundInputInfo : spBoundInputInfos)
+		if (pBoundInputInfo->strength > 0.0f)
+			if (pBoundInputInfo->state == InputInfo::State::justPressed)
 				justPressedInputPresent = true;
 			else
 				return false;
@@ -143,15 +155,15 @@ bool fro::InputManager::isInputJustReleased(Input const input)
 
 bool fro::InputManager::isActionJustReleased(std::string const& actionName)
 {
-	auto const& sBoundInputs{ m_mActions[actionName] };
+	auto const& spBoundInputInfos{ m_mActions[actionName] };
 
 	bool justReleasedInputPresent{};
-	for (Input const& boundInput : sBoundInputs)
+	for (InputInfo const* const pBoundInputInfo : spBoundInputInfos)
 	{
-		if (getInputStrength(boundInput) > 0.0f)
+		if (pBoundInputInfo->strength > 0.0f)
 			return false;
 
-		if (isInputJustReleased(boundInput))
+		if (pBoundInputInfo->state == InputInfo::State::justReleased)
 			justReleasedInputPresent = true;
 	}
 
@@ -162,6 +174,33 @@ bool fro::InputManager::isActionJustReleased(std::string const& actionName)
 
 
 #pragma region PrivateMethods
+fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadAxis(float const strength, Uint8 const SDLAxis)
+{
+	switch (SDLAxis)
+	{
+		case SDL_CONTROLLER_AXIS_LEFTX:
+			return strength > 0.0f ? JoypadAxis::leftStickRight : JoypadAxis::leftStickLeft;
+
+		case SDL_CONTROLLER_AXIS_LEFTY:
+			return strength > 0.0f ? JoypadAxis::leftStickUp : JoypadAxis::leftStickDown;
+
+		case SDL_CONTROLLER_AXIS_RIGHTX:
+			return strength > 0.0f ? JoypadAxis::rightStickRight : JoypadAxis::rightStickLeft;
+
+		case SDL_CONTROLLER_AXIS_RIGHTY:
+			return strength > 0.0f ? JoypadAxis::rightStickUp : JoypadAxis::rightStickDown;
+
+		case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+			return JoypadAxis::leftTrigger;
+
+		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+			return JoypadAxis::rightTrigger;
+
+		default:
+			throw std::runtime_error("SDL_GameControllerAxis not mapped to a JoypadAxis");
+	}
+}
+
 void fro::InputManager::setInputState(float const newStrength, Input const input)
 {
 	auto& [strength, state ] { m_mInputs[input] };
