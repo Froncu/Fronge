@@ -25,9 +25,7 @@ namespace fro
 		{
 			left = 1,
 			middle = 2,
-			right = 3,
-			wheelUp,
-			wheelDown
+			right = 3
 		};
 
 		template<typename InputType>
@@ -57,6 +55,7 @@ namespace fro
 
 		virtual ~InputManager() override;
 
+		void processInputContinous();
 		void processInputEvent(SDL_Event const& event);
 		void bindActionToInput(std::string const& actionName, Input const input);
 
@@ -67,8 +66,10 @@ namespace fro
 			std::string const& negativeActionNameX,
 			std::string const& positiveActionNameY,
 			std::string const& negativeActionNameY);
-		fro_NODISCARD float getInputRelativeStrength(Input const input);
-		fro_NODISCARD float getActionRelativeStrength(std::string const& actionName);
+		fro_NODISCARD bool isInputJustPressed(Input const input);
+		fro_NODISCARD bool isActionJustPressed(std::string const& actionName);
+		fro_NODISCARD bool isInputJustReleased(Input const input);
+		fro_NODISCARD bool isActionJustReleased(std::string const& actionName);
 
 	private:
 		InputManager(InputManager const&) = delete;
@@ -77,9 +78,20 @@ namespace fro
 		InputManager& operator=(InputManager const&) = delete;
 		InputManager& operator=(InputManager&&) noexcept = delete;
 
-		void setInputStrength(float const newStrength, Input const input);
+		void setInputState(float const newStrength, Input const input);
 
-		std::map<Input, std::pair<float, float>> m_mInputs{};
+		struct InputInfo final
+		{
+			float strength;
+			enum class State
+			{
+				none,
+				justPressed,
+				justReleased
+			} state;
+		};
+
+		std::map<Input, InputInfo> m_mInputs{};
 		std::map<std::string, std::set<Input>> m_mActions{};
 	};
 }

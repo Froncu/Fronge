@@ -39,6 +39,7 @@ int fro::Fronge::run()
 
 		Timer::getInstance().update();
 
+		InputManager::getInstance().processInputContinous();
 		if (not SystemEventManager::getInstance().processSystemEvents())
 			break;
 
