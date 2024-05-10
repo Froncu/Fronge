@@ -21,11 +21,7 @@ void fro::Movement::update()
 {
 	glm::ivec2 const worldPosition{ getParentingGameObject().getComponent<Transform>()->getWorldTransform().getTranslation() };
 
-	glm::vec2 const inputAxis
-	{
-		InputManager::getInstance().isActionJustPressed("moveRightDigDug"),
-		0.0f
-	};
+	glm::vec2 const inputAxis{ InputManager::getInstance().getActionStrengthAxis2D("moveRightDigDug", "moveLeftDigDug", "moveDownDigDug", "moveUpDigDug") };
 
 	//if (inputAxis.x or inputAxis.y)
 	//{
@@ -49,10 +45,9 @@ void fro::Movement::update()
 	//			correctedMoveDirection.y = -inputAxis.y;
 	//	}
 
-	//if (InputManager::getInstance().isActionJustReleased("moveRightDigDug"))
-		Console::getInstance().log(InputManager::getInstance().getActionStrength("moveRightDigDug"));
+	//if (InputManager::getInstance().isActionJustReleased("moveRightDigDug");
 
-
+	Console::getInstance().log(std::format("{}, {}", inputAxis.x, inputAxis.y));
 		getParentingGameObject().getComponent<Transform>()->localTranslate(Timer::getInstance().getDeltaSeconds() * m_MoveSpeed * inputAxis);
 	/*}*/
 }
