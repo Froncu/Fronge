@@ -170,11 +170,17 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positive
 	std::string const& positiveActionNameY,
 	std::string const& negativeActionNameY)
 {
-	return
+	glm::vec2 const actionStrength
 	{
 		getActionStrengthAxis1D(positiveActionNameX, negativeActionNameX),
 		getActionStrengthAxis1D(positiveActionNameY, negativeActionNameY)
 	};
+
+	if (float const actionStrengthMagnitude{ glm::length(actionStrength) };
+		actionStrengthMagnitude > 1.0f)
+		return actionStrength / actionStrengthMagnitude;
+
+	return actionStrength;
 }
 
 bool fro::InputManager::isInputJustPressed(Input const input)
