@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "GUIContext.h"
 #include "InputManager.h"
-#include "Movement.h"
+#include "GridMovement.h"
 #include "RenderContext.h"
 #include "Scene.h"
 #include "SceneManager.h"
@@ -40,31 +40,26 @@ int main(int, char**)
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player1.getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
-		player1.addComponent<fro::Movement>();
+		player1.addComponent<fro::GridMovement>();
 
 		fro::GameObject& player2{ scene.addGameObject() };
 		player2.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player2.getComponent<fro::Transform>()->setLocalTranslation({ 24, 8 });
 
-		fro::InputManager::getInstance().setActionDeadzone("moveRightDigDug", 0.25f);
-		fro::InputManager::getInstance().setActionDeadzone("moveLeftDigDug", 0.25f);
-		fro::InputManager::getInstance().setActionDeadzone("moveUpDigDug", 0.25f);
-		fro::InputManager::getInstance().setActionDeadzone("moveDownDigDug", 0.25f);
+		fro::InputManager::getInstance().setActionDeadzone("moveRight1", 0.25f);
+		fro::InputManager::getInstance().setActionDeadzone("moveLeft1", 0.25f);
+		fro::InputManager::getInstance().setActionDeadzone("moveUp1", 0.25f);
+		fro::InputManager::getInstance().setActionDeadzone("moveDown1", 0.25f);
 
-		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", SDL_SCANCODE_D);
-		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", SDL_SCANCODE_A);
-		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", SDL_SCANCODE_W);
-		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", SDL_SCANCODE_S);
+		fro::InputManager::getInstance().bindActionToInput("moveRight1", SDL_SCANCODE_D);
+		fro::InputManager::getInstance().bindActionToInput("moveLeft1", SDL_SCANCODE_A);
+		fro::InputManager::getInstance().bindActionToInput("moveUp1", SDL_SCANCODE_W);
+		fro::InputManager::getInstance().bindActionToInput("moveDown1", SDL_SCANCODE_S);
 
-		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickRight });
-		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickLeft });
-		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickUp });
-		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickDown });
-
-		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickRight });
-		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickLeft });
-		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickUp });
-		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickDown });
+		fro::InputManager::getInstance().bindActionToInput("moveRight1", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickRight });
+		fro::InputManager::getInstance().bindActionToInput("moveLeft1", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickLeft });
+		fro::InputManager::getInstance().bindActionToInput("moveUp1", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickUp });
+		fro::InputManager::getInstance().bindActionToInput("moveDown1", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickDown });
 
 		return fro::Fronge::getInstance().run();
 	}

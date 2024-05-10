@@ -2,18 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Code\Main.cpp" />
-    <ClCompile Include="Code\Movement.cpp">
-      <Filter>Movement</Filter>
+    <ClCompile Include="Code\GridMovement.cpp">
+      <Filter>GridMovement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Movement">
+    <Filter Include="GridMovement">
       <UniqueIdentifier>{3c63623a-fc5c-4d52-83e0-fb7d85628ae7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Movement.h">
-      <Filter>Movement</Filter>
+    <ClInclude Include="Code\GridMovement.h">
+      <Filter>GridMovement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
