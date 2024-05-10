@@ -55,29 +55,80 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 		// END TODO
 		break;
 
+	case SDL_CONTROLLERDEVICEADDED:
+		m_mpJoypadInstanceDeviceIDs.emplace(SDL_JoystickGetDeviceInstanceID(event.cdevice.which), event.cdevice.which);
+		m_mpJoypads.emplace(SDL_JoystickGetDeviceInstanceID(event.cdevice.which),
+			SDLUniquePointer<SDL_GameController>(SDL_GameControllerOpen(event.cdevice.which), SDL_GameControllerClose));
+		break;
+
+	case SDL_CONTROLLERDEVICEREMOVED:
+		m_mpJoypadInstanceDeviceIDs.erase(event.cdevice.which);
+		m_mpJoypads.erase(event.cdevice.which);
+		break;
+
 	case SDL_CONTROLLERBUTTONDOWN:
 	case SDL_CONTROLLERBUTTONUP:
 		setInputState(eventType == SDL_CONTROLLERBUTTONDOWN,
-			JoypadInput(event.cbutton.which, static_cast<SDL_GameControllerButton>(event.cbutton.button)));
+			JoypadInput(m_mpJoypadInstanceDeviceIDs.at(event.cbutton.which),
+				static_cast<SDL_GameControllerButton>(event.cbutton.button)));
 		break;
 
 	case SDL_CONTROLLERAXISMOTION:
-		if (float const inputStrength
-			{ 
-				static_cast<float>(event.caxis.value) / 
-				(event.caxis.value > 0 ? 
-				std::numeric_limits<decltype(event.caxis.value)>::max() :
-				std::numeric_limits<decltype(event.caxis.value)>::lowest())
-			};
-			inputStrength != 0.0f)
-			setInputState(std::fabs(inputStrength),
-				JoypadInput(event.caxis.which, SDLToJoypadAxis(inputStrength, event.caxis.axis)));
-		else
+	{
+		auto constexpr highestAxisValue{ std::numeric_limits<decltype(event.caxis.value)>::max() };
+		auto constexpr lowestAxisValue{ std::numeric_limits<decltype(event.caxis.value)>::lowest() };
+
+		float const inputStrength
 		{
-			setInputState(0.0f, JoypadInput(event.caxis.which, SDLToJoypadAxis(1.0f, event.caxis.axis)));
-			setInputState(0.0f, JoypadInput(event.caxis.which, SDLToJoypadAxis(-1.0f, event.caxis.axis)));
+			static_cast<float>(event.caxis.value) / (event.caxis.value > 0 ? highestAxisValue : lowestAxisValue)
+		};
+
+		auto const joypadID{ m_mpJoypadInstanceDeviceIDs.at(event.cbutton.which) };
+
+		switch (event.caxis.axis)
+		{
+		case SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX:
+		case SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY:
+		case SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY:
+		case SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX:
+			if (event.caxis.value > 0)
+			{
+				setInputState(inputStrength,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(event.caxis.value, event.caxis.axis)));
+
+				setInputState(0.0f,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(lowestAxisValue, event.caxis.axis)));
+			}
+			else if (event.caxis.value < 0)
+			{
+				setInputState(inputStrength,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(event.caxis.value, event.caxis.axis)));
+
+				setInputState(0.0f,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(highestAxisValue, event.caxis.axis)));
+			}
+			else
+			{
+				setInputState(0.0f,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(highestAxisValue, event.caxis.axis)));
+
+				setInputState(0.0f,
+					JoypadInput(joypadID,
+						SDLToJoypadStick(lowestAxisValue, event.caxis.axis)));
+			}
+			break;
+
+		default:
+			setInputState(inputStrength,
+				JoypadInput(joypadID,
+					SDLToJoypadTrigger(event.caxis.axis)));
 		}
-		break;
+	}
 	}
 }
 
@@ -174,36 +225,45 @@ bool fro::InputManager::isActionJustReleased(std::string const& actionName)
 
 
 #pragma region PrivateMethods
-fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadAxis(float const strength, Uint8 const SDLAxis)
+fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadTrigger(Uint8 const SDLAxis)
 {
 	switch (SDLAxis)
 	{
-		case SDL_CONTROLLER_AXIS_LEFTX:
-			return strength > 0.0f ? JoypadAxis::leftStickRight : JoypadAxis::leftStickLeft;
+	case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+		return JoypadAxis::leftTrigger;
 
-		case SDL_CONTROLLER_AXIS_LEFTY:
-			return strength > 0.0f ? JoypadAxis::leftStickUp : JoypadAxis::leftStickDown;
+	case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+		return JoypadAxis::rightTrigger;
 
-		case SDL_CONTROLLER_AXIS_RIGHTX:
-			return strength > 0.0f ? JoypadAxis::rightStickRight : JoypadAxis::rightStickLeft;
+	default:
+		throw std::runtime_error("SDL_GameControllerAxis' trigger not mapped to a JoypadAxis");
+	}
+}
 
-		case SDL_CONTROLLER_AXIS_RIGHTY:
-			return strength > 0.0f ? JoypadAxis::rightStickUp : JoypadAxis::rightStickDown;
+fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis)
+{
+	switch (SDLAxis)
+	{
+	case SDL_CONTROLLER_AXIS_LEFTX:
+		return stickValue > 0 ? JoypadAxis::leftStickRight : JoypadAxis::leftStickLeft;
 
-		case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-			return JoypadAxis::leftTrigger;
+	case SDL_CONTROLLER_AXIS_LEFTY:
+		return stickValue > 0 ? JoypadAxis::leftStickUp : JoypadAxis::leftStickDown;
 
-		case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-			return JoypadAxis::rightTrigger;
+	case SDL_CONTROLLER_AXIS_RIGHTX:
+		return stickValue > 0 ? JoypadAxis::rightStickRight : JoypadAxis::rightStickLeft;
 
-		default:
-			throw std::runtime_error("SDL_GameControllerAxis not mapped to a JoypadAxis");
+	case SDL_CONTROLLER_AXIS_RIGHTY:
+		return stickValue > 0 ? JoypadAxis::rightStickUp : JoypadAxis::rightStickDown;
+
+	default:
+		throw std::runtime_error("SDL_GameControllerAxis' stick not mapped");
 	}
 }
 
 void fro::InputManager::setInputState(float const newStrength, Input const input)
 {
-	auto& [strength, state ] { m_mInputs[input] };
+	auto& [strength, state] { m_mInputs[input] };
 
 	state =
 		(strength == 0.0f and newStrength > 0.0f) ? InputInfo::State::justPressed :

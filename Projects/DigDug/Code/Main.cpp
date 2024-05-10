@@ -53,9 +53,13 @@ int main(int, char**)
 
 		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::rightTrigger });
 		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftTrigger });
-		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_LEFT });
-		fro::InputManager::getInstance().bindActionToInput("moveUpDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_UP });
-		fro::InputManager::getInstance().bindActionToInput("moveDownDigDug", fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_DPAD_DOWN });
+		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickUp });
+		fro::InputManager::getInstance().bindActionToInput("moveRightDigDug", fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickDown });
+
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::rightTrigger });
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftTrigger });
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickUp });
+		fro::InputManager::getInstance().bindActionToInput("moveLeftDigDug", fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickDown });
 
 		return fro::Fronge::getInstance().run();
 	}

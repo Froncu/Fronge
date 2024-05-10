@@ -2,6 +2,7 @@
 #define fro_INPUT_MANAGER_H
 
 #include "Defines.hpp"
+#include "Typenames.hpp"
 #include "Singleton.hpp"
 
 #include <glm.hpp>
@@ -31,21 +32,21 @@ namespace fro
 		template<typename InputType>
 		struct JoypadInput
 		{
-			JoypadInput(SDL_JoystickID ID, InputType input)
-				: ID{ ID }
+			JoypadInput(Sint32 deviceID, InputType input)
+				: deviceID{ deviceID }
 				, input{ input }
 			{
 			}
 
-			SDL_JoystickID ID;
+			Sint32 deviceID;
 			InputType input;
 
 			fro_NODISCARD bool operator<(JoypadInput const& other) const
 			{
 				return
-					ID == other.ID ?
+					deviceID == other.deviceID ?
 					input < other.input :
-					ID < other.ID;
+					deviceID < other.deviceID;
 			}
 		};
 
@@ -86,7 +87,8 @@ namespace fro
 		fro_NODISCARD bool isActionJustReleased(std::string const& actionName);
 
 	private:
-		static JoypadAxis SDLToJoypadAxis(float const strength, Uint8 const SDLAxis);
+		static JoypadAxis SDLToJoypadTrigger(Uint8 const SDLAxis);
+		static JoypadAxis SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis);
 
 		InputManager(InputManager const&) = delete;
 		InputManager(InputManager&&) noexcept = delete;
@@ -107,6 +109,10 @@ namespace fro
 			} state;
 		};
 
+		// HACK: only reason for this is to open and close connected and disconnected joypads; not sure if this is needed
+		std::map<SDL_JoystickID, SDLUniquePointer<SDL_GameController>> m_mpJoypads{};
+		// HACK
+		std::map<SDL_JoystickID, Sint32> m_mpJoypadInstanceDeviceIDs{};
 		std::map<Input, InputInfo> m_mInputs{};
 		std::map<std::string, std::set<InputInfo const*>> m_mActions{};
 	};
