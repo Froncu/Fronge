@@ -248,13 +248,13 @@ fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadStick(Sint16 const s
 		return stickValue > 0 ? JoypadAxis::leftStickRight : JoypadAxis::leftStickLeft;
 
 	case SDL_CONTROLLER_AXIS_LEFTY:
-		return stickValue > 0 ? JoypadAxis::leftStickUp : JoypadAxis::leftStickDown;
+		return stickValue > 0 ? JoypadAxis::leftStickDown : JoypadAxis::leftStickUp;
 
 	case SDL_CONTROLLER_AXIS_RIGHTX:
 		return stickValue > 0 ? JoypadAxis::rightStickRight : JoypadAxis::rightStickLeft;
 
 	case SDL_CONTROLLER_AXIS_RIGHTY:
-		return stickValue > 0 ? JoypadAxis::rightStickUp : JoypadAxis::rightStickDown;
+		return stickValue > 0 ? JoypadAxis::rightStickDown : JoypadAxis::rightStickUp;
 
 	default:
 		throw std::runtime_error("SDL_GameControllerAxis' stick not mapped");
