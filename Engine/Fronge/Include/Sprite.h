@@ -4,7 +4,7 @@
 #include "Defines.hpp"
 #include "Renderable.h"
 
-#include <string>
+#include <xstring>
 
 struct SDL_Texture;
 
@@ -19,7 +19,7 @@ namespace fro
 
 		virtual void render() const override;
 
-		void setFileName(std::string const& fileName);
+		void setFileName(std::string_view const fileName);
 
 	private:
 		Sprite(Sprite const&) = delete;

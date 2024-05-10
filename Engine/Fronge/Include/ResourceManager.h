@@ -7,7 +7,7 @@
 
 #include <functional>
 #include <memory>
-#include <string>
+#include <xstring>
 #include <unordered_map>
 
 struct SDL_Renderer;
@@ -28,12 +28,12 @@ namespace fro
 
 		void clearCaches();
 
-		void setResourcesDirectory(std::string const& resourcesDirectory);
+		void setResourcesDirectory(std::string_view const resourcesDirectory);
 
-		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
-		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName);
-		fro_NODISCARD Mix_Music* getMusic(std::string const& audioFileName);
-		fro_NODISCARD Mix_Chunk* getEffect(std::string const& audioFileName);
+		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string_view const fileName, int const size, std::string_view const text);
+		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string_view const imageFileName);
+		fro_NODISCARD Mix_Music* getMusic(std::string_view const audioFileName);
+		fro_NODISCARD Mix_Chunk* getEffect(std::string_view const audioFileName);
 
 	private:
 		ResourceManager(ResourceManager const&) = delete;
@@ -62,14 +62,14 @@ namespace fro
 			}
 		};
 
-		fro_NODISCARD TTF_Font* getFont(std::string const& fileName, int const size);
+		fro_NODISCARD TTF_Font* getFont(std::string_view const fileName, int const size);
 
-		std::string m_ResourcesDirectory{ "Resources/" };
-		std::unordered_map<std::pair<std::string, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
-		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
-		std::unordered_map<std::string, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
-		std::unordered_map<std::string, SDLUniquePointer<Mix_Music>> m_mpAudioMusics{};
-		std::unordered_map<std::string, SDLUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
+		std::string_view m_ResourcesDirectory{ "Resources/" };
+		std::unordered_map<std::pair<std::string_view, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
+		std::unordered_map<std::pair<std::string_view, int>, std::unordered_map<std::string_view, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
+		std::unordered_map<std::string_view, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
+		std::unordered_map<std::string_view, SDLUniquePointer<Mix_Music>> m_mpAudioMusics{};
+		std::unordered_map<std::string_view, SDLUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
 	};
 	// END TODO
 }

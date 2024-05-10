@@ -9,8 +9,8 @@
 #include <format>
 #include <map>
 #include <stdexcept>
-#include <string>
 #include <thread>
+#include <xstring>
 
 #pragma region Constructors/Destructor
 fro::AudioSDL::AudioSDL()
@@ -40,7 +40,7 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void playMusic(std::string const& fileName, float const volume)
+	void playMusic(std::string_view const fileName, float const volume)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
@@ -56,7 +56,7 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void playEffect(std::string const& fileName, float const volume)
+	void playEffect(std::string_view const fileName, float const volume)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
@@ -85,7 +85,7 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void pauseEffect(std::string const& fileName)
+	void pauseEffect(std::string_view const fileName)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
@@ -122,7 +122,7 @@ private:
 	struct AudioEvent final
 	{
 	public:
-		std::string fileName{};
+		std::string_view fileName{};
 		float volume{};
 		bool isMusic{};
 		bool play{};
@@ -156,7 +156,7 @@ private:
 			}
 			else
 			{
-				static std::map<std::string, int> m_mEFFECT_CHANNELS{};
+				static std::map<std::string_view, int> m_mEFFECT_CHANNELS{};
 
 				if (event.play)
 				{
@@ -210,12 +210,12 @@ private:
 
 
 #pragma region PublicMethods
-void fro::AudioSDL::playMusic(std::string const& fileName, float const volume)
+void fro::AudioSDL::playMusic(std::string_view const fileName, float const volume)
 {
 	m_pAudioSDLImplementation->playMusic(fileName, volume);
 }
 
-void fro::AudioSDL::playEffect(std::string const& fileName, float const volume)
+void fro::AudioSDL::playEffect(std::string_view const fileName, float const volume)
 {
 	m_pAudioSDLImplementation->playEffect(fileName, volume);
 }
@@ -225,7 +225,7 @@ void fro::AudioSDL::pauseMusic()
 	m_pAudioSDLImplementation->pauseMusic();
 }
 
-void fro::AudioSDL::pauseEffect(std::string const& fileName)
+void fro::AudioSDL::pauseEffect(std::string_view const fileName)
 {
 	m_pAudioSDLImplementation->pauseEffect(fileName);
 }

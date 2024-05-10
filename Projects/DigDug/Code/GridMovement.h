@@ -5,6 +5,9 @@
 
 #include <vec2.hpp>
 
+#include <array>
+#include <xstring>
+
 namespace fro
 {
 	class GridMovement final : public Behaviour
@@ -17,6 +20,10 @@ namespace fro
 		virtual void update() override;
 
 		void setMoveSpeed(float const moveSpeed);
+		void setActionNames(std::string_view const positiveActionNameX,
+			std::string_view const negativeActionNameX,
+			std::string_view const positiveActionNameY,
+			std::string_view const negativeActionNameY);
 
 	private:
 		GridMovement(GridMovement const&) = delete;
@@ -25,6 +32,7 @@ namespace fro
 		GridMovement& operator=(GridMovement const&) = delete;
 		GridMovement& operator=(GridMovement&&) noexcept = delete;
 
+		std::array<std::string_view, 4> m_aActions{};
 		int m_CellsX{ 10 };
 		int m_CellsY{ 8 };
 		int m_CellSizeX{ 16 };

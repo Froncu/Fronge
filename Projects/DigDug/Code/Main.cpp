@@ -40,7 +40,7 @@ int main(int, char**)
 		fro::GameObject& player1{ scene.addGameObject() };
 		player1.addComponent<fro::Sprite>()->setFileName("DigDug.png");
 		player1.getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
-		player1.addComponent<fro::GridMovement>();
+		player1.addComponent<fro::GridMovement>()->setActionNames("moveRight1", "moveLeft1", "moveUp1", "moveDown1");
 
 		fro::GameObject& player2{ scene.addGameObject() };
 		player2.addComponent<fro::Sprite>()->setFileName("DigDug.png");

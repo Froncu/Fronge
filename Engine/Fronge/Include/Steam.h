@@ -7,7 +7,7 @@
 #include <isteamuserstats.h>
 
 #include <cstdint>
-#include <string>
+#include <xstring>
 #include <vector>
 
 #define fro_STEAM_ACHIEVEMENT_ID(ID, name){ ID, #ID, name, "", 0, 0 }
@@ -51,7 +51,7 @@ namespace fro
 		STEAM_CALLBACK(Steam, onUserStatsStored, UserStatsStored_t, m_CallbackUserStatsStored);
 		STEAM_CALLBACK(Steam, onAchievementStored, UserAchievementStored_t, m_CallbackAchievementStored);
 
-		fro_NODISCARD std::string getAchievementName(AchievementID const achievementID) const;
+		fro_NODISCARD std::string_view getAchievementName(AchievementID const achievementID) const;
 
 		std::vector<Achievement> m_vAchievements
 		{

@@ -18,7 +18,7 @@ fro::GridMovement::GridMovement(GameObject const& parentingGameObject)
 #pragma region PublicMethods
 void fro::GridMovement::update()
 {
-	glm::vec2 const inputAxis2D{ InputManager::getInstance().getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
+	glm::vec2 const inputAxis2D{ InputManager::getInstance().getActionStrengthAxis2D(m_aActions[0], m_aActions[1], m_aActions[2], m_aActions[3]) };
 	if (not inputAxis2D.x and not inputAxis2D.y)
 		return;
 
@@ -67,5 +67,16 @@ void fro::GridMovement::update()
 void fro::GridMovement::setMoveSpeed(float const moveSpeed)
 {
 	m_MoveSpeed = moveSpeed;
+}
+
+void fro::GridMovement::setActionNames(std::string_view const positiveActionNameX,
+	std::string_view const negativeActionNameX,
+	std::string_view const positiveActionNameY,
+	std::string_view const negativeActionNameY)
+{
+	m_aActions[0] = positiveActionNameX;
+	m_aActions[1] = negativeActionNameX;
+	m_aActions[2] = positiveActionNameY;
+	m_aActions[3] = negativeActionNameY;
 }
 #pragma endregion PublicMethods

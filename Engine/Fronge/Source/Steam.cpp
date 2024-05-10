@@ -132,7 +132,7 @@ void fro::Steam::onAchievementStored(UserAchievementStored_t* const /*pCallback*
 	//	Console::getInstance().log("Stored Achievement for Steam");
 }
 
-fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const /*achievementID*/) const
+fro_NODISCARD std::string_view fro::Steam::getAchievementName(AchievementID const /*achievementID*/) const
 {
 	//switch (achievementID)
 	//{
@@ -143,6 +143,6 @@ fro_NODISCARD std::string fro::Steam::getAchievementName(AchievementID const /*a
 	//	throw std::runtime_error(std::format("Achievement ID {} not mapped to a string name", static_cast<int>(achievementID)));
 	//}
 
-	return {};
+	return "NULL";
 }
 #pragma endregion PrivateMethods

@@ -27,7 +27,7 @@ namespace fro
 
 		virtual void render() const override;
 
-		void setFont(std::string const& fontName, int const fontSize);
+		void setFont(std::string_view const fontName, int const fontSize);
 
 		template<typename TextType>
 			requires StringAssignable<TextType> || StringConvertible<TextType>
@@ -52,8 +52,8 @@ namespace fro
 
 		SDL_Texture* m_pTexture{};
 
-		std::string m_Text{};
-		std::string m_FontName{};
+		std::string_view m_Text{};
+		std::string_view m_FontName{};
 		int m_FontSize{};
 	};
 }

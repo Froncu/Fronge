@@ -21,7 +21,7 @@ void fro::Sprite::render() const
 	RenderContext::getInstance().renderTexture(m_pTexture, getParentingGameObject().getComponent<Transform>()->getWorldTransform());
 }
 
-void fro::Sprite::setFileName(std::string const& fileName)
+void fro::Sprite::setFileName(std::string_view const fileName)
 {
 	m_pTexture = ResourceManager::getInstance().getImageTexture(RenderContext::getInstance().getRenderer(), fileName);
 }
