@@ -135,6 +135,11 @@ void fro::RenderContext::setWindowSize(int const width, int const height) const
 	SDL_SetWindowPosition(m_pWindow.get(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
+void fro::RenderContext::setWindowTitle(std::string_view const title) const
+{
+	SDL_SetWindowTitle(m_pWindow.get(), title.data());
+}
+
 void fro::RenderContext::setResolution(int const width, int const height)
 {
 	m_ViewportSize.x = width;

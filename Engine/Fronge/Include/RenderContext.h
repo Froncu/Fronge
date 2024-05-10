@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <functional>
+#include <xstring>
 
 typedef union SDL_Event SDL_Event;
 struct SDL_Texture;
@@ -44,6 +45,7 @@ namespace fro
 		void setFullScreen(bool const enable) const;
 		void setWindowResizeable(bool const enable) const;
 		void setWindowSize(int const width, int const height) const;
+		void setWindowTitle(std::string_view const title) const;
 		void setResolution(int const width, int const height);
 		void setScalingMode(ScalingMode const scalingMode);
 
