@@ -74,6 +74,8 @@ namespace fro
 		void processInputEvent(SDL_Event const& event);
 		void bindActionToInput(std::string const& actionName, Input const input);
 
+		void setActionDeadzone(std::string const& actionName, float const deadzone);
+
 		fro_NODISCARD float getInputStrength(Input const input);
 		fro_NODISCARD float getActionStrength(std::string const& actionName);
 		fro_NODISCARD float getActionStrengthAxis1D(std::string const& positiveActionName, std::string const& negativeActionName);
@@ -87,6 +89,18 @@ namespace fro
 		fro_NODISCARD bool isActionJustReleased(std::string const& actionName);
 
 	private:
+		struct InputInfo final
+		{
+			float absoluteStrength;
+			float relativeStrength;
+		};
+
+		struct ActionInfo final
+		{
+			std::set<InputInfo const*> spBoundInputInfos;
+			float deadzone;
+		};
+
 		static JoypadAxis SDLToJoypadTrigger(Uint8 const SDLAxis);
 		static JoypadAxis SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis);
 
@@ -98,23 +112,14 @@ namespace fro
 
 		void setInputState(float const newStrength, Input const input);
 
-		struct InputInfo final
-		{
-			float strength;
-			enum class State
-			{
-				none,
-				justPressed,
-				justReleased
-			} state;
-		};
+		fro_NODISCARD float getActionStrength(std::string const& actionName, float const deadzone);
 
 		// HACK: only reason for this is to open and close connected and disconnected joypads; not sure if this is needed
 		std::map<SDL_JoystickID, SDLUniquePointer<SDL_GameController>> m_mpJoypads{};
 		// HACK
 		std::map<SDL_JoystickID, Sint32> m_mpJoypadInstanceDeviceIDs{};
 		std::map<Input, InputInfo> m_mInputs{};
-		std::map<std::string, std::set<InputInfo const*>> m_mActions{};
+		std::map<std::string, ActionInfo> m_mActions{};
 	};
 }
 
