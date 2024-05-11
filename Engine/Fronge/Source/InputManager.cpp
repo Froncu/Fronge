@@ -198,7 +198,7 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string_view const posi
 bool fro::InputManager::isInputJustPressed(Input const input)
 {
 	auto const& [absoluteStrength, relativeStrength] { m_mInputs[input] };
-	return absoluteStrength == relativeStrength;
+	return relativeStrength > 0.0f and absoluteStrength == relativeStrength;
 }
 
 bool fro::InputManager::isActionJustPressed(std::string_view const actionName)
@@ -219,7 +219,7 @@ bool fro::InputManager::isActionJustPressed(std::string_view const actionName)
 bool fro::InputManager::isInputJustReleased(Input const input)
 {
 	auto const& [absoluteStrength, relativeStrength] { m_mInputs[input] };
-	return relativeStrength - absoluteStrength == relativeStrength;
+	return relativeStrength < 0.0f and absoluteStrength == 0.0f;
 }
 
 bool fro::InputManager::isActionJustReleased(std::string_view const actionName)
