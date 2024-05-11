@@ -60,13 +60,23 @@ void fro::RenderContext::present() const
 	SDL_RenderPresent(m_pRenderer.get());
 }
 
-void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform) const
+void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform,
+	SDL_FRect sourceRectangle) const
 {
 	int textureWidth;
 	int textureHeight;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
-	float const halfWidth{ textureWidth / 2.0f };
-	float const halfHeight{ textureHeight / 2.0f };
+
+	if (not sourceRectangle.w or not sourceRectangle.h)
+	{
+		sourceRectangle.x = 0;
+		sourceRectangle.y = 0;
+		sourceRectangle.w = static_cast<float>(textureWidth);
+		sourceRectangle.h = static_cast<float>(textureHeight);
+	}
+
+	float const halfSourceWidth{ sourceRectangle.w / 2 };
+	float const halfSourceHeight{ sourceRectangle.h / 2 };
 
 	SDL_Color constexpr vertexColor
 	{
@@ -76,12 +86,31 @@ void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Transformati
 		.a{ 255 }
 	};
 
+	glm::vec2 const topLeftTexture
+	{
+		sourceRectangle.x / textureWidth,
+		sourceRectangle.y / textureHeight
+	};
+
+	glm::vec2 const bottomRightTexture
+	{
+		(sourceRectangle.x + sourceRectangle.w) / textureWidth,
+		(sourceRectangle.y + sourceRectangle.h) / textureHeight,
+	};
+
 	std::array<SDL_Vertex, 4> vVertices
 	{
-		SDL_Vertex({ -halfWidth, -halfHeight }, vertexColor, { 0, 0 }),
-		SDL_Vertex({ +halfWidth, -halfHeight }, vertexColor, { 1, 0 }),
-		SDL_Vertex({ +halfWidth, +halfHeight }, vertexColor, { 1, 1 }),
-		SDL_Vertex({ -halfWidth, +halfHeight }, vertexColor, { 0, 1 })
+		SDL_Vertex({ -halfSourceWidth, -halfSourceHeight },
+		vertexColor, { topLeftTexture.x, topLeftTexture.y }),
+
+		SDL_Vertex({ halfSourceWidth, -halfSourceHeight },
+		vertexColor, { bottomRightTexture.x, topLeftTexture.y }),
+
+		SDL_Vertex({ halfSourceWidth, halfSourceHeight },
+		vertexColor, { bottomRightTexture.x, bottomRightTexture.y }),
+
+		SDL_Vertex({ -halfSourceWidth, halfSourceHeight },
+		vertexColor, { topLeftTexture.x, bottomRightTexture.y }),
 	};
 
 	for (SDL_Vertex& vertex : vVertices)

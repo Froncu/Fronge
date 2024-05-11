@@ -7,6 +7,7 @@
 #include "Typenames.hpp"
 
 #include <mat3x3.hpp>
+#include <sdl_rect.h>
 
 #include <memory>
 #include <functional>
@@ -36,7 +37,8 @@ namespace fro
 		void processSystemEvent(SDL_Event const& event);
 		void clear() const;
 		void present() const;
-		void renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform) const;
+		void renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform,
+			SDL_FRect sourceRectangle = {}) const;
 
 		fro_NODISCARD SDL_Window* getWindow() const;
 		fro_NODISCARD SDL_Renderer* getRenderer() const;
