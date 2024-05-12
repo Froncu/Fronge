@@ -82,6 +82,12 @@
     <ClCompile Include="Source\SpriteAnimator.cpp">
       <Filter>Component\Renderable\SpriteAnimator</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StateMachine.cpp">
+      <Filter>Component\Behaviour\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\State.cpp">
+      <Filter>Patterns\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -195,6 +201,12 @@
     <Filter Include="Component\Renderable\SpriteAnimator">
       <UniqueIdentifier>{1bbc9091-e000-40ce-8b63-ca959222dc7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Behaviour\StateMachine">
+      <UniqueIdentifier>{e5a9e2ad-78ab-4254-9310-1cefd801299e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\State">
+      <UniqueIdentifier>{1bdc4913-7ced-47a9-b2a7-450d2ea1c641}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -300,6 +312,12 @@
     </ClInclude>
     <ClInclude Include="Include\SpriteAnimator.h">
       <Filter>Component\Renderable\SpriteAnimator</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\StateMachine.h">
+      <Filter>Component\Behaviour\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\State.h">
+      <Filter>Patterns\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

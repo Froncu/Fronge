@@ -169,6 +169,7 @@
     <ClCompile Include="Source\GUI.cpp" />
     <ClCompile Include="Source\GUIContext.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\State.cpp" />
     <ClCompile Include="Source\TransformationMatrix2D.cpp" />
     <ClCompile Include="Source\PhysicsManager.cpp" />
     <ClCompile Include="Source\Plot.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Source\Text.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\SpriteAnimator.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="Include\GUI.h" />
     <ClInclude Include="Include\GUIContext.h" />
     <ClInclude Include="Include\InputManager.h" />
+    <ClInclude Include="Include\State.h" />
     <ClInclude Include="Include\TransformationMatrix2D.h" />
     <ClInclude Include="Include\PhysicsManager.h" />
     <ClInclude Include="Include\Plot.h" />
@@ -222,6 +225,7 @@
     <ClInclude Include="Include\Timer.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
+    <ClInclude Include="Include\StateMachine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
