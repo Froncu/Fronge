@@ -3,16 +3,20 @@
 
 #include "Singleton.hpp"
 
-#include <box2d.h>
+#include <b2_world.h>
 
 #include <memory>
 
 namespace fro
 {
-	class PhysicsManager final : public Singleton<PhysicsManager>
+	class PhysicsManager final : public Singleton<PhysicsManager>, public b2ContactListener
 	{
+		// TODO: not sure about this
+		friend class RigidBody;
+		// END TODO
+
 	public:
-		PhysicsManager() = default;
+		PhysicsManager();
 
 		~PhysicsManager() = default;
 
@@ -24,6 +28,9 @@ namespace fro
 
 		PhysicsManager& operator=(PhysicsManager const&) = delete;
 		PhysicsManager& operator=(PhysicsManager&&) noexcept = delete;
+
+		virtual void BeginContact(b2Contact* const pContact) override;
+		virtual void EndContact(b2Contact* const pContact) override;
 
 		b2World m_World{ { 0.0f, 10.0f} };
 	};

@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\FixedBehaviour.cpp" />
+    <ClCompile Include="Source\RigidBody.cpp" />
     <ClCompile Include="Source\SpriteAnimator.cpp" />
     <ClCompile Include="Source\AudioSDL.cpp" />
     <ClCompile Include="Source\AudioService.cpp" />
@@ -189,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\FixedBehaviour.h" />
+    <ClInclude Include="Include\RigidBody.h" />
     <ClInclude Include="Include\SpriteAnimator.h" />
     <ClInclude Include="Include\AudioSDL.h" />
     <ClInclude Include="Include\AudioService.h" />

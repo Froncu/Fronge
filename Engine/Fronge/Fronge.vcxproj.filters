@@ -88,6 +88,9 @@
     <ClCompile Include="Source\FixedBehaviour.cpp">
       <Filter>Component\FixedBehaviour\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RigidBody.cpp">
+      <Filter>Component\FixedBehaviour\RigidBody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -210,6 +213,9 @@
     <Filter Include="Component\FixedBehaviour\Base">
       <UniqueIdentifier>{e26f72d7-bd40-44a9-aca5-7593470073a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\FixedBehaviour\RigidBody">
+      <UniqueIdentifier>{c276c9bf-78d3-45f4-a4f2-bb46fd33d9e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -321,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="Include\FixedBehaviour.h">
       <Filter>Component\FixedBehaviour\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RigidBody.h">
+      <Filter>Component\FixedBehaviour\RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
