@@ -65,11 +65,11 @@ namespace fro
 		fro_NODISCARD TTF_Font* getFont(std::string_view const fileName, int const size);
 
 		std::string_view m_ResourcesDirectory{ "Resources/" };
-		std::unordered_map<std::pair<std::string_view, int>, SDLUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
-		std::unordered_map<std::pair<std::string_view, int>, std::unordered_map<std::string_view, SDLUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
-		std::unordered_map<std::string_view, SDLUniquePointer<SDL_Texture>> m_mpImageTextures{};
-		std::unordered_map<std::string_view, SDLUniquePointer<Mix_Music>> m_mpAudioMusics{};
-		std::unordered_map<std::string_view, SDLUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
+		std::unordered_map<std::pair<std::string_view, int>, CustomUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
+		std::unordered_map<std::pair<std::string_view, int>, std::unordered_map<std::string_view, CustomUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
+		std::unordered_map<std::string_view, CustomUniquePointer<SDL_Texture>> m_mpImageTextures{};
+		std::unordered_map<std::string_view, CustomUniquePointer<Mix_Music>> m_mpAudioMusics{};
+		std::unordered_map<std::string_view, CustomUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
 	};
 	// END TODO
 }

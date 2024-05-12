@@ -60,8 +60,8 @@ namespace fro
 
 		void updateViewPort() const;
 
-		SDLUniquePointer<SDL_Window> m_pWindow;
-		SDLUniquePointer<SDL_Renderer> m_pRenderer;
+		CustomUniquePointer<SDL_Window> m_pWindow;
+		CustomUniquePointer<SDL_Renderer> m_pRenderer;
 
 		ScalingMode m_ScalingMode{ ScalingMode::fill };
 		glm::ivec2 m_ViewportSize{ 640, 480 };

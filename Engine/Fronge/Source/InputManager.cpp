@@ -60,7 +60,7 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 	case SDL_CONTROLLERDEVICEADDED:
 		m_mpJoypadInstanceDeviceIDs.emplace(SDL_JoystickGetDeviceInstanceID(event.cdevice.which), event.cdevice.which);
 		m_mpJoypads.emplace(SDL_JoystickGetDeviceInstanceID(event.cdevice.which),
-			SDLUniquePointer<SDL_GameController>(SDL_GameControllerOpen(event.cdevice.which), SDL_GameControllerClose));
+			CustomUniquePointer<SDL_GameController>(SDL_GameControllerOpen(event.cdevice.which), SDL_GameControllerClose));
 		break;
 
 	case SDL_CONTROLLERDEVICEREMOVED:

@@ -115,7 +115,7 @@ namespace fro
 		fro_NODISCARD float getActionStrength(std::string_view const actionName, float const deadzone);
 
 		// TODO: only reason for this is to open and close connected and disconnected joypads; not sure if this is needed
-		std::map<SDL_JoystickID, SDLUniquePointer<SDL_GameController>> m_mpJoypads{};
+		std::map<SDL_JoystickID, CustomUniquePointer<SDL_GameController>> m_mpJoypads{};
 		// END TODO
 		std::map<SDL_JoystickID, Sint32> m_mpJoypadInstanceDeviceIDs{};
 		std::map<Input, InputInfo> m_mInputs{};
