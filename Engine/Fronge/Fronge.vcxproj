@@ -157,6 +157,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\SpriteAnimator.cpp" />
     <ClCompile Include="Source\AudioSDL.cpp" />
     <ClCompile Include="Source\AudioService.cpp" />
     <ClCompile Include="Source\Behaviour.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="Source\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\SpriteAnimator.h" />
     <ClInclude Include="Include\AudioSDL.h" />
     <ClInclude Include="Include\AudioService.h" />
     <ClInclude Include="Include\Behaviour.h" />

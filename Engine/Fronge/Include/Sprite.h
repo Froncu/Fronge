@@ -4,6 +4,8 @@
 #include "Defines.hpp"
 #include "Renderable.h"
 
+#include <sdl_rect.h>
+
 #include <xstring>
 
 struct SDL_Texture;
@@ -20,6 +22,9 @@ namespace fro
 		virtual void render() const override;
 
 		void setFileName(std::string_view const fileName);
+		void setSourceRectangle(SDL_FRect sourceRectangle);
+
+		std::string_view getFileName() const;
 
 	private:
 		Sprite(Sprite const&) = delete;
@@ -28,7 +33,9 @@ namespace fro
 		Sprite& operator=(Sprite const&) = delete;
 		Sprite& operator=(Sprite&&) noexcept = delete;
 
+		std::string_view m_FileName{};
 		SDL_Texture* m_pTexture{};
+		SDL_FRect m_SourceRectangle{};
 	};
 }
 

@@ -79,6 +79,9 @@
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>Systems\InputManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SpriteAnimator.cpp">
+      <Filter>Component\Renderable\SpriteAnimator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -189,6 +192,9 @@
     <Filter Include="TransformationMatrix2D">
       <UniqueIdentifier>{38362cf2-1624-40b0-8814-67def0914a1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Renderable\SpriteAnimator">
+      <UniqueIdentifier>{1bbc9091-e000-40ce-8b63-ca959222dc7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -291,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="Include\InputManager.h">
       <Filter>Systems\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SpriteAnimator.h">
+      <Filter>Component\Renderable\SpriteAnimator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

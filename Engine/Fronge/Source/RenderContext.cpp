@@ -63,6 +63,9 @@ void fro::RenderContext::present() const
 void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform,
 	SDL_FRect sourceRectangle) const
 {
+	if (not pTexture)
+		return;
+
 	int textureWidth;
 	int textureHeight;
 	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
