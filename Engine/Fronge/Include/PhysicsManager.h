@@ -16,9 +16,7 @@ namespace fro
 
 		~PhysicsManager() = default;
 
-		void update(float const deltaSeconds);
-
-		void setFixedFrameRate(int const fixedFrameRate);
+		void update(float const fixedDeltaSeconds);
 
 	private:
 		PhysicsManager(PhysicsManager const&) = delete;
@@ -28,9 +26,6 @@ namespace fro
 		PhysicsManager& operator=(PhysicsManager&&) noexcept = delete;
 
 		b2World m_World{ { 0.0f, 10.0f} };
-
-		float m_ElapsedSeconds{};
-		float m_FixedDeltaSeconds{ 1 / 30.0f };
 	};
 }
 

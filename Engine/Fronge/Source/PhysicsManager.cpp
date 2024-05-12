@@ -1,16 +1,8 @@
 #include "PhysicsManager.h"
 
 #pragma region PublicMethods
-void fro::PhysicsManager::update(float const deltaSeconds)
+void fro::PhysicsManager::update(float const fixedDeltaSeconds)
 {
-	for (m_ElapsedSeconds += deltaSeconds;
-		m_ElapsedSeconds >= m_FixedDeltaSeconds;
-		m_ElapsedSeconds -= m_FixedDeltaSeconds)
-		m_World.Step(m_FixedDeltaSeconds, 6, 2);
-}
-
-void fro::PhysicsManager::setFixedFrameRate(int const fixedFrameRate)
-{
-	m_FixedDeltaSeconds = 1.0f / fixedFrameRate;
+	m_World.Step(fixedDeltaSeconds, 6, 2);
 }
 #pragma endregion PublicMethods
