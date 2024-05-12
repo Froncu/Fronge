@@ -10,7 +10,7 @@ fro::StateMachine::StateMachine(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::StateMachine::update()
+void fro::StateMachine::update(float const)
 {
 	if (not m_pCurrentState.get())
 		return;

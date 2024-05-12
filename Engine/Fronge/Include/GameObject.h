@@ -3,6 +3,7 @@
 
 #include "Behaviour.h"
 #include "Defines.hpp"
+#include "FixedBehaviour.h"
 #include "GUI.h"
 #include "Renderable.h"
 #include "Transform.h"
@@ -24,7 +25,8 @@ namespace fro
 
 		~GameObject() = default;
 
-		void update() const;
+		void fixedUpdate(float const fixedDeltaSeconds) const;
+		void update(float const deltaSeconds) const;
 		void render() const;
 		void display() const;
 
@@ -88,7 +90,10 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD auto const& getComponentMapConstant() const
 		{
-			if constexpr (std::derived_from<ComponentType, Behaviour>)
+			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
+				return m_mpFixedBehaviours;
+
+			else if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
 
 			else if constexpr (std::derived_from<ComponentType, Renderable>)
@@ -104,7 +109,10 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD auto& getComponentMap()
 		{
-			if constexpr (std::derived_from<ComponentType, Behaviour>)
+			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
+				return m_mpFixedBehaviours;
+
+			else if constexpr (std::derived_from<ComponentType, Behaviour>)
 				return m_mpBehaviours;
 
 			else if constexpr (std::derived_from<ComponentType, Renderable>)
@@ -123,6 +131,7 @@ namespace fro
 		GameObject* m_pParent{};
 		std::set<GameObject const*> m_spChildren{};
 
+		std::unordered_map<std::type_index, std::unique_ptr<FixedBehaviour>> m_mpFixedBehaviours{};
 		std::unordered_map<std::type_index, std::unique_ptr<Behaviour>> m_mpBehaviours{};
 		std::unordered_map<std::type_index, std::unique_ptr<Renderable>> m_mpRenderables{};
 		std::unordered_map<std::type_index, std::unique_ptr<GUI>> m_mpGUIs{};

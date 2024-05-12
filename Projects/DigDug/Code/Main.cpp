@@ -15,7 +15,6 @@
 #include "Steam.h"
 #include "SystemEventManager.h"
 #include "Text.h"
-#include "Timer.h"
 #include "Transform.h"
 
 #include <sdl_main.h>

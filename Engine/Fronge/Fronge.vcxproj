@@ -157,6 +157,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\FixedBehaviour.cpp" />
     <ClCompile Include="Source\SpriteAnimator.cpp" />
     <ClCompile Include="Source\AudioSDL.cpp" />
     <ClCompile Include="Source\AudioService.cpp" />
@@ -183,11 +184,11 @@
     <ClCompile Include="Source\Steam.cpp" />
     <ClCompile Include="Source\SystemEventManager.cpp" />
     <ClCompile Include="Source\Text.cpp" />
-    <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\FixedBehaviour.h" />
     <ClInclude Include="Include\SpriteAnimator.h" />
     <ClInclude Include="Include\AudioSDL.h" />
     <ClInclude Include="Include\AudioService.h" />
@@ -222,7 +223,6 @@
     <ClInclude Include="Include\Steam.h" />
     <ClInclude Include="Include\SystemEventManager.h" />
     <ClInclude Include="Include\Text.h" />
-    <ClInclude Include="Include\Timer.h" />
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
     <ClInclude Include="Include\StateMachine.h" />

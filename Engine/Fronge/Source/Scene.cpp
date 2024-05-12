@@ -1,10 +1,16 @@
 #include "Scene.h"
 
 #pragma region PublicMethods
-void fro::Scene::update() const
+void fro::Scene::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	for (auto const& pGameObject : m_vpGameObjects)
-		pGameObject->update();
+		pGameObject->fixedUpdate(fixedDeltaSeconds);
+}
+
+void fro::Scene::update(float const deltaSeconds) const
+{
+	for (auto const& pGameObject : m_vpGameObjects)
+		pGameObject->update(deltaSeconds);
 }
 
 void fro::Scene::render() const

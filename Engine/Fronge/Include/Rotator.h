@@ -14,7 +14,7 @@ namespace fro
 
 		virtual ~Rotator() override = default;
 
-		virtual void update() override;
+		virtual void update(float const deltaSeconds) override;
 
 		void setCenter(glm::vec2 const& center);
 		void setRadius(float const radius);

@@ -8,10 +8,11 @@
 #include "SceneManager.h"
 #include "Steam.h"
 #include "SystemEventManager.h"
-#include "Timer.h"
 
 #include <sdl.h>
 //#include <vld.h>
+
+#include <chrono>
 
 #pragma region Constructors/Destructor
 fro::Fronge::Fronge()
@@ -31,21 +32,32 @@ fro::Fronge::~Fronge()
 
 
 #pragma region PublicMethods
-int fro::Fronge::run()
+int fro::Fronge::run() const
 {
+	auto oldTimePoint{ std::chrono::steady_clock::now() };
+	float fixedUpdateElapsedSeconds{};
+
 	while (true)
 	{
 		Steam::getInstance().update();
 
-		Timer::getInstance().update();
+		auto const currentTimePoint{ std::chrono::steady_clock::now() };
+		float const deltaSeconds{ std::chrono::duration<float>(currentTimePoint - oldTimePoint).count() };
+		oldTimePoint = currentTimePoint;
 
 		InputManager::getInstance().processInputContinous();
 		if (not SystemEventManager::getInstance().processSystemEvents())
 			break;
 
-		PhysicsManager::getInstance().update(Timer::getInstance().getDeltaSeconds());
+		for (fixedUpdateElapsedSeconds += deltaSeconds;
+			fixedUpdateElapsedSeconds >= m_FixedDeltaSeconds;
+			fixedUpdateElapsedSeconds -= m_FixedDeltaSeconds)
+		{
+			PhysicsManager::getInstance().update(m_FixedDeltaSeconds);
+			SceneManager::getInstance().fixedUpdate(m_FixedDeltaSeconds);
+		}
 
-		SceneManager::getInstance().update();
+		SceneManager::getInstance().update(deltaSeconds);
 
 		RenderContext::getInstance().clear();
 		SceneManager::getInstance().render();
@@ -58,5 +70,10 @@ int fro::Fronge::run()
 	}
 
 	return 0;
+}
+
+void fro::Fronge::setFixedFrameRate(int const fixedFrameRate)
+{
+	m_FixedDeltaSeconds = 1.0f / fixedFrameRate;
 }
 #pragma endregion PublicMethods

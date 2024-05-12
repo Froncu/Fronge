@@ -1,11 +1,18 @@
 #include "SceneManager.h"
 
 #pragma region PublicMethods
-void fro::SceneManager::update() const
+void fro::SceneManager::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	for (auto const& pScene : m_vpScenes)
 		if (pScene->isActive())
-			pScene->update();
+			pScene->fixedUpdate(fixedDeltaSeconds);
+}
+
+void fro::SceneManager::update(float const deltaSeconds) const
+{
+	for (auto const& pScene : m_vpScenes)
+		if (pScene->isActive())
+			pScene->update(deltaSeconds);
 }
 
 void fro::SceneManager::render() const

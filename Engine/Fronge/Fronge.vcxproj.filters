@@ -52,9 +52,6 @@
     <ClCompile Include="Source\Text.cpp">
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Systems\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
@@ -88,6 +85,9 @@
     <ClCompile Include="Source\State.cpp">
       <Filter>Patterns\State</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FixedBehaviour.cpp">
+      <Filter>Component\FixedBehaviour\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -104,9 +104,6 @@
     </Filter>
     <Filter Include="Systems\Steam">
       <UniqueIdentifier>{a32450b7-13d1-44c7-9aab-eeb66c40a6ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Timer">
-      <UniqueIdentifier>{e9342b3d-7950-41ef-a2f3-c09da678c011}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\InputManager">
       <UniqueIdentifier>{9fa8d36a-2283-4253-8601-b7a7eeb17527}</UniqueIdentifier>
@@ -207,6 +204,12 @@
     <Filter Include="Patterns\State">
       <UniqueIdentifier>{1bdc4913-7ced-47a9-b2a7-450d2ea1c641}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\FixedBehaviour">
+      <UniqueIdentifier>{9bddbe27-b749-4680-9825-fae2a1b4c940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\FixedBehaviour\Base">
+      <UniqueIdentifier>{e26f72d7-bd40-44a9-aca5-7593470073a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -270,9 +273,6 @@
     <ClInclude Include="Include\Text.h">
       <Filter>Component\Renderable\Text</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Timer.h">
-      <Filter>Systems\Timer</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
@@ -318,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="Include\State.h">
       <Filter>Patterns\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\FixedBehaviour.h">
+      <Filter>Component\FixedBehaviour\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,9 @@ namespace fro
 
 		virtual ~Fronge() override;
 
-		int run();
+		int run() const;
+
+		void setFixedFrameRate(int const fixedFrameRate);
 
 	private:
 		Fronge(Fronge const&) = delete;
@@ -20,6 +22,8 @@ namespace fro
 
 		Fronge& operator=(Fronge const&) = delete;
 		Fronge& operator=(Fronge&&) noexcept = delete;
+
+		float m_FixedDeltaSeconds{ 1 / 30.0f };
 	};
 }
 

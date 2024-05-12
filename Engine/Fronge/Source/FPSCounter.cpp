@@ -2,7 +2,6 @@
 
 #include "GameObject.h"
 #include "Text.h"
-#include "Timer.h"
 
 #include <format>
 
@@ -16,12 +15,12 @@ fro::FPSCounter::FPSCounter(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::FPSCounter::update()
+void fro::FPSCounter::update(float const deltaSeconds)
 {
 	float constexpr maxElapsedSeconds{ 0.2f };
 
 	++m_Ticks;
-	m_ElapsedSeconds += Timer::getInstance().getDeltaSeconds();
+	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= maxElapsedSeconds)
 	{
 		getParentingGameObject().getComponent<Text>()->setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));

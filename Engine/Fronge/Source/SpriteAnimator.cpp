@@ -2,7 +2,6 @@
 
 #include "GameObject.h"
 #include "Sprite.h"
-#include "Timer.h"
 
 #pragma region Constructors/Destructor
 fro::SpriteAnimator::SpriteAnimator(GameObject const& parentingGameObject)
@@ -14,7 +13,7 @@ fro::SpriteAnimator::SpriteAnimator(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::SpriteAnimator::update()
+void fro::SpriteAnimator::update(float const deltaSeconds)
 {
 	if (not m_Play or not m_pActiveAnimation)
 		return;
@@ -25,7 +24,7 @@ void fro::SpriteAnimator::update()
 	if (not vAnimationFrames.size())
 		return;
 
-	elapsedSeconds += Timer::getInstance().getDeltaSeconds();
+	elapsedSeconds += deltaSeconds;
 	if (elapsedSeconds < frameTimeSeconds)
 		return;
 

@@ -1,7 +1,6 @@
 #include "Rotator.h"
 
 #include "GameObject.h"
-#include "Timer.h"
 #include "Transform.h"
 
 #include <glm.hpp>
@@ -17,11 +16,11 @@ fro::Rotator::Rotator(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::Rotator::update()
+void fro::Rotator::update(float const deltaSeconds)
 {
 	float constexpr twoPi{ 2 * glm::pi<float>() };
 
-	m_Angle += Timer::getInstance().getDeltaSeconds() * twoPi / m_Period;
+	m_Angle += deltaSeconds * twoPi / m_Period;
 
 	m_Angle = glm::mod(m_Angle, twoPi);
 

@@ -12,7 +12,7 @@ namespace fro
 
 		virtual ~FPSCounter() override = default;
 
-		virtual void update() override;
+		virtual void update(float const deltaSeconds) override;
 
 	private:
 		FPSCounter(FPSCounter const&) = delete;

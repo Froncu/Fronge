@@ -10,7 +10,7 @@ namespace fro
 	public:
 		virtual ~Behaviour() override = default;
 
-		virtual void update() = 0;
+		virtual void update(float deltaSeconds) = 0;
 
 	protected:
 		Behaviour(GameObject const& parentingGameObject);

@@ -3,10 +3,16 @@
 #include <algorithm>
 
 #pragma region PublicMethods
-void fro::GameObject::update() const
+void fro::GameObject::fixedUpdate(float const fixedDeltaSeconds) const
+{
+	for (auto const& pair : m_mpFixedBehaviours)
+		pair.second->fixedUpdate(fixedDeltaSeconds);
+}
+
+void fro::GameObject::update(float const deltaSeconds) const
 {
 	for (auto const& pair : m_mpBehaviours)
-		pair.second->update();
+		pair.second->update(deltaSeconds);
 }
 
 void fro::GameObject::render() const

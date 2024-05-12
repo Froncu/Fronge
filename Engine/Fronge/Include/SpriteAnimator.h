@@ -25,7 +25,7 @@ namespace fro
 
 		virtual ~SpriteAnimator() override = default;
 
-		virtual void update() override;
+		virtual void update(float const deltaSeconds) override;
 		void play();
 		void reset();
 		void pause();

@@ -15,7 +15,7 @@ namespace fro
 
 		virtual ~StateMachine() override = default;
 
-		virtual void update() override;
+		virtual void update(float const deltaSeconds) override;
 
 	private:
 		StateMachine(StateMachine const&) = delete;

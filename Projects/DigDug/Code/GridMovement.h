@@ -17,7 +17,7 @@ namespace fro
 
 		virtual ~GridMovement() override = default;
 
-		virtual void update() override;
+		virtual void update(float const deltaSeconds) override;
 
 		void setMoveSpeed(float const moveSpeed);
 		void setActionNames(std::string_view const positiveActionNameX,
