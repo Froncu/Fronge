@@ -11,7 +11,7 @@ namespace fro
 	class PumpState final : public Component, public State
 	{
 	public:
-		PumpState(GameObject const& parentingGameObject);
+		PumpState(GameObject& parentingGameObject);
 
 		virtual ~PumpState() override = default;
 

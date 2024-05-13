@@ -5,7 +5,7 @@
 #include <glm.hpp>
 
 #pragma region Constructors/Destructor
-fro::GridMovement::GridMovement(GameObject const& parentingGameObject)
+fro::GridMovement::GridMovement(GameObject& parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
 }

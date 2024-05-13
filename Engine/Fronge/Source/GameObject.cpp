@@ -69,12 +69,12 @@ bool fro::GameObject::owns(GameObject const* const pGameObject) const
 		});
 }
 
-fro::GameObject const* fro::GameObject::getParent() const
+fro::GameObject* fro::GameObject::getParent() const
 {
 	return m_pParent;
 }
 
-std::set<fro::GameObject const*> const& fro::GameObject::getChildren() const
+std::set<fro::GameObject*> const& fro::GameObject::getChildren() const
 {
 	return m_spChildren;
 }

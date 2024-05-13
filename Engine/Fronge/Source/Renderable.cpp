@@ -1,7 +1,7 @@
 #include "Renderable.h"
 
 #pragma region Constructors/Destructor
-fro::Renderable::Renderable(GameObject const& parentingGameObject)
+fro::Renderable::Renderable(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }

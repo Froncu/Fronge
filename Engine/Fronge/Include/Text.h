@@ -21,7 +21,7 @@ namespace fro
 	class Text final : public Renderable
 	{
 	public:
-		Text(GameObject const& parentingGameObject);
+		Text(GameObject& parentingGameObject);
 
 		virtual ~Text() override = default;
 

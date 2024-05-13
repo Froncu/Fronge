@@ -1,7 +1,7 @@
 #include "StateMachine.h"
 
 #pragma region Constructors/Destructor
-fro::StateMachine::StateMachine(GameObject const& parentingGameObject)
+fro::StateMachine::StateMachine(GameObject& parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
 }

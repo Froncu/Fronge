@@ -6,7 +6,7 @@
 #include <format>
 
 #pragma region Constructors/Destructor
-fro::FPSCounter::FPSCounter(GameObject const& parentingGameObject)
+fro::FPSCounter::FPSCounter(GameObject& parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
 }

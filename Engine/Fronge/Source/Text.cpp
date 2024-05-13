@@ -7,7 +7,7 @@
 #include <sdl_render.h>
 
 #pragma region Constructors/Destructor
-fro::Text::Text(GameObject const& parentingGameObject) :
+fro::Text::Text(GameObject& parentingGameObject) :
 	Renderable(parentingGameObject)
 {
 }

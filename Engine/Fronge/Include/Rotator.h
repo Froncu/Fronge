@@ -10,7 +10,7 @@ namespace fro
 	class Rotator final : public Behaviour
 	{
 	public:
-		Rotator(GameObject const& parentingGameObject);
+		Rotator(GameObject& parentingGameObject);
 
 		virtual ~Rotator() override = default;
 

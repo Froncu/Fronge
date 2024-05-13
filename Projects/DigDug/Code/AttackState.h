@@ -11,7 +11,7 @@ namespace fro
 	class AttackState final : public Component, public State
 	{
 	public:
-		AttackState(GameObject const& parentingGameObject);
+		AttackState(GameObject& parentingGameObject);
 
 		virtual ~AttackState() override = default;
 

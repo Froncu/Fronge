@@ -10,7 +10,7 @@ namespace fro
 	class GridMovement final : public Behaviour
 	{
 	public:
-		GridMovement(GameObject const& parentingGameObject);
+		GridMovement(GameObject& parentingGameObject);
 
 		virtual ~GridMovement() override = default;
 

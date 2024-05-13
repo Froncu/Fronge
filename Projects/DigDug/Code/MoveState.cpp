@@ -8,7 +8,7 @@
 #include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
-fro::MoveState::MoveState(GameObject const& parentingGameObject)
+fro::MoveState::MoveState(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }

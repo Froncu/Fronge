@@ -7,7 +7,7 @@
 #include <b2_fixture.h>
 
 #pragma region Constructors/Destructor
-fro::RigidBody::RigidBody(GameObject const& parentingGameObject)
+fro::RigidBody::RigidBody(GameObject& parentingGameObject)
 	: FixedBehaviour(parentingGameObject)
 {
 	m_Body.SetGravityScale(0.0f);

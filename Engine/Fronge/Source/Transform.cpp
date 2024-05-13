@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 #pragma region Constructors/Destructor
-fro::Transform::Transform(GameObject const& parentingGameObject)
+fro::Transform::Transform(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }
@@ -124,7 +124,7 @@ void fro::Transform::setWorldTransformDirty()
 {
 	m_IsWorldTransformDirty = true;
 
-	for (GameObject const* const pChild : getParentingGameObject().getChildren())
+	for (GameObject* const pChild : getParentingGameObject().getChildren())
 	{
 		Transform& childTransform{ *pChild->getComponent<Transform>() };
 		if (not childTransform.m_IsWorldTransformDirty)
@@ -201,7 +201,7 @@ fro::TransformationMatrix2D const& fro::Transform::getWorldTransform()
 #pragma region PrivateMethods
 void fro::Transform::calculateLocalTransform()
 {
-	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
 		m_LocalTransform = getWorldTransform() / pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
 	else
@@ -210,7 +210,7 @@ void fro::Transform::calculateLocalTransform()
 
 void fro::Transform::calculateWorldTransform()
 {
-	GameObject const* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
+	GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
 	if (pParentingGameObjectsParent)
 		m_WorldTransform = getLocalTransform() * pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
 	else

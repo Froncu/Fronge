@@ -9,7 +9,7 @@ namespace fro
 	class Transform final : public Component
 	{
 	public:
-		Transform(GameObject const& parentingGameObject);
+		Transform(GameObject& parentingGameObject);
 
 		virtual ~Transform() override = default;
 

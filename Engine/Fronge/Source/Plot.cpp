@@ -12,7 +12,7 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro::Plot::Plot(GameObject const& parentingGameObject)
+fro::Plot::Plot(GameObject& parentingGameObject)
 	: GUI(parentingGameObject)
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)

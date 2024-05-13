@@ -8,7 +8,7 @@ namespace fro
 	class FixedBehaviour : public Component
 	{
 	public:
-		FixedBehaviour(GameObject const& parentingGameObject);
+		FixedBehaviour(GameObject& parentingGameObject);
 
 		virtual ~FixedBehaviour() override = default;
 

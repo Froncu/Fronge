@@ -11,7 +11,7 @@ namespace fro
 	class StateMachine final : public Behaviour
 	{
 	public:
-		StateMachine(GameObject const& parentingGameObject);
+		StateMachine(GameObject& parentingGameObject);
 
 		virtual ~StateMachine() override = default;
 

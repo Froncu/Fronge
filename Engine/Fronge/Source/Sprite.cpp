@@ -7,7 +7,7 @@
 #include <sdl_render.h>
 
 #pragma region Constructors/Destructor
-fro::Sprite::Sprite(GameObject const& parentingGameObject)
+fro::Sprite::Sprite(GameObject& parentingGameObject)
 	: Renderable(parentingGameObject)
 {
 }

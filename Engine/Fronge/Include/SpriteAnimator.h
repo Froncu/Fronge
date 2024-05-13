@@ -21,7 +21,7 @@ namespace fro
 			SDL_FRect sourceRectangle;
 		};
 
-		SpriteAnimator(GameObject const& parentingGameObject);
+		SpriteAnimator(GameObject& parentingGameObject);
 
 		virtual ~SpriteAnimator() override = default;
 

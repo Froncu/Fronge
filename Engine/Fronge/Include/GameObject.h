@@ -34,8 +34,8 @@ namespace fro
 		void setParent(GameObject* const pParent, bool const keepWorldTransform = true);
 
 		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
-		fro_NODISCARD GameObject const* getParent() const;
-		fro_NODISCARD std::set<GameObject const*> const& getChildren() const;
+		fro_NODISCARD GameObject* getParent() const;
+		fro_NODISCARD std::set<GameObject*> const& getChildren() const;
 
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
@@ -130,7 +130,7 @@ namespace fro
 		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
 
 		GameObject* m_pParent{};
-		std::set<GameObject const*> m_spChildren{};
+		std::set<GameObject*> m_spChildren{};
 
 		std::unordered_map<std::type_index, std::unique_ptr<FixedBehaviour>> m_mpFixedBehaviours{};
 		std::unordered_map<std::type_index, std::unique_ptr<Behaviour>> m_mpBehaviours{};

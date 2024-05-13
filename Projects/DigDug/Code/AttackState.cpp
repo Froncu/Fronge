@@ -6,7 +6,7 @@
 #include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
-fro::AttackState::AttackState(GameObject const& parentingGameObject)
+fro::AttackState::AttackState(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }

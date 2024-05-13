@@ -1,7 +1,7 @@
 #include "GUI.h"
 
 #pragma region Constructors/Destructor
-fro::GUI::GUI(GameObject const& parentingGameObject)
+fro::GUI::GUI(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }

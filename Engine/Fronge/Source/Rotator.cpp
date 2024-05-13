@@ -7,7 +7,7 @@
 #include <gtc/constants.hpp>
 
 #pragma region Constructors/Destructor
-fro::Rotator::Rotator(GameObject const& parentingGameObject)
+fro::Rotator::Rotator(GameObject& parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
 }

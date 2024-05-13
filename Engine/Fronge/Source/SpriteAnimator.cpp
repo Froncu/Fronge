@@ -4,7 +4,7 @@
 #include "Sprite.h"
 
 #pragma region Constructors/Destructor
-fro::SpriteAnimator::SpriteAnimator(GameObject const& parentingGameObject)
+fro::SpriteAnimator::SpriteAnimator(GameObject& parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
 }

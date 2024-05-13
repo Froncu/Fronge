@@ -7,7 +7,7 @@
 #include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
-fro::PumpState::PumpState(GameObject const& parentingGameObject)
+fro::PumpState::PumpState(GameObject& parentingGameObject)
 	: Component(parentingGameObject)
 {
 }

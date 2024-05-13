@@ -15,7 +15,7 @@ namespace fro
 	class Sprite final : public Renderable
 	{
 	public:
-		Sprite(GameObject const& parentingGameObject);
+		Sprite(GameObject& parentingGameObject);
 
 		virtual ~Sprite() override = default;
 
