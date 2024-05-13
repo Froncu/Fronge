@@ -37,7 +37,6 @@ void fro::MoveState::enter(std::unique_ptr<State> const&)
 {
 	SpriteAnimator& spriteAnimator{ *getParentingGameObject().getComponent<SpriteAnimator>() };
 	spriteAnimator.setActiveAnimation("walking");
-	spriteAnimator.setLoop(true);
 	spriteAnimator.play();
 }
 

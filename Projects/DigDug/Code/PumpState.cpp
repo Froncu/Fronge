@@ -43,9 +43,7 @@ void fro::PumpState::enter(std::unique_ptr<State> const&)
 {
 	SpriteAnimator& spriteAnimator{ *getParentingGameObject().getComponent<SpriteAnimator>()};
 	spriteAnimator.setActiveAnimation("pumping");
-	spriteAnimator.setLoop(false);
-	spriteAnimator.reset();
-	spriteAnimator.pause();
+	spriteAnimator.play();
 }
 
 void fro::PumpState::exit(std::unique_ptr<State> const&)

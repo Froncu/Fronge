@@ -31,15 +31,12 @@ void fro::AttackState::enter(std::unique_ptr<State> const&)
 		pChild->setActive(true);
 
 		SpriteAnimator& spriteAnimator{ *pChild->getComponent<SpriteAnimator>() };
-		spriteAnimator.setLoop(false);
 		spriteAnimator.reset();
 		spriteAnimator.play();
 	}
 
 	SpriteAnimator& spriteAnimator{ *getParentingGameObject().getComponent<SpriteAnimator>()};
 	spriteAnimator.setActiveAnimation("attacking");
-	spriteAnimator.reset();
-	spriteAnimator.pause();
 }
 
 void fro::AttackState::exit(std::unique_ptr<State> const&)

@@ -44,6 +44,7 @@ int main(int, char**)
 		pump.addComponent<fro::Sprite>();
 		pump.addComponent<fro::SpriteAnimator>()->addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
 		pump.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("shooting", 12);
+		pump.getComponent<fro::SpriteAnimator>()->setLoop("shooting", false);
 		pump.getComponent<fro::Transform>()->setLocalTranslation({ 24, 0 });
 		pump.setActive(false);
 
@@ -54,6 +55,7 @@ int main(int, char**)
 		player1.addComponent<fro::SpriteAnimator>()->addAnimationFrames("walking", "DigDug/Walking.png", { 16, 16 }, 2, 1);
 		player1.getComponent<fro::SpriteAnimator>()->addAnimationFrames("attacking", "DigDug/Attacking.png", { 16, 16 }, 1, 1);
 		player1.getComponent<fro::SpriteAnimator>()->addAnimationFrames("pumping", "DigDug/Pumping.png", { 16, 16 }, 2, 1);
+		player1.getComponent<fro::SpriteAnimator>()->setLoop("pumping", false);
 		player1.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("walking", 6);
 		player1.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("pumping", 6);
 		player1.addComponent<fro::StateMachine>()->setCurrentState(std::make_unique<fro::IdleState>(player1));
