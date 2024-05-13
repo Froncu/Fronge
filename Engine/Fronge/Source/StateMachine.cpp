@@ -10,18 +10,22 @@ fro::StateMachine::StateMachine(GameObject const& parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::StateMachine::update(float const)
+void fro::StateMachine::update(float const deltaSeconds)
 {
 	if (not m_pCurrentState.get())
 		return;
 
-	std::unique_ptr pNewState{ m_pCurrentState->update() };
+	std::unique_ptr pNewState{ m_pCurrentState->update(deltaSeconds) };
 	if (not pNewState.get())
 		return;
 
 	m_pCurrentState->exit(pNewState);
-	pNewState->enter(m_pCurrentState);
+	setCurrentState(std::move(pNewState));
+}
 
+void fro::StateMachine::setCurrentState(std::unique_ptr<State>&& pNewState)
+{
+	pNewState->enter(m_pCurrentState);
 	m_pCurrentState = std::move(pNewState);
 }
 #pragma endregion PublicMethods

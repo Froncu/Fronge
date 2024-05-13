@@ -19,11 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\AttackState.cpp" />
+    <ClCompile Include="Code\IdleState.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\GridMovement.cpp" />
+    <ClCompile Include="Code\MoveState.cpp" />
+    <ClCompile Include="Code\PumpState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\AttackState.h" />
     <ClInclude Include="Code\GridMovement.h" />
+    <ClInclude Include="Code\IdleState.h" />
+    <ClInclude Include="Code\MoveState.h" />
+    <ClInclude Include="Code\PumpState.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

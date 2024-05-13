@@ -38,6 +38,7 @@ namespace fro
 			std::uint32_t const amountOfCellsY);
 		void setFramesPerSecond(std::string_view const animationName, int const framesPerSecond);
 		void setActiveAnimation(std::string_view const animationName);
+		void setLoop(bool shouldLoop);
 
 	private:
 		struct Animation final
@@ -61,6 +62,7 @@ namespace fro
 		Animation* m_pActiveAnimation{};
 
 		bool m_Play{ true };
+		bool m_Loop{ true };
 	};
 }
 

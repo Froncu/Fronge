@@ -32,6 +32,9 @@ void fro::SpriteAnimator::update(float const deltaSeconds)
 	++currentFrameIndex %= vAnimationFrames.size();
 
 	updateSprite();
+
+	if (not m_Loop and currentFrameIndex == vAnimationFrames.size() - 1)
+		m_Play = false;
 }
 
 void fro::SpriteAnimator::play()
@@ -49,6 +52,8 @@ void fro::SpriteAnimator::reset()
 
 	currentFrameIndex = 0;
 	elapsedSeconds = 0.0f;
+
+	updateSprite();
 }
 
 void fro::SpriteAnimator::pause()
@@ -102,6 +107,13 @@ void fro::SpriteAnimator::setFramesPerSecond(std::string_view const animationNam
 void fro::SpriteAnimator::setActiveAnimation(std::string_view const animationName)
 {
 	m_pActiveAnimation = &m_mAnimations[animationName];
+
+	updateSprite();
+}
+
+void fro::SpriteAnimator::setLoop(bool const shouldLoop)
+{
+	m_Loop = shouldLoop;
 }
 #pragma endregion PublicMethods
 

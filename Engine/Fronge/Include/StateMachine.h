@@ -17,6 +17,8 @@ namespace fro
 
 		virtual void update(float const deltaSeconds) override;
 
+		void setCurrentState(std::unique_ptr<State>&& pNewState);
+
 	private:
 		StateMachine(StateMachine const&) = delete;
 		StateMachine(StateMachine&&) noexcept = delete;

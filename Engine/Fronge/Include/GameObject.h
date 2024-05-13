@@ -30,6 +30,7 @@ namespace fro
 		void render() const;
 		void display() const;
 
+		void setActive(bool const isActive) const;
 		void setParent(GameObject* const pParent, bool const keepWorldTransform = true);
 
 		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
@@ -136,6 +137,10 @@ namespace fro
 		std::unordered_map<std::type_index, std::unique_ptr<Renderable>> m_mpRenderables{};
 		std::unordered_map<std::type_index, std::unique_ptr<GUI>> m_mpGUIs{};
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
+
+		// HACK: bad bad bad
+		mutable bool m_IsActive{ true };
+		// END HACK
 	};
 }
 

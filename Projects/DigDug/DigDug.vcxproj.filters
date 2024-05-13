@@ -5,15 +5,54 @@
     <ClCompile Include="Code\GridMovement.cpp">
       <Filter>GridMovement</Filter>
     </ClCompile>
+    <ClCompile Include="Code\MoveState.cpp">
+      <Filter>States\MoveState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\IdleState.cpp">
+      <Filter>States\IdleState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AttackState.cpp">
+      <Filter>States\AttackState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\PumpState.cpp">
+      <Filter>States\PumpState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GridMovement">
       <UniqueIdentifier>{3c63623a-fc5c-4d52-83e0-fb7d85628ae7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{7d7d34dd-a29d-47f0-9dea-1dbd7155a7c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\MoveState">
+      <UniqueIdentifier>{d1c71a38-158f-475d-9203-2e3af9838604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\IdleState">
+      <UniqueIdentifier>{08eeca2f-5982-4be9-8c22-79ea5dce4e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\AttackState">
+      <UniqueIdentifier>{e5cabd9b-220f-49f1-bad6-0f8e416a5540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\PumpState">
+      <UniqueIdentifier>{63fe9360-79c4-4bc1-b409-e7f4058f70de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GridMovement.h">
       <Filter>GridMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\MoveState.h">
+      <Filter>States\MoveState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\IdleState.h">
+      <Filter>States\IdleState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AttackState.h">
+      <Filter>States\AttackState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\PumpState.h">
+      <Filter>States\PumpState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
