@@ -13,6 +13,10 @@ namespace fro
 	class SparseSet final
 	{
 	public:
+		using Key = std::size_t;
+		using DataIndex = Key;
+		static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
+
 		SparseSet() = default;
 		SparseSet(SparseSet const&) = default;
 		SparseSet(SparseSet&&) noexcept = default;
@@ -21,12 +25,12 @@ namespace fro
 
 		SparseSet& operator=(SparseSet const&) = default;
 		SparseSet& operator=(SparseSet&&) noexcept = default;
-		DataType& operator[](std::size_t const ID)
+		DataType& operator[](Key const key)
 		{
-			if (contains(ID))
-				return naiveFind(ID);
+			if (contains(key))
+				return naiveFind(key);
 
-			return naiveInsert(ID, {});
+			return naiveInsert(key, {});
 		}
 
 		void clear()
@@ -35,40 +39,40 @@ namespace fro
 			m_vDense.clear();
 		}
 
-		DataType* insert(std::size_t const ID, DataType data = {})
+		DataType* insert(Key const key, DataType data = {})
 		{
-			if (not inRange(ID))
-				m_vSparse.resize(ID + 1, UNUSED_DATA_INDEX);
+			if (not inRange(key))
+				m_vSparse.resize(key + 1, UNUSED_DATA_INDEX);
 
-			else if (naiveContains(ID))
+			else if (naiveContains(key))
 				return nullptr;
 
-			return &naiveInsert(ID, data);
+			return &naiveInsert(key, std::move(data));
 		}
 
-		bool contains(std::size_t const ID)
+		bool contains(Key const key)
 		{
-			return inRange(ID) and naiveContains(ID);
+			return inRange(key) and naiveContains(key);
 		}
 
-		DataType* find(std::size_t const ID)
+		DataType* find(Key const key)
 		{
-			if (not contains(ID))
+			if (not contains(key))
 				return nullptr;
 
-			return &naiveFind(ID);
+			return &naiveFind(key);
 		}
 
-		bool remove(std::size_t const ID)
+		bool remove(Key const key)
 		{
-			if (not contains(ID))
+			if (not contains(key))
 				return false;
 
-			std::size_t lastDense{ m_vDense.back() };
-			std::swap(naiveFind(ID), m_vDense.back());
+			Key const lastDataKey{ m_vDense.back() };
+			std::swap(naiveFind(key), m_vDense.back());
 
-			m_vSparse[lastDense] = m_vSparse[ID];
-			m_vSparse[ID] = UNUSED_DATA_INDEX;
+			m_vSparse[lastDataKey] = m_vSparse[key];
+			m_vSparse[key] = UNUSED_DATA_INDEX;
 
 			m_vDense.pop_back();
 
@@ -76,34 +80,32 @@ namespace fro
 		}
 
 	private:
-		static std::size_t constexpr UNUSED_DATA_INDEX{ std::numeric_limits<std::size_t>::max() };
-
-		bool inRange(std::size_t const ID)
+		bool inRange(Key const key)
 		{
-			return ID < m_vSparse.size();
+			return key < m_vSparse.size();
 		}
 
-		bool naiveContains(std::size_t const ID)
+		bool naiveContains(Key const key)
 		{
-			return m_vSparse[ID] not_eq UNUSED_DATA_INDEX;
+			return m_vSparse[key] not_eq UNUSED_DATA_INDEX;
 		}
 
-		DataType& naiveFind(std::size_t const ID)
+		DataType& naiveFind(Key const key)
 		{
-			return m_vDense[m_vSparse[ID]];
+			return m_vDense[m_vSparse[key]];
 		}
 
-		DataType& naiveInsert(std::size_t const ID, DataType data)
+		DataType& naiveInsert(Key const key, DataType data)
 		{
-			m_vSparse[ID] = m_vDense.size();
+			m_vSparse[key] = m_vDense.size();
 
-			static_cast<std::size_t&>(data) = ID;
+			static_cast<Key&>(data) = key;
 
 			m_vDense.push_back(std::move(data));
 			return m_vDense.back();
 		}
 
-		std::vector<std::size_t> m_vSparse{};
+		std::vector<DataIndex> m_vSparse{};
 		std::vector<DataType> m_vDense{};
 	};
 }
