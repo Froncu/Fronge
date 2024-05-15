@@ -1,11 +1,8 @@
 #include "GameObject.h"
 
-#pragma region Constructors/Destructor
-fro::GameObject::GameObject(std::size_t const ID)
-	: m_ID{ ID }
-{
-}
-#pragma endregion Constructors/Destructor
+#pragma region StaticData
+std::size_t fro::GameObject::NEXT_ID{};
+#pragma endregion StaticData
 
 
 

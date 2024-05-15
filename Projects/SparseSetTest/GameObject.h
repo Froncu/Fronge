@@ -8,7 +8,7 @@ namespace fro
 	class GameObject final
 	{
 	public:
-		GameObject(std::size_t const ID);
+		GameObject() = default;
 		GameObject(GameObject const&) = default;
 		GameObject(GameObject&&) noexcept = default;
 
@@ -20,7 +20,9 @@ namespace fro
 		operator std::size_t const& () const;
 
 	private:
-		std::size_t m_ID;
+		static std::size_t NEXT_ID;
+
+		std::size_t m_ID{ NEXT_ID++ };
 	};
 }
 
