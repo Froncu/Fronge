@@ -8,8 +8,14 @@ namespace fro
 {
 	struct Component
 	{
-		operator std::size_t& ();
-		operator std::size_t const& () const;
+		operator std::size_t& ()
+		{
+			return m_ParentingGameObjectID;
+		};
+		operator std::size_t const& () const
+		{
+			return m_ParentingGameObjectID;
+		}
 
 		std::size_t m_ParentingGameObjectID;
 	};
