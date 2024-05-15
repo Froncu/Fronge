@@ -96,6 +96,9 @@ namespace fro
 		DataType& naiveInsert(std::size_t const ID, DataType data)
 		{
 			m_vSparse[ID] = m_vDense.size();
+
+			static_cast<std::size_t&>(data) = ID;
+
 			m_vDense.push_back(std::move(data));
 			return m_vDense.back();
 		}
