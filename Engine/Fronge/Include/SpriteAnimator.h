@@ -62,7 +62,7 @@ namespace fro
 		std::map<std::string_view, Animation> m_mAnimations{};
 		Animation* m_pActiveAnimation{};
 
-		int m_CurrentFrameIndex{};
+		std::size_t m_CurrentFrameIndex{};
 		float m_ElapsedSeconds{};
 		bool m_Play{ true };
 	};
