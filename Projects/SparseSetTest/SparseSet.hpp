@@ -64,7 +64,7 @@ namespace fro
 			if (not contains(ID))
 				return false;
 
-			auto& lastDense{ static_cast<std::size_t>(m_vDense.back()) };
+			std::size_t lastDense{ m_vDense.back() };
 			std::swap(naiveFind(ID), m_vDense.back());
 
 			m_vSparse[lastDense] = m_vSparse[ID];
@@ -96,7 +96,8 @@ namespace fro
 		DataType& naiveInsert(std::size_t const ID, DataType data)
 		{
 			m_vSparse[ID] = m_vDense.size();
-			return *m_vDense.push_back(std::move(data));
+			m_vDense.push_back(std::move(data));
+			return m_vDense.back();
 		}
 
 		std::vector<std::size_t> m_vSparse{};
