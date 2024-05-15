@@ -7,7 +7,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SparseSet.hpp" />
+    <ClInclude Include="ComponentSet.hpp" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>

@@ -167,7 +167,7 @@
   <ItemGroup>
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="SparseSet.hpp" />
+    <ClInclude Include="ComponentSet.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
