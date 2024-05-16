@@ -161,13 +161,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="SparseSetTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.hpp" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="ComponentSet.hpp" />
+    <ClInclude Include="ECS.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

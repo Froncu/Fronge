@@ -10,8 +10,20 @@
 
 namespace fro
 {
+	struct BaseComponentSet
+	{
+		BaseComponentSet() = default;
+		BaseComponentSet(BaseComponentSet const&) = default;
+		BaseComponentSet(BaseComponentSet&&) noexcept = default;
+
+		virtual ~BaseComponentSet() = default;
+
+		BaseComponentSet& operator=(BaseComponentSet const&) = default;
+		BaseComponentSet& operator=(BaseComponentSet&&) noexcept = default;
+	};
+
 	template<typename ComponentType>
-	class ComponentSet final
+	class ComponentSet final : public BaseComponentSet
 	{
 	public:
 		using GameObject = std::size_t;
@@ -22,7 +34,7 @@ namespace fro
 		ComponentSet(ComponentSet const&) = default;
 		ComponentSet(ComponentSet&&) noexcept = default;
 
-		~ComponentSet() = default;
+		virtual ~ComponentSet() override = default;
 
 		ComponentSet& operator=(ComponentSet const&) = default;
 		ComponentSet& operator=(ComponentSet&&) noexcept = default;

@@ -5,13 +5,15 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ECS.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentSet.hpp" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Components.hpp" />
+    <ClInclude Include="ComponentSet.hpp" />
+    <ClInclude Include="ECS.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
