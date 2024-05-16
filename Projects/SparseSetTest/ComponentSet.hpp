@@ -51,7 +51,7 @@ namespace fro
 			return &naiveInsert(gameObject, std::move(data));
 		}
 
-		bool contains(GameObject const gameObject)
+		bool contains(GameObject const gameObject) const
 		{
 			return inSparseRange(gameObject) and naiveContains(gameObject);
 		}
@@ -86,17 +86,17 @@ namespace fro
 		}
 
 	private:
-		bool inSparseRange(GameObject const gameObject)
+		bool inSparseRange(GameObject const gameObject) const
 		{
 			return gameObject < m_vSparse.size();
 		}
 
-		bool inDenseRange(ComponentIndex const componentIndex)
+		bool inDenseRange(ComponentIndex const componentIndex) const
 		{
 			return componentIndex < m_vDense.size();
 		}
 
-		bool naiveContains(GameObject const gameObject)
+		bool naiveContains(GameObject const gameObject) const
 		{
 			return m_vSparse[gameObject] not_eq UNUSED_COMPONENT_INDEX;
 		}
