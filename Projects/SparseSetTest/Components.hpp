@@ -19,6 +19,11 @@ namespace fro
 
 		std::size_t m_ParentingGameObjectID;
 	};
+
+	struct TagComponent final : public Component
+	{
+		std::string name;
+	};
 }
 
 #endif

@@ -3,7 +3,7 @@
 // as well as his EnTT library (https://github.com/skypjack/entt)
 
 #if not defined fro_COMPONENT_SET_H
-#define froCOMPONENTE_SET_H
+#define fro_COMPONENT_SET_H
 
 #include <optional>
 #include <vector>
@@ -42,7 +42,7 @@ namespace fro
 
 		ComponentType* insert(GameObject const gameObject, ComponentType data = {})
 		{
-			if (not inRange(gameObject))
+			if (not inSparseRange(gameObject))
 				m_vSparse.resize(gameObject + 1, UNUSED_COMPONENT_INDEX);
 
 			else if (naiveContains(gameObject))
@@ -53,7 +53,7 @@ namespace fro
 
 		bool contains(GameObject const gameObject)
 		{
-			return inRange(gameObject) and naiveContains(gameObject);
+			return inSparseRange(gameObject) and naiveContains(gameObject);
 		}
 
 		ComponentType* find(GameObject const gameObject)
@@ -69,21 +69,31 @@ namespace fro
 			if (not contains(gameObject))
 				return false;
 
-			GameObject const lastDataKey{ m_vDense.back() };
-			std::swap(naiveFind(gameObject), m_vDense.back());
-
-			m_vSparse[lastDataKey] = m_vSparse[gameObject];
+			naiveSwap(gameObject, m_vDense.size() - 1);
 			m_vSparse[gameObject] = UNUSED_COMPONENT_INDEX;
-
 			m_vDense.pop_back();
 
 			return true;
 		}
 
+		bool swap(GameObject const gameObject, ComponentIndex const where)
+		{
+			if (not inDenseRange(where) or not contains(gameObject))
+				return false;
+
+			naiveSwap(gameObject, where);
+			return true;
+		}
+
 	private:
-		bool inRange(GameObject const gameObject)
+		bool inSparseRange(GameObject const gameObject)
 		{
 			return gameObject < m_vSparse.size();
+		}
+
+		bool inDenseRange(ComponentIndex const componentIndex)
+		{
+			return componentIndex < m_vDense.size();
 		}
 
 		bool naiveContains(GameObject const gameObject)
@@ -104,6 +114,13 @@ namespace fro
 
 			m_vDense.push_back(std::move(data));
 			return m_vDense.back();
+		}
+
+		void naiveSwap(GameObject const gameObject, ComponentIndex const where)
+		{
+			GameObject const otherGameObject{ m_vDense[where] };
+			std::swap(naiveFind(gameObject), m_vDense[where]);
+			std::swap(m_vSparse[gameObject], m_vSparse[otherGameObject]);
 		}
 
 		std::vector<ComponentIndex> m_vSparse{};
