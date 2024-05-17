@@ -1,8 +1,6 @@
 #if not defined fro_ECS_GROUP_H
 #define fro_ECS_GROUP_H
 
-#include <iostream>
-#include <tuple>
 #include <vector>
 
 namespace fro
@@ -16,42 +14,17 @@ namespace fro
 	template<typename... OwnedTypes, typename... ObservedTypes>
 	class ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>> final
 	{
-		template<typename Type, typename... Pack>
-		struct IsContainedInPack final
-		{
-		};
-
-		template<typename Type, typename Head, typename... Tail>
-		struct IsContainedInPack<Type, Head, Tail...> final
-		{
-			static bool constexpr value{ std::is_same_v<Type, Head> or IsContainedInPack<Type, Tail...>::value };
-		};
-
-		template<typename Type>
-		struct IsContainedInPack<Type> final
-		{
-			static bool constexpr value{};
-		};
-
-		template<typename... Pack>
-		struct IsPackUnique final
-		{
-		};
+		template<typename...>
+		static auto constexpr isPackUnique{ std::true_type{} };
 
 		template<typename Head, typename... Tail>
-		struct IsPackUnique<Head, Tail...> final
+		static auto constexpr isPackUnique<Head, Tail...>
 		{
-			static bool constexpr value{ not IsContainedInPack<Head, Tail...>::value and IsPackUnique<Tail...>::value };
+			(not std::is_same_v<Head, Tail> and ...) and isPackUnique<Tail...>
 		};
 
-		template<typename Type>
-		struct IsPackUnique<Type> final
-		{
-			static bool constexpr value{ true };
-		};
-
-		static_assert(IsPackUnique<OwnedTypes...>::value);
-		static_assert(IsPackUnique<ObservedTypes...>::value);
+		static_assert(isPackUnique<OwnedTypes...>::value);
+		static_assert(isPackUnique<ObservedTypes...>::value);
 
 	public:
 		consteval ECSGroup() = default;
@@ -65,7 +38,7 @@ namespace fro
 	};
 
 	template<typename... OwnedTypes, typename... ObservedTypes>
-	consteval auto createGroup(ComponentPack<ObservedTypes...> const&)
+	consteval auto createGroup(ComponentPack<ObservedTypes...> const& = {})
 	{
 		return ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>>{};
 	}
