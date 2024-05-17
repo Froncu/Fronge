@@ -21,7 +21,7 @@ namespace fro
 			std::convertible_to<Type&, Key&> and
 			std::copyable<Type> and
 			std::swappable<Type> and
-			std::constructible_from<Type>;
+			std::default_initializable<Type>;
 
 		template<SparseSetMappable DataType>
 		class SparseSet final
