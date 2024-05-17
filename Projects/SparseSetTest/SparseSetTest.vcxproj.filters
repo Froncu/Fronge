@@ -14,6 +14,7 @@
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="ComponentSet.hpp" />
     <ClInclude Include="ECS.h" />
+    <ClInclude Include="ECSGroup.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
