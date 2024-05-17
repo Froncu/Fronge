@@ -1,5 +1,6 @@
 #include "Components.hpp"
 #include "ECS.h"
+#include "ECSGroup.hpp"
 
 #include <iostream>
 
@@ -13,5 +14,7 @@ int main()
 	entityComponentSystem.addComponent<TagComponent>(2)->name = "Hey! I am 2!";
 	std::cout << entityComponentSystem.getComponent<TagComponent>(2)->name << std::endl;
 	entityComponentSystem.removeComponent<TagComponent>(0);
-	std::cout << entityComponentSystem.getComponent<TagComponent>(2)->name << " ... still :)" << std::endl;
+	std::cout << entityComponentSystem.getComponent<TagComponent>(2)->name << " ... still :)\n\n";
+
+	auto group{ createGroup<int, char, double>(ComponentPack<bool, std::size_t>{}) };
 }
