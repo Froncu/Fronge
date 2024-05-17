@@ -31,6 +31,9 @@ namespace fro
 		template<typename ComponentType>
 		ComponentType* addComponent(GameObjectID const gameObject)
 		{
+			if (not m_ssGameObjects.contains(gameObject))
+				return nullptr;
+
 			return getComponentSet<ComponentType>().addComponent(gameObject);
 		}
 
