@@ -11,8 +11,6 @@
 
 namespace fro
 {
-	using GameObjectID = std::size_t;
-
 	class ECS final
 	{
 	public:
@@ -25,46 +23,26 @@ namespace fro
 		ECS& operator=(ECS const&) = default;
 		ECS& operator=(ECS&&) noexcept = default;
 
-		GameObjectID createGameObject()
-		{
-			if (m_vFreeGameObjectIDs.empty())
-				return m_vGameObjectIDs.emplace_back(m_vGameObjectIDs.size());
+		GameObjectID createGameObject();
 
-			m_vGameObjectIDs.push_back(m_vFreeGameObjectIDs.back());
-			m_vFreeGameObjectIDs.pop_back();
-			return m_vGameObjectIDs.back();
-		}
-
-		bool destroyGameObject(GameObjectID const gameObjectID)
-		{
-			for (auto&& [typeIndex, pBaseComponentSet] : m_umComponents)
-				pBaseComponentSet->remove(gameObjectID);
-
-			auto const iNewEnd{ std::remove(m_vGameObjectIDs.begin(), m_vGameObjectIDs.end(), gameObjectID) };
-			if (iNewEnd == m_vGameObjectIDs.end())
-				return false;
-
-			m_vGameObjectIDs.assign(m_vGameObjectIDs.begin(), iNewEnd);
-			m_vFreeGameObjectIDs.push_back(gameObjectID);
-			return true;
-		}
+		bool destroyGameObject(GameObjectID const gameObjectID);
 
 		template<typename ComponentType>
 		ComponentType* addComponent(GameObjectID const gameObject)
 		{
-			return getComponentSet<ComponentType>().insert(gameObject);
+			return getComponentSet<ComponentType>().addComponent(gameObject);
 		}
 
 		template<typename ComponentType>
 		ComponentType* getComponent(GameObjectID const gameObject)
 		{
-			return getComponentSet<ComponentType>().find(gameObject);
+			return getComponentSet<ComponentType>().getComponent(gameObject);
 		}
 
 		template<typename ComponentType>
 		bool removeComponent(GameObjectID const gameObject)
 		{
-			return getComponentSet<ComponentType>().remove(gameObject);
+			return getComponentSet<ComponentType>().removeComponent(gameObject);
 		}
 
 	private:
@@ -78,13 +56,13 @@ namespace fro
 				BaseComponentSet* const pBaseComponentSet{ m_umComponents.at(typeIndex).get() };
 				return *static_cast<ComponentSet<ComponentType>*>(pBaseComponentSet);
 			}
-			
+
 			auto upComponentSet{ std::make_unique<ComponentSet<ComponentType>>() };
 			ComponentSet<ComponentType>* const pComponentSet{ upComponentSet.get() };
 			m_umComponents.emplace(typeIndex, std::move(upComponentSet));
 			return *pComponentSet;
 		}
-		
+
 		std::vector<GameObjectID> m_vGameObjectIDs{};
 		std::vector<GameObjectID> m_vFreeGameObjectIDs{};
 		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};

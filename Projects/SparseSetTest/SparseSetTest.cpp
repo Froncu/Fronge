@@ -9,19 +9,14 @@ int main()
 	using namespace fro;
 
 	fro::ECS entityComponentSystem{};
+	GameObjectID gameObject0{ entityComponentSystem.createGameObject() };
+	GameObjectID gameObject1{ entityComponentSystem.createGameObject() };
 
-	entityComponentSystem.addComponent<TagComponent>(0)->name = "Hey!";
-	entityComponentSystem.addComponent<TagComponent>(2)->name = "Hey! I am 2!";
-	std::cout << entityComponentSystem.getComponent<TagComponent>(2)->name << std::endl;
-	entityComponentSystem.removeComponent<TagComponent>(0);
-	std::cout << entityComponentSystem.getComponent<TagComponent>(2)->name << " ... still :)\n\n";
-
-	entityComponentSystem.createGameObject();
-	entityComponentSystem.createGameObject();
-	entityComponentSystem.createGameObject();
-	auto gameObject3{ entityComponentSystem.createGameObject() };
-	entityComponentSystem.createGameObject();
-	entityComponentSystem.destroyGameObject(gameObject3);
+	entityComponentSystem.addComponent<TagComponent>(gameObject0)->name = "Hey!";
+	entityComponentSystem.addComponent<TagComponent>(gameObject1)->name = "Hey! I am 2!";
+	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << std::endl;
+	entityComponentSystem.removeComponent<TagComponent>(gameObject0);
+	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << " ... still :)\n\n";
 
 	auto group{ createGroup<int, char, double>(ComponentPack<bool, std::size_t>{}) };
 }
