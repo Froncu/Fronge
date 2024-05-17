@@ -3,12 +3,16 @@
 
 #include "ComponentSet.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 namespace fro
 {
+	using GameObjectID = std::size_t;
+
 	class ECS final
 	{
 	public:
@@ -21,20 +25,44 @@ namespace fro
 		ECS& operator=(ECS const&) = default;
 		ECS& operator=(ECS&&) noexcept = default;
 
+		GameObjectID createGameObject()
+		{
+			if (m_vFreeGameObjectIDs.empty())
+				return m_vGameObjectIDs.emplace_back(m_vGameObjectIDs.size());
+
+			m_vGameObjectIDs.push_back(m_vFreeGameObjectIDs.back());
+			m_vFreeGameObjectIDs.pop_back();
+			return m_vGameObjectIDs.back();
+		}
+
+		bool destroyGameObject(GameObjectID const gameObjectID)
+		{
+			for (auto&& [typeIndex, pBaseComponentSet] : m_umComponents)
+				pBaseComponentSet->remove(gameObjectID);
+
+			auto const iNewEnd{ std::remove(m_vGameObjectIDs.begin(), m_vGameObjectIDs.end(), gameObjectID) };
+			if (iNewEnd == m_vGameObjectIDs.end())
+				return false;
+
+			m_vGameObjectIDs.assign(m_vGameObjectIDs.begin(), iNewEnd);
+			m_vFreeGameObjectIDs.push_back(gameObjectID);
+			return true;
+		}
+
 		template<typename ComponentType>
-		ComponentType* addComponent(std::size_t const gameObject)
+		ComponentType* addComponent(GameObjectID const gameObject)
 		{
 			return getComponentSet<ComponentType>().insert(gameObject);
 		}
 
 		template<typename ComponentType>
-		ComponentType* getComponent(std::size_t const gameObject)
+		ComponentType* getComponent(GameObjectID const gameObject)
 		{
 			return getComponentSet<ComponentType>().find(gameObject);
 		}
 
 		template<typename ComponentType>
-		bool removeComponent(std::size_t const gameObject)
+		bool removeComponent(GameObjectID const gameObject)
 		{
 			return getComponentSet<ComponentType>().remove(gameObject);
 		}
@@ -56,7 +84,9 @@ namespace fro
 			m_umComponents.emplace(typeIndex, std::move(upComponentSet));
 			return *pComponentSet;
 		}
-
+		
+		std::vector<GameObjectID> m_vGameObjectIDs{};
+		std::vector<GameObjectID> m_vFreeGameObjectIDs{};
 		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
 	};
 }

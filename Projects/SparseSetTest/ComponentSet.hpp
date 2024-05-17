@@ -10,8 +10,13 @@
 
 namespace fro
 {
-	struct BaseComponentSet
+	class BaseComponentSet
 	{
+	public:
+		using GameObject = std::size_t;
+		using ComponentIndex = GameObject;
+		static ComponentIndex constexpr UNUSED_COMPONENT_INDEX{ std::numeric_limits<ComponentIndex>::max() };
+
 		BaseComponentSet() = default;
 		BaseComponentSet(BaseComponentSet const&) = default;
 		BaseComponentSet(BaseComponentSet&&) noexcept = default;
@@ -20,16 +25,14 @@ namespace fro
 
 		BaseComponentSet& operator=(BaseComponentSet const&) = default;
 		BaseComponentSet& operator=(BaseComponentSet&&) noexcept = default;
+
+		virtual bool remove(GameObject const gameObject) = 0;
 	};
 
 	template<typename ComponentType>
 	class ComponentSet final : public BaseComponentSet
 	{
 	public:
-		using GameObject = std::size_t;
-		using ComponentIndex = GameObject;
-		static ComponentIndex constexpr UNUSED_COMPONENT_INDEX{ std::numeric_limits<ComponentIndex>::max() };
-
 		ComponentSet() = default;
 		ComponentSet(ComponentSet const&) = default;
 		ComponentSet(ComponentSet&&) noexcept = default;
@@ -76,7 +79,7 @@ namespace fro
 			return &naiveFind(gameObject);
 		}
 
-		bool remove(GameObject const gameObject)
+		virtual bool remove(GameObject const gameObject) override
 		{
 			if (not contains(gameObject))
 				return false;
