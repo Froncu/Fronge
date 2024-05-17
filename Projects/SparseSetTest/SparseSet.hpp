@@ -128,7 +128,6 @@ namespace fro
 			std::swap(m_vSparse[key], m_vSparse[otherKey]);
 		}
 
-		std::vector<DataIndex> m_vFreeDataIndices{};
 		std::vector<DataIndex> m_vSparse{};
 		std::vector<DataType> m_vDense{};
 	};
