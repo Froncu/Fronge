@@ -16,8 +16,14 @@ namespace fro
 		using DataIndex = std::size_t;
 		static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 
-		template<std::copyable DataType>
-			requires std::convertible_to<DataType, Key>
+		template<typename Type>
+		concept SparseSetMappable =
+			std::convertible_to<Type&, Key&> and
+			std::copyable<Type> and
+			std::swappable<Type> and
+			std::constructible_from<Type>;
+
+		template<SparseSetMappable DataType>
 		class SparseSet final
 		{
 		public:
