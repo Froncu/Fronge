@@ -7,19 +7,6 @@
 
 namespace fro
 {
-	template<typename Type, typename... Types>
-	static void printTypes()
-	{
-		std::cout << typeid(Type).name();
-		if constexpr (sizeof...(Types))
-		{
-			std::cout << ", ";
-			printTypes<Types...>();
-		}
-		else
-			std::cout << '\n';
-	}
-
 	template <typename... ComponentTypes>
 	using ComponentPack = std::tuple<ComponentTypes...>;
 
@@ -29,19 +16,56 @@ namespace fro
 	template<typename... OwnedTypes, typename... ObservedTypes>
 	class ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>> final
 	{
-	public:
-		ECSGroup()
+		template<typename Type, typename... Pack>
+		struct IsContainedInPack final
 		{
-			std::cout << "Owned types: ";
-			printTypes<OwnedTypes...>();
+		};
 
-			std::cout << "Observed types: ";
-			printTypes<ObservedTypes...>();
-		}
+		template<typename Type, typename Head, typename... Tail>
+		struct IsContainedInPack<Type, Head, Tail...> final
+		{
+			static bool constexpr value{ std::is_same_v<Type, Head> or IsContainedInPack<Type, Tail...>::value };
+		};
+
+		template<typename Type>
+		struct IsContainedInPack<Type> final
+		{
+			static bool constexpr value{};
+		};
+
+		template<typename... Pack>
+		struct IsPackUnique final
+		{
+		};
+
+		template<typename Head, typename... Tail>
+		struct IsPackUnique<Head, Tail...> final
+		{
+			static bool constexpr value{ not IsContainedInPack<Head, Tail...>::value and IsPackUnique<Tail...>::value };
+		};
+
+		template<typename Type>
+		struct IsPackUnique<Type> final
+		{
+			static bool constexpr value{ true };
+		};
+
+		static_assert(IsPackUnique<OwnedTypes...>::value);
+		static_assert(IsPackUnique<ObservedTypes...>::value);
+
+	public:
+		consteval ECSGroup() = default;
+		ECSGroup(ECSGroup const&) = default;
+		ECSGroup(ECSGroup&&) noexcept = default;
+
+		~ECSGroup() = default;
+
+		ECSGroup& operator=(ECSGroup const&) = default;
+		ECSGroup& operator=(ECSGroup&&) noexcept = default;
 	};
 
 	template<typename... OwnedTypes, typename... ObservedTypes>
-	auto createGroup(ComponentPack<ObservedTypes...> const&)
+	consteval auto createGroup(ComponentPack<ObservedTypes...> const&)
 	{
 		return ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>>{};
 	}
