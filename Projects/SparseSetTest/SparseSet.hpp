@@ -85,6 +85,11 @@ namespace fro
 			return true;
 		}
 
+		std::size_t size() const
+		{
+			return m_vDense.size();
+		}
+
 	private:
 		bool inSparseRange(Key const key) const
 		{
@@ -123,6 +128,7 @@ namespace fro
 			std::swap(m_vSparse[key], m_vSparse[otherKey]);
 		}
 
+		std::vector<DataIndex> m_vFreeDataIndices{};
 		std::vector<DataIndex> m_vSparse{};
 		std::vector<DataType> m_vDense{};
 	};

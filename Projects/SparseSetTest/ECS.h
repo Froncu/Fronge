@@ -2,6 +2,7 @@
 #define fro_ECS_H
 
 #include "ComponentSet.hpp"
+#include "SparseSet.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -63,7 +64,7 @@ namespace fro
 			return *pComponentSet;
 		}
 
-		std::vector<GameObjectID> m_vGameObjectIDs{};
+		SparseSet<GameObjectID> m_ssGameObjects{};
 		std::vector<GameObjectID> m_vFreeGameObjectIDs{};
 		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
 	};

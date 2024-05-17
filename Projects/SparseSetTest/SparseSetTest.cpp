@@ -11,6 +11,10 @@ int main()
 	fro::ECS entityComponentSystem{};
 	GameObjectID gameObject0{ entityComponentSystem.createGameObject() };
 	GameObjectID gameObject1{ entityComponentSystem.createGameObject() };
+	GameObjectID gameObject2{ entityComponentSystem.createGameObject() };
+	entityComponentSystem.createGameObject();
+	entityComponentSystem.destroyGameObject(gameObject2);
+	gameObject2 = entityComponentSystem.createGameObject();
 
 	entityComponentSystem.addComponent<TagComponent>(gameObject0)->name = "Hey!";
 	entityComponentSystem.addComponent<TagComponent>(gameObject1)->name = "Hey! I am 2!";
