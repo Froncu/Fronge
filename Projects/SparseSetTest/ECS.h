@@ -64,7 +64,7 @@ namespace fro
 			return *pComponentSet;
 		}
 
-		SparseSet<GameObjectID> m_ssGameObjects{};
+		sparseSet::SparseSet<GameObjectID> m_ssGameObjects{};
 		std::vector<GameObjectID> m_vFreeGameObjectIDs{};
 		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
 	};

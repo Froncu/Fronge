@@ -8,8 +8,8 @@
 
 namespace fro
 {
-	using GameObjectID = SparseSet<bool>::Key;
-	using ComponentIndex = SparseSet<bool>::DataIndex;
+	using GameObjectID = sparseSet::Key;
+	using ComponentIndex = sparseSet::DataIndex;
 
 	class BaseComponentSet
 	{
@@ -74,7 +74,7 @@ namespace fro
 		}
 
 	private:
-		SparseSet<ComponentType> m_ssComponents{};
+		sparseSet::SparseSet<ComponentType> m_ssComponents{};
 	};
 }
 
