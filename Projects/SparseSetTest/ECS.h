@@ -2,12 +2,14 @@
 #define fro_ECS_H
 
 #include "ComponentSet.hpp"
+#include "ECSGroup.hpp"
 #include "SparseSet.hpp"
 
 #include <algorithm>
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <variant>
 #include <vector>
 
 namespace fro
@@ -28,13 +30,42 @@ namespace fro
 
 		bool destroyGameObject(GameObjectID const gameObjectID);
 
+		template<typename... OwnedTypes, typename... ObservedTypes>
+		auto getGroup(ComponentPack<ObservedTypes...> const& = {})
+		{
+			using Type = ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>>;
+			std::type_index const typeIndex{ typeid(Type) };
+
+			auto const ipFoundGroup{ m_umGroups.find(typeIndex) };
+			if (ipFoundGroup == m_umGroups.end())
+			{
+				Type* const pGroup{ new Type{ *this } };
+				m_umGroups.emplace(typeIndex, std::unique_ptr<BaseECSGroup>(pGroup));
+				return pGroup;
+			}
+
+			return static_cast<Type* const>(ipFoundGroup->second.get());
+		}
+
 		template<typename ComponentType>
 		ComponentType* addComponent(GameObjectID const gameObject)
 		{
 			if (not m_ssGameObjects.contains(gameObject))
 				return nullptr;
 
-			return getComponentSet<ComponentType>().addComponent(gameObject);
+			ComponentType* const pAddedComponent{ getComponentSet<ComponentType>().addComponent(gameObject) };
+
+			if (pAddedComponent)
+				for (auto& [typeIndex, pGroup] : m_umGroups)
+					pGroup->onAddComponent(typeid(ComponentType), gameObject);
+
+			return pAddedComponent;
+		}
+
+		template<typename ComponentType>
+		bool hasComponent(GameObjectID const gameObject)
+		{
+			return getComponentSet<ComponentType>().hasComponent(gameObject);
 		}
 
 		template<typename ComponentType>
@@ -46,10 +77,15 @@ namespace fro
 		template<typename ComponentType>
 		bool removeComponent(GameObjectID const gameObject)
 		{
-			return getComponentSet<ComponentType>().removeComponent(gameObject);
+			bool const result{ getComponentSet<ComponentType>().removeComponent(gameObject) };
+
+			if (result)
+				for (auto& [typeIndex, pGroup] : m_umGroups)
+					pGroup->onRemoveComponent(typeid(ComponentType), gameObject);
+
+			return result;
 		}
 
-	private:
 		template<typename ComponentType>
 		ComponentSet<ComponentType>& getComponentSet()
 		{
@@ -67,9 +103,12 @@ namespace fro
 			return *pComponentSet;
 		}
 
+	private:
+		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
+		std::unordered_map<std::type_index, std::unique_ptr<BaseECSGroup>> m_umGroups{};
+
 		sparseSet::SparseSet<GameObjectID> m_ssGameObjects{};
 		std::vector<GameObjectID> m_vFreeGameObjectIDs{};
-		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
 	};
 }
 
