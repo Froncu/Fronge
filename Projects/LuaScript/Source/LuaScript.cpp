@@ -1,6 +1,9 @@
-#include <iostream>
+#include "Typenames.hpp"
+
+#include <lua.hpp>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    fro::CustomUniquePointer<lua_State> pLuaState{ luaL_newstate(), lua_close };
+    luaL_openlibs(pLuaState.get());
 }
