@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\LuaScript.cpp" />
-    <ClCompile Include="Source\NPC.cpp">
-      <Filter>NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\NPCManager.cpp">
+    <ClCompile Include="Code\LuaScript.cpp" />
+    <ClCompile Include="Code\NPCManager.cpp">
       <Filter>NPCManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\NPC.cpp">
+      <Filter>NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="NPC">
-      <UniqueIdentifier>{da091752-4b8b-4f0c-b414-45ce4ab539fc}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Code\NPCManager.h">
+      <Filter>NPCManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\NPC.h">
+      <Filter>NPC</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="NPCManager">
-      <UniqueIdentifier>{b5b493b1-acaa-47e8-a8d0-0a42f77cd7c9}</UniqueIdentifier>
+      <UniqueIdentifier>{ccd049c7-e03a-4e36-b276-591de976abf0}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\NPC.h">
-      <Filter>NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\NPCManager.h">
-      <Filter>NPCManager</Filter>
-    </ClInclude>
+    <Filter Include="NPC">
+      <UniqueIdentifier>{c25ad54f-bf7b-4982-be77-2a8ddbd8cb92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\NPCManager.cpp" />
-    <ClCompile Include="Source\NPC.cpp" />
-    <ClCompile Include="Source\LuaScript.cpp" />
+    <ClCompile Include="Code\LuaScript.cpp" />
+    <ClCompile Include="Code\NPC.cpp" />
+    <ClCompile Include="Code\NPCManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\NPCManager.h" />
-    <ClInclude Include="Source\NPC.h" />
+    <ClInclude Include="Code\NPC.h" />
+    <ClInclude Include="Code\NPCManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
