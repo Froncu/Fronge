@@ -1,20 +1,39 @@
 #if not defined fro_ECS_GROUP_H
 #define fro_ECS_GROUP_H
 
-#include <iostream>
+#include <set>
 #include <tuple>
-#include <vector>
+#include <typeindex>
+#include <unordered_map>
 
 namespace fro
 {
+	class ECS;
+
 	template <typename... ComponentTypes>
 	using ComponentPack = std::tuple<ComponentTypes...>;
+
+	class BaseECSGroup
+	{
+	public:
+		BaseECSGroup() = default;
+		BaseECSGroup(BaseECSGroup const&) = default;
+		BaseECSGroup(BaseECSGroup&&) noexcept = default;
+
+		virtual ~BaseECSGroup() = default;
+
+		BaseECSGroup& operator=(BaseECSGroup const&) = default;
+		BaseECSGroup& operator=(BaseECSGroup&&) noexcept = default;
+
+		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject) = 0;
+		virtual void onRemoveComponent(std::type_index const typeIndex, GameObjectID const gameObject) = 0;
+	};
 
 	template<typename OwnedTypePack, typename ObservedTypePack>
 	class ECSGroup final {};
 
 	template<typename... OwnedTypes, typename... ObservedTypes>
-	class ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>> final
+	class ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>> final : public BaseECSGroup
 	{
 		template<typename...>
 		static auto constexpr isPackUnique{ std::true_type{} };
@@ -37,21 +56,55 @@ namespace fro
 			"there is no reason to observe any of the owned component types in the same group");
 
 	public:
-		consteval ECSGroup() = default;
+		ECSGroup(ECS& parentingECS)
+			: m_ParentingECS{ parentingECS }
+		{
+		};
+
 		ECSGroup(ECSGroup const&) = default;
 		ECSGroup(ECSGroup&&) noexcept = default;
 
-		~ECSGroup() = default;
+		virtual ~ECSGroup() override = default;
 
 		ECSGroup& operator=(ECSGroup const&) = default;
 		ECSGroup& operator=(ECSGroup&&) noexcept = default;
-	};
 
-	template<typename... OwnedTypes, typename... ObservedTypes>
-	consteval auto createGroup(ComponentPack<ObservedTypes...> const& = {})
-	{
-		return ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>>{};
-	}
+		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject) override
+		{
+			if (isInPack<OwnedTypes...>(typeIndex))
+				m_OwnedMatchingGameObjects[typeIndex].insert(gameObject);
+
+			else if (isInPack<ObservedTypes...>(typeIndex))
+				m_ObservedMatchingGameObjects[typeIndex].insert(gameObject);
+
+
+		}
+
+		virtual void onRemoveComponent(std::type_index const typeIndex, GameObjectID const gameObject) override
+		{
+			if (isInPack<OwnedTypes...>(typeIndex))
+				m_OwnedMatchingGameObjects[typeIndex].erase(gameObject);
+
+			else if (isInPack<ObservedTypes...>(typeIndex))
+				m_ObservedMatchingGameObjects[typeIndex].erase(gameObject);
+
+
+		}
+
+	private:
+		using MatchLookup = std::unordered_map<std::type_index, std::set<GameObjectID>>;
+
+		template<typename... Pack>
+		bool isInPack(std::type_index const typeIndex)
+		{
+			return ((std::type_index(typeid(Pack)) == typeIndex) or ...);
+		}
+
+		ECS& m_ParentingECS;
+
+		MatchLookup m_OwnedMatchingGameObjects;
+		MatchLookup m_ObservedMatchingGameObjects;
+	};
 }
 
 #endif

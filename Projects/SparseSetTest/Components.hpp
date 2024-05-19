@@ -24,6 +24,13 @@ namespace fro
 	{
 		std::string name;
 	};
+
+	struct TransfromComponent final : public Component
+	{
+		float rotation;
+		int x;
+		int y;
+	};
 }
 
 #endif

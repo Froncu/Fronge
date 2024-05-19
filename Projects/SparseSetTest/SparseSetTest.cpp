@@ -22,5 +22,5 @@ int main()
 	entityComponentSystem.removeComponent<TagComponent>(gameObject0);
 	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << " ... still :)\n\n";
 
-	auto group{ createGroup<int, char, double>(ComponentPack<bool, std::size_t>{}) };
+	entityComponentSystem.getGroup<TagComponent, TransfromComponent>();
 }
