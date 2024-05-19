@@ -17,7 +17,6 @@
   <Import Project="GLM.props" Condition="'$(GLM_Imported)' != 'true'" />
   <Import Project="ImGui.props" Condition="'$(ImGui_Imported)' != 'true'" />
   <Import Project="ImPlot.props" Condition="'$(ImPlot_Imported)' != 'true'" />
-  <Import Project="Lua.props" Condition="'$(Lua_Imported)' != 'true'" />
   <Import Project="SDL.props" Condition="'$(SDL_Imported)' != 'true'" />
   <Import Project="SDL_image.props" Condition="'$(SDL_image_Imported)' != 'true'" />
   <Import Project="SDL_mixer.props" Condition="'$(SDL_mixer_Imported)' != 'true'" />
@@ -33,7 +32,6 @@
       $(GLM_IncludeDirectories);
       $(ImGui_IncludeDirectories);
       $(ImPlot_IncludeDirectories);
-      $(Lua_IncludeDirectories);
       $(SDL_IncludeDirectories);
       $(SDL_image_IncludeDirectories);
       $(SDL_mixer_IncludeDirectories);
@@ -48,7 +46,6 @@
       $(Fronge_LibraryDirectories);
       $(ImGui_LibraryDirectories);
       $(ImPlot_LibraryDirectories);
-      $(Lua_LibraryDirectories);
       $(SDL_LibraryDirectories);
       $(SDL_image_LibraryDirectories);
       $(SDL_mixer_LibraryDirectories);
@@ -63,7 +60,6 @@
       $(Fronge_Dependecies);
       $(ImGui_Dependecies);
       $(ImPlot_Dependecies);
-      $(Lua_Dependecies);
       $(SDL_Dependecies);
       $(SDL_image_Dependecies);
       $(SDL_mixer_Dependecies);
