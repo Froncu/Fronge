@@ -15,10 +15,14 @@ public:
 	NPC& operator=(NPC const&) = default;
 	NPC& operator=(NPC&&) noexcept = default;
 
+	void setHealth(int const health);
+
 	std::string_view getName() const;
+	int getHealth() const;
 
 private:
 	std::string m_Name;
+	int m_Health{ 100 };
 };
 
 #endif
