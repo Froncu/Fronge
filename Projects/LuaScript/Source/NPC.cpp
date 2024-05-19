@@ -1,6 +1,9 @@
 #include "NPC.h"
 
+#include "Console.hpp"
+
 #include <algorithm>
+#include <format>
 
 #pragma region Constructors/Destructor
 NPC::NPC(std::string name)
@@ -15,6 +18,11 @@ NPC::NPC(std::string name)
 void NPC::setHealth(int const health)
 {
 	m_Health = std::clamp(health, 0, 100);
+
+#if not defined NDEBUG
+	auto const message{ std::format("{}'s health changed to {} health!", m_Name, m_Health) };
+	fro::Console::getInstance().log(message, fro::Console::BackgroundColor::darkerBlue);
+#endif
 }
 
 std::string_view NPC::getName() const

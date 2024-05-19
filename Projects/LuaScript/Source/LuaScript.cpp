@@ -11,12 +11,6 @@ static int addNPC(lua_State* const pState)
 {
 	auto const NPCName{ lua_tostring(pState, 1) };
 	NPCManager::getInstance().addNPC(NPCName);
-
-#if not defined NDEBUG
-	auto const message{ std::format("NPC named {} added!", NPCName) };
-	fro::Console::getInstance().log(message, fro::Console::BackgroundColor::darkGreen);
-#endif
-
 	return 0;
 }
 
@@ -24,11 +18,15 @@ static int removeNPC(lua_State* const pState)
 {
 	auto const NPCName{ lua_tostring(pState, 1) };
 	NPCManager::getInstance().removeNPC(NPCName);
+	return 0;
+}
 
-#if not defined NDEBUG
-	auto const message{ std::format("NPC named {} removed!", NPCName) };
-	fro::Console::getInstance().log(message, fro::Console::BackgroundColor::darkRed);
-#endif
+static int setNPCHealth(lua_State* const pState)
+{
+	auto const NPCName{ lua_tostring(pState, 1) };
+	auto const NPCNewHealth{ static_cast<int>(lua_tointeger(pState, 2)) };
+
+	NPCManager::getInstance().setHealth(NPCName, NPCNewHealth);
 
 	return 0;
 }
@@ -40,8 +38,10 @@ int main()
 
 	lua_register(pState.get(), "addNPC", addNPC);
 	lua_register(pState.get(), "removeNPC", removeNPC);
+	lua_register(pState.get(), "setNPCHealth", setNPCHealth);
 
 	luaL_dofile(pState.get(), "Resources/startup.lub");
+	luaL_dofile(pState.get(), "Resources/health_tweaker.lua");
 
 #if not defined NDEBUG
 	std::cout << '\n';
