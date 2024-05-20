@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
-#include <set>
+#include <functional>
 #include <tuple>
 #include <typeindex>
 #include <unordered_map>
@@ -24,7 +24,7 @@ namespace fro
 		BaseECSGroup& operator=(BaseECSGroup const&) = default;
 		BaseECSGroup& operator=(BaseECSGroup&&) noexcept = default;
 
-		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject) = 0;
+		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject, bool reallocated) = 0;
 		virtual void onRemoveComponent(std::type_index const typeIndex, GameObjectID const gameObject) = 0;
 	};
 
@@ -48,20 +48,41 @@ namespace fro
 		{
 		};
 
-		ECSGroup(ECSGroup const&) = default;
-		ECSGroup(ECSGroup&&) noexcept = default;
+		ECSGroup(ECSGroup const&) = delete;
+		ECSGroup(ECSGroup&&) noexcept = delete;
 
 		virtual ~ECSGroup() override = default;
 
-		ECSGroup& operator=(ECSGroup const&) = default;
-		ECSGroup& operator=(ECSGroup&&) noexcept = default;
+		ECSGroup& operator=(ECSGroup const&) = delete;
+		ECSGroup& operator=(ECSGroup&&) noexcept = delete;
 
-		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject) override
+		auto begin()
+		{
+			return m_vGroups.begin();
+		}
+
+		auto end()
+		{
+			return m_vGroups.end();
+		}
+
+		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject, bool reallocated) override
 		{
 			if (not isInPack<ObservedTypes...>(typeIndex))
 				return;
 
-			m_ObservedMap[gameObject] = { m_ParentingECS.getComponent<ObservedTypes>(gameObject)... };
+			if (reallocated)
+				for (auto& group : m_vGroups)
+				{
+					GameObjectID groupedGameObject{ std::get<0>(group) };
+					((std::get<std::add_pointer_t<ObservedTypes>>(group) = m_ParentingECS.getComponent<ObservedTypes>(groupedGameObject)), ...);
+				}
+
+			PointersTuple const pointersTuple{ m_ParentingECS.getComponent<ObservedTypes>(gameObject)... };
+			if (not canBeGrouped(pointersTuple))
+				return;
+
+			m_vGroups.emplace_back(std::tuple_cat(std::tuple(gameObject), pointersTuple));
 		}
 
 		virtual void onRemoveComponent(std::type_index const typeIndex, GameObjectID const gameObject) override
@@ -69,21 +90,40 @@ namespace fro
 			if (not isInPack<ObservedTypes...>(typeIndex))
 				return;
 
-			m_ObservedMap[gameObject] = { m_ParentingECS.getComponent<ObservedTypes>(gameObject)... };
+			auto const iNewEnd
+			{
+				std::remove_if(m_vGroups.begin(), m_vGroups.end(),
+					[gameObject](auto const& group)
+					{
+						return std::get<0>(group) == gameObject;
+					})
+			};
+
+			m_vGroups.erase(iNewEnd, m_vGroups.end());
 		}
 
 	private:
-		using ObservedTypePointers = std::tuple<std::add_pointer_t<ObservedTypes>...>;
+		using PointersTuple = std::tuple<std::add_pointer_t<ObservedTypes>...>;
+		using Group = std::tuple<GameObjectID, std::add_pointer_t<ObservedTypes>...>;
 
 		template<typename... Pack>
-		bool isInPack(std::type_index const typeIndex)
+		static bool isInPack(std::type_index const typeIndex)
 		{
 			return ((std::type_index(typeid(Pack)) == typeIndex) or ...);
 		}
 
+		static bool canBeGrouped(PointersTuple const& tuple)
+		{
+			return std::apply(
+				[](auto... pointers) -> bool
+				{
+					return (pointers and ...);
+				}, tuple);
+		}
+
 		ECS& m_ParentingECS;
 
-		std::unordered_map<GameObjectID, ObservedTypePointers> m_ObservedMap{};
+		std::vector<Group> m_vGroups{};
 	};
 }
 

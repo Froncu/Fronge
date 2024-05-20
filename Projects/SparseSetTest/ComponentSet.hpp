@@ -73,6 +73,11 @@ namespace fro
 			m_ssComponents.swap(gameObjectID, where);
 		}
 
+		std::size_t getCapacity()
+		{
+			return m_ssComponents.capacity();
+		}
+
 	private:
 		sparseSet::SparseSet<ComponentType> m_ssComponents{};
 	};

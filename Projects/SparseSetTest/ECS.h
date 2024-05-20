@@ -31,7 +31,7 @@ namespace fro
 		bool destroyGameObject(GameObjectID const gameObjectID);
 
 		template<typename... ObservedTypes>
-		auto getGroup()
+		auto& getGroup()
 		{
 			using Type = ECSGroup<ObservedTypes...>;
 			std::type_index const typeIndex{ typeid(Type) };
@@ -41,10 +41,10 @@ namespace fro
 			{
 				Type* const pGroup{ new Type{ *this } };
 				m_umGroups.emplace(typeIndex, std::unique_ptr<BaseECSGroup>(pGroup));
-				return pGroup;
+				return *pGroup;
 			}
 
-			return static_cast<Type* const>(ipFoundGroup->second.get());
+			return *static_cast<Type* const>(ipFoundGroup->second.get());
 		}
 
 		template<typename ComponentType>
@@ -53,11 +53,13 @@ namespace fro
 			if (not m_ssGameObjects.contains(gameObject))
 				return nullptr;
 
+			auto& componentSet{ getComponentSet<ComponentType>() };
+			std::size_t const oldCapacity{ componentSet.getCapacity() };
 			ComponentType* const pAddedComponent{ getComponentSet<ComponentType>().addComponent(gameObject) };
 
 			if (pAddedComponent)
 				for (auto& [typeIndex, pGroup] : m_umGroups)
-					pGroup->onAddComponent(typeid(ComponentType), gameObject);
+					pGroup->onAddComponent(typeid(ComponentType), gameObject, oldCapacity not_eq componentSet.getCapacity());
 
 			return pAddedComponent;
 		}
@@ -86,6 +88,7 @@ namespace fro
 			return result;
 		}
 
+	private:
 		template<typename ComponentType>
 		ComponentSet<ComponentType>& getComponentSet()
 		{
@@ -103,7 +106,6 @@ namespace fro
 			return *pComponentSet;
 		}
 
-	private:
 		std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSet>> m_umComponents{};
 		std::unordered_map<std::type_index, std::unique_ptr<BaseECSGroup>> m_umGroups{};
 

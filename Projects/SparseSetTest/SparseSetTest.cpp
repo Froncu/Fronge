@@ -10,19 +10,24 @@ int main()
 
 	fro::ECS entityComponentSystem{};
 
-	entityComponentSystem.getGroup<TransfromComponent, TagComponent>();
+	auto& group = entityComponentSystem.getGroup<TagComponent, TransfromComponent>();
 
 	GameObjectID gameObject0{ entityComponentSystem.createGameObject() };
 	GameObjectID gameObject1{ entityComponentSystem.createGameObject() };
 	GameObjectID gameObject2{ entityComponentSystem.createGameObject() };
-	entityComponentSystem.createGameObject();
-	entityComponentSystem.destroyGameObject(gameObject2);
-	gameObject2 = entityComponentSystem.createGameObject();
 
-	entityComponentSystem.addComponent<TagComponent>(gameObject0)->name = "Hey!";
-	entityComponentSystem.addComponent<TagComponent>(gameObject1)->name = "Hey! I am 2!";
+	entityComponentSystem.addComponent<TagComponent>(gameObject0)->name = "Hi! I am 1";
+	entityComponentSystem.addComponent<TagComponent>(gameObject1)-> name = "Hi! I am 2";
+	entityComponentSystem.addComponent<TagComponent>(gameObject2)-> name = "Hi! I am 3";
 	entityComponentSystem.addComponent<TransfromComponent>(gameObject0);
-	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << std::endl;
-	entityComponentSystem.removeComponent<TagComponent>(gameObject0);
-	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << " ... still :)\n\n";
+	entityComponentSystem.removeComponent<TransfromComponent>(gameObject0);
+	entityComponentSystem.addComponent<TransfromComponent>(gameObject2);
+
+	for (auto&& [gameObject, pTagComponent, pTransfromComponent] : group)
+	{
+		std::cout << gameObject << " -> " << pTagComponent->name << std::endl;
+	}
+
+
+	std::reference_wrapper a{ *entityComponentSystem.getComponent<TransfromComponent>(1) };
 }

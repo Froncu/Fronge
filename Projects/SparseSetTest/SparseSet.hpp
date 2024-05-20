@@ -99,6 +99,11 @@ namespace fro
 				return m_vDense.size();
 			}
 
+			std::size_t capacity() const
+			{
+				return m_vDense.capacity();
+			}
+
 		private:
 			bool inSparseRange(Key const key) const
 			{
