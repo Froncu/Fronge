@@ -93,7 +93,7 @@ namespace fro
 		template<typename ComponentType>
 		ComponentSet<ComponentType>& getComponentSet()
 		{
-			std::type_index const typeIndex{ std::type_index(typeid(ComponentType)) };
+			std::type_index const typeIndex{ typeid(ComponentType) };
 
 			if (m_umComponents.contains(typeIndex))
 			{
