@@ -32,7 +32,9 @@ namespace fro
 	template<typename... ObservedTypes>
 	class ECSGroup final : public BaseECSGroup
 	{
-		template<typename...>
+		static_assert<sizeof...(ObservedTypes), "a group that doensn't observe any component types is useless">;
+
+		template<typename...> 
 		static auto constexpr isPackUnique{ std::true_type{} };
 
 		template<typename Head, typename... Tail>
