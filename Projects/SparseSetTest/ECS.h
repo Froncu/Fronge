@@ -30,10 +30,10 @@ namespace fro
 
 		bool destroyGameObject(GameObjectID const gameObjectID);
 
-		template<typename... OwnedTypes, typename... ObservedTypes>
-		auto getGroup(ComponentPack<ObservedTypes...> const& = {})
+		template<typename... ObservedTypes>
+		auto getGroup()
 		{
-			using Type = ECSGroup<ComponentPack<OwnedTypes...>, ComponentPack<ObservedTypes...>>;
+			using Type = ECSGroup<ObservedTypes...>;
 			std::type_index const typeIndex{ typeid(Type) };
 
 			auto const ipFoundGroup{ m_umGroups.find(typeIndex) };

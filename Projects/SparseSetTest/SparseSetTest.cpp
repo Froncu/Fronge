@@ -9,6 +9,9 @@ int main()
 	using namespace fro;
 
 	fro::ECS entityComponentSystem{};
+
+	entityComponentSystem.getGroup<TransfromComponent, TagComponent>();
+
 	GameObjectID gameObject0{ entityComponentSystem.createGameObject() };
 	GameObjectID gameObject1{ entityComponentSystem.createGameObject() };
 	GameObjectID gameObject2{ entityComponentSystem.createGameObject() };
@@ -18,9 +21,8 @@ int main()
 
 	entityComponentSystem.addComponent<TagComponent>(gameObject0)->name = "Hey!";
 	entityComponentSystem.addComponent<TagComponent>(gameObject1)->name = "Hey! I am 2!";
+	entityComponentSystem.addComponent<TransfromComponent>(gameObject0);
 	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << std::endl;
 	entityComponentSystem.removeComponent<TagComponent>(gameObject0);
 	std::cout << entityComponentSystem.getComponent<TagComponent>(gameObject1)->name << " ... still :)\n\n";
-
-	entityComponentSystem.getGroup<TagComponent, TransfromComponent>();
 }
