@@ -24,6 +24,7 @@
     <ProjectGuid>{ff544ba6-f26f-4f6c-9dfa-e54abc87bc76}</ProjectGuid>
     <RootNamespace>SparseSetTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>PureECSAttempt</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -162,14 +163,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ECS.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="SparseSetTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="ComponentSet.hpp" />
     <ClInclude Include="ECS.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="ECSGroup.hpp" />
     <ClInclude Include="SparseSet.hpp" />
   </ItemGroup>

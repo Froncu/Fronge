@@ -2,24 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SparseSetTest.cpp" />
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
+    <ClCompile Include="ECS.cpp">
+      <Filter>ECS</Filter>
     </ClCompile>
-    <ClCompile Include="ECS.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Components.hpp" />
     <ClInclude Include="ComponentSet.hpp" />
-    <ClInclude Include="ECS.h" />
     <ClInclude Include="ECSGroup.hpp" />
     <ClInclude Include="SparseSet.hpp" />
+    <ClInclude Include="ECS.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{73b9bca3-1966-4932-876e-efec1af21db9}</UniqueIdentifier>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{0056468d-ed8f-4e7f-a3b5-3bae1d8eb9db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
