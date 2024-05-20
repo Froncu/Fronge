@@ -157,7 +157,6 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ECS.cpp" />
     <ClCompile Include="Source\FixedBehaviour.cpp" />
     <ClCompile Include="Source\RigidBody.cpp" />
     <ClCompile Include="Source\SpriteAnimator.cpp" />
@@ -229,10 +228,6 @@
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
     <ClInclude Include="Include\StateMachine.h" />
-    <ClInclude Include="Include\ComponentSet.hpp" />
-    <ClInclude Include="Include\ECS.h" />
-    <ClInclude Include="Include\ECSGroup.hpp" />
-    <ClInclude Include="Include\SparseSet.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

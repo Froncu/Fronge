@@ -3,23 +3,28 @@
 
 #include "ComponentSet.hpp"
 #include "ECSGroup.hpp"
-#include "Singleton.hpp"
 #include "SparseSet.hpp"
 
 #include <algorithm>
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <variant>
 #include <vector>
 
 namespace fro
 {
-	class ECS final : public Singleton<ECS>
+	class ECS final
 	{
 	public:
 		ECS() = default;
+		ECS(ECS const&) = default;
+		ECS(ECS&&) noexcept = default;
 
 		~ECS() = default;
+
+		ECS& operator=(ECS const&) = default;
+		ECS& operator=(ECS&&) noexcept = default;
 
 		GameObjectID createGameObject();
 
@@ -84,16 +89,10 @@ namespace fro
 		}
 
 	private:
-		ECS(ECS const&) = delete;
-		ECS(ECS&&) noexcept = delete;
-
-		ECS& operator=(ECS const&) = delete;
-		ECS& operator=(ECS&&) noexcept = delete;
-
 		template<typename ComponentType>
 		ComponentSet<ComponentType>& getComponentSet()
 		{
-			std::type_index const typeIndex{ typeid(ComponentType) };
+			std::type_index const typeIndex{ std::type_index(typeid(ComponentType)) };
 
 			if (m_umComponents.contains(typeIndex))
 			{

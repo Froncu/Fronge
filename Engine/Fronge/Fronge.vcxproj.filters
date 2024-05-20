@@ -91,9 +91,6 @@
     <ClCompile Include="Source\RigidBody.cpp">
       <Filter>Component\FixedBehaviour\RigidBody</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ECS.cpp">
-      <Filter>ECS\Base</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -219,12 +216,6 @@
     <Filter Include="Component\FixedBehaviour\RigidBody">
       <UniqueIdentifier>{c276c9bf-78d3-45f4-a4f2-bb46fd33d9e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ECS">
-      <UniqueIdentifier>{5074c871-be97-4ab8-b481-ef783950658d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ECS\Base">
-      <UniqueIdentifier>{81aa6e04-1b33-47a5-b02b-66155623ad75}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -339,18 +330,6 @@
     </ClInclude>
     <ClInclude Include="Include\RigidBody.h">
       <Filter>Component\FixedBehaviour\RigidBody</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECS.h">
-      <Filter>ECS\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ECSGroup.hpp">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\SparseSet.hpp">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ComponentSet.hpp">
-      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
