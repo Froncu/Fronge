@@ -10,10 +10,10 @@
 
 namespace fro
 {
-	class ECS;
-
 	class BaseECSGroup
 	{
+		friend class ECS;
+
 	public:
 		BaseECSGroup() = default;
 		BaseECSGroup(BaseECSGroup const&) = default;
@@ -24,6 +24,7 @@ namespace fro
 		BaseECSGroup& operator=(BaseECSGroup const&) = default;
 		BaseECSGroup& operator=(BaseECSGroup&&) noexcept = default;
 
+	private:
 		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject, bool reallocated) = 0;
 		virtual void onRemoveComponent(std::type_index const typeIndex, GameObjectID const gameObject) = 0;
 	};
@@ -66,6 +67,10 @@ namespace fro
 			return m_vGroups.end();
 		}
 
+	private:
+		using PointersTuple = std::tuple<std::add_pointer_t<ObservedTypes>...>;
+		using Group = std::tuple<GameObjectID, std::add_pointer_t<ObservedTypes>...>;
+
 		virtual void onAddComponent(std::type_index const typeIndex, GameObjectID const gameObject, bool reallocated) override
 		{
 			if (not isInPack<ObservedTypes...>(typeIndex))
@@ -101,10 +106,6 @@ namespace fro
 
 			m_vGroups.erase(iNewEnd, m_vGroups.end());
 		}
-
-	private:
-		using PointersTuple = std::tuple<std::add_pointer_t<ObservedTypes>...>;
-		using Group = std::tuple<GameObjectID, std::add_pointer_t<ObservedTypes>...>;
 
 		template<typename... Pack>
 		static bool isInPack(std::type_index const typeIndex)
