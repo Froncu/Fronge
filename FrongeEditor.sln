@@ -21,8 +21,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DigDug", "Projects\DigDug\D
 		{D4C23A46-4BC8-435D-A7EE-11FB3CC6D26C} = {D4C23A46-4BC8-435D-A7EE-11FB3CC6D26C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SparseSetTest", "Projects\SparseSetTest\SparseSetTest.vcxproj", "{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -71,14 +69,6 @@ Global
 		{BC942F66-A8ED-4BEC-BF23-020B22F16E9F}.Release|Win32.Build.0 = Release|Win32
 		{BC942F66-A8ED-4BEC-BF23-020B22F16E9F}.Release|x64.ActiveCfg = Release|x64
 		{BC942F66-A8ED-4BEC-BF23-020B22F16E9F}.Release|x64.Build.0 = Release|x64
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Debug|Win32.Build.0 = Debug|Win32
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Debug|x64.ActiveCfg = Debug|x64
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Debug|x64.Build.0 = Debug|x64
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Release|Win32.ActiveCfg = Release|Win32
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Release|Win32.Build.0 = Release|Win32
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Release|x64.ActiveCfg = Release|x64
-		{FF544BA6-F26F-4F6C-9DFA-E54ABC87BC76}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
