@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Singleton.hpp"
 
-#include <memory>
 #include <vector>
 
 struct SDL_Renderer;
@@ -32,7 +31,7 @@ namespace fro
 		SceneManager& operator=(SceneManager const&) = delete;
 		SceneManager& operator=(SceneManager&&) noexcept = delete;
 
-		std::vector<std::unique_ptr<Scene>> m_vpScenes{};
+		std::vector<Scene> m_vScenes{};
 	};
 }
 

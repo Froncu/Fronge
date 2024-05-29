@@ -3,7 +3,6 @@
 
 #include "GameObject.h"
 
-#include <memory>
 #include <vector>
 
 namespace fro
@@ -12,8 +11,13 @@ namespace fro
 	{
 	public:
 		Scene() = default;
+		Scene(Scene const&) = default;
+		Scene(Scene&&) noexcept = default;
 
 		~Scene() = default;
+
+		Scene& operator=(Scene const&) = default;
+		Scene& operator=(Scene&&) noexcept = default;
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
@@ -24,14 +28,8 @@ namespace fro
 		bool isActive() const;
 
 	private:
-		Scene(Scene const&) = delete;
-		Scene(Scene&&) noexcept = delete;
-
-		Scene& operator=(Scene const&) = delete;
-		Scene& operator=(Scene&&) noexcept = delete;
-
 		bool m_IsActive{ true };
-		std::vector<std::unique_ptr<GameObject>> m_vpGameObjects{};
+		std::vector<GameObject> m_vGameObjects{};
 	};
 }
 

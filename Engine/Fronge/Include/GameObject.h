@@ -22,8 +22,11 @@ namespace fro
 	{
 	public:
 		GameObject();
+		GameObject(GameObject&& other) noexcept;
 
 		~GameObject() = default;
+
+		GameObject& operator=(GameObject&& other) noexcept;
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
@@ -113,10 +116,8 @@ namespace fro
 
 	private:
 		GameObject(GameObject const&) = delete;
-		GameObject(GameObject&&) noexcept = delete;
 
 		GameObject& operator=(GameObject const&) = delete;
-		GameObject& operator=(GameObject&&) noexcept = delete;
 
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 

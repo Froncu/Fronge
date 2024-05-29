@@ -7,7 +7,45 @@ fro::GameObject::GameObject()
 {
 	m_mpComponents.emplace(typeid(Transform), std::make_unique<Transform>(*this));
 }
+
+fro::GameObject::GameObject(GameObject&& other) noexcept
+	: m_mpComponents{ std::move(other.m_mpComponents) }
+
+	, m_vpFixedBehaviours{ std::move(other.m_vpFixedBehaviours) }
+	, m_vpBehaviours{ std::move(other.m_vpBehaviours) }
+	, m_vpRenderables{ std::move(other.m_vpRenderables) }
+	, m_vpGUIs{ std::move(other.m_vpGUIs) }
+
+	, m_spChildren{ std::move(other.m_spChildren) }
+	, m_pParent{ other.m_pParent }
+
+	, m_IsActive{ other.m_IsActive }
+{
+	other.m_pParent = nullptr;
+}
 #pragma endregion Constructors/Destructor
+
+
+
+#pragma region Operators
+fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
+{
+	m_mpComponents = std::move(other.m_mpComponents);
+
+	m_vpFixedBehaviours = std::move(other.m_vpFixedBehaviours);
+	m_vpBehaviours = std::move(other.m_vpBehaviours);
+	m_vpRenderables = std::move(other.m_vpRenderables);
+	m_vpGUIs = std::move(other.m_vpGUIs);
+
+	m_spChildren = std::move(other.m_spChildren);
+	m_pParent = other.m_pParent;
+	other.m_pParent = nullptr;
+
+	m_IsActive = other.m_IsActive;
+
+	return *this;
+}
+#pragma endregion Operators
 
 
 

@@ -3,31 +3,31 @@
 #pragma region PublicMethods
 void fro::Scene::fixedUpdate(float const fixedDeltaSeconds) const
 {
-	for (auto const& pGameObject : m_vpGameObjects)
-		pGameObject->fixedUpdate(fixedDeltaSeconds);
+	for (GameObject const& gameObject : m_vGameObjects)
+		gameObject.fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::Scene::update(float const deltaSeconds) const
 {
-	for (auto const& pGameObject : m_vpGameObjects)
-		pGameObject->update(deltaSeconds);
+	for (GameObject const& gameObject : m_vGameObjects)
+		gameObject.update(deltaSeconds);
 }
 
 void fro::Scene::render() const
 {
-	for (auto const& pGameObject : m_vpGameObjects)
-		pGameObject->render();
+	for (GameObject const& gameObject : m_vGameObjects)
+		gameObject.render();
 }
 
 void fro::Scene::display() const
 {
-	for (auto const& pGameObject : m_vpGameObjects)
-		pGameObject->display();
+	for (GameObject const& gameObject : m_vGameObjects)
+		gameObject.display();
 }
 
 fro::GameObject& fro::Scene::addGameObject()
 {
-	return *m_vpGameObjects.emplace_back(std::make_unique<GameObject>());
+	return m_vGameObjects.emplace_back();
 }
 
 bool fro::Scene::isActive() const

@@ -3,34 +3,34 @@
 #pragma region PublicMethods
 void fro::SceneManager::fixedUpdate(float const fixedDeltaSeconds) const
 {
-	for (auto const& pScene : m_vpScenes)
-		if (pScene->isActive())
-			pScene->fixedUpdate(fixedDeltaSeconds);
+	for (Scene const& scene : m_vScenes)
+		if (scene.isActive())
+			scene.fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::SceneManager::update(float const deltaSeconds) const
 {
-	for (auto const& pScene : m_vpScenes)
-		if (pScene->isActive())
-			pScene->update(deltaSeconds);
+	for (Scene const& scene : m_vScenes)
+		if (scene.isActive())
+			scene.update(deltaSeconds);
 }
 
 void fro::SceneManager::render() const
 {
-	for (auto const& pScene : m_vpScenes)
-		if (pScene->isActive())
-			pScene->render();
+	for (Scene const& scene : m_vScenes)
+		if (scene.isActive())
+			scene.render();
 }
 
 void fro::SceneManager::display() const
 {
-	for (auto const& pScene : m_vpScenes)
-		if (pScene->isActive())
-			pScene->display();
+	for (Scene const& scene : m_vScenes)
+		if (scene.isActive())
+			scene.display();
 }
 
 fro::Scene& fro::SceneManager::addScene()
 {
-	return *m_vpScenes.emplace_back(std::make_unique<Scene>());
+	return m_vScenes.emplace_back();
 }
 #pragma endregion PublicMethods
