@@ -21,7 +21,7 @@ namespace fro
 	class GameObject final
 	{
 	public:
-		GameObject() = default;
+		GameObject();
 
 		~GameObject() = default;
 
@@ -30,7 +30,7 @@ namespace fro
 		void render() const;
 		void display() const;
 
-		void setActive(bool const isActive) const;
+		void setActive(bool const isActive);
 		void setParent(GameObject* const pParent, bool const keepWorldTransform = true);
 
 		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
@@ -40,45 +40,76 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
-				return nullptr;
-			else
-			{
-				auto const resultPair{ getComponentMap<ComponentType>().emplace(std::make_pair(std::type_index(typeid(ComponentType)), std::make_unique<ComponentType>(*this))) };
-				if (not resultPair.second)
-					return nullptr;
+			static_assert(not std::is_same_v<ComponentType, Transform>,
+				"each GameObject receieves a Transform component by default");
 
-				return static_cast<ComponentType*>(resultPair.first->second.get());
-			}
+			if (m_mpComponents.contains(typeid(ComponentType)))
+				return nullptr;
+
+			auto const resultPair{ m_mpComponents.emplace(typeid(ComponentType), std::make_unique<ComponentType>(*this)) };
+			ComponentType* const pAddedComponent{ static_cast<ComponentType* const>(resultPair.first->second.get()) };
+
+			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
+				m_vpFixedBehaviours.push_back(pAddedComponent);
+			if constexpr (std::derived_from<ComponentType, Behaviour>)
+				m_vpBehaviours.push_back(pAddedComponent);
+			if constexpr (std::derived_from<ComponentType, Renderable>)
+				m_vpRenderables.push_back(pAddedComponent);
+			if constexpr (std::derived_from<ComponentType, GUI>)
+				m_vpGUIs.push_back(pAddedComponent);
+
+			return pAddedComponent;
 		}
 
 		template<ComponentDerived ComponentType>
 		bool removeComponent() noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
+			static_assert(not std::is_same_v<ComponentType, Transform>,
+				"each GameObject must contain a Transform component");
+
+			Component const* const pFoundComponent{ getComponent<ComponentType>() };
+			if (not pFoundComponent)
 				return false;
-			else
-				return getComponentMap<ComponentType>().erase(typeid(ComponentType));
+
+			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
+				m_vpFixedBehaviours.erase(
+					std::remove(m_vpFixedBehaviours.begin(), m_vpFixedBehaviours.end(), pFoundComponent),
+					m_vpFixedBehaviours.end());
+			if constexpr (std::derived_from<ComponentType, Behaviour>)
+				m_vpBehaviours.erase(
+					std::remove(m_vpBehaviours.begin(), m_vpBehaviours.end(), pFoundComponent),
+					m_vpBehaviours.end());
+			if constexpr (std::derived_from<ComponentType, Renderable>)
+				m_vpRenderables.erase(
+					std::remove(m_vpRenderables.begin(), m_vpRenderables.end(), pFoundComponent),
+					m_vpRenderables.end());
+			if constexpr (std::derived_from<ComponentType, GUI>)
+				m_vpGUIs.erase(
+					std::remove(m_vpGUIs.begin(), m_vpGUIs.end(), pFoundComponent),
+					m_vpGUIs.end());
+
+			return m_mpComponents.erase(typeid(ComponentType));
 		}
 
-		// TODO: this is very slow plus I am not a fan of holding references to components inside other components (fixed for the Transform component)
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD ComponentType* getComponent() const noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
-				return m_pTranform.get();
-			else
-			{
-				auto const& mpComponents{ getComponentMapConstant<ComponentType>() };
+			auto const iterator{ m_mpComponents.find(typeid(ComponentType)) };
+			if (iterator == m_mpComponents.end())
+				return nullptr;
 
-				auto const& iterator{ mpComponents.find(typeid(ComponentType)) };
-				if (iterator == mpComponents.end())
-					return nullptr;
-
-				return static_cast<ComponentType*>(iterator->second.get());
-			}
+			return static_cast<ComponentType*>(iterator->second.get());
 		}
-		// END TODO
+
+		template<ComponentDerived ComponentType>
+		fro_NODISCARD ComponentType& forceGetComponent() noexcept
+		{
+			ComponentType* pFoundComponent{ findComponent<ComponentType>() };
+			if (not pFoundComponent)
+				pFoundComponent = addComponent<ComponentType>();
+
+			return *pFoundComponent;
+		}
 
 	private:
 		GameObject(GameObject const&) = delete;
@@ -87,60 +118,17 @@ namespace fro
 		GameObject& operator=(GameObject const&) = delete;
 		GameObject& operator=(GameObject&&) noexcept = delete;
 
-		// HACK: there shouldn't be two methods for getting the component map
-		template<ComponentDerived ComponentType>
-		fro_NODISCARD auto const& getComponentMapConstant() const
-		{
-			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
-				return m_mpFixedBehaviours;
-
-			else if constexpr (std::derived_from<ComponentType, Behaviour>)
-				return m_mpBehaviours;
-
-			else if constexpr (std::derived_from<ComponentType, Renderable>)
-				return m_mpRenderables;
-
-			else if constexpr (std::derived_from<ComponentType, GUI>)
-				return m_mpGUIs;
-
-			else
-				return m_mpComponents;
-		}
-
-		template<ComponentDerived ComponentType>
-		fro_NODISCARD auto& getComponentMap()
-		{
-			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
-				return m_mpFixedBehaviours;
-
-			else if constexpr (std::derived_from<ComponentType, Behaviour>)
-				return m_mpBehaviours;
-
-			else if constexpr (std::derived_from<ComponentType, Renderable>)
-				return m_mpRenderables;
-
-			else if constexpr (std::derived_from<ComponentType, GUI>)
-				return m_mpGUIs;
-
-			else
-				return m_mpComponents;
-		}
-		// END HACK
-
-		std::unique_ptr<Transform> m_pTranform{ new Transform(*this) };
-
-		GameObject* m_pParent{};
-		std::set<GameObject*> m_spChildren{};
-
-		std::unordered_map<std::type_index, std::unique_ptr<FixedBehaviour>> m_mpFixedBehaviours{};
-		std::unordered_map<std::type_index, std::unique_ptr<Behaviour>> m_mpBehaviours{};
-		std::unordered_map<std::type_index, std::unique_ptr<Renderable>> m_mpRenderables{};
-		std::unordered_map<std::type_index, std::unique_ptr<GUI>> m_mpGUIs{};
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 
-		// HACK: bad bad bad
-		mutable bool m_IsActive{ true };
-		// END HACK
+		std::vector<FixedBehaviour*> m_vpFixedBehaviours{};
+		std::vector<Behaviour*> m_vpBehaviours{};
+		std::vector<Renderable*> m_vpRenderables{};
+		std::vector<GUI*> m_vpGUIs{};
+
+		std::set<GameObject*> m_spChildren{};
+		GameObject* m_pParent{};
+
+		bool m_IsActive{ true };
 	};
 }
 

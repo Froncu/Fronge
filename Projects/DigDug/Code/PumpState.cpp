@@ -48,7 +48,7 @@ void fro::PumpState::enter(std::unique_ptr<State> const&)
 
 void fro::PumpState::exit(std::unique_ptr<State> const&)
 {
-	for (GameObject const* pChild : getParentingGameObject().getChildren())
+	for (GameObject* const pChild : getParentingGameObject().getChildren())
 		pChild->setActive(false);
 }
 #pragma endregion PublicMethods

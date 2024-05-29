@@ -2,36 +2,45 @@
 
 #include <algorithm>
 
+#pragma region Constructors/Destructor
+fro::GameObject::GameObject()
+{
+	m_mpComponents.emplace(typeid(Transform), std::make_unique<Transform>(*this));
+}
+#pragma endregion Constructors/Destructor
+
+
+
 #pragma region PublicMethods
 void fro::GameObject::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	if (m_IsActive)
-		for (auto const& pair : m_mpFixedBehaviours)
-			pair.second->fixedUpdate(fixedDeltaSeconds);
+		for (FixedBehaviour* const pFixedBehaviour : m_vpFixedBehaviours)
+			pFixedBehaviour->fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::GameObject::update(float const deltaSeconds) const
 {
 	if (m_IsActive)
-		for (auto const& pair : m_mpBehaviours)
-			pair.second->update(deltaSeconds);
+		for (Behaviour* const pBehaviour : m_vpBehaviours)
+			pBehaviour->update(deltaSeconds);
 }
 
 void fro::GameObject::render() const
 {
 	if (m_IsActive)
-		for (auto const& pair : m_mpRenderables)
-			pair.second->render();
+		for (Renderable* const pRenderable : m_vpRenderables)
+			pRenderable->render();
 }
 
 void fro::GameObject::display() const
 {
 	if (m_IsActive)
-		for (auto const& pair : m_mpGUIs)
-			pair.second->display();
+		for (GUI* const pGUI : m_vpGUIs)
+			pGUI->display();
 }
 
-void fro::GameObject::setActive(bool const isActive) const
+void fro::GameObject::setActive(bool const isActive)
 {
 	m_IsActive = isActive;
 }

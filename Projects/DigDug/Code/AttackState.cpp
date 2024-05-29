@@ -26,7 +26,7 @@ std::unique_ptr<fro::State> fro::AttackState::update(float const deltaSeconds)
 
 void fro::AttackState::enter(std::unique_ptr<State> const&)
 {
-	for (GameObject const* pChild : getParentingGameObject().getChildren())
+	for (GameObject* const pChild : getParentingGameObject().getChildren())
 	{
 		pChild->setActive(true);
 
