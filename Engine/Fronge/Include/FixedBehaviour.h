@@ -8,11 +8,12 @@ namespace fro
 	class FixedBehaviour : public Component
 	{
 	public:
-		FixedBehaviour(GameObject& parentingGameObject);
-
 		virtual ~FixedBehaviour() override = default;
 
 		virtual void fixedUpdate(float fixedDeltaSeconds) = 0;
+
+	protected:
+		FixedBehaviour(GameObject& parentingGameObject);
 
 	private:
 		FixedBehaviour(FixedBehaviour const&) = delete;
