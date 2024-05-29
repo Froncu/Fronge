@@ -13,9 +13,9 @@ namespace fro
 {
 	class SceneManager final : public Singleton<SceneManager>
 	{
-	public:
-		SceneManager() = default;
+		friend class Singleton<SceneManager>;
 
+	public:
 		virtual ~SceneManager() override = default;
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
@@ -25,6 +25,7 @@ namespace fro
 		Scene& addScene();
 
 	private:
+		SceneManager() = default;
 		SceneManager(SceneManager const&) = delete;
 		SceneManager(SceneManager&&) noexcept = delete;
 

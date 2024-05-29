@@ -11,9 +11,9 @@ namespace fro
 	template<typename ServiceType>
 	class ServiceLocator final : public Singleton<ServiceLocator<ServiceType>>
 	{
-	public:
-		ServiceLocator() = default;
+		friend class Singleton<ServiceLocator<ServiceType>>;
 
+	public:
 		virtual ~ServiceLocator() override = default;
 
 		template<typename ProviderType>
@@ -29,6 +29,7 @@ namespace fro
 		}
 
 	private:
+		ServiceLocator() = default;
 		ServiceLocator(ServiceLocator const&) = delete;
 		ServiceLocator(ServiceLocator&&) = delete;
 

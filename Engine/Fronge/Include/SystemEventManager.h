@@ -10,9 +10,9 @@ namespace fro
 {
 	class SystemEventManager final : public Singleton<SystemEventManager>
 	{
+		friend class Singleton<SystemEventManager>;
+		
 	public:
-		SystemEventManager();
-
 		virtual ~SystemEventManager() override;
 
 		[[nodiscard("eventual SDL_QUIT event ignored")]] bool processSystemEvents() const;
@@ -20,6 +20,7 @@ namespace fro
 		Event<SDL_Event const&> m_SystemEvent{};
 
 	private:
+		SystemEventManager();
 		SystemEventManager(SystemEventManager const&) = delete;
 		SystemEventManager(SystemEventManager&&) noexcept = delete;
 

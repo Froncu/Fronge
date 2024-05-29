@@ -21,9 +21,9 @@ namespace fro
 	// TODO: this whole class feels messy
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
-	public:
-		ResourceManager();
+		friend class Singleton<ResourceManager>;
 
+	public:
 		virtual ~ResourceManager() override;
 
 		void clearCaches();
@@ -36,6 +36,7 @@ namespace fro
 		fro_NODISCARD Mix_Chunk* getEffect(std::string_view const audioFileName);
 
 	private:
+		ResourceManager();
 		ResourceManager(ResourceManager const&) = delete;
 		ResourceManager(ResourceManager&&) noexcept = delete;
 

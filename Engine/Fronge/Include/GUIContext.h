@@ -9,9 +9,9 @@ namespace fro
 {
 	class GUIContext final : public Singleton<GUIContext>
 	{
-	public:
-		GUIContext();
+		friend class Singleton<GUIContext>;
 
+	public:
 		virtual ~GUIContext() override;
 
 		void processSystemEvent(SDL_Event const& event) const;
@@ -19,6 +19,7 @@ namespace fro
 		void endFrame() const;
 
 	private:
+		GUIContext();
 		GUIContext(GUIContext const&) = delete;
 		GUIContext(GUIContext&&) noexcept = delete;
 

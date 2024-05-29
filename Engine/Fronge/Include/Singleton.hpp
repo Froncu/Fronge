@@ -5,7 +5,7 @@
 
 namespace fro
 {
-	template<typename InheritingType>
+	template<std::default_initializable InheritingType>
 	class Singleton
 	{
 	public:

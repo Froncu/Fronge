@@ -7,9 +7,9 @@ namespace fro
 {
 	class Fronge final : public Singleton<Fronge>
 	{
-	public:
-		Fronge();
+		friend class Singleton<Fronge>;
 
+	public:
 		virtual ~Fronge() override;
 
 		int run() const;
@@ -17,6 +17,7 @@ namespace fro
 		void setFixedFrameRate(int const fixedFrameRate);
 
 	private:
+		Fronge();
 		Fronge(Fronge const&) = delete;
 		Fronge(Fronge&&) noexcept = delete;
 

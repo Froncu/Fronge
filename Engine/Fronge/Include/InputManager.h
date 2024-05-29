@@ -21,6 +21,8 @@ namespace fro
 {
 	class InputManager final : public Singleton<InputManager>
 	{
+		friend class Singleton<InputManager>;
+
 	public:
 		enum class MouseButton
 		{
@@ -66,8 +68,6 @@ namespace fro
 
 		using Input = std::variant<SDL_Scancode, MouseButton, JoypadInput<SDL_GameControllerButton>, JoypadInput<JoypadAxis>>;
 
-		InputManager();
-
 		virtual ~InputManager() override;
 
 		void processInputContinous();
@@ -104,6 +104,7 @@ namespace fro
 		static JoypadAxis SDLToJoypadTrigger(Uint8 const SDLAxis);
 		static JoypadAxis SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis);
 
+		InputManager();
 		InputManager(InputManager const&) = delete;
 		InputManager(InputManager&&) noexcept = delete;
 

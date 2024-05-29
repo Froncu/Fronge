@@ -16,13 +16,13 @@ namespace fro
 {
 	class Steam final : public Singleton<Steam>
 	{
+		friend class Singleton<Steam>;
+
 	public:
 		enum AchievementID
 		{
 			ACH_WIN_ONE_GAME = 0
 		};
-
-		Steam();
 
 		virtual ~Steam() override;
 
@@ -31,6 +31,7 @@ namespace fro
 		bool unlockAchievement(AchievementID const achievementID) const;
 
 	private:
+		Steam();
 		Steam(Steam const&) = delete;
 		Steam(Steam&&) noexcept = delete;
 

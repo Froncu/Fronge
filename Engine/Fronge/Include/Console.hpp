@@ -16,9 +16,9 @@ namespace fro
 
 	class Console final : public Singleton<Console>
 	{
-	public:
-		Console() = default;
+		friend class Singleton<Console>;
 
+	public:
 		virtual ~Console() override = default;
 
 		enum class TextColor
@@ -132,6 +132,7 @@ namespace fro
 		}
 
 	private:
+		Console() = default;
 		Console(Console const&) = delete;
 		Console(Console&&) noexcept = delete;
 

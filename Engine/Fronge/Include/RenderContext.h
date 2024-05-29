@@ -22,6 +22,8 @@ namespace fro
 {
 	class RenderContext final : public Singleton<RenderContext>
 	{
+		friend class Singleton<RenderContext>;
+
 	public:
 		enum class ScalingMode
 		{
@@ -29,8 +31,6 @@ namespace fro
 			aspectRatio,
 			fill
 		};
-
-		RenderContext();
 
 		virtual ~RenderContext() override;
 
@@ -52,6 +52,7 @@ namespace fro
 		void setScalingMode(ScalingMode const scalingMode);
 
 	private:
+		RenderContext();
 		RenderContext(RenderContext const&) = delete;
 		RenderContext(RenderContext&&) noexcept = delete;
 

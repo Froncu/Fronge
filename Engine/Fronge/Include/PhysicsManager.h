@@ -11,18 +11,19 @@ namespace fro
 {
 	class PhysicsManager final : public Singleton<PhysicsManager>, public b2ContactListener
 	{
+		friend class Singleton<PhysicsManager>;
+
 		// TODO: not sure about this
 		friend class RigidBody;
 		// END TODO
 
 	public:
-		PhysicsManager();
-
 		~PhysicsManager() = default;
 
 		void update(float const fixedDeltaSeconds);
 
 	private:
+		PhysicsManager();
 		PhysicsManager(PhysicsManager const&) = delete;
 		PhysicsManager(PhysicsManager&&) noexcept = delete;
 
