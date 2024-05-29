@@ -5,9 +5,9 @@
 
 namespace fro
 {
-	template<std::default_initializable InheritingType>
+	template<typename InheritingType>
 	class Singleton
-	{
+	{	
 	public:
 		fro_NODISCARD static InheritingType& getInstance()
 		{
