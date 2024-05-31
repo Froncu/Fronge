@@ -1,8 +1,10 @@
 #include "StateMachine.h"
 
+#include "GameObject.h"
+
 #pragma region Constructors/Destructor
-fro::StateMachine::StateMachine(GameObject& parentingGameObject)
-	: Behaviour(parentingGameObject)
+fro::StateMachine::StateMachine(Reference<GameObject> const parentingGameObject)
+	: Behaviour(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor

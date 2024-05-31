@@ -2,12 +2,13 @@
 #define fro_SCENE_H
 
 #include "GameObject.h"
+#include "References.hpp"
 
 #include <vector>
 
 namespace fro
 {
-	class Scene final
+	class Scene final : public Referencable<Scene>
 	{
 	public:
 		Scene() = default;
@@ -23,7 +24,7 @@ namespace fro
 		void update(float const deltaSeconds) const;
 		void render() const;
 		void display() const;
-		GameObject& addGameObject();
+		fro::Reference<fro::GameObject> addGameObject();
 
 		bool isActive() const;
 

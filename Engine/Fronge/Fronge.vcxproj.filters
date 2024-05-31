@@ -216,6 +216,9 @@
     <Filter Include="Component\FixedBehaviour\RigidBody">
       <UniqueIdentifier>{c276c9bf-78d3-45f4-a4f2-bb46fd33d9e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="References">
+      <UniqueIdentifier>{f64124f3-a998-4c7e-93da-c126aa272f44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -330,6 +333,15 @@
     </ClInclude>
     <ClInclude Include="Include\RigidBody.h">
       <Filter>Component\FixedBehaviour\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\References.hpp">
+      <Filter>References</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Reference.hpp">
+      <Filter>References</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Referencable.hpp">
+      <Filter>References</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

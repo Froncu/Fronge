@@ -1,6 +1,7 @@
 #if not defined fro_SCENE_MANAGER_H
 #define fro_SCENE_MANAGER_H
 
+#include "References.hpp"
 #include "Scene.h"
 #include "Singleton.hpp"
 
@@ -21,7 +22,7 @@ namespace fro
 		void update(float const deltaSeconds) const;
 		void render() const;
 		void display() const;
-		Scene& addScene();
+		fro::Reference<fro::Scene> addScene();
 
 	private:
 		SceneManager() = default;

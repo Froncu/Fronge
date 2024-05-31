@@ -1,17 +1,10 @@
 #include "Component.h"
 
+#include "GameObject.h"
+
 #pragma region Constructors/Destructor
-fro::Component::Component(GameObject& parentingGameObject)
-	: m_pParentingGameObject{ &parentingGameObject }
+fro::Component::Component(Reference<GameObject> const parentingGameObject)
+	: m_ParentingGameObject{ std::move(parentingGameObject) }
 {
 }
 #pragma endregion Constructors/Destructor
-
-
-
-#pragma region PublicMethods
-fro::GameObject& fro::Component::getParentingGameObject() const
-{
-	return *m_pParentingGameObject;
-}
-#pragma endregion PublicMethods

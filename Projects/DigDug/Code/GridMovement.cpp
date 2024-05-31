@@ -5,8 +5,8 @@
 #include <glm.hpp>
 
 #pragma region Constructors/Destructor
-fro::GridMovement::GridMovement(GameObject& parentingGameObject)
-	: Behaviour(parentingGameObject)
+fro::GridMovement::GridMovement(Reference<GameObject> const parentingGameObject)
+	: Behaviour(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -23,7 +23,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 
 	int const halfCellSizeY{ m_CellSizeY / 2 };
 	int const halfCellSizeX{ m_CellSizeX / 2 };
-	glm::ivec2 const worldPosition{ getParentingGameObject().getComponent<Transform>()->getWorldTransform().getTranslation() };
+	glm::ivec2 const worldPosition{ m_ParentingGameObject.get().getComponent<Transform>()->getWorldTransform().getTranslation() };
 
 	if (std::fabs(m_MoveDirection.y) > std::fabs(m_MoveDirection.x))
 	{
@@ -58,7 +58,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 			correctedMoveDirection.x = std::signbit(m_MoveDirection.x) ? -1.0f : 1.0f;
 	}
 
-	Transform& transform{ *getParentingGameObject().getComponent<Transform>() };
+	Transform& transform{ *m_ParentingGameObject.get().getComponent<Transform>() };
 	transform.localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
 }
 

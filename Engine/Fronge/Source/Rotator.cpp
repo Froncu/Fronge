@@ -7,8 +7,8 @@
 #include <gtc/constants.hpp>
 
 #pragma region Constructors/Destructor
-fro::Rotator::Rotator(GameObject& parentingGameObject)
-	: Behaviour(parentingGameObject)
+fro::Rotator::Rotator(Reference<GameObject> const parentingGameObject)
+	: Behaviour(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -24,8 +24,8 @@ void fro::Rotator::update(float const deltaSeconds)
 
 	m_Angle = glm::mod(m_Angle, twoPi);
 
-	getParentingGameObject().getComponent<Transform>()->setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
-	getParentingGameObject().getComponent<Transform>()->setWorldRotation(m_Angle);
+	m_ParentingGameObject.get().getComponent<Transform>()->setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
+	m_ParentingGameObject.get().getComponent<Transform>()->setWorldRotation(m_Angle);
 }
 
 void fro::Rotator::setCenter(glm::vec2 const& center)

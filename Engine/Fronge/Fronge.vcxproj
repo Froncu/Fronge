@@ -190,6 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\FixedBehaviour.h" />
+    <ClInclude Include="Include\Referencable.hpp" />
+    <ClInclude Include="Include\Reference.hpp" />
     <ClInclude Include="Include\RigidBody.h" />
     <ClInclude Include="Include\SpriteAnimator.h" />
     <ClInclude Include="Include\AudioSDL.h" />
@@ -228,6 +230,7 @@
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
     <ClInclude Include="Include\StateMachine.h" />
+    <ClInclude Include="Include\References.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -25,7 +25,7 @@ void fro::Scene::display() const
 		gameObject.display();
 }
 
-fro::GameObject& fro::Scene::addGameObject()
+fro::Reference<fro::GameObject> fro::Scene::addGameObject()
 {
 	return m_vGameObjects.emplace_back();
 }

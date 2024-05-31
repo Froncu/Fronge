@@ -4,8 +4,8 @@
 #include "Sprite.h"
 
 #pragma region Constructors/Destructor
-fro::SpriteAnimator::SpriteAnimator(GameObject& parentingGameObject)
-	: Behaviour(parentingGameObject)
+fro::SpriteAnimator::SpriteAnimator(Reference<GameObject> const parentingGameObject)
+	: Behaviour(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -131,7 +131,7 @@ void fro::SpriteAnimator::updateSprite() const
 		m_pActiveAnimation->vAnimationFrames[m_CurrentFrameIndex]
 	};
 
-	Sprite& spriteComponent{ *getParentingGameObject().getComponent<Sprite>() };
+	Sprite& spriteComponent{ *m_ParentingGameObject.get().getComponent<Sprite>() };
 
 	if (spriteComponent.getFileName() not_eq currentAnimationFrame.fileName)
 		spriteComponent.setFileName(currentAnimationFrame.fileName);

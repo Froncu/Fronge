@@ -11,7 +11,7 @@ namespace fro
 	class IdleState final : public Component, public State
 	{
 	public:
-		IdleState(GameObject& parentingGameObject);
+		IdleState(Reference<GameObject> const parentingGameObject);
 
 		virtual ~IdleState() override = default;
 

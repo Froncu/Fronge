@@ -3,8 +3,8 @@
 #include "GameObject.h"
 
 #pragma region Constructors/Destructor
-fro::Transform::Transform(GameObject& parentingGameObject)
-	: Component(parentingGameObject)
+fro::Transform::Transform(Reference<GameObject> const parentingGameObject)
+	: Component(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -124,9 +124,9 @@ void fro::Transform::setWorldTransformDirty()
 {
 	m_IsWorldTransformDirty = true;
 
-	for (GameObject* const pChild : getParentingGameObject().getChildren())
+	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
-		Transform& childTransform{ *pChild->getComponent<Transform>() };
+		Transform& childTransform{ *child.get().getComponent<Transform>()};
 		if (not childTransform.m_IsWorldTransformDirty)
 			childTransform.setWorldTransformDirty();
 	}
@@ -201,18 +201,18 @@ fro::TransformationMatrix2D const& fro::Transform::getWorldTransform()
 #pragma region PrivateMethods
 void fro::Transform::calculateLocalTransform()
 {
-	GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
-	if (pParentingGameObjectsParent)
-		m_LocalTransform = getWorldTransform() / pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
+	Reference<GameObject> const parentingGameObjectsParent{ m_ParentingGameObject.get().getParent() };
+	if (parentingGameObjectsParent.valid())
+		m_LocalTransform = getWorldTransform() / parentingGameObjectsParent.get().getComponent<Transform>()->getWorldTransform();
 	else
 		m_LocalTransform = getWorldTransform();
 }
 
 void fro::Transform::calculateWorldTransform()
 {
-	GameObject* const pParentingGameObjectsParent{ getParentingGameObject().getParent() };
-	if (pParentingGameObjectsParent)
-		m_WorldTransform = getLocalTransform() * pParentingGameObjectsParent->getComponent<Transform>()->getWorldTransform();
+	Reference<GameObject> const parentingGameObjectsParent{ m_ParentingGameObject.get().getParent() };
+	if (parentingGameObjectsParent.valid())
+		m_WorldTransform = getLocalTransform() * parentingGameObjectsParent.get().getComponent<Transform>()->getWorldTransform();
 	else
 		m_WorldTransform = getLocalTransform();
 }

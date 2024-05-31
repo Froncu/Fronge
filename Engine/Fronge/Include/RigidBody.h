@@ -22,7 +22,7 @@ namespace fro
 		// END TODO
 		
 	public:
-		RigidBody(GameObject& parentingGameObject);
+		RigidBody(Reference<GameObject> const parentingGameObject);
 
 		virtual ~RigidBody() override = default;
 

@@ -7,8 +7,8 @@
 #include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
-fro::PumpState::PumpState(GameObject& parentingGameObject)
-	: Component(parentingGameObject)
+fro::PumpState::PumpState(Reference<GameObject> const parentingGameObject)
+	: Component(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -22,17 +22,17 @@ std::unique_ptr<fro::State> fro::PumpState::update(float const deltaSeconds)
 	glm::vec2 const& actionStrength{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
 
 	if (actionStrength.x or actionStrength.y)
-		return std::make_unique<MoveState>(getParentingGameObject());
+		return std::make_unique<MoveState>(m_ParentingGameObject);
 
 	if (not inputManager.getActionStrength("attack"))
 	{
 		m_ElapsedSecondsWithoutInput += deltaSeconds;
 		if (m_ElapsedSecondsWithoutInput >= 0.75f)
-			return std::make_unique<IdleState>(getParentingGameObject());
+			return std::make_unique<IdleState>(m_ParentingGameObject);
 	}
 	else
 	{
-		getParentingGameObject().getComponent<SpriteAnimator>()->play();
+		m_ParentingGameObject.get().getComponent<SpriteAnimator>()->play();
 		m_ElapsedSecondsWithoutInput = 0.0f;
 	}
 
@@ -41,14 +41,14 @@ std::unique_ptr<fro::State> fro::PumpState::update(float const deltaSeconds)
 
 void fro::PumpState::enter(std::unique_ptr<State> const&)
 {
-	SpriteAnimator& spriteAnimator{ *getParentingGameObject().getComponent<SpriteAnimator>()};
+	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
 	spriteAnimator.setActiveAnimation("pumping");
 	spriteAnimator.play();
 }
 
 void fro::PumpState::exit(std::unique_ptr<State> const&)
 {
-	for (GameObject* const pChild : getParentingGameObject().getChildren())
-		pChild->setActive(false);
+	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
+		child.get().setActive(false);
 }
 #pragma endregion PublicMethods

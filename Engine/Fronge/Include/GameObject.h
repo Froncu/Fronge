@@ -5,6 +5,7 @@
 #include "Defines.hpp"
 #include "FixedBehaviour.h"
 #include "GUI.h"
+#include "References.hpp"
 #include "Renderable.h"
 #include "Transform.h"
 
@@ -18,7 +19,7 @@ namespace fro
 	template<typename ComponentType>
 	concept ComponentDerived = std::derived_from<ComponentType, Component>;
 
-	class GameObject final
+	class GameObject final : public Referencable<GameObject>
 	{
 	public:
 		GameObject();
@@ -34,11 +35,11 @@ namespace fro
 		void display() const;
 
 		void setActive(bool const isActive);
-		void setParent(GameObject* const pParent, bool const keepWorldTransform = true);
+		void setParent(Reference<GameObject> const parent, bool const keepWorldTransform = true);
 
-		fro_NODISCARD bool owns(GameObject const* const pGameObject) const;
-		fro_NODISCARD GameObject* getParent() const;
-		fro_NODISCARD std::set<GameObject*> const& getChildren() const;
+		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;
+		fro_NODISCARD Reference<GameObject> getParent() const;
+		fro_NODISCARD std::set<Reference<GameObject>> const& getChildren() const;
 
 		template<ComponentDerived ComponentType>
 		ComponentType* addComponent() noexcept
@@ -126,8 +127,8 @@ namespace fro
 		std::vector<Renderable*> m_vpRenderables{};
 		std::vector<GUI*> m_vpGUIs{};
 
-		std::set<GameObject*> m_spChildren{};
-		GameObject* m_pParent{};
+		std::set<Reference<GameObject>> m_sChildren{};
+		Reference<GameObject> m_Parent{};
 
 		bool m_IsActive{ true };
 	};

@@ -13,7 +13,7 @@ namespace fro
 		virtual void display() = 0;
 
 	protected:
-		GUI(GameObject& parentingGameObject);
+		GUI(Reference<GameObject> const parentingGameObject);
 
 	private:
 		GUI(GUI const&) = delete;

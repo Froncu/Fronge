@@ -8,7 +8,7 @@ namespace fro
 	class FPSCounter final : public Behaviour
 	{
 	public:
-		FPSCounter(GameObject& parentingGameObject);
+		FPSCounter(Reference<GameObject> const parentingGameObject);
 
 		virtual ~FPSCounter() override = default;
 

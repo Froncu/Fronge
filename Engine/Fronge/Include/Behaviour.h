@@ -13,7 +13,7 @@ namespace fro
 		virtual void update(float deltaSeconds) = 0;
 
 	protected:
-		Behaviour(GameObject& parentingGameObject);
+		Behaviour(Reference<GameObject> const parentingGameObject);
 
 	private:
 		Behaviour(Behaviour const&) = delete;

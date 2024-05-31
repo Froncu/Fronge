@@ -1,5 +1,7 @@
 #include "Plot.h"
 
+#include "GameObject.h"
+
 #include <imgui.h>
 #include <implot.h>
 
@@ -12,8 +14,8 @@
 #endif
 
 #pragma region Constructors/Destructor
-fro::Plot::Plot(GameObject& parentingGameObject)
-	: GUI(parentingGameObject)
+fro::Plot::Plot(Reference<GameObject> const parentingGameObject)
+	: GUI(std::move(parentingGameObject))
 	, m_vIntegers(BUFFER_SIZE)
 	, m_vGameObjects3D(BUFFER_SIZE)
 	, m_vGameObjects3DAlt(BUFFER_SIZE)

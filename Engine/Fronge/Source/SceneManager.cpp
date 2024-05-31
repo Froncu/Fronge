@@ -29,7 +29,7 @@ void fro::SceneManager::display() const
 			scene.display();
 }
 
-fro::Scene& fro::SceneManager::addScene()
+fro::Reference<fro::Scene> fro::SceneManager::addScene()
 {
 	return m_vScenes.emplace_back();
 }

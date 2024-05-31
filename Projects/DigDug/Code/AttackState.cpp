@@ -6,8 +6,8 @@
 #include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
-fro::AttackState::AttackState(GameObject& parentingGameObject)
-	: Component(parentingGameObject)
+fro::AttackState::AttackState(Reference<GameObject> const parentingGameObject)
+	: Component(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -19,31 +19,31 @@ std::unique_ptr<fro::State> fro::AttackState::update(float const deltaSeconds)
 {
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= 0.5f)
-		return std::make_unique<PumpState>(getParentingGameObject());
+		return std::make_unique<PumpState>(m_ParentingGameObject);
 
 	return nullptr;
 }
 
 void fro::AttackState::enter(std::unique_ptr<State> const&)
 {
-	for (GameObject* const pChild : getParentingGameObject().getChildren())
+	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
-		pChild->setActive(true);
+		child.get().setActive(true);
 
-		SpriteAnimator& spriteAnimator{ *pChild->getComponent<SpriteAnimator>() };
+		SpriteAnimator& spriteAnimator{ *child.get().getComponent<SpriteAnimator>() };
 		spriteAnimator.reset();
 		spriteAnimator.play();
 	}
 
-	SpriteAnimator& spriteAnimator{ *getParentingGameObject().getComponent<SpriteAnimator>()};
+	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
 	spriteAnimator.setActiveAnimation("attacking");
 }
 
 void fro::AttackState::exit(std::unique_ptr<State> const&)
 {
-	for (GameObject const* pChild : getParentingGameObject().getChildren())
+	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
-		SpriteAnimator& spriteAnimator{ *pChild->getComponent<SpriteAnimator>() };
+		SpriteAnimator& spriteAnimator{ *child.get().getComponent<SpriteAnimator>()};
 		spriteAnimator.pause();
 	}
 }

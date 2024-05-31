@@ -7,8 +7,8 @@
 #include <sdl_render.h>
 
 #pragma region Constructors/Destructor
-fro::Sprite::Sprite(GameObject& parentingGameObject)
-	: Renderable(parentingGameObject)
+fro::Sprite::Sprite(Reference<GameObject> const parentingGameObject)
+	: Renderable(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -19,7 +19,7 @@ fro::Sprite::Sprite(GameObject& parentingGameObject)
 void fro::Sprite::render() const
 {
 	RenderContext::getInstance().renderTexture(m_pTexture,
-		getParentingGameObject().getComponent<Transform>()->getWorldTransform(),
+		m_ParentingGameObject.get().getComponent<Transform>()->getWorldTransform(),
 		m_SourceRectangle);
 }
 

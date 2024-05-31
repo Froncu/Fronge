@@ -15,7 +15,7 @@ namespace fro
 	class Plot final : public GUI
 	{
 	public:
-		Plot(GameObject& parentingGameObject);
+		Plot(Reference<GameObject> const parentingGameObject);
 
 		virtual ~Plot() override = default;
 

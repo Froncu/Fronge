@@ -9,19 +9,20 @@ fro::GameObject::GameObject()
 }
 
 fro::GameObject::GameObject(GameObject&& other) noexcept
-	: m_mpComponents{ std::move(other.m_mpComponents) }
+	: Referencable(std::move(other))
+	
+	, m_mpComponents{ std::move(other.m_mpComponents) }
 
 	, m_vpFixedBehaviours{ std::move(other.m_vpFixedBehaviours) }
 	, m_vpBehaviours{ std::move(other.m_vpBehaviours) }
 	, m_vpRenderables{ std::move(other.m_vpRenderables) }
 	, m_vpGUIs{ std::move(other.m_vpGUIs) }
 
-	, m_spChildren{ std::move(other.m_spChildren) }
-	, m_pParent{ other.m_pParent }
+	, m_sChildren{ std::move(other.m_sChildren) }
+	, m_Parent{ std::move(other.m_Parent) }
 
 	, m_IsActive{ other.m_IsActive }
 {
-	other.m_pParent = nullptr;
 }
 #pragma endregion Constructors/Destructor
 
@@ -30,6 +31,8 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 #pragma region Operators
 fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 {
+	Referencable::operator=(std::move(other));
+
 	m_mpComponents = std::move(other.m_mpComponents);
 
 	m_vpFixedBehaviours = std::move(other.m_vpFixedBehaviours);
@@ -37,9 +40,8 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 	m_vpRenderables = std::move(other.m_vpRenderables);
 	m_vpGUIs = std::move(other.m_vpGUIs);
 
-	m_spChildren = std::move(other.m_spChildren);
-	m_pParent = other.m_pParent;
-	other.m_pParent = nullptr;
+	m_sChildren = std::move(other.m_sChildren);
+	m_Parent = std::move(other.m_Parent);
 
 	m_IsActive = other.m_IsActive;
 
@@ -83,46 +85,46 @@ void fro::GameObject::setActive(bool const isActive)
 	m_IsActive = isActive;
 }
 
-void fro::GameObject::setParent(GameObject* const pParent, bool const keepWorldTransform)
+void fro::GameObject::setParent(Reference<GameObject> const parent, bool const keepWorldTransform)
 {
-	if (pParent == this || pParent == m_pParent || owns(pParent))
+	if (parent == this || parent == m_Parent || owns(parent))
 		return;
 
-	if (m_pParent)
-		m_pParent->m_spChildren.erase(this);
+	if (m_Parent.valid())
+		m_Parent.get().m_sChildren.erase(this);
 
 	Transform& transform{ *getComponent<Transform>() };
 	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
 		oldWorldTransform = transform.getWorldTransform();
 
-	m_pParent = pParent;
+	m_Parent = std::move(parent);
 
-	if (m_pParent)
-		m_pParent->m_spChildren.insert(this);
+	if (m_Parent.valid())
+		m_Parent.get().m_sChildren.insert(this);
 
-	if (m_pParent && keepWorldTransform)
+	if (m_Parent.valid() && keepWorldTransform)
 		transform.setWorldTransformation(oldWorldTransform);
 	else
 		transform.setWorldTransformDirty();
 }
 
-bool fro::GameObject::owns(GameObject const* const pGameObject) const
+bool fro::GameObject::owns(Reference<GameObject> const gameObject) const
 {
-	return std::any_of(m_spChildren.begin(), m_spChildren.end(),
-		[pGameObject](GameObject const* const pChild)
+	return std::any_of(m_sChildren.begin(), m_sChildren.end(),
+		[gameObject](Reference<GameObject> const child)
 		{
-			return pGameObject == pChild;
+			return gameObject == child;
 		});
 }
 
-fro::GameObject* fro::GameObject::getParent() const
+fro::Reference<fro::GameObject> fro::GameObject::getParent() const
 {
-	return m_pParent;
+	return m_Parent;
 }
 
-std::set<fro::GameObject*> const& fro::GameObject::getChildren() const
+std::set<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() const
 {
-	return m_spChildren;
+	return m_sChildren;
 }
 #pragma endregion PublicMethods

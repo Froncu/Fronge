@@ -13,7 +13,7 @@ namespace fro
 		virtual void fixedUpdate(float fixedDeltaSeconds) = 0;
 
 	protected:
-		FixedBehaviour(GameObject& parentingGameObject);
+		FixedBehaviour(Reference<GameObject> const parentingGameObject);
 
 	private:
 		FixedBehaviour(FixedBehaviour const&) = delete;

@@ -38,33 +38,33 @@ int main(int, char**)
 		fro::RenderContext::getInstance().setWindowSize(800, 720);
 		fro::RenderContext::getInstance().setWindowTitle("DigDug");
 
-		fro::Scene& scene{ fro::SceneManager::getInstance().addScene() };
+		fro::Reference<fro::Scene> const scene{ fro::SceneManager::getInstance().addScene() };
 
-		fro::GameObject& pump{ scene.addGameObject() };
-		pump.addComponent<fro::Sprite>();
-		pump.addComponent<fro::SpriteAnimator>()->addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
-		pump.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("shooting", 12);
-		pump.getComponent<fro::SpriteAnimator>()->setLoop("shooting", false);
-		pump.getComponent<fro::Transform>()->setLocalTranslation({ 24, 0 });
-		pump.setActive(false);
+		fro::Reference<fro::GameObject> const pump{ scene.get().addGameObject() };
+		pump.get().addComponent<fro::Sprite>();
+		pump.get().addComponent<fro::SpriteAnimator>()->addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
+		pump.get().getComponent<fro::SpriteAnimator>()->setFramesPerSecond("shooting", 12);
+		pump.get().getComponent<fro::SpriteAnimator>()->setLoop("shooting", false);
+		pump.get().getComponent<fro::Transform>()->setLocalTranslation({ 24, 0 });
+		pump.get().setActive(false);
 
-		fro::GameObject& player1{ scene.addGameObject() };
-		player1.getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
-		player1.addComponent<fro::GridMovement>();
-		player1.addComponent<fro::Sprite>();
-		player1.addComponent<fro::SpriteAnimator>()->addAnimationFrames("walking", "DigDug/Walking.png", { 16, 16 }, 2, 1);
-		player1.getComponent<fro::SpriteAnimator>()->addAnimationFrames("attacking", "DigDug/Attacking.png", { 16, 16 }, 1, 1);
-		player1.getComponent<fro::SpriteAnimator>()->addAnimationFrames("pumping", "DigDug/Pumping.png", { 16, 16 }, 2, 1);
-		player1.getComponent<fro::SpriteAnimator>()->setLoop("pumping", false);
-		player1.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("walking", 6);
-		player1.getComponent<fro::SpriteAnimator>()->setFramesPerSecond("pumping", 6);
-		player1.addComponent<fro::StateMachine>()->setCurrentState(std::make_unique<fro::IdleState>(player1));
+		fro::Reference<fro::GameObject> const player1{ scene.get().addGameObject() };
+		player1.get().getComponent<fro::Transform>()->setLocalTranslation({ 8, 8 });
+		player1.get().addComponent<fro::GridMovement>();
+		player1.get().addComponent<fro::Sprite>();
+		player1.get().addComponent<fro::SpriteAnimator>()->addAnimationFrames("walking", "DigDug/Walking.png", { 16, 16 }, 2, 1);
+		player1.get().getComponent<fro::SpriteAnimator>()->addAnimationFrames("attacking", "DigDug/Attacking.png", { 16, 16 }, 1, 1);
+		player1.get().getComponent<fro::SpriteAnimator>()->addAnimationFrames("pumping", "DigDug/Pumping.png", { 16, 16 }, 2, 1);
+		player1.get().getComponent<fro::SpriteAnimator>()->setLoop("pumping", false);
+		player1.get().getComponent<fro::SpriteAnimator>()->setFramesPerSecond("walking", 6);
+		player1.get().getComponent<fro::SpriteAnimator>()->setFramesPerSecond("pumping", 6);
+		player1.get().addComponent<fro::StateMachine>()->setCurrentState(std::make_unique<fro::IdleState>(player1));
 
-		pump.setParent(&player1, false);
+		pump.get().setParent(player1, false);
 
-		fro::GameObject& player2{ scene.addGameObject() };
-		player2.addComponent<fro::Sprite>()->setFileName("Fygar.png");
-		player2.getComponent<fro::Transform>()->setLocalTranslation({ 40, 8 });
+		fro::Reference<fro::GameObject> const player2{ scene.get().addGameObject() };
+		player2.get().addComponent<fro::Sprite>()->setFileName("Fygar.png");
+		player2.get().getComponent<fro::Transform>()->setLocalTranslation({ 40, 8 });
 
 		fro::InputManager::getInstance().setActionDeadzone("attack", 0.25f);
 		fro::InputManager::getInstance().setActionDeadzone("moveRight1", 0.25f);

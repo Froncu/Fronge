@@ -11,7 +11,7 @@ namespace fro
 	class MoveState final : public Component, public State
 	{
 	public:
-		MoveState(GameObject& parentingGameObject);
+		MoveState(Reference<GameObject> const parentingGameObject);
 
 		virtual ~MoveState() override = default;
 

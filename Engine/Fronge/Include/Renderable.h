@@ -13,7 +13,7 @@ namespace fro
 		virtual void render() const = 0;
 
 	protected:
-		Renderable(GameObject& parentingGameObject);
+		Renderable(Reference<GameObject> const parentingGameObject);
 
 	private:
 		Renderable(Renderable const&) = delete;

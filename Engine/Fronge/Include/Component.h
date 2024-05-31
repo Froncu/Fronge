@@ -2,6 +2,7 @@
 #define fro_COMPONENT_H
 
 #include "Defines.hpp"
+#include "References.hpp"
 
 namespace fro
 {
@@ -12,10 +13,10 @@ namespace fro
 	public:
 		virtual ~Component() = default;
 
-		fro_NODISCARD GameObject& getParentingGameObject() const;
+		Reference<GameObject> const m_ParentingGameObject;
 
 	protected:
-		Component(GameObject& parentingGameObject);
+		Component(Reference<GameObject> const parentingGameObject);
 
 	private:
 		Component(Component const&) = delete;
@@ -23,8 +24,6 @@ namespace fro
 
 		Component& operator=(Component const&) = delete;
 		Component& operator=(Component&&) noexcept = delete;
-
-		GameObject* m_pParentingGameObject;
 	};
 }
 
