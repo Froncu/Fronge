@@ -30,21 +30,21 @@ void fro::AttackState::enter(std::unique_ptr<State> const&)
 	{
 		child.get().setActive(true);
 
-		SpriteAnimator& spriteAnimator{ *child.get().getComponent<SpriteAnimator>() };
-		spriteAnimator.reset();
-		spriteAnimator.play();
+		Reference<SpriteAnimator> spriteAnimator{ child.get().getComponent<SpriteAnimator>() };
+		spriteAnimator.get().reset();
+		spriteAnimator.get().play();
 	}
 
-	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.setActiveAnimation("attacking");
+	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
+	spriteAnimator.get().setActiveAnimation("attacking");
 }
 
 void fro::AttackState::exit(std::unique_ptr<State> const&)
 {
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
-		SpriteAnimator& spriteAnimator{ *child.get().getComponent<SpriteAnimator>()};
-		spriteAnimator.pause();
+		Reference<SpriteAnimator> spriteAnimator{ child.get().getComponent<SpriteAnimator>()};
+		spriteAnimator.get().pause();
 	}
 }
 #pragma endregion PublicMethods

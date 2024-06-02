@@ -32,7 +32,7 @@ std::unique_ptr<fro::State> fro::PumpState::update(float const deltaSeconds)
 	}
 	else
 	{
-		m_ParentingGameObject.get().getComponent<SpriteAnimator>()->play();
+		m_ParentingGameObject.get().getComponent<SpriteAnimator>().get().play();
 		m_ElapsedSecondsWithoutInput = 0.0f;
 	}
 
@@ -41,9 +41,9 @@ std::unique_ptr<fro::State> fro::PumpState::update(float const deltaSeconds)
 
 void fro::PumpState::enter(std::unique_ptr<State> const&)
 {
-	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.setActiveAnimation("pumping");
-	spriteAnimator.play();
+	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
+	spriteAnimator.get().setActiveAnimation("pumping");
+	spriteAnimator.get().play();
 }
 
 void fro::PumpState::exit(std::unique_ptr<State> const&)

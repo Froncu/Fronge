@@ -2,13 +2,13 @@
 #define fro_COMPONENT_H
 
 #include "Defines.hpp"
-#include "References.hpp"
+#include "Reference.hpp"
 
 namespace fro
 {
 	class GameObject;
 
-	class Component
+	class Component : public BaseReferencable
 	{
 	public:
 		virtual ~Component() = default;

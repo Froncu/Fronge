@@ -1,120 +1,154 @@
 #if not defined fro_REFERENCE_H
 #define fro_REFERENCE_H
 
-#include <algorithm>
+#include "BaseReference.h"
+#include "Referencable.hpp"
+
 #include <utility>
 
 namespace fro
 {
-	template<typename>
-	class Referencable;
+	template<typename ...Types>
+	concept SameReferencableType =
+		DerivedReferencableType<Types...> or
+		(not DerivedReferencableType<Types> and ...);
+
+	template<typename Type1, typename Type2>
+	concept EitherDerivedType =
+		std::derived_from<Type1, Type2> or
+		std::derived_from<Type2, Type1>;
+
+	template<typename ...Types>
+	concept PolymorphicType =
+		(std::is_polymorphic_v<Types> and ...);
 
 	template<typename Type>
-	class Reference final
+	class Reference final : public BaseReference
 	{
-		friend Referencable<Type>;
+		static_assert(not SpecializedReferencableType<Type>,
+			"the referenced type cannot be a specialization of Referencable");
+
+		static_assert(not SpecializedType<Type, Reference>,
+			"the referenced type cannot be a specialization of Reference");
+
+		static_assert(not std::same_as<Type, BaseReferencable>,
+			"the referenced type cannot be BaseReferencable");
+
+		static_assert(not std::is_reference_v<Type>,
+			"the referenced type cannot be a reference");
 
 	public:
 		Reference() = default;
-		Reference(Referencable<Type>* const pReferencable)
-			: m_pReferencable{ pReferencable }
+
+		template<std::derived_from<Type> OtherType>
+			requires DerivedReferencableType<Type, OtherType>
+		Reference(OtherType* const pReferencable)
+			: BaseReference(pReferencable)
 		{
-			if (valid())
-				m_pReferencable->m_spReferences.insert(this);
 		}
 
+		template<std::derived_from<Type> OtherType>
+			requires DerivedReferencableType<Type, OtherType>
+		Reference(OtherType& referencable)
+			: BaseReference(referencable)
+		{
+		}
+
+		Reference(Type* const pReferencable)
+			requires DerivedReferencableType<Type>
+		: BaseReference(pReferencable)
+		{
+		}
+
+		Reference(Type& referencable)
+			requires DerivedReferencableType<Type>
+		: BaseReference(referencable)
+		{
+		}
+
+		template<std::derived_from<Type> OtherType>
+		Reference(Referencable<OtherType>* const pReferencable)
+			: BaseReference(pReferencable)
+		{
+		}
+
+		template<std::derived_from<Type> OtherType>
+		Reference(Referencable<OtherType>& referencable)
+			: BaseReference(referencable)
+		{
+		}
+
+		Reference(Referencable<Type>* const pReferencable)
+			: BaseReference(pReferencable)
+		{
+		}
+		
 		Reference(Referencable<Type>& referencable)
-			: Reference{ &referencable }
+			: BaseReference(referencable)
+		{
+		}
+
+		template<std::derived_from<Type> OtherType>
+			requires SameReferencableType<Type, OtherType>
+		Reference(Reference<OtherType> const* const pReferencable)
+			: BaseReference(pReferencable)
+		{
+		}
+
+		template<std::derived_from<Type> OtherType>
+			requires SameReferencableType<Type, OtherType>
+		Reference(Reference<OtherType> const& referencable)
+			: BaseReference(referencable)
 		{
 		}
 
 		Reference(Reference const& other)
-			: m_pReferencable{ other.m_pReferencable }
+			: BaseReference(other)
 		{
-			if (valid())
-				m_pReferencable->m_spReferences.insert(this);
 		}
 
 		Reference(Reference&& other) noexcept
-			: Reference(other)
+			: BaseReference(std::move(other))
 		{
-			if (other.valid())
-			{
-				other.m_pReferencable->m_spReferences.erase(&other);
-				other.m_pReferencable = nullptr;
-			}
 		}
 
-		~Reference()
-		{
-			if (valid())
-				m_pReferencable->m_spReferences.erase(this);
-		}
+		virtual ~Reference() override = default;
 
 		Reference& operator=(Reference const& other)
 		{
-			if (valid())
-				m_pReferencable->m_spReferences.erase(this);
-
-			m_pReferencable = other.m_pReferencable;
-
-			if (valid())
-				m_pReferencable->m_spReferences.insert(this);
-
+			BaseReference::operator=(other);
 			return *this;
 		}
 
 		Reference& operator=(Reference&& other) noexcept
 		{
-			*this = other;
-
-			if (other.valid())
-			{
-				other.m_pReferencable->m_spReferences.erase(&other);
-				other.m_pReferencable = nullptr;
-			}
-
+			BaseReference::operator=(std::move(other));
 			return *this;
 		}
 
-		Reference& operator=(Type data)
+		template<typename OtherType>
+			requires PolymorphicType<Type, OtherType> and SameReferencableType<Type, OtherType>
+		Reference<OtherType> dynamicCast() const
 		{
-			get() = std::move(data);
-			return *this;
+			return dynamic_cast<OtherType* const>(getReferencable());
 		}
 
-		bool operator==(Reference const& other) const
+		template<EitherDerivedType<Type> OtherType>
+			requires SameReferencableType<Type, OtherType>
+		Reference<OtherType> staticCast() const
 		{
-			return m_pReferencable == other.m_pReferencable;
-		}
-
-		bool operator==(Referencable<Type> const* const pReferencable) const
-		{
-			return m_pReferencable == pReferencable;
-		}
-
-		bool operator==(Referencable<Type> const& referencable) const
-		{
-			return m_pReferencable == &referencable;
-		}
-
-		bool operator<(Reference const& other) const
-		{
-			return m_pReferencable < other.m_pReferencable;
-		}
-
-		bool valid() const
-		{
-			return m_pReferencable;
+			return static_cast<OtherType* const>(getReferencable());
 		}
 
 		Type& get() const
 		{
-			return *static_cast<Type*>(m_pReferencable);
-		}
+			BaseReferencable* const pReferencable{ getReferencable() };
 
-	private:
-		Referencable<Type>* m_pReferencable{};
+			if constexpr (DerivedReferencableType<Type>)
+				return *static_cast<Type* const>(pReferencable);
+			else
+				return static_cast<Referencable<Type>*const>(pReferencable)->get();
+		}
 	};
 }
 

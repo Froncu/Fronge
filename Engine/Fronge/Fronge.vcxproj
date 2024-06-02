@@ -157,6 +157,8 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\BaseReferencable.cpp" />
+    <ClCompile Include="Source\BaseReference.cpp" />
     <ClCompile Include="Source\FixedBehaviour.cpp" />
     <ClCompile Include="Source\RigidBody.cpp" />
     <ClCompile Include="Source\SpriteAnimator.cpp" />
@@ -189,6 +191,8 @@
     <ClCompile Include="Source\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\BaseReferencable.h" />
+    <ClInclude Include="Include\BaseReference.h" />
     <ClInclude Include="Include\FixedBehaviour.h" />
     <ClInclude Include="Include\Referencable.hpp" />
     <ClInclude Include="Include\Reference.hpp" />
@@ -230,7 +234,6 @@
     <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
     <ClInclude Include="Include\StateMachine.h" />
-    <ClInclude Include="Include\References.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -91,6 +91,12 @@
     <ClCompile Include="Source\RigidBody.cpp">
       <Filter>Component\FixedBehaviour\RigidBody</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BaseReferencable.cpp">
+      <Filter>References\BaseReferencable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BaseReference.cpp">
+      <Filter>References\BaseReference</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -219,6 +225,12 @@
     <Filter Include="References">
       <UniqueIdentifier>{f64124f3-a998-4c7e-93da-c126aa272f44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="References\BaseReferencable">
+      <UniqueIdentifier>{012615a0-bc53-418a-9b95-662f497d0df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="References\BaseReference">
+      <UniqueIdentifier>{252e9025-8448-485c-addb-a0d235aedf4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Defines.hpp" />
@@ -334,14 +346,17 @@
     <ClInclude Include="Include\RigidBody.h">
       <Filter>Component\FixedBehaviour\RigidBody</Filter>
     </ClInclude>
-    <ClInclude Include="Include\References.hpp">
-      <Filter>References</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Reference.hpp">
       <Filter>References</Filter>
     </ClInclude>
     <ClInclude Include="Include\Referencable.hpp">
       <Filter>References</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\BaseReferencable.h">
+      <Filter>References\BaseReferencable</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\BaseReference.h">
+      <Filter>References\BaseReference</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

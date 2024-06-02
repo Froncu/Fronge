@@ -126,9 +126,9 @@ void fro::Transform::setWorldTransformDirty()
 
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
-		Transform& childTransform{ *child.get().getComponent<Transform>()};
-		if (not childTransform.m_IsWorldTransformDirty)
-			childTransform.setWorldTransformDirty();
+		Reference<Transform> childTransform{ child.get().getComponent<Transform>()};
+		if (not childTransform.get().m_IsWorldTransformDirty)
+			childTransform.get().setWorldTransformDirty();
 	}
 }
 
@@ -203,7 +203,7 @@ void fro::Transform::calculateLocalTransform()
 {
 	Reference<GameObject> const parentingGameObjectsParent{ m_ParentingGameObject.get().getParent() };
 	if (parentingGameObjectsParent.valid())
-		m_LocalTransform = getWorldTransform() / parentingGameObjectsParent.get().getComponent<Transform>()->getWorldTransform();
+		m_LocalTransform = getWorldTransform() / parentingGameObjectsParent.get().getComponent<Transform>().get().getWorldTransform();
 	else
 		m_LocalTransform = getWorldTransform();
 }
@@ -212,7 +212,7 @@ void fro::Transform::calculateWorldTransform()
 {
 	Reference<GameObject> const parentingGameObjectsParent{ m_ParentingGameObject.get().getParent() };
 	if (parentingGameObjectsParent.valid())
-		m_WorldTransform = getLocalTransform() * parentingGameObjectsParent.get().getComponent<Transform>()->getWorldTransform();
+		m_WorldTransform = getLocalTransform() * parentingGameObjectsParent.get().getComponent<Transform>().get().getWorldTransform();
 	else
 		m_WorldTransform = getLocalTransform();
 }

@@ -2,13 +2,13 @@
 #define fro_SCENE_H
 
 #include "GameObject.h"
-#include "References.hpp"
+#include "BaseReferencable.h"
 
 #include <vector>
 
 namespace fro
 {
-	class Scene final : public Referencable<Scene>
+	class Scene final : public BaseReferencable
 	{
 	public:
 		Scene() = default;

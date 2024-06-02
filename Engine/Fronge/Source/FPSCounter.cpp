@@ -23,7 +23,7 @@ void fro::FPSCounter::update(float const deltaSeconds)
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= maxElapsedSeconds)
 	{
-		m_ParentingGameObject.get().getComponent<Text>()->setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));
+		m_ParentingGameObject.get().getComponent<Text>().get().setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));
 
 		m_Ticks = 0;
 		m_ElapsedSeconds -= maxElapsedSeconds;

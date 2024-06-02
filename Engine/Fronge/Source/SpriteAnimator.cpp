@@ -131,11 +131,11 @@ void fro::SpriteAnimator::updateSprite() const
 		m_pActiveAnimation->vAnimationFrames[m_CurrentFrameIndex]
 	};
 
-	Sprite& spriteComponent{ *m_ParentingGameObject.get().getComponent<Sprite>() };
+	Reference<Sprite> spriteComponent{ m_ParentingGameObject.get().getComponent<Sprite>() };
 
-	if (spriteComponent.getFileName() not_eq currentAnimationFrame.fileName)
-		spriteComponent.setFileName(currentAnimationFrame.fileName);
+	if (spriteComponent.get().getFileName() not_eq currentAnimationFrame.fileName)
+		spriteComponent.get().setFileName(currentAnimationFrame.fileName);
 
-	spriteComponent.setSourceRectangle(currentAnimationFrame.sourceRectangle);
+	spriteComponent.get().setSourceRectangle(currentAnimationFrame.sourceRectangle);
 }
 #pragma endregion PrivateMethods

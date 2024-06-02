@@ -1,53 +1,103 @@
 #if not defined fro_REFERENCABLE_H
 #define fro_REFERENCABLE_H
 
-#include <set>
+#include "BaseReferencable.h"
 
 namespace fro
 {
-	template<typename>
-	class Reference;
+	template<typename Type, template<typename> class Template>
+	concept SpecializedType =
+		std::_Is_specialization_v<Type, Template>;
 
 	template<typename Type>
-	class Referencable
+	class Referencable final : public BaseReferencable
 	{
-		friend Reference<Type>;
-		
+		static_assert(not DerivedReferencableType<Type>,
+			"the held type cannot be derived from BaseReferencable");
+
+		static_assert(not std::is_reference_v<Type>,
+			"the held type cannot be a reference");
+
+		template<typename>
+		friend class Referencable;
+
 	public:
-		Referencable() = default;
-		Referencable(Referencable const&) = delete;
+		Referencable(Type data)
+			: m_Data{ std::move(data) }
+		{
+		}
+
+		template<typename... Arguments>
+			requires std::constructible_from<Type, Arguments...>
+		Referencable(Arguments&&... arguments)
+			: m_Data{ std::forward<Arguments>(arguments)... }
+		{
+		}
+
+		template<typename OtherType>
+			requires std::constructible_from<Type, OtherType>
+		Referencable(Referencable<OtherType> const& other)
+			: m_Data{ other.m_Data }
+		{
+		}
+
+		Referencable(Referencable const& other)
+			: m_Data{ other.m_Data }
+		{
+		}
+
+		template<typename OtherType>
+			requires std::constructible_from<Type, OtherType>
+		Referencable(Referencable<OtherType>&& other) noexcept
+			: BaseReferencable(std::move(other))
+			, m_Data{ std::move(other.m_Data) }
+		{
+		}
+
 		Referencable(Referencable&& other) noexcept
-			: m_spReferences{ std::move(other.m_spReferences) }
+			: BaseReferencable(std::move(other))
+			, m_Data{ std::move(other.m_Data) }
 		{
-			for (Reference<Type>* const pReference : m_spReferences)
-				pReference->m_pReferencable = this;
 		}
 
-		virtual ~Referencable()
+		virtual ~Referencable() override = default;
+
+		Referencable& operator=(Referencable const& other)
 		{
-			for (Reference<Type>* const pReference : m_spReferences)
-				pReference->m_pReferencable = nullptr;
-		}
+			if (this == &other)
+				return *this;
 
-		Referencable& operator=(Referencable const&) = delete;
-		Referencable& operator=(Referencable&& other) noexcept
-		{
-			for (Reference<Type>* const pReference : other.m_spReferences)
-				pReference->m_pReferencable = this;
-
-			m_spReferences.merge(other.m_spReferences);
-
+			m_Data = other.m_Data;
 			return *this;
 		}
 
-		bool operator==(Reference<Type> const& reference)
+		Referencable& operator=(Referencable&& other) noexcept
 		{
-			return reference == this;
+			if (this == &other)
+				return *this;
+
+			BaseReferencable::operator=(std::move(other));
+			m_Data = std::move(other.m_Data);
+			return *this;
+		}
+
+		Type& get()
+		{
+			return m_Data;
+		}
+
+		Type const& get() const
+		{
+			return m_Data;
 		}
 
 	private:
-		std::set<Reference<Type>*> m_spReferences{};
+		Type m_Data;
 	};
+
+	template<typename ...Types>
+	concept SpecializedReferencableType =
+		(SpecializedType<Types, Referencable> and ...);
 }
 
 #endif

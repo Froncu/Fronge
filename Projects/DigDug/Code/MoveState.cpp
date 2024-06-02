@@ -29,19 +29,19 @@ std::unique_ptr<fro::State> fro::MoveState::update(float const)
 	if (not inputAxis2D.x and not inputAxis2D.y)
 		return std::make_unique<IdleState>(m_ParentingGameObject);
 
-	m_ParentingGameObject.get().getComponent<GridMovement>()->setMoveDirection(inputAxis2D);
+	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection(inputAxis2D);
 	return nullptr;
 }
 
 void fro::MoveState::enter(std::unique_ptr<State> const&)
 {
-	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>() };
-	spriteAnimator.setActiveAnimation("walking");
-	spriteAnimator.play();
+	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>() };
+	spriteAnimator.get().setActiveAnimation("walking");
+	spriteAnimator.get().play();
 }
 
 void fro::MoveState::exit(std::unique_ptr<State> const&)
 {
-	m_ParentingGameObject.get().getComponent<GridMovement>()->setMoveDirection({});
+	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection({});
 }
 #pragma endregion PublicMethods

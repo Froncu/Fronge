@@ -9,14 +9,14 @@ fro::GameObject::GameObject()
 }
 
 fro::GameObject::GameObject(GameObject&& other) noexcept
-	: Referencable(std::move(other))
+	: BaseReferencable(std::move(other))
 	
 	, m_mpComponents{ std::move(other.m_mpComponents) }
 
-	, m_vpFixedBehaviours{ std::move(other.m_vpFixedBehaviours) }
-	, m_vpBehaviours{ std::move(other.m_vpBehaviours) }
-	, m_vpRenderables{ std::move(other.m_vpRenderables) }
-	, m_vpGUIs{ std::move(other.m_vpGUIs) }
+	, m_vFixedBehaviours{ std::move(other.m_vFixedBehaviours) }
+	, m_vBehaviours{ std::move(other.m_vBehaviours) }
+	, m_vRenderables{ std::move(other.m_vRenderables) }
+	, m_vGUIs{ std::move(other.m_vGUIs) }
 
 	, m_sChildren{ std::move(other.m_sChildren) }
 	, m_Parent{ std::move(other.m_Parent) }
@@ -31,14 +31,14 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 #pragma region Operators
 fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 {
-	Referencable::operator=(std::move(other));
+	BaseReferencable::operator=(std::move(other));
 
 	m_mpComponents = std::move(other.m_mpComponents);
 
-	m_vpFixedBehaviours = std::move(other.m_vpFixedBehaviours);
-	m_vpBehaviours = std::move(other.m_vpBehaviours);
-	m_vpRenderables = std::move(other.m_vpRenderables);
-	m_vpGUIs = std::move(other.m_vpGUIs);
+	m_vFixedBehaviours = std::move(other.m_vFixedBehaviours);
+	m_vBehaviours = std::move(other.m_vBehaviours);
+	m_vRenderables = std::move(other.m_vRenderables);
+	m_vGUIs = std::move(other.m_vGUIs);
 
 	m_sChildren = std::move(other.m_sChildren);
 	m_Parent = std::move(other.m_Parent);
@@ -55,29 +55,29 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 void fro::GameObject::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	if (m_IsActive)
-		for (FixedBehaviour* const pFixedBehaviour : m_vpFixedBehaviours)
-			pFixedBehaviour->fixedUpdate(fixedDeltaSeconds);
+		for (Reference<FixedBehaviour> const fixedBehaviour : m_vFixedBehaviours)
+			fixedBehaviour.get().fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::GameObject::update(float const deltaSeconds) const
 {
 	if (m_IsActive)
-		for (Behaviour* const pBehaviour : m_vpBehaviours)
-			pBehaviour->update(deltaSeconds);
+		for (Reference<Behaviour> const behaviour : m_vBehaviours)
+			behaviour.get().update(deltaSeconds);
 }
 
 void fro::GameObject::render() const
 {
 	if (m_IsActive)
-		for (Renderable* const pRenderable : m_vpRenderables)
-			pRenderable->render();
+		for (Reference<Renderable> const renderable : m_vRenderables)
+			renderable.get().render();
 }
 
 void fro::GameObject::display() const
 {
 	if (m_IsActive)
-		for (GUI* const pGUI : m_vpGUIs)
-			pGUI->display();
+		for (Reference<GUI> const GUI : m_vGUIs)
+			GUI.get().display();
 }
 
 void fro::GameObject::setActive(bool const isActive)
@@ -93,10 +93,10 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 	if (m_Parent.valid())
 		m_Parent.get().m_sChildren.erase(this);
 
-	Transform& transform{ *getComponent<Transform>() };
+	Reference<Transform> transform{ getComponent<Transform>() };
 	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
-		oldWorldTransform = transform.getWorldTransform();
+		oldWorldTransform = transform.get().getWorldTransform();
 
 	m_Parent = std::move(parent);
 
@@ -104,9 +104,9 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 		m_Parent.get().m_sChildren.insert(this);
 
 	if (m_Parent.valid() && keepWorldTransform)
-		transform.setWorldTransformation(oldWorldTransform);
+		transform.get().setWorldTransformation(oldWorldTransform);
 	else
-		transform.setWorldTransformDirty();
+		transform.get().setWorldTransformDirty();
 }
 
 bool fro::GameObject::owns(Reference<GameObject> const gameObject) const

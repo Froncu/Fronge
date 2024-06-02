@@ -33,10 +33,10 @@ std::unique_ptr<fro::State> fro::IdleState::update(float const)
 
 void fro::IdleState::enter(std::unique_ptr<State> const&)
 {
-	SpriteAnimator& spriteAnimator{ *m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.setActiveAnimation("walking");
-	spriteAnimator.pause();
+	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
+	spriteAnimator.get().setActiveAnimation("walking");
+	spriteAnimator.get().pause();
 
-	m_ParentingGameObject.get().getComponent<GridMovement>()->setMoveDirection({0.0f, 0.0f});
+	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection({0.0f, 0.0f});
 }
 #pragma endregion PublicMethods
