@@ -113,7 +113,7 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD Reference<ComponentType> forceGetComponent() noexcept
 		{
-			Reference<ComponentType> foundComponent{ findComponent<ComponentType>() };
+			Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
 			if (not foundComponent.valid())
 				foundComponent = addComponent<ComponentType>();
 
