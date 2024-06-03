@@ -63,12 +63,16 @@ void fro::RenderContext::present() const
 void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, TransformationMatrix2D const& transform,
 	SDL_FRect sourceRectangle) const
 {
-	if (not pTexture)
-		return;
-
 	int textureWidth;
 	int textureHeight;
-	SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
+
+	if (not pTexture)
+	{
+		textureWidth = 64;
+		textureHeight = 64;
+	}
+	else
+		SDL_QueryTexture(pTexture, nullptr, nullptr, &textureWidth, &textureHeight);
 
 	if (not sourceRectangle.w or not sourceRectangle.h)
 	{
@@ -81,12 +85,12 @@ void fro::RenderContext::renderTexture(SDL_Texture* const pTexture, Transformati
 	float const halfSourceWidth{ sourceRectangle.w / 2 };
 	float const halfSourceHeight{ sourceRectangle.h / 2 };
 
-	SDL_Color constexpr vertexColor
+	SDL_Color const vertexColor
 	{
-		.r{ 255 },
-		.g{ 255 },
-		.b{ 255 },
-		.a{ 255 }
+		.r{ 255u },
+		.g{ pTexture ? 255u : 0u },
+		.b{ 255u },
+		.a{ 255u }
 	};
 
 	glm::vec2 const topLeftTexture

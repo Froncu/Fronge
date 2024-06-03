@@ -40,6 +40,10 @@ int main(int, char**)
 
 		fro::Reference<fro::Scene> const scene{ fro::SceneManager::getInstance().addScene() };
 
+		fro::Reference<fro::GameObject> const FPSCounter{ scene.get().addGameObject() };
+		FPSCounter.get().addComponent<fro::FPSCounter>();
+		FPSCounter.get().getComponent<fro::Transform>().get().setWorldTranslation({ 100, 100 });
+
 		fro::Reference<fro::GameObject> const pump{ scene.get().addGameObject() };
 		pump.get().addComponent<fro::Sprite>();
 		pump.get().addComponent<fro::SpriteAnimator>().get().addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
