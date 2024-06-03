@@ -28,12 +28,12 @@ namespace fro
 
 		void clearCaches();
 
-		void setResourcesDirectory(std::string_view const resourcesDirectory);
+		void setResourcesDirectory(std::string resourcesDirectory);
 
-		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string_view const fileName, int const size, std::string_view const text);
-		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string_view const imageFileName);
-		fro_NODISCARD Mix_Music* getMusic(std::string_view const audioFileName);
-		fro_NODISCARD Mix_Chunk* getEffect(std::string_view const audioFileName);
+		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
+		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName);
+		fro_NODISCARD Mix_Music* getMusic(std::string const& audioFileName);
+		fro_NODISCARD Mix_Chunk* getEffect(std::string const& audioFileName);
 
 	private:
 		ResourceManager();
@@ -59,18 +59,20 @@ namespace fro
 			template <class Type1, class Type2>
 			bool operator()(std::pair<Type1, Type2> const& pair1, std::pair<Type1, Type2> const& pair2) const
 			{
-				return pair1.first == pair2.first && pair1.second == pair2.second;
+				return
+					pair1.first == pair2.first and
+					pair1.second == pair2.second;
 			}
 		};
 
-		fro_NODISCARD TTF_Font* getFont(std::string_view const fileName, int const size);
+		fro_NODISCARD TTF_Font* getFont(std::string const& fileName, int const size);
 
-		std::string_view m_ResourcesDirectory{ "Resources/" };
-		std::unordered_map<std::pair<std::string_view, int>, CustomUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
-		std::unordered_map<std::pair<std::string_view, int>, std::unordered_map<std::string_view, CustomUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
-		std::unordered_map<std::string_view, CustomUniquePointer<SDL_Texture>> m_mpImageTextures{};
-		std::unordered_map<std::string_view, CustomUniquePointer<Mix_Music>> m_mpAudioMusics{};
-		std::unordered_map<std::string_view, CustomUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
+		std::string m_ResourcesDirectory{ "Resources/" };
+		std::unordered_map<std::pair<std::string, int>, CustomUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
+		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
+		std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>> m_mpImageTextures{};
+		std::unordered_map<std::string, CustomUniquePointer<Mix_Music>> m_mpAudioMusics{};
+		std::unordered_map<std::string, CustomUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
 	};
 	// END TODO
 }

@@ -31,8 +31,8 @@ namespace fro
 		void setType(b2BodyType const type);
 		void setVelocity(glm::vec2 const& velocity);
 
-		void addBoxCollider(std::string_view const name, glm::vec2 const& size);
-		void removeBoxCollider(std::string_view const name);
+		void addBoxCollider(std::string const& name, glm::vec2 const& size);
+		void removeBoxCollider(std::string const& name);
 
 	private:
 		RigidBody(RigidBody const&) = delete;

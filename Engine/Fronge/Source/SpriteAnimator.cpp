@@ -36,7 +36,7 @@ void fro::SpriteAnimator::update(float const deltaSeconds)
 		m_Play = false;
 }
 
-void fro::SpriteAnimator::setActiveAnimation(std::string_view const animationName)
+void fro::SpriteAnimator::setActiveAnimation(std::string const& animationName)
 {
 	Animation& animation{ m_mAnimations[animationName] };
 	if (m_pActiveAnimation not_eq &animation)
@@ -70,12 +70,12 @@ void fro::SpriteAnimator::stop()
 	reset();
 }
 
-void fro::SpriteAnimator::addAnimationFrames(std::string_view const animationName,
-	std::initializer_list<AnimationFrame> const& animationFrames)
+void fro::SpriteAnimator::addAnimationFrames(std::string const& animationName,
+	std::initializer_list<AnimationFrame> animationFrames)
 {
 	Animation& animation{ m_mAnimations[animationName] };
 	auto& vAnimationFrames{ animation.vAnimationFrames };
-	vAnimationFrames.insert(vAnimationFrames.end(), animationFrames);
+	vAnimationFrames.insert(vAnimationFrames.end(), std::move(animationFrames));
 
 	if (not m_pActiveAnimation)
 	{
@@ -84,8 +84,8 @@ void fro::SpriteAnimator::addAnimationFrames(std::string_view const animationNam
 	}
 }
 
-void fro::SpriteAnimator::addAnimationFrames(std::string_view const animationName,
-	std::string_view const animationFileName,
+void fro::SpriteAnimator::addAnimationFrames(std::string const& animationName,
+	std::string const& animationFileName,
 	glm::vec2 const& animationFrameSize,
 	std::uint32_t const amountOfFramesX,
 	std::uint32_t const amountOfFramesY)
@@ -94,14 +94,17 @@ void fro::SpriteAnimator::addAnimationFrames(std::string_view const animationNam
 
 	for (std::uint32_t y{}; y < amountOfFramesY; ++y)
 		for (std::uint32_t x{}; x < amountOfFramesX; ++x)
-			animation.vAnimationFrames.push_back(AnimationFrame(animationFileName,
-				SDL_FRect
+			animation.vAnimationFrames.push_back(AnimationFrame
 				{
-					.x{ x * animationFrameSize.x },
-					.y{ y * animationFrameSize.y },
-					.w{ animationFrameSize.x },
-					.h{ animationFrameSize.y }
-				}));
+					.fileName{ animationFileName },
+					.sourceRectangle
+					{
+						.x{ x * animationFrameSize.x },
+						.y{ y * animationFrameSize.y },
+						.w{ animationFrameSize.x },
+						.h{ animationFrameSize.y }
+					}
+				});
 
 	if (not m_pActiveAnimation)
 	{
@@ -110,12 +113,12 @@ void fro::SpriteAnimator::addAnimationFrames(std::string_view const animationNam
 	}
 }
 
-void fro::SpriteAnimator::setFramesPerSecond(std::string_view const animationName, int const framesPerSecond)
+void fro::SpriteAnimator::setFramesPerSecond(std::string const& animationName, int const framesPerSecond)
 {
 	m_mAnimations[animationName].frameTimeSeconds = 1.0f / framesPerSecond;
 }
 
-void fro::SpriteAnimator::setLoop(std::string_view const animationName, bool const shouldLoop)
+void fro::SpriteAnimator::setLoop(std::string const& animationName, bool const shouldLoop)
 {
 	m_mAnimations[animationName].shouldLoop = shouldLoop;
 }

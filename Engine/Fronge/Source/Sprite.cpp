@@ -23,13 +23,13 @@ void fro::Sprite::render() const
 		m_SourceRectangle);
 }
 
-void fro::Sprite::setFileName(std::string_view const fileName)
+void fro::Sprite::setFileName(std::string fileName)
 {
-	m_FileName = fileName;
+	m_FileName = std::move(fileName);
 	m_pTexture = ResourceManager::getInstance().getImageTexture(RenderContext::getInstance().getRenderer(), m_FileName);
 }
 
-void fro::Sprite::setSourceRectangle(SDL_FRect sourceRectangle)
+void fro::Sprite::setSourceRectangle(SDL_FRect const sourceRectangle)
 {
 	m_SourceRectangle = sourceRectangle;
 }

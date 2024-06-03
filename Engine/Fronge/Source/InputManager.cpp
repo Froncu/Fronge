@@ -134,12 +134,12 @@ void fro::InputManager::processInputEvent(SDL_Event const& event)
 	}
 }
 
-void fro::InputManager::bindActionToInput(std::string_view const actionName, Input const input)
+void fro::InputManager::bindActionToInput(std::string const& actionName, Input const input)
 {
 	m_mActions[actionName].spBoundInputInfos.insert(&m_mInputs[input]);
 }
 
-void fro::InputManager::setActionDeadzone(std::string_view const actionName, float const deadzone)
+void fro::InputManager::setActionDeadzone(std::string const& actionName, float const deadzone)
 {
 	m_mActions[actionName].deadzone = deadzone;
 }
@@ -149,22 +149,22 @@ float fro::InputManager::getInputStrength(Input const input)
 	return m_mInputs[input].absoluteStrength;
 }
 
-float fro::InputManager::getActionStrength(std::string_view const actionName)
+float fro::InputManager::getActionStrength(std::string const& actionName)
 {
 	return getActionStrength(actionName, m_mActions[actionName].deadzone);
 }
 
-float fro::InputManager::getActionStrengthAxis1D(std::string_view const positiveActionName, std::string_view const negativeActionName)
+float fro::InputManager::getActionStrengthAxis1D(std::string const& positiveActionName, std::string const& negativeActionName)
 {
 	return getActionStrength(positiveActionName) - getActionStrength(negativeActionName);
 }
 
-glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string_view const positiveActionNameX,
-	std::string_view const negativeActionNameX,
-	std::string_view const positiveActionNameY,
-	std::string_view const negativeActionNameY)
+glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positiveActionNameX,
+	std::string const& negativeActionNameX,
+	std::string const& positiveActionNameY,
+	std::string const& negativeActionNameY)
 {
-	glm::vec2 actionAxis2D
+	glm::vec2 const actionAxis2D
 	{ 
 		getActionStrength(positiveActionNameX, 0.0f) - getActionStrength(negativeActionNameX, 0.0f),
 		getActionStrength(positiveActionNameY, 0.0f) - getActionStrength(negativeActionNameY, 0.0f)
@@ -201,7 +201,7 @@ bool fro::InputManager::isInputJustPressed(Input const input)
 	return relativeStrength > 0.0f and absoluteStrength == relativeStrength;
 }
 
-bool fro::InputManager::isActionJustPressed(std::string_view const actionName)
+bool fro::InputManager::isActionJustPressed(std::string const& actionName)
 {
 	auto const& [spBoundInputInfos, deadzone] { m_mActions[actionName] };
 
@@ -222,7 +222,7 @@ bool fro::InputManager::isInputJustReleased(Input const input)
 	return relativeStrength < 0.0f and absoluteStrength == 0.0f;
 }
 
-bool fro::InputManager::isActionJustReleased(std::string_view const actionName)
+bool fro::InputManager::isActionJustReleased(std::string const& actionName)
 {
 	auto const& [spBoundInputInfos, deadzone] { m_mActions[actionName] };
 
@@ -287,7 +287,7 @@ void fro::InputManager::setInputState(float const newStrength, Input const input
 	absoluteStrength = newStrength;
 }
 
-float fro::InputManager::getActionStrength(std::string_view const actionName, float const deadzone)
+float fro::InputManager::getActionStrength(std::string const& actionName, float const deadzone)
 {
 	float largestStrength{};
 	for (InputInfo const* const pBoundInputInfo : m_mActions[actionName].spBoundInputInfos)

@@ -40,13 +40,13 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void playMusic(std::string_view const fileName, float const volume)
+	void playMusic(std::string fileName, float const volume)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
 			m_EventQueue.pushEvent(AudioEvent
 				{
-					.fileName{ fileName },
+					.fileName{ std::move(fileName) },
 					.volume{ volume },
 					.isMusic{ true },
 					.play{ true }
@@ -56,13 +56,13 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void playEffect(std::string_view const fileName, float const volume)
+	void playEffect(std::string fileName, float const volume)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
 			m_EventQueue.pushEvent(AudioEvent
 				{
-					.fileName{ fileName },
+					.fileName{ std::move(fileName) },
 					.volume{ volume },
 					.play{ true }
 				});
@@ -85,13 +85,13 @@ public:
 		m_ConditionVariable.notify_one();
 	}
 
-	void pauseEffect(std::string_view const fileName)
+	void pauseEffect(std::string fileName)
 	{
 		{
 			std::lock_guard const lockGuard{ m_Mutex };
 			m_EventQueue.pushEvent(AudioEvent
 				{
-					.fileName{ fileName },
+					.fileName{ std::move(fileName) },
 					.play{ false }
 				});
 		}
@@ -122,7 +122,7 @@ private:
 	struct AudioEvent final
 	{
 	public:
-		std::string_view fileName{};
+		std::string fileName{};
 		float volume{};
 		bool isMusic{};
 		bool play{};
@@ -156,14 +156,14 @@ private:
 			}
 			else
 			{
-				static std::map<std::string_view, int> m_mEFFECT_CHANNELS{};
+				static std::map<std::string, int> m_mEFFECT_CHANNELS{};
 
 				if (event.play)
 				{
 					Mix_Chunk* const pEffect{ ResourceManager::getInstance().getEffect(event.fileName) };
 
 					Mix_VolumeChunk(pEffect, static_cast<int>(event.volume * MIX_MAX_VOLUME));
-					m_mEFFECT_CHANNELS[event.fileName] = Mix_PlayChannel(-1, pEffect, 0);
+					m_mEFFECT_CHANNELS[std::move(event.fileName)] = Mix_PlayChannel(-1, pEffect, 0);
 				}
 				else if (not event.fileName.empty())
 				{
@@ -210,14 +210,14 @@ private:
 
 
 #pragma region PublicMethods
-void fro::AudioSDL::playMusic(std::string_view const fileName, float const volume)
+void fro::AudioSDL::playMusic(std::string fileName, float const volume)
 {
-	m_pAudioSDLImplementation->playMusic(fileName, volume);
+	m_pAudioSDLImplementation->playMusic(std::move(fileName), volume);
 }
 
-void fro::AudioSDL::playEffect(std::string_view const fileName, float const volume)
+void fro::AudioSDL::playEffect(std::string fileName, float const volume)
 {
-	m_pAudioSDLImplementation->playEffect(fileName, volume);
+	m_pAudioSDLImplementation->playEffect(std::move(fileName), volume);
 }
 
 void fro::AudioSDL::pauseMusic()
@@ -225,9 +225,9 @@ void fro::AudioSDL::pauseMusic()
 	m_pAudioSDLImplementation->pauseMusic();
 }
 
-void fro::AudioSDL::pauseEffect(std::string_view const fileName)
+void fro::AudioSDL::pauseEffect(std::string fileName)
 {
-	m_pAudioSDLImplementation->pauseEffect(fileName);
+	m_pAudioSDLImplementation->pauseEffect(std::move(fileName));
 }
 
 void fro::AudioSDL::pauseAllEffects()

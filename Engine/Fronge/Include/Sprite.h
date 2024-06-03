@@ -21,8 +21,8 @@ namespace fro
 
 		virtual void render() const override;
 
-		void setFileName(std::string_view const fileName);
-		void setSourceRectangle(SDL_FRect sourceRectangle);
+		void setFileName(std::string fileName);
+		void setSourceRectangle(SDL_FRect const sourceRectangle);
 
 		std::string_view getFileName() const;
 
@@ -33,7 +33,7 @@ namespace fro
 		Sprite& operator=(Sprite const&) = delete;
 		Sprite& operator=(Sprite&&) noexcept = delete;
 
-		std::string_view m_FileName{};
+		std::string m_FileName{};
 		SDL_Texture* m_pTexture{};
 		SDL_FRect m_SourceRectangle{};
 	};

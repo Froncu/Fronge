@@ -10,7 +10,8 @@ struct SDL_Texture;
 namespace fro
 {
 	template<typename TextType>
-	concept StringAssignable = std::same_as<std::string, TextType> || std::convertible_to<TextType, const char*>;
+	concept StringAssignable =
+		std::is_assignable_v<std::string, TextType>;
 
 	template<typename TextType>
 	concept StringConvertible = requires(TextType text)
@@ -27,16 +28,16 @@ namespace fro
 
 		virtual void render() const override;
 
-		void setFont(std::string_view const fontName, int const fontSize);
+		void setFont(std::string fontName, int const fontSize);
 
 		template<typename TextType>
-			requires StringAssignable<TextType> || StringConvertible<TextType>
-		void setText(TextType const& text)
+			requires StringConvertible<TextType> or StringAssignable<TextType>
+		void setText(TextType&& text)
 		{
-			if constexpr (StringAssignable<TextType>)
-				m_Text = text;
-			else
+			if constexpr (StringConvertible<TextType>)
 				m_Text = std::to_string(text);
+			else
+				m_Text = std::forward<TextType>(text);
 
 			updateTexture();
 		}
@@ -52,8 +53,8 @@ namespace fro
 
 		SDL_Texture* m_pTexture{};
 
-		std::string_view m_Text{};
-		std::string_view m_FontName{};
+		std::string m_Text{};
+		std::string m_FontName{};
 		int m_FontSize{};
 	};
 }

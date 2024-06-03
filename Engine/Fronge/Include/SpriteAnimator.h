@@ -17,7 +17,7 @@ namespace fro
 	public:
 		struct AnimationFrame final
 		{
-			std::string_view fileName;
+			std::string fileName;
 			SDL_FRect sourceRectangle;
 		};
 
@@ -27,21 +27,21 @@ namespace fro
 
 		virtual void update(float const deltaSeconds) override;
 
-		void setActiveAnimation(std::string_view const animationName);
+		void setActiveAnimation(std::string const& animationName);
 		void play();
 		void pause();
 		void reset();
 		void stop();
 
-		void addAnimationFrames(std::string_view const animationName,
-			std::initializer_list<AnimationFrame> const& animationFrames);
-		void addAnimationFrames(std::string_view const animationName,
-			std::string_view const animationFileName,
+		void addAnimationFrames(std::string const& animationName,
+			std::initializer_list<AnimationFrame> animationFrames);
+		void addAnimationFrames(std::string const& animationName,
+			std::string const& animationFileName,
 			glm::vec2 const& animationFrameSize,
 			std::uint32_t const amountOfCellsX,
 			std::uint32_t const amountOfCellsY);
-		void setFramesPerSecond(std::string_view const animationName, int const framesPerSecond);
-		void setLoop(std::string_view const animationName, bool shouldLoop);
+		void setFramesPerSecond(std::string const& animationName, int const framesPerSecond);
+		void setLoop(std::string const& animationName, bool shouldLoop);
 
 	private:
 		struct Animation final
@@ -59,7 +59,7 @@ namespace fro
 
 		void updateSprite() const;
 
-		std::map<std::string_view, Animation> m_mAnimations{};
+		std::map<std::string, Animation> m_mAnimations{};
 		Animation* m_pActiveAnimation{};
 
 		std::size_t m_CurrentFrameIndex{};

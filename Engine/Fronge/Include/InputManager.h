@@ -72,21 +72,21 @@ namespace fro
 
 		void processInputContinous();
 		void processInputEvent(SDL_Event const& event);
-		void bindActionToInput(std::string_view const, Input const input);
+		void bindActionToInput(std::string const&, Input const input);
 
-		void setActionDeadzone(std::string_view const, float const deadzone);
+		void setActionDeadzone(std::string const&, float const deadzone);
 
 		fro_NODISCARD float getInputStrength(Input const input);
-		fro_NODISCARD float getActionStrength(std::string_view const actionName);
-		fro_NODISCARD float getActionStrengthAxis1D(std::string_view const positiveActionName, std::string_view const negativeActionName);
-		fro_NODISCARD glm::vec2 getActionStrengthAxis2D(std::string_view const positiveActionNameX,
-			std::string_view const negativeActionNameX,
-			std::string_view const positiveActionNameY,
-			std::string_view const negativeActionNameY);
+		fro_NODISCARD float getActionStrength(std::string const& actionName);
+		fro_NODISCARD float getActionStrengthAxis1D(std::string const& positiveActionName, std::string const& negativeActionName);
+		fro_NODISCARD glm::vec2 getActionStrengthAxis2D(std::string const& positiveActionNameX,
+			std::string const& negativeActionNameX,
+			std::string const& positiveActionNameY,
+			std::string const& negativeActionNameY);
 		fro_NODISCARD bool isInputJustPressed(Input const input);
-		fro_NODISCARD bool isActionJustPressed(std::string_view const actionName);
+		fro_NODISCARD bool isActionJustPressed(std::string const& actionName);
 		fro_NODISCARD bool isInputJustReleased(Input const input);
-		fro_NODISCARD bool isActionJustReleased(std::string_view const actionName);
+		fro_NODISCARD bool isActionJustReleased(std::string const& actionName);
 
 	private:
 		struct InputInfo final
@@ -113,14 +113,14 @@ namespace fro
 
 		void setInputState(float const newStrength, Input const input);
 
-		fro_NODISCARD float getActionStrength(std::string_view const actionName, float const deadzone);
+		fro_NODISCARD float getActionStrength(std::string const& actionName, float const deadzone);
 
 		// TODO: only reason for this is to open and close connected and disconnected joypads; not sure if this is needed
 		std::map<SDL_JoystickID, CustomUniquePointer<SDL_GameController>> m_mpJoypads{};
 		// END TODO
 		std::map<SDL_JoystickID, Sint32> m_mpJoypadInstanceDeviceIDs{};
 		std::map<Input, InputInfo> m_mInputs{};
-		std::map<std::string_view, ActionInfo> m_mActions{};
+		std::map<std::string, ActionInfo> m_mActions{};
 	};
 }
 

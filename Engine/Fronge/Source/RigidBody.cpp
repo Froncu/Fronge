@@ -37,7 +37,7 @@ void fro::RigidBody::setVelocity(glm::vec2 const& velocity)
 	m_Body.SetLinearVelocity({ velocity.x, velocity.y });
 }
 
-void fro::RigidBody::addBoxCollider(std::string_view const name, glm::vec2 const& size)
+void fro::RigidBody::addBoxCollider(std::string const& name, glm::vec2 const& size)
 {
 	b2PolygonShape boxShape{};
 	boxShape.SetAsBox(size.x / 2, size.y / 2);
@@ -45,7 +45,7 @@ void fro::RigidBody::addBoxCollider(std::string_view const name, glm::vec2 const
 	m_spColliders.emplace(name, m_Body.CreateFixture(&boxShape, 1.0f));
 }
 
-void fro::RigidBody::removeBoxCollider(std::string_view const name)
+void fro::RigidBody::removeBoxCollider(std::string const& name)
 {
 	m_spColliders.erase(name);
 }

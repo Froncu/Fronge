@@ -38,12 +38,12 @@ void fro::ResourceManager::clearCaches()
 	m_mpAudioEffects.clear();
 }
 
-void fro::ResourceManager::setResourcesDirectory(std::string_view const resourcesDirectory)
+void fro::ResourceManager::setResourcesDirectory(std::string resourcesDirectory)
 {
-	m_ResourcesDirectory = resourcesDirectory;
+	m_ResourcesDirectory = std::move(resourcesDirectory);
 }
 
-SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string_view const fileName, int const size, std::string_view const text)
+SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
 {
 	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }] };
 
@@ -55,14 +55,14 @@ SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer,
 		CustomUniquePointer<SDL_Surface> pTextSurface{ TTF_RenderText_Blended(pFont, text.data(), SDL_Color(255, 255, 255, 255)), SDL_FreeSurface };
 		CustomUniquePointer<SDL_Texture> pTextTexture{ SDL_CreateTextureFromSurface(pRenderer, pTextSurface.get()), SDL_DestroyTexture };
 
-		auto resultPair{ mpTextTextures.insert({ text, std::move(pTextTexture) }) };
+		auto resultPair{ mpTextTextures.emplace(text, std::move(pTextTexture)) };
 		return resultPair.first->second.get();
 	}
 
 	return iterator->second.get();
 }
 
-SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, std::string_view const imageFileName)
+SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName)
 {
 	auto& pTexture{ m_mpImageTextures[imageFileName] };
 
@@ -72,7 +72,7 @@ SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer
 	return pTexture.get();
 }
 
-Mix_Music* fro::ResourceManager::getMusic(std::string_view const audioFileName)
+Mix_Music* fro::ResourceManager::getMusic(std::string const& audioFileName)
 {
 	auto& pMusic{ m_mpAudioMusics[audioFileName] };
 
@@ -82,7 +82,7 @@ Mix_Music* fro::ResourceManager::getMusic(std::string_view const audioFileName)
 	return pMusic.get();
 }
 
-Mix_Chunk* fro::ResourceManager::getEffect(std::string_view const audioFileName)
+Mix_Chunk* fro::ResourceManager::getEffect(std::string const& audioFileName)
 {
 	auto& pEffect{ m_mpAudioEffects[audioFileName] };
 
@@ -96,7 +96,7 @@ Mix_Chunk* fro::ResourceManager::getEffect(std::string_view const audioFileName)
 
 
 #pragma region PrivateMethods
-TTF_Font* fro::ResourceManager::getFont(std::string_view const fileName, int const size)
+TTF_Font* fro::ResourceManager::getFont(std::string const& fileName, int const size)
 {
 	auto& pFont{ m_mpFonts[{ fileName, size }] };
 

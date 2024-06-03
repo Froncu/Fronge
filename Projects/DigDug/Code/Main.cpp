@@ -43,6 +43,7 @@ int main(int, char**)
 		fro::Reference<fro::GameObject> const FPSCounter{ scene.get().addGameObject() };
 		FPSCounter.get().addComponent<fro::FPSCounter>();
 		FPSCounter.get().getComponent<fro::Transform>().get().setWorldTranslation({ 100, 100 });
+		FPSCounter.get().forceGetComponent<fro::Text>().get().setFont("Lingua.otf", 32);
 
 		fro::Reference<fro::GameObject> const pump{ scene.get().addGameObject() };
 		pump.get().addComponent<fro::Sprite>();
