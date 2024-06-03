@@ -23,7 +23,7 @@ fro::RenderContext::RenderContext()
 	std::ignore = Steam::getInstance();
 	// END HACK
 
-	m_pRenderer = { SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer };
+	m_pRenderer = { SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer };
 	if (not m_pRenderer.get())
 		throw std::runtime_error(std::format("SDL_CreateRenderer() failed: -> {}", SDL_GetError()));
 

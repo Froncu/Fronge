@@ -5,6 +5,8 @@
 
 namespace fro
 {
+	class Text;
+
 	class FPSCounter final : public Behaviour
 	{
 	public:
@@ -20,6 +22,8 @@ namespace fro
 
 		FPSCounter& operator=(FPSCounter const&) = delete;
 		FPSCounter& operator=(FPSCounter&&) noexcept = delete;
+
+		Reference<Text> m_TextComponent;
 
 		int m_Ticks{};
 		float m_ElapsedSeconds{};
