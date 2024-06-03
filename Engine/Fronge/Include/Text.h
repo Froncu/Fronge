@@ -2,6 +2,7 @@
 #define fro_TEXT_H
 
 #include "Renderable.h"
+#include "Typenames.hpp"
 
 #include <string>
 
@@ -51,7 +52,7 @@ namespace fro
 
 		void updateTexture();
 
-		SDL_Texture* m_pTexture{};
+		CustomUniquePointer<SDL_Texture> m_pTexture{};
 
 		std::string m_Text{};
 		std::string m_FontName{};

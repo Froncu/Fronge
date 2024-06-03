@@ -18,7 +18,7 @@ fro::Text::Text(Reference<GameObject> const parentingGameObject)
 #pragma region PublicMethods
 void fro::Text::render() const
 {
-	RenderContext::getInstance().renderTexture(m_pTexture, m_ParentingGameObject.get().getComponent<Transform>().get().getWorldTransform());
+	RenderContext::getInstance().renderTexture(m_pTexture.get(), m_ParentingGameObject.get().getComponent<Transform>().get().getWorldTransform());
 }
 
 void fro::Text::setFont(std::string fontName, int const fontSize)

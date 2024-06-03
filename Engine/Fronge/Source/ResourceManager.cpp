@@ -32,7 +32,6 @@ fro::ResourceManager::~ResourceManager()
 void fro::ResourceManager::clearCaches()
 {
 	m_mpFonts.clear();
-	m_mmpTextTexturesMap.clear();
 	m_mpImageTextures.clear();
 	m_mpAudioMusics.clear();
 	m_mpAudioEffects.clear();
@@ -43,23 +42,21 @@ void fro::ResourceManager::setResourcesDirectory(std::string resourcesDirectory)
 	m_ResourcesDirectory = std::move(resourcesDirectory);
 }
 
-SDL_Texture* fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
+fro::CustomUniquePointer<SDL_Texture> fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
 {
-	auto& mpTextTextures{ m_mmpTextTexturesMap[{ fileName, size }] };
+	TTF_Font* const pFont{ getFont(fileName, size) };
 
-	auto const iterator{ mpTextTextures.find(text) };
-
-	if (iterator == mpTextTextures.end())
+	CustomUniquePointer<SDL_Surface> pTextSurface
 	{
-		TTF_Font* const pFont{ getFont(fileName, size) };
-		CustomUniquePointer<SDL_Surface> pTextSurface{ TTF_RenderText_Blended(pFont, text.data(), SDL_Color(255, 255, 255, 255)), SDL_FreeSurface };
-		CustomUniquePointer<SDL_Texture> pTextTexture{ SDL_CreateTextureFromSurface(pRenderer, pTextSurface.get()), SDL_DestroyTexture };
+		TTF_RenderText_Blended(pFont, text.data(),
+			SDL_Color(255, 255, 255, 255)), SDL_FreeSurface
+	};
 
-		auto resultPair{ mpTextTextures.emplace(text, std::move(pTextTexture)) };
-		return resultPair.first->second.get();
-	}
-
-	return iterator->second.get();
+	return
+	{
+		SDL_CreateTextureFromSurface(pRenderer, pTextSurface.get()),
+		SDL_DestroyTexture
+	};
 }
 
 SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName)

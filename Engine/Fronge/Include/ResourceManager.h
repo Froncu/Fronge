@@ -6,8 +6,9 @@
 #include "Typenames.hpp"
 
 #include <functional>
+#include <map>
 #include <memory>
-#include <xstring>
+#include <string>
 #include <unordered_map>
 
 struct SDL_Renderer;
@@ -30,7 +31,7 @@ namespace fro
 
 		void setResourcesDirectory(std::string resourcesDirectory);
 
-		fro_NODISCARD SDL_Texture* getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
+		fro_NODISCARD CustomUniquePointer<SDL_Texture> getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
 		fro_NODISCARD SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName);
 		fro_NODISCARD Mix_Music* getMusic(std::string const& audioFileName);
 		fro_NODISCARD Mix_Chunk* getEffect(std::string const& audioFileName);
@@ -43,36 +44,16 @@ namespace fro
 		ResourceManager& operator=(ResourceManager const&) = delete;
 		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
 
-		struct PairHash
-		{
-			template <class Type1, class Type2>
-			std::size_t operator()(std::pair<Type1, Type2> const& pair) const
-			{
-				auto const hash1{ std::hash<Type1>{}(pair.first) };
-				auto const hash2{ std::hash<Type2>{}(pair.second) };
-				return hash1 ^ hash2;
-			}
-		};
-
-		struct PairEqual
-		{
-			template <class Type1, class Type2>
-			bool operator()(std::pair<Type1, Type2> const& pair1, std::pair<Type1, Type2> const& pair2) const
-			{
-				return
-					pair1.first == pair2.first and
-					pair1.second == pair2.second;
-			}
-		};
-
 		fro_NODISCARD TTF_Font* getFont(std::string const& fileName, int const size);
 
-		std::string m_ResourcesDirectory{ "Resources/" };
-		std::unordered_map<std::pair<std::string, int>, CustomUniquePointer<TTF_Font>, PairHash, PairEqual> m_mpFonts{};
-		std::unordered_map<std::pair<std::string, int>, std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>>, PairHash, PairEqual> m_mmpTextTexturesMap{};
 		std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>> m_mpImageTextures{};
 		std::unordered_map<std::string, CustomUniquePointer<Mix_Music>> m_mpAudioMusics{};
 		std::unordered_map<std::string, CustomUniquePointer<Mix_Chunk>> m_mpAudioEffects{};
+
+		std::string m_ResourcesDirectory{ "Resources/" };
+
+		using FontInfo = std::pair<std::string, int>;
+		std::map<FontInfo, CustomUniquePointer<TTF_Font>> m_mpFonts{};
 	};
 	// END TODO
 }
