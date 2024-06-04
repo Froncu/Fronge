@@ -53,12 +53,8 @@ fro::Reference<fro::Scene> fro::SceneManager::loadScene(std::string name)
 
 bool fro::SceneManager::unloadScene(std::string name)
 {
-	auto iFoundScene{ findScene(name) };
-
-	if (iFoundScene == m_vScenes.end())
-		return false;
-
-	m_vScenes.erase(iFoundScene);
+	auto const iOldEnd{ m_vScenes.end() };
+	return iOldEnd not_eq m_vScenes.erase(findScene(name));
 }
 #pragma endregion PublicMethods
 

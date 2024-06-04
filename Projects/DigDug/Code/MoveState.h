@@ -1,7 +1,12 @@
 #if not defined fro_MOVE_STATE_H
 #define fro_MOVE_STATE_H
 
+#include "AudioService.h"
+#include "GameObject.h"
+#include "GridMovement.h"
 #include "State.h"
+#include "ServiceLocator.hpp"
+#include "SpriteAnimator.h"
 
 namespace fro
 {
@@ -24,6 +29,14 @@ namespace fro
 
 		MoveState& operator=(MoveState const&) = delete;
 		MoveState& operator=(MoveState&&) noexcept = delete;
+
+		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
+
+		Reference<SpriteAnimator> m_SpriteAnimator{
+			m_ParentingGameObject.get().forceGetComponent<SpriteAnimator>() };
+
+		Reference<GridMovement> m_GridMovement{
+			m_ParentingGameObject.get().forceGetComponent<GridMovement>() };
 	};
 }
 

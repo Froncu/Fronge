@@ -1,9 +1,7 @@
 #include "AttackState.h"
 
-#include "GameObject.h"
-#include "PumpState.h"
 #include "InputManager.h"
-#include "SpriteAnimator.h"
+#include "PumpState.h"
 
 #pragma region Constructors/Destructor
 fro::AttackState::AttackState(Reference<GameObject> const parentingGameObject)
@@ -26,27 +24,28 @@ fro::Reference<fro::State> fro::AttackState::update(float const deltaSeconds)
 
 void fro::AttackState::enter(Reference<State> const)
 {
+	m_AudioService.playEffect("Sounds/Dig Dug Shot.mp3");
+
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
 		child.get().setActive(true);
 
-		Reference<SpriteAnimator> spriteAnimator{ child.get().getComponent<SpriteAnimator>() };
+		Reference<SpriteAnimator> spriteAnimator{ child.get().forceGetComponent<SpriteAnimator>() };
+
 		spriteAnimator.get().reset();
 		spriteAnimator.get().play();
 	}
 
-	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.get().setActiveAnimation("attacking");
+	m_SpriteAnimator.get().setActiveAnimation("attacking");
 }
 
 void fro::AttackState::exit(Reference<State> const)
 {
+	m_AudioService.stopEffect("Sounds/Dig Dug Shot.mp3");
+
 	m_ElapsedSeconds = 0.0f;
 
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
-	{
-		Reference<SpriteAnimator> spriteAnimator{ child.get().getComponent<SpriteAnimator>()};
-		spriteAnimator.get().pause();
-	}
+		m_SpriteAnimator.get().pause();
 }
 #pragma endregion PublicMethods

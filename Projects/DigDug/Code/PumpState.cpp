@@ -4,7 +4,6 @@
 #include "IdleState.h"
 #include "InputManager.h"
 #include "MoveState.h"
-#include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
 fro::PumpState::PumpState(Reference<GameObject> const parentingGameObject)
@@ -24,15 +23,24 @@ fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 	if (actionStrength.x or actionStrength.y)
 		return m_ParentingGameObject.get().forceGetComponent<MoveState>();
 
+	m_RemainingCooldownSeconds -= deltaSeconds;
+
 	if (not inputManager.getActionStrength("attack"))
 	{
 		m_ElapsedSecondsWithoutInput += deltaSeconds;
-		if (m_ElapsedSecondsWithoutInput >= 0.75f)
+		if (m_ElapsedSecondsWithoutInput >= m_IdleTimeoutSeconds)
 			return m_ParentingGameObject.get().forceGetComponent<IdleState>();
 	}
-	else
+	else if (m_RemainingCooldownSeconds <= 0.0f)
 	{
-		m_ParentingGameObject.get().getComponent<SpriteAnimator>().get().play();
+		m_RemainingCooldownSeconds = m_CooldownSeconds;
+
+		m_AudioService.stopEffect("Sounds/Dig Dug Pumping.mp3");
+		m_AudioService.playEffect("Sounds/Dig Dug Pumping.mp3");
+
+		m_SpriteAnimator.get().reset();
+		m_SpriteAnimator.get().play();
+
 		m_ElapsedSecondsWithoutInput = 0.0f;
 	}
 
@@ -41,14 +49,15 @@ fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 
 void fro::PumpState::enter(Reference<State> const)
 {
-	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.get().setActiveAnimation("pumping");
-	spriteAnimator.get().play();
+	m_SpriteAnimator.get().setActiveAnimation("pumping");
 }
 
 void fro::PumpState::exit(Reference<State> const)
 {
+	m_AudioService.stopEffect("Sounds/Dig Dug Pumping.mp3");
+
 	m_ElapsedSecondsWithoutInput = 0.0f;
+	m_RemainingCooldownSeconds = 0.0f;
 
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 		child.get().setActive(false);

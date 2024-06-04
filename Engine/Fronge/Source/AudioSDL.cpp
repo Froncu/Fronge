@@ -7,10 +7,10 @@
 
 #include <condition_variable>
 #include <format>
-#include <map>
 #include <stdexcept>
 #include <thread>
 #include <xstring>
+#include <unordered_map>
 
 #pragma region Constructors/Destructor
 fro::AudioSDL::AudioSDL()
@@ -32,7 +32,10 @@ fro::AudioSDL::~AudioSDL()
 class fro::AudioSDL::AudioSDLImplementation final
 {
 public:
-	AudioSDLImplementation() = default;
+	AudioSDLImplementation()
+	{
+		Mix_ChannelFinished(channelFreed);
+	};
 
 	~AudioSDLImplementation()
 	{
@@ -49,7 +52,7 @@ public:
 					.fileName{ std::move(fileName) },
 					.volume{ volume },
 					.isMusic{ true },
-					.play{ true }
+					.type{ AudioEvent::Type::play }
 				});
 		}
 
@@ -64,7 +67,8 @@ public:
 				{
 					.fileName{ std::move(fileName) },
 					.volume{ volume },
-					.play{ true }
+					.isMusic{ false },
+					.type{ AudioEvent::Type::play }
 				});
 		}
 
@@ -77,8 +81,10 @@ public:
 			std::lock_guard const lockGuard{ m_Mutex };
 			m_EventQueue.pushEvent(AudioEvent
 				{
+					.fileName{},
+					.volume{},
 					.isMusic{ true },
-					.play{ false }
+					.type{ AudioEvent::Type::pause }
 				});
 		}
 
@@ -92,7 +98,9 @@ public:
 			m_EventQueue.pushEvent(AudioEvent
 				{
 					.fileName{ std::move(fileName) },
-					.play{ false }
+					.volume{},
+					.isMusic{ false },
+					.type{ AudioEvent::Type::pause }
 				});
 		}
 
@@ -105,7 +113,58 @@ public:
 			std::lock_guard const lockGuard{ m_Mutex };
 			m_EventQueue.pushEvent(AudioEvent
 				{
-					.play{ false }
+					.fileName{},
+					.volume{},
+					.isMusic{ false },
+					.type{ AudioEvent::Type::pause }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
+	}
+
+	void stopMusic()
+	{
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{},
+					.volume{},
+					.isMusic{ true },
+					.type{ AudioEvent::Type::stop }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
+	}
+
+	void stopEffect(std::string fileName)
+	{
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{ std::move(fileName) },
+					.volume{},
+					.isMusic{ false },
+					.type{ AudioEvent::Type::stop }
+				});
+		}
+
+		m_ConditionVariable.notify_one();
+	}
+
+	void stopAllEffects()
+	{
+		{
+			std::lock_guard const lockGuard{ m_Mutex };
+			m_EventQueue.pushEvent(AudioEvent
+				{
+					.fileName{},
+					.volume{},
+					.isMusic{ false },
+					.type{ AudioEvent::Type::stop }
 				});
 		}
 
@@ -113,32 +172,40 @@ public:
 	}
 
 private:
-	AudioSDLImplementation(AudioSDLImplementation const&) = delete;
-	AudioSDLImplementation(AudioSDLImplementation&&) noexcept = delete;
-
-	AudioSDLImplementation& operator=(AudioSDLImplementation const&) = delete;
-	AudioSDLImplementation& operator=(AudioSDLImplementation&&) noexcept = delete;
-
 	struct AudioEvent final
 	{
 	public:
-		std::string fileName{};
-		float volume{};
-		bool isMusic{};
-		bool play{};
+		std::string fileName;
+		float volume;
+		bool isMusic;
+
+		enum class Type
+		{
+			play,
+			pause,
+			stop
+		} type;
 
 		bool operator==(AudioEvent const& event) const
 		{
 			return
 				this->fileName == event.fileName &&
 				this->isMusic == event.isMusic &&
-				this->play == event.play;
+				this->type == event.type;
 		}
 	};
 
-	bool m_RunThread{ true };
+	AudioSDLImplementation(AudioSDLImplementation const&) = delete;
+	AudioSDLImplementation(AudioSDLImplementation&&) noexcept = delete;
+
+	AudioSDLImplementation& operator=(AudioSDLImplementation const&) = delete;
+	AudioSDLImplementation& operator=(AudioSDLImplementation&&) noexcept = delete;
+
+	static std::unordered_map<std::string, int> m_mEFFECT_CHANNELS;
+
 	std::mutex m_Mutex{};
 	std::condition_variable m_ConditionVariable{};
+	bool m_RunThread{ true };
 
 	EventQueue<AudioEvent> m_EventQueue
 	{
@@ -146,35 +213,69 @@ private:
 		{
 			if (event.isMusic)
 			{
-				if (event.play)
+				static std::string CURRENT_MUSIC_NAME{};
+
+				switch (event.type)
 				{
-					Mix_VolumeMusic(static_cast<int>(event.volume * MIX_MAX_VOLUME));
-					Mix_PlayMusic(ResourceManager::getInstance().getMusic(event.fileName), 0);
-				}
-				else
+				case AudioEvent::Type::play:
+					if (CURRENT_MUSIC_NAME not_eq event.fileName)
+					{
+						CURRENT_MUSIC_NAME = std::move(event.fileName);
+
+						Mix_VolumeMusic(static_cast<int>(event.volume * MIX_MAX_VOLUME));
+						Mix_PlayMusic(ResourceManager::getInstance().getMusic(CURRENT_MUSIC_NAME), -1);
+					}
+					else
+						Mix_ResumeMusic();
+					break;
+
+				case AudioEvent::Type::pause:
 					Mix_PauseMusic();
+					break;
+
+				case AudioEvent::Type::stop:
+					Mix_HaltMusic();
+					CURRENT_MUSIC_NAME.clear();
+					break;
+				}
 			}
 			else
 			{
-				static std::map<std::string, int> m_mEFFECT_CHANNELS{};
-
-				if (event.play)
+				switch (event.type)
 				{
-					Mix_Chunk* const pEffect{ ResourceManager::getInstance().getEffect(event.fileName) };
+				case AudioEvent::Type::play:
+					if (auto const iFoundChannel{ m_mEFFECT_CHANNELS.find(std::move(event.fileName)) };
+						iFoundChannel == m_mEFFECT_CHANNELS.end())
+					{
+						Mix_Chunk* const pEffect{ ResourceManager::getInstance().getEffect(event.fileName) };
 
-					Mix_VolumeChunk(pEffect, static_cast<int>(event.volume * MIX_MAX_VOLUME));
-					m_mEFFECT_CHANNELS[std::move(event.fileName)] = Mix_PlayChannel(-1, pEffect, 0);
-				}
-				else if (not event.fileName.empty())
-				{
-					auto const iterator{ m_mEFFECT_CHANNELS.find(event.fileName) };
-					if (iterator == m_mEFFECT_CHANNELS.end())
-						return;
+						Mix_VolumeChunk(pEffect, static_cast<int>(event.volume * MIX_MAX_VOLUME));
+						m_mEFFECT_CHANNELS[std::move(event.fileName)] = Mix_PlayChannel(-1, pEffect, 0);
+					}
+					else
+						Mix_Resume(iFoundChannel->second);
+					break;
 
-					Mix_Pause(iterator->second);
+				case AudioEvent::Type::pause:
+				case AudioEvent::Type::stop:
+					if (not event.fileName.empty())
+					{
+						auto const iterator{ m_mEFFECT_CHANNELS.find(event.fileName) };
+						if (iterator == m_mEFFECT_CHANNELS.end())
+							return;
+
+						if (event.type == AudioEvent::Type::pause)
+							Mix_Pause(iterator->second);
+						else
+							Mix_HaltChannel(iterator->second);
+					}
+					else
+						if (event.type == AudioEvent::Type::pause)
+							Mix_Pause(-1);
+						else
+							Mix_HaltChannel(-1);
+					break;
 				}
-				else
-					Mix_Pause(-1);
 			}
 		}
 	};
@@ -204,7 +305,18 @@ private:
 			}
 		}
 	};
+
+	static void channelFreed(int channel)
+	{
+		m_mEFFECT_CHANNELS.erase(std::find_if(m_mEFFECT_CHANNELS.begin(), m_mEFFECT_CHANNELS.end(),
+			[channel](auto const& effectChannel)
+			{
+				return effectChannel.second == channel;
+			}));
+	}
 };
+
+std::unordered_map<std::string, int> fro::AudioSDL::AudioSDLImplementation::m_mEFFECT_CHANNELS{};
 #pragma endregion Implementation
 
 
@@ -233,5 +345,20 @@ void fro::AudioSDL::pauseEffect(std::string fileName)
 void fro::AudioSDL::pauseAllEffects()
 {
 	m_pAudioSDLImplementation->pauseAllEffects();
+}
+
+void fro::AudioSDL::stopMusic()
+{
+	m_pAudioSDLImplementation->stopMusic();
+}
+
+void fro::AudioSDL::stopEffect(std::string fileName)
+{
+	m_pAudioSDLImplementation->stopEffect(std::move(fileName));
+}
+
+void fro::AudioSDL::stopAllEffects()
+{
+	m_pAudioSDLImplementation->stopAllEffects();
 }
 #pragma endregion PublicMethods

@@ -20,4 +20,16 @@ void fro::AudioService::pauseEffect(std::string)
 void fro::AudioService::pauseAllEffects()
 {
 }
+
+void fro::AudioService::stopMusic()
+{
+}
+
+void fro::AudioService::stopEffect(std::string)
+{
+}
+
+void fro::AudioService::stopAllEffects()
+{
+}
 #pragma endregion PublicMethods

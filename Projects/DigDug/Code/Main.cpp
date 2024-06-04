@@ -27,9 +27,7 @@ int main(int, char**)
 	try
 	{
 		auto& audioService{ fro::ServiceLocator<fro::AudioService>::getInstance() };
-
 		audioService.setProvider<fro::AudioSDL>();
-		audioService.getService().playMusic("BGM #01.mp3", 0.1f);
 
 
 

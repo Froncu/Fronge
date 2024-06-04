@@ -1,11 +1,8 @@
 #include "IdleState.h"
 
 #include "AttackState.h"
-#include "GameObject.h"
-#include "GridMovement.h"
 #include "InputManager.h"
 #include "MoveState.h"
-#include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
 fro::IdleState::IdleState(Reference<GameObject> const parentingGameObject)
@@ -21,7 +18,7 @@ fro::Reference<fro::State> fro::IdleState::update(float const)
 {
 	InputManager& inputManager{ InputManager::getInstance() };
 
-	if (inputManager.getActionStrength("attack"))
+	if (inputManager.isActionJustPressed("attack"))
 		return m_ParentingGameObject.get().forceGetComponent<AttackState>();
 
 	glm::vec2 const& inputAxis2D{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
@@ -33,10 +30,9 @@ fro::Reference<fro::State> fro::IdleState::update(float const)
 
 void fro::IdleState::enter(Reference<State> const)
 {
-	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>()};
-	spriteAnimator.get().setActiveAnimation("walking");
-	spriteAnimator.get().pause();
+	m_SpriteAnimator.get().setActiveAnimation("walking");
+	m_SpriteAnimator.get().pause();
 
-	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection({0.0f, 0.0f});
+	m_GridMovement.get().setMoveDirection({ 0.0f, 0.0f });
 }
 #pragma endregion PublicMethods

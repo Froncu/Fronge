@@ -1,11 +1,8 @@
 #include "MoveState.h"
 
 #include "AttackState.h"
-#include "GameObject.h"
-#include "GridMovement.h"
 #include "IdleState.h"
 #include "InputManager.h"
-#include "SpriteAnimator.h"
 
 #pragma region Constructors/Destructor
 fro::MoveState::MoveState(Reference<GameObject> const parentingGameObject)
@@ -21,7 +18,7 @@ fro::Reference<fro::State> fro::MoveState::update(float const)
 {
 	InputManager& inputManager{ InputManager::getInstance() };
 
-	if (inputManager.getActionStrength("attack"))
+	if (inputManager.isActionJustPressed("attack"))
 		return m_ParentingGameObject.get().forceGetComponent<AttackState>();
 
 	glm::vec2 const& inputAxis2D{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
@@ -29,19 +26,22 @@ fro::Reference<fro::State> fro::MoveState::update(float const)
 	if (not inputAxis2D.x and not inputAxis2D.y)
 		return m_ParentingGameObject.get().forceGetComponent<IdleState>();
 
-	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection(inputAxis2D);
+	m_GridMovement.get().setMoveDirection(inputAxis2D);
 	return {};
 }
 
 void fro::MoveState::enter(Reference<State> const)
 {
-	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>() };
-	spriteAnimator.get().setActiveAnimation("walking");
-	spriteAnimator.get().play();
+	m_AudioService.playMusic("Sounds/In-Game Music.mp3");
+
+	m_SpriteAnimator.get().setActiveAnimation("walking");
+	m_SpriteAnimator.get().play();
 }
 
 void fro::MoveState::exit(Reference<State> const)
 {
+	m_AudioService.pauseMusic();
+
 	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection({});
 }
 #pragma endregion PublicMethods

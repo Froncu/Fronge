@@ -1,7 +1,11 @@
 #if not defined fro_ATTACK_STATE_H
 #define fro_ATTACK_STATE_H
 
+#include "AudioService.h"
+#include "GameObject.h"
 #include "State.h"
+#include "ServiceLocator.hpp"
+#include "SpriteAnimator.h"
 
 namespace fro
 {
@@ -24,6 +28,11 @@ namespace fro
 
 		AttackState& operator=(AttackState const&) = delete;
 		AttackState& operator=(AttackState&&) noexcept = delete;
+
+		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
+
+		Reference<SpriteAnimator> m_SpriteAnimator{
+			m_ParentingGameObject.get().forceGetComponent<SpriteAnimator>() };
 
 		float m_ElapsedSeconds{};
 	};

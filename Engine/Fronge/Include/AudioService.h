@@ -15,8 +15,11 @@ namespace fro
 		virtual void playMusic(std::string fileName, float const volume = 1.0f);
 		virtual void playEffect(std::string fileName, float const volume = 1.0f);
 		virtual void pauseMusic();
-		virtual void pauseEffect(std::string fileName);
+		virtual void pauseEffect(std::string);
 		virtual void pauseAllEffects();
+		virtual void stopMusic();
+		virtual void stopEffect(std::string);
+		virtual void stopAllEffects();
 
 	private:
 		AudioService(AudioService const&) = delete;
