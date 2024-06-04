@@ -2,6 +2,8 @@
 #define fro_FPS_COUNTER_H
 
 #include "Behaviour.h"
+#include "GameObject.h"
+#include "Text.h"
 
 namespace fro
 {
@@ -20,6 +22,8 @@ namespace fro
 
 		FPSCounter& operator=(FPSCounter const&) = delete;
 		FPSCounter& operator=(FPSCounter&&) noexcept = delete;
+
+		Reference<Text> m_Text{ m_ParentingGameObject.get().forceGetComponent<Text>() };
 
 		int m_Ticks{};
 		float m_ElapsedSeconds{};

@@ -2,6 +2,8 @@
 #define fro_SPRITE_ANIMATOR_H
 
 #include "Behaviour.h"
+#include "GameObject.h"
+#include "Sprite.h"
 
 #include <sdl_rect.h>
 #include <vec2.hpp>
@@ -58,6 +60,8 @@ namespace fro
 		SpriteAnimator& operator=(SpriteAnimator&&) noexcept = delete;
 
 		void updateSprite() const;
+
+		Reference<Sprite> m_Sprite{ m_ParentingGameObject.get().forceGetComponent<Sprite>() };
 
 		std::map<std::string, Animation> m_mAnimations{};
 		Animation* m_pActiveAnimation{};

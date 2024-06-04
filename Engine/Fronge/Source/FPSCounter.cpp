@@ -1,8 +1,5 @@
 #include "FPSCounter.h"
 
-#include "GameObject.h"
-#include "Text.h"
-
 #include <format>
 
 #pragma region Constructors/Destructor
@@ -23,7 +20,7 @@ void fro::FPSCounter::update(float const deltaSeconds)
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= maxElapsedSeconds)
 	{
-		m_ParentingGameObject.get().forceGetComponent<Text>().get().setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));
+		m_Text.get().setText(std::format("{:.1f}", m_Ticks / m_ElapsedSeconds));
 
 		m_Ticks = 0;
 		m_ElapsedSeconds -= maxElapsedSeconds;

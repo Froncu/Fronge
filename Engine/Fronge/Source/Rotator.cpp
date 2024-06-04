@@ -1,8 +1,5 @@
 #include "Rotator.h"
 
-#include "GameObject.h"
-#include "Transform.h"
-
 #include <glm.hpp>
 #include <gtc/constants.hpp>
 
@@ -24,8 +21,8 @@ void fro::Rotator::update(float const deltaSeconds)
 
 	m_Angle = glm::mod(m_Angle, twoPi);
 
-	m_ParentingGameObject.get().getComponent<Transform>().get().setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
-	m_ParentingGameObject.get().getComponent<Transform>().get().setWorldRotation(m_Angle);
+	m_Transform.get().setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
+	m_Transform.get().setWorldRotation(m_Angle);
 }
 
 void fro::Rotator::setCenter(glm::vec2 const& center)

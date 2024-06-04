@@ -45,6 +45,8 @@ namespace fro
 		void calculateLocalTransform();
 		void calculateWorldTransform();
 
+		Reference<Transform> m_ParentTransform{  };
+
 		TransformationMatrix2D m_LocalTransform{};
 		TransformationMatrix2D m_WorldTransform{};
 

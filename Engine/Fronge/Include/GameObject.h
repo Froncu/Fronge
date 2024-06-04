@@ -1,10 +1,10 @@
 #if not defined fro_GAME_OBJECT_H
 #define fro_GAME_OBJECT_H
 
+#include "BaseReferencable.h"
 #include "Behaviour.h"
 #include "Defines.hpp"
 #include "GUI.h"
-#include "BaseReferencable.h"
 #include "Renderable.h"
 #include "Transform.h"
 
@@ -43,11 +43,9 @@ namespace fro
 		fro_NODISCARD std::set<Reference<GameObject>> const& getChildren() const;
 
 		template<ComponentDerived ComponentType>
+			requires (not std::same_as<ComponentType, Transform>)
 		Reference<ComponentType> addComponent() noexcept
 		{
-			static_assert(not std::is_same_v<ComponentType, Transform>,
-				"each GameObject receieves a Transform component by default");
-
 			if (m_mpComponents.contains(typeid(ComponentType)))
 				return {};
 
@@ -70,11 +68,9 @@ namespace fro
 		}
 
 		template<ComponentDerived ComponentType>
+			requires (not std::same_as<ComponentType, Transform>)
 		bool removeComponent() noexcept
 		{
-			static_assert(not std::is_same_v<ComponentType, Transform>,
-				"each GameObject must contain a Transform component");
-
 			Reference<ComponentType> const foundComponent{ getComponent<ComponentType>() };
 			if (not foundComponent.valid())
 				return false;
@@ -108,11 +104,16 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD Reference<ComponentType> forceGetComponent() noexcept
 		{
-			Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
-			if (not foundComponent.valid())
-				foundComponent = addComponent<ComponentType>();
+			if constexpr (std::same_as<ComponentType, Transform>)
+				return getComponent<ComponentType>();
+			else
+			{
+				Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
+				if (not foundComponent.valid())
+					foundComponent = addComponent<ComponentType>();
 
-			return foundComponent;
+				return foundComponent;
+			}
 		}
 
 	private:

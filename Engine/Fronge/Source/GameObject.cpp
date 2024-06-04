@@ -108,7 +108,7 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 	if (m_Parent.valid())
 		m_Parent.get().m_sChildren.insert(this);
 
-	if (m_Parent.valid() && keepWorldTransform)
+	if (m_Parent.valid() and keepWorldTransform)
 		transform.get().setWorldTransformation(oldWorldTransform);
 	else
 		transform.get().setWorldTransformDirty();

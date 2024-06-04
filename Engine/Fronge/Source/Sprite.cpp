@@ -1,6 +1,5 @@
 #include "Sprite.h"
 
-#include "GameObject.h"
 #include "RenderContext.h"
 #include "ResourceManager.h"
 
@@ -19,7 +18,7 @@ fro::Sprite::Sprite(Reference<GameObject> const parentingGameObject)
 void fro::Sprite::render() const
 {
 	RenderContext::getInstance().renderTexture(m_pTexture,
-		m_ParentingGameObject.get().getComponent<Transform>().get().getWorldTransform(),
+		m_Transform.get().getWorldTransform(),
 		m_SourceRectangle);
 }
 

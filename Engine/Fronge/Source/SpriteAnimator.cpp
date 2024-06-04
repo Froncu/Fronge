@@ -1,8 +1,5 @@
 #include "SpriteAnimator.h"
 
-#include "GameObject.h"
-#include "Sprite.h"
-
 #pragma region Constructors/Destructor
 fro::SpriteAnimator::SpriteAnimator(Reference<GameObject> const parentingGameObject)
 	: Behaviour(parentingGameObject)
@@ -134,11 +131,9 @@ void fro::SpriteAnimator::updateSprite() const
 		m_pActiveAnimation->vAnimationFrames[m_CurrentFrameIndex]
 	};
 
-	Reference<Sprite> spriteComponent{ m_ParentingGameObject.get().getComponent<Sprite>() };
+	if (m_Sprite.get().getFileName() not_eq currentAnimationFrame.fileName)
+		m_Sprite.get().setFileName(currentAnimationFrame.fileName);
 
-	if (spriteComponent.get().getFileName() not_eq currentAnimationFrame.fileName)
-		spriteComponent.get().setFileName(currentAnimationFrame.fileName);
-
-	spriteComponent.get().setSourceRectangle(currentAnimationFrame.sourceRectangle);
+	m_Sprite.get().setSourceRectangle(currentAnimationFrame.sourceRectangle);
 }
 #pragma endregion PrivateMethods

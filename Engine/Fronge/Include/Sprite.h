@@ -2,6 +2,7 @@
 #define fro_SPRITE_H
 
 #include "Defines.hpp"
+#include "GameObject.h"
 #include "Renderable.h"
 
 #include <sdl_rect.h>
@@ -32,6 +33,8 @@ namespace fro
 
 		Sprite& operator=(Sprite const&) = delete;
 		Sprite& operator=(Sprite&&) noexcept = delete;
+
+		Reference<Transform> m_Transform{ m_ParentingGameObject.get().forceGetComponent<Transform>() };
 
 		std::string m_FileName{};
 		SDL_Texture* m_pTexture{};

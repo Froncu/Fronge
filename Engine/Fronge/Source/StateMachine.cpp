@@ -44,7 +44,7 @@ void fro::StateMachine::setCurrentState(Reference<State> const newState)
 	if (newState.valid())
 		newState.get().enter(m_CurrentState);
 
-	m_CurrentState = std::move(newState);
+	m_CurrentState = newState;
 
 }
 #pragma endregion PublicMethods

@@ -2,6 +2,8 @@
 #define fro_ROTATOR_H
 
 #include "Behaviour.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 #include <vec2.hpp>
 
@@ -26,6 +28,8 @@ namespace fro
 
 		Rotator& operator=(Rotator const&) = delete;
 		Rotator& operator=(Rotator&&) noexcept = delete;
+
+		Reference<Transform> m_Transform{ m_ParentingGameObject.get().forceGetComponent<Transform>() };
 
 		glm::vec2 m_Center{};
 		float m_Radius{ 50.0f };
