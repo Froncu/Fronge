@@ -19,8 +19,7 @@ fro::Reference<fro::State> fro::AttackState::update(float const deltaSeconds)
 {
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= 0.5f)
-		return new PumpState(m_ParentingGameObject);
-		//return m_ParentingGameObject.get().forceGetComponent<PumpState>();
+		return m_ParentingGameObject.get().forceGetComponent<PumpState>();
 
 	return {};
 }

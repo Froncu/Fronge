@@ -14,9 +14,7 @@ namespace fro
 
 		virtual ~GridMovement() override = default;
 
-		virtual void fixedUpdate(float const) override;
 		virtual void update(float const deltaSeconds) override;
-		virtual void lateUpdate(float const) override;
 
 		void setMoveDirection(glm::vec2 const& direction);
 		void setMoveSpeed(float const speed);

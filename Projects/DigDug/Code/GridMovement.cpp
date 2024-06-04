@@ -14,10 +14,6 @@ fro::GridMovement::GridMovement(Reference<GameObject> const parentingGameObject)
 
 
 #pragma region PublicMethods
-void fro::GridMovement::fixedUpdate(float const)
-{
-}
-
 void fro::GridMovement::update(float const deltaSeconds)
 {
 	if (not m_MoveDirection.x and not m_MoveDirection.y)
@@ -63,10 +59,6 @@ void fro::GridMovement::update(float const deltaSeconds)
 	}
 
 	m_ParentingGameObject.get().localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
-}
-
-void fro::GridMovement::lateUpdate(float const)
-{
 }
 
 void fro::GridMovement::setMoveDirection(glm::vec2 const& direction)

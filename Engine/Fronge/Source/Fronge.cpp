@@ -10,7 +10,7 @@
 #include "SystemEventManager.h"
 
 #include <sdl.h>
-//#include <vld.h>
+#include <vld.h>
 
 #include <chrono>
 
