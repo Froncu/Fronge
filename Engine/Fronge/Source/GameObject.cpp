@@ -3,6 +3,11 @@
 #include <algorithm>
 
 #pragma region Constructors/Destructor
+fro::GameObject::GameObject(std::string name)
+	: m_Name{ std::move(name) }
+{
+}
+
 fro::GameObject::GameObject(GameObject&& other) noexcept
 	: BaseReferencable(std::move(other))
 	

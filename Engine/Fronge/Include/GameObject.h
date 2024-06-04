@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <set>
+#include <string>
 #include <typeindex>
 #include <unordered_map>
 
@@ -21,7 +22,7 @@ namespace fro
 	class GameObject final : public BaseReferencable
 	{
 	public:
-		GameObject() = default;
+		GameObject(std::string name);
 		GameObject(GameObject&& other) noexcept;
 
 		~GameObject() = default;
@@ -137,6 +138,8 @@ namespace fro
 
 		void calculateLocalTransform();
 		void calculateWorldTransform() const;
+
+		std::string const m_Name;
 
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 

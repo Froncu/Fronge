@@ -1,5 +1,14 @@
 #include "Scene.h"
 
+#pragma region Constructors/Destructor
+fro::Scene::Scene(std::string name)
+	: m_Name{ std::move(name) }
+{
+}
+#pragma endregion Constructors/Destructor
+
+
+
 #pragma region PublicMethods
 void fro::Scene::fixedUpdate(float const fixedDeltaSeconds) const
 {
@@ -31,13 +40,8 @@ void fro::Scene::display() const
 		gameObject.display();
 }
 
-fro::Reference<fro::GameObject> fro::Scene::addGameObject()
+fro::Reference<fro::GameObject> fro::Scene::addGameObject(std::string name)
 {
-	return m_vGameObjects.emplace_back();
-}
-
-bool fro::Scene::isActive() const
-{
-	return m_IsActive;
+	return m_vGameObjects.emplace_back(std::move(name));
 }
 #pragma endregion PublicMethods

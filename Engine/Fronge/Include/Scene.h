@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "BaseReferencable.h"
 
+#include <string>
 #include <vector>
 
 namespace fro
@@ -11,7 +12,7 @@ namespace fro
 	class Scene final : public BaseReferencable
 	{
 	public:
-		Scene() = default;
+		Scene(std::string name);
 		Scene(Scene const&) = default;
 		Scene(Scene&&) noexcept = default;
 
@@ -26,12 +27,11 @@ namespace fro
 
 		void render() const;
 		void display() const;
-		fro::Reference<fro::GameObject> addGameObject();
-
-		bool isActive() const;
+		fro::Reference<fro::GameObject> addGameObject(std::string name);
 
 	private:
-		bool m_IsActive{ true };
+		std::string const m_Name;
+
 		std::vector<GameObject> m_vGameObjects{};
 	};
 }

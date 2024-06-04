@@ -3,41 +3,36 @@
 #pragma region PublicMethods
 void fro::SceneManager::fixedUpdate(float const fixedDeltaSeconds) const
 {
-	for (Scene const& scene : m_vScenes)
-		if (scene.isActive())
-			scene.fixedUpdate(fixedDeltaSeconds);
+	if (not m_vScenes.empty())
+		m_vScenes[m_ActiveSceneIndex].fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::SceneManager::update(float const deltaSeconds) const
 {
-	for (Scene const& scene : m_vScenes)
-		if (scene.isActive())
-			scene.update(deltaSeconds);
+	if (not m_vScenes.empty())
+		m_vScenes[m_ActiveSceneIndex].update(deltaSeconds);
 }
 
 void fro::SceneManager::lateUpdate(float const deltaSeconds) const
 {
-	for (Scene const& scene : m_vScenes)
-		if (scene.isActive())
-			scene.lateUpdate(deltaSeconds);
+	if (not m_vScenes.empty())
+		m_vScenes[m_ActiveSceneIndex].lateUpdate(deltaSeconds);
 }
 
 void fro::SceneManager::render() const
 {
-	for (Scene const& scene : m_vScenes)
-		if (scene.isActive())
-			scene.render();
+	if (not m_vScenes.empty())
+		m_vScenes[m_ActiveSceneIndex].render();
 }
 
 void fro::SceneManager::display() const
 {
-	for (Scene const& scene : m_vScenes)
-		if (scene.isActive())
-			scene.display();
+	if (not m_vScenes.empty())
+		m_vScenes[m_ActiveSceneIndex].display();
 }
 
-fro::Reference<fro::Scene> fro::SceneManager::addScene()
+fro::Reference<fro::Scene> fro::SceneManager::addScene(std::string name)
 {
-	return m_vScenes.emplace_back();
+	return m_vScenes.emplace_back(std::move(name));
 }
 #pragma endregion PublicMethods

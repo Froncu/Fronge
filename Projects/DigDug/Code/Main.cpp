@@ -43,11 +43,11 @@ int main(int, char**)
 
 
 
-		auto const scene{ fro::SceneManager::getInstance().addScene() };
+		auto const scene{ fro::SceneManager::getInstance().addScene("Main")};
 
 
 
-		auto const pump{ scene.get().addGameObject() };
+		auto const pump{ scene.get().addGameObject("Pump")};
 
 		auto spriteAnimator{ pump.get().forceGetComponent<fro::SpriteAnimator>() };
 
@@ -61,7 +61,7 @@ int main(int, char**)
 
 
 
-		auto const player1{ scene.get().addGameObject() };
+		auto const player1{ scene.get().addGameObject("DigDug")};
 
 		player1.get().setLocalTranslation({ 8, 8 });
 		player1.get().addComponent<fro::GridMovement>();
@@ -84,7 +84,7 @@ int main(int, char**)
 
 
 
-		auto const player2{ scene.get().addGameObject() };
+		auto const player2{ scene.get().addGameObject("Fygar")};
 
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });
