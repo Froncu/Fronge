@@ -18,7 +18,6 @@
 #include "Steam.h"
 #include "SystemEventManager.h"
 #include "Text.h"
-#include "Transform.h"
 
 #include <sdl_main.h>
 #include <sdl_mixer.h>
@@ -56,7 +55,7 @@ int main(int, char**)
 		spriteAnimator.get().setFramesPerSecond("shooting", 12);
 		spriteAnimator.get().setLoop("shooting", false);
 
-		pump.get().forceGetComponent<fro::Transform>().get().setLocalTranslation({ 24, 0 });
+		pump.get().setLocalTranslation({ 24, 0 });
 
 		pump.get().setActive(false);
 
@@ -64,7 +63,7 @@ int main(int, char**)
 
 		auto const player1{ scene.get().addGameObject() };
 
-		player1.get().forceGetComponent<fro::Transform>().get().setLocalTranslation({ 8, 8 });
+		player1.get().setLocalTranslation({ 8, 8 });
 		player1.get().addComponent<fro::GridMovement>();
 
 		spriteAnimator = player1.get().forceGetComponent<fro::SpriteAnimator>();
@@ -88,7 +87,7 @@ int main(int, char**)
 		auto const player2{ scene.get().addGameObject() };
 
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
-		player2.get().forceGetComponent<fro::Transform>().get().setLocalTranslation({ 40, 8 });
+		player2.get().setLocalTranslation({ 40, 8 });
 
 
 

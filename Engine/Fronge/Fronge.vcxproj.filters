@@ -52,9 +52,6 @@
     <ClCompile Include="Source\Text.cpp">
       <Filter>Component\Renderable\Text</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Transform.cpp">
-      <Filter>Component\Transform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\AudioService.cpp">
       <Filter>Systems\Services &amp; Providers\Services\Audio</Filter>
     </ClCompile>
@@ -143,9 +140,6 @@
     </Filter>
     <Filter Include="Component\Behaviour\FPSCounter">
       <UniqueIdentifier>{a8356578-323f-400d-a11e-6b150e08c959}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{6da2ff1e-9b52-4c79-89f4-d46fafc77461}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Renderable">
       <UniqueIdentifier>{571b0beb-7504-4242-828b-509c292d8279}</UniqueIdentifier>
@@ -284,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="Include\Text.h">
       <Filter>Component\Renderable\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Transform.h">
-      <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Include\EventQueue.hpp">
       <Filter>Patterns</Filter>

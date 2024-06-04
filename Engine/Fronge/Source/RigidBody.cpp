@@ -22,9 +22,8 @@ void fro::RigidBody::fixedUpdate(float const)
 	b2Vec2 const& translation{ m_Body.GetPosition() };
 	float const rotation{ m_Body.GetAngle() };
 
-	Reference<Transform> transform{ m_ParentingGameObject.get().getComponent<Transform>() };
-	transform.get().setWorldTranslation({ translation.x, translation.y });
-	transform.get().setWorldRotation(rotation);
+	m_ParentingGameObject.get().setWorldTranslation({ translation.x, translation.y });
+	m_ParentingGameObject.get().setWorldRotation(rotation);
 }
 
 void fro::RigidBody::setType(b2BodyType const type)
@@ -58,7 +57,7 @@ b2Body& fro::RigidBody::createBody() const
 {
 	b2BodyDef bodyDefinition{};
 
-	glm::vec2 const& worldTranslation{ m_ParentingGameObject.get().getComponent<Transform>().get().getWorldTransform().getTranslation() };
+	glm::vec2 const& worldTranslation{ m_ParentingGameObject.get().getWorldTransform().getTranslation() };
 	bodyDefinition.position.x = worldTranslation.x;
 	bodyDefinition.position.y = worldTranslation.y;
 

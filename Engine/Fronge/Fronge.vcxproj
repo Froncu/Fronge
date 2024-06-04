@@ -186,7 +186,6 @@
     <ClCompile Include="Source\Steam.cpp" />
     <ClCompile Include="Source\SystemEventManager.cpp" />
     <ClCompile Include="Source\Text.cpp" />
-    <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -229,7 +228,6 @@
     <ClInclude Include="Include\Steam.h" />
     <ClInclude Include="Include\SystemEventManager.h" />
     <ClInclude Include="Include\Text.h" />
-    <ClInclude Include="Include\Transform.h" />
     <ClInclude Include="Include\Typenames.hpp" />
     <ClInclude Include="Include\StateMachine.h" />
   </ItemGroup>

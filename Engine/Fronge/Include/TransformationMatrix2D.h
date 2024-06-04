@@ -10,8 +10,8 @@ namespace fro
 	class TransformationMatrix2D final
 	{
 	public:
-		TransformationMatrix2D(glm::mat3x3 const& transformation);
 		TransformationMatrix2D() = default;
+		TransformationMatrix2D(glm::mat3x3 const& transformation);
 		TransformationMatrix2D(TransformationMatrix2D const&) = default;
 		TransformationMatrix2D(TransformationMatrix2D&&) noexcept = default;
 

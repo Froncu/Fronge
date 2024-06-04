@@ -1,7 +1,6 @@
 #if not defined fro_TEXT_H
 #define fro_TEXT_H
 
-#include "GameObject.h"
 #include "Renderable.h"
 #include "Typenames.hpp"
 
@@ -52,8 +51,6 @@ namespace fro
 		Text& operator=(Text&&) noexcept = delete;
 
 		void updateTexture();
-
-		Reference<Transform> m_Transform{ m_ParentingGameObject.get().forceGetComponent<Transform>() };
 
 		CustomUniquePointer<SDL_Texture> m_pTexture{};
 

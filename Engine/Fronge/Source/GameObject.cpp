@@ -3,11 +3,6 @@
 #include <algorithm>
 
 #pragma region Constructors/Destructor
-fro::GameObject::GameObject()
-{
-	m_mpComponents.emplace(typeid(Transform), std::make_unique<Transform>(*this));
-}
-
 fro::GameObject::GameObject(GameObject&& other) noexcept
 	: BaseReferencable(std::move(other))
 	
@@ -20,8 +15,14 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 	, m_sChildren{ std::move(other.m_sChildren) }
 	, m_Parent{ std::move(other.m_Parent) }
 
+	, m_LocalTransform{ std::move(other.m_LocalTransform) }
+	, m_WorldTransform{ std::move(other.m_WorldTransform) }
+
+	, m_IsWorldTransformDirty{ other.m_IsWorldTransformDirty }
+
 	, m_IsActive{ other.m_IsActive }
 {
+	other.m_IsWorldTransformDirty = false;
 }
 #pragma endregion Constructors/Destructor
 
@@ -98,10 +99,9 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 	if (m_Parent.valid())
 		m_Parent.get().m_sChildren.insert(this);
 
-	Reference<Transform> transform{ getComponent<Transform>() };
 	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
-		oldWorldTransform = transform.get().getWorldTransform();
+		oldWorldTransform = getWorldTransform();
 
 	m_Parent = parent;
 
@@ -109,9 +109,175 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 		m_Parent.get().m_sChildren.insert(this);
 
 	if (m_Parent.valid() and keepWorldTransform)
-		transform.get().setWorldTransformation(oldWorldTransform);
+		setWorldTransformation(oldWorldTransform);
 	else
-		transform.get().setWorldTransformDirty();
+		setWorldTransformDirty();
+}
+
+void fro::GameObject::localTransform(TransformationMatrix2D const& transformation)
+{
+	m_LocalTransform.transform(transformation.getTransformation());
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::localTranslate(glm::vec2 const& translation)
+{
+	m_LocalTransform.translate(translation);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::localRotate(float const rotation)
+{
+	m_LocalTransform.rotate(rotation);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::localScale(glm::vec2 const& scale)
+{
+	m_LocalTransform.scale(scale);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::worldTransform(TransformationMatrix2D const& transformation)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.transform(transformation.getTransformation());
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::worldTranslate(glm::vec2 const& translation)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.translate(translation);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::worldRotate(float const rotation)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.rotate(rotation);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::worldScale(glm::vec2 const& scale)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.scale(scale);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::setLocalTransformation(TransformationMatrix2D const& transformation)
+{
+	m_LocalTransform = transformation;
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::setLocalTranslation(glm::vec2 const& translation)
+{
+	m_LocalTransform.setTranslation(translation);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::setLocalRotation(float const rotation)
+{
+	m_LocalTransform.setRotation(rotation);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::setLocalScale(glm::vec2 const& scale)
+{
+	m_LocalTransform.setScale(scale);
+
+	setWorldTransformDirty();
+}
+
+void fro::GameObject::setWorldTransformation(TransformationMatrix2D const& transformation)
+{
+	m_WorldTransform = transformation;
+	m_IsWorldTransformDirty = false;
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::setWorldTranslation(glm::vec2 const& translation)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.setTranslation(translation);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::setWorldRotation(float const rotation)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.setRotation(rotation);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::setWorldScale(glm::vec2 const& scale)
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	m_WorldTransform.setScale(scale);
+
+	calculateLocalTransform();
+}
+
+void fro::GameObject::setWorldTransformDirty()
+{
+	if (m_IsWorldTransformDirty)
+		return;
+
+	m_IsWorldTransformDirty = true;
+
+	for (Reference<GameObject> const child : m_sChildren)
+		child.get().setWorldTransformDirty();
 }
 
 bool fro::GameObject::owns(Reference<GameObject> const gameObject) const
@@ -132,4 +298,40 @@ std::set<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() 
 {
 	return m_sChildren;
 }
+
+fro::TransformationMatrix2D const& fro::GameObject::getLocalTransform() const
+{
+	return m_LocalTransform;
+}
+
+fro::TransformationMatrix2D const& fro::GameObject::getWorldTransform() const
+{
+	if (m_IsWorldTransformDirty)
+	{
+		calculateWorldTransform();
+		m_IsWorldTransformDirty = false;
+	}
+
+	return m_WorldTransform;
+}
 #pragma endregion PublicMethods
+
+
+
+#pragma region PrivateMethods
+void fro::GameObject::calculateLocalTransform()
+{
+	if (m_Parent.valid())
+		m_LocalTransform = getWorldTransform() / m_Parent.get().getWorldTransform();
+	else
+		m_LocalTransform = getWorldTransform();
+}
+
+void fro::GameObject::calculateWorldTransform() const
+{
+	if (m_Parent.valid())
+		m_WorldTransform = getLocalTransform() * m_Parent.get().getWorldTransform();
+	else
+		m_WorldTransform = getLocalTransform();
+}
+#pragma endregion PrivateMethods

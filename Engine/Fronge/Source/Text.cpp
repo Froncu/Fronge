@@ -19,7 +19,7 @@ fro::Text::Text(Reference<GameObject> const parentingGameObject)
 void fro::Text::render() const
 {
 	RenderContext::getInstance().renderTexture(m_pTexture.get(),
-		m_Transform.get().getWorldTransform());
+		m_ParentingGameObject.get().getWorldTransform());
 }
 
 void fro::Text::setFont(std::string fontName, int const fontSize)

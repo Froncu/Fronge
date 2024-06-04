@@ -27,7 +27,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 
 	int const halfCellSizeY{ m_CellSizeY / 2 };
 	int const halfCellSizeX{ m_CellSizeX / 2 };
-	glm::ivec2 const worldPosition{ m_ParentingGameObject.get().getComponent<Transform>().get().getWorldTransform().getTranslation() };
+	glm::ivec2 const worldPosition{ m_ParentingGameObject.get().getWorldTransform().getTranslation() };
 
 	if (std::fabs(m_MoveDirection.y) > std::fabs(m_MoveDirection.x))
 	{
@@ -62,8 +62,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 			correctedMoveDirection.x = std::signbit(m_MoveDirection.x) ? -1.0f : 1.0f;
 	}
 
-	Reference<Transform> transform{ m_ParentingGameObject.get().getComponent<Transform>() };
-	transform.get().localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
+	m_ParentingGameObject.get().localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
 }
 
 void fro::GridMovement::lateUpdate(float const)

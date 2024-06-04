@@ -6,7 +6,7 @@
 #include "Defines.hpp"
 #include "GUI.h"
 #include "Renderable.h"
-#include "Transform.h"
+#include "TransformationMatrix2D.h"
 
 #include <memory>
 #include <set>
@@ -21,7 +21,7 @@ namespace fro
 	class GameObject final : public BaseReferencable
 	{
 	public:
-		GameObject();
+		GameObject() = default;
 		GameObject(GameObject&& other) noexcept;
 
 		~GameObject() = default;
@@ -38,12 +38,32 @@ namespace fro
 		void setActive(bool const isActive);
 		void setParent(Reference<GameObject> const parent, bool const keepWorldTransform = true);
 
+		void localTransform(TransformationMatrix2D const& transformation);
+		void localTranslate(glm::vec2 const& translation);
+		void localRotate(float const rotation);
+		void localScale(glm::vec2 const& scale);
+		void worldTransform(TransformationMatrix2D const& transformation);
+		void worldTranslate(glm::vec2 const& translation);
+		void worldRotate(float const rotation);
+		void worldScale(glm::vec2 const& scale);
+
+		void setLocalTransformation(TransformationMatrix2D const& transformation);
+		void setLocalTranslation(glm::vec2 const& translation);
+		void setLocalRotation(float const rotation);
+		void setLocalScale(glm::vec2 const& scale);
+		void setWorldTransformation(TransformationMatrix2D const& transformation);
+		void setWorldTranslation(glm::vec2 const& translation);
+		void setWorldRotation(float const rotation);
+		void setWorldScale(glm::vec2 const& scale);
+		void setWorldTransformDirty();
+
 		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;
 		fro_NODISCARD Reference<GameObject> getParent() const;
 		fro_NODISCARD std::set<Reference<GameObject>> const& getChildren() const;
+		fro_NODISCARD TransformationMatrix2D const& getLocalTransform() const;
+		fro_NODISCARD TransformationMatrix2D const& getWorldTransform() const;
 
 		template<ComponentDerived ComponentType>
-			requires (not std::same_as<ComponentType, Transform>)
 		Reference<ComponentType> addComponent() noexcept
 		{
 			if (m_mpComponents.contains(typeid(ComponentType)))
@@ -68,7 +88,6 @@ namespace fro
 		}
 
 		template<ComponentDerived ComponentType>
-			requires (not std::same_as<ComponentType, Transform>)
 		bool removeComponent() noexcept
 		{
 			Reference<ComponentType> const foundComponent{ getComponent<ComponentType>() };
@@ -104,16 +123,11 @@ namespace fro
 		template<ComponentDerived ComponentType>
 		fro_NODISCARD Reference<ComponentType> forceGetComponent() noexcept
 		{
-			if constexpr (std::same_as<ComponentType, Transform>)
-				return getComponent<ComponentType>();
-			else
-			{
-				Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
-				if (not foundComponent.valid())
-					foundComponent = addComponent<ComponentType>();
+			Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
+			if (not foundComponent.valid())
+				foundComponent = addComponent<ComponentType>();
 
-				return foundComponent;
-			}
+			return foundComponent;
 		}
 
 	private:
@@ -121,7 +135,13 @@ namespace fro
 
 		GameObject& operator=(GameObject const&) = delete;
 
+		void calculateLocalTransform();
+		void calculateWorldTransform() const;
+
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
+
+		TransformationMatrix2D m_LocalTransform{};
+		mutable TransformationMatrix2D m_WorldTransform{};
 
 		std::vector<Reference<Behaviour>> m_vBehaviours{};
 		std::vector<Reference<Renderable>> m_vRenderables{};
@@ -129,6 +149,8 @@ namespace fro
 
 		std::set<Reference<GameObject>> m_sChildren{};
 		Reference<GameObject> m_Parent{};
+
+		mutable bool m_IsWorldTransformDirty{};
 
 		bool m_IsActive{ true };
 	};
