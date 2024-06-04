@@ -159,7 +159,6 @@
   <ItemGroup>
     <ClCompile Include="Source\BaseReferencable.cpp" />
     <ClCompile Include="Source\BaseReference.cpp" />
-    <ClCompile Include="Source\FixedBehaviour.cpp" />
     <ClCompile Include="Source\RigidBody.cpp" />
     <ClCompile Include="Source\SpriteAnimator.cpp" />
     <ClCompile Include="Source\AudioSDL.cpp" />
@@ -193,7 +192,6 @@
   <ItemGroup>
     <ClInclude Include="Include\BaseReferencable.h" />
     <ClInclude Include="Include\BaseReference.h" />
-    <ClInclude Include="Include\FixedBehaviour.h" />
     <ClInclude Include="Include\Referencable.hpp" />
     <ClInclude Include="Include\Reference.hpp" />
     <ClInclude Include="Include\RigidBody.h" />

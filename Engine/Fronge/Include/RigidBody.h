@@ -1,7 +1,7 @@
 #if not defined fro_RIGD_BODY_H
 #define fro_RIGD_BODY_H
 
-#include "FixedBehaviour.h"
+#include "Behaviour.h"
 #include "Typenames.hpp"
 
 #include <b2_body.h>
@@ -15,7 +15,7 @@
 
 namespace fro
 {
-	class RigidBody final : public FixedBehaviour
+	class RigidBody final : public Behaviour
 	{
 		// TODO: not sure about this
 		friend class PhysicsManager;

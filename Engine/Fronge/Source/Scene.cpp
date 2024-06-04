@@ -13,6 +13,12 @@ void fro::Scene::update(float const deltaSeconds) const
 		gameObject.update(deltaSeconds);
 }
 
+void fro::Scene::lateUpdate(float const deltaSeconds) const
+{
+	for (GameObject const& gameObject : m_vGameObjects)
+		gameObject.lateUpdate(deltaSeconds);
+}
+
 void fro::Scene::render() const
 {
 	for (GameObject const& gameObject : m_vGameObjects)

@@ -13,7 +13,6 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 	
 	, m_mpComponents{ std::move(other.m_mpComponents) }
 
-	, m_vFixedBehaviours{ std::move(other.m_vFixedBehaviours) }
 	, m_vBehaviours{ std::move(other.m_vBehaviours) }
 	, m_vRenderables{ std::move(other.m_vRenderables) }
 	, m_vGUIs{ std::move(other.m_vGUIs) }
@@ -35,7 +34,6 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 
 	m_mpComponents = std::move(other.m_mpComponents);
 
-	m_vFixedBehaviours = std::move(other.m_vFixedBehaviours);
 	m_vBehaviours = std::move(other.m_vBehaviours);
 	m_vRenderables = std::move(other.m_vRenderables);
 	m_vGUIs = std::move(other.m_vGUIs);
@@ -55,8 +53,8 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 void fro::GameObject::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	if (m_IsActive)
-		for (Reference<FixedBehaviour> const fixedBehaviour : m_vFixedBehaviours)
-			fixedBehaviour.get().fixedUpdate(fixedDeltaSeconds);
+		for (Reference<Behaviour> const behaviour : m_vBehaviours)
+			behaviour.get().fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::GameObject::update(float const deltaSeconds) const
@@ -64,6 +62,13 @@ void fro::GameObject::update(float const deltaSeconds) const
 	if (m_IsActive)
 		for (Reference<Behaviour> const behaviour : m_vBehaviours)
 			behaviour.get().update(deltaSeconds);
+}
+
+void fro::GameObject::lateUpdate(float const deltaSeconds) const
+{
+	if (m_IsActive)
+		for (Reference<Behaviour> const behaviour : m_vBehaviours)
+			behaviour.get().lateUpdate(deltaSeconds);
 }
 
 void fro::GameObject::render() const

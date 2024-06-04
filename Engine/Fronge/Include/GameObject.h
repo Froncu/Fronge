@@ -3,7 +3,6 @@
 
 #include "Behaviour.h"
 #include "Defines.hpp"
-#include "FixedBehaviour.h"
 #include "GUI.h"
 #include "BaseReferencable.h"
 #include "Renderable.h"
@@ -31,6 +30,8 @@ namespace fro
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
+		void lateUpdate(float const deltaSeconds) const;
+
 		void render() const;
 		void display() const;
 
@@ -58,8 +59,6 @@ namespace fro
 				static_cast<ComponentType* const>(resultPair.first->second.get())
 			};
 
-			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
-				m_vFixedBehaviours.push_back(addedComponent);
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				m_vBehaviours.push_back(addedComponent);
 			if constexpr (std::derived_from<ComponentType, Renderable>)
@@ -80,10 +79,6 @@ namespace fro
 			if (not foundComponent.valid())
 				return false;
 
-			if constexpr (std::derived_from<ComponentType, FixedBehaviour>)
-				m_vFixedBehaviours.erase(
-					std::remove(m_vFixedBehaviours.begin(), m_vFixedBehaviours.end(), foundComponent),
-					m_vFixedBehaviours.end());
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
 				m_vBehaviours.erase(
 					std::remove(m_vBehaviours.begin(), m_vBehaviours.end(), foundComponent),
@@ -127,7 +122,6 @@ namespace fro
 
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 
-		std::vector<Reference<FixedBehaviour>> m_vFixedBehaviours{};
 		std::vector<Reference<Behaviour>> m_vBehaviours{};
 		std::vector<Reference<Renderable>> m_vRenderables{};
 		std::vector<Reference<GUI>> m_vGUIs{};

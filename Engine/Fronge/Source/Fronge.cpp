@@ -58,6 +58,7 @@ int fro::Fronge::run() const
 		}
 
 		SceneManager::getInstance().update(deltaSeconds);
+		SceneManager::getInstance().lateUpdate(deltaSeconds);
 
 		RenderContext::getInstance().clear();
 		SceneManager::getInstance().render();

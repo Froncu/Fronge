@@ -22,6 +22,8 @@ namespace fro
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
+		void lateUpdate(float const deltaSeconds) const;
+
 		void render() const;
 		void display() const;
 		fro::Reference<fro::GameObject> addGameObject();

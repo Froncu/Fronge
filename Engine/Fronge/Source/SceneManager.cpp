@@ -15,6 +15,13 @@ void fro::SceneManager::update(float const deltaSeconds) const
 			scene.update(deltaSeconds);
 }
 
+void fro::SceneManager::lateUpdate(float const deltaSeconds) const
+{
+	for (Scene const& scene : m_vScenes)
+		if (scene.isActive())
+			scene.lateUpdate(deltaSeconds);
+}
+
 void fro::SceneManager::render() const
 {
 	for (Scene const& scene : m_vScenes)

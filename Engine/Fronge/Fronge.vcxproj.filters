@@ -77,7 +77,7 @@
       <Filter>Systems\InputManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\SpriteAnimator.cpp">
-      <Filter>Component\Renderable\SpriteAnimator</Filter>
+      <Filter>Component\Behaviour\SpriteAnimator</Filter>
     </ClCompile>
     <ClCompile Include="Source\StateMachine.cpp">
       <Filter>Component\Behaviour\StateMachine</Filter>
@@ -85,17 +85,14 @@
     <ClCompile Include="Source\State.cpp">
       <Filter>Patterns\State</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FixedBehaviour.cpp">
-      <Filter>Component\FixedBehaviour\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\RigidBody.cpp">
-      <Filter>Component\FixedBehaviour\RigidBody</Filter>
-    </ClCompile>
     <ClCompile Include="Source\BaseReferencable.cpp">
       <Filter>References\BaseReferencable</Filter>
     </ClCompile>
     <ClCompile Include="Source\BaseReference.cpp">
       <Filter>References\BaseReference</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RigidBody.cpp">
+      <Filter>Component\Behaviour\RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,23 +201,11 @@
     <Filter Include="TransformationMatrix2D">
       <UniqueIdentifier>{38362cf2-1624-40b0-8814-67def0914a1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Renderable\SpriteAnimator">
-      <UniqueIdentifier>{1bbc9091-e000-40ce-8b63-ca959222dc7e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Behaviour\StateMachine">
       <UniqueIdentifier>{e5a9e2ad-78ab-4254-9310-1cefd801299e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Patterns\State">
       <UniqueIdentifier>{1bdc4913-7ced-47a9-b2a7-450d2ea1c641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\FixedBehaviour">
-      <UniqueIdentifier>{9bddbe27-b749-4680-9825-fae2a1b4c940}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\FixedBehaviour\Base">
-      <UniqueIdentifier>{e26f72d7-bd40-44a9-aca5-7593470073a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\FixedBehaviour\RigidBody">
-      <UniqueIdentifier>{c276c9bf-78d3-45f4-a4f2-bb46fd33d9e2}</UniqueIdentifier>
     </Filter>
     <Filter Include="References">
       <UniqueIdentifier>{f64124f3-a998-4c7e-93da-c126aa272f44}</UniqueIdentifier>
@@ -230,6 +215,12 @@
     </Filter>
     <Filter Include="References\BaseReference">
       <UniqueIdentifier>{252e9025-8448-485c-addb-a0d235aedf4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\RigidBody">
+      <UniqueIdentifier>{b6e84b09-4237-4684-a65b-1ac9a3ddac46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\SpriteAnimator">
+      <UniqueIdentifier>{1bbc9091-e000-40ce-8b63-ca959222dc7e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -332,19 +323,13 @@
       <Filter>Systems\InputManager</Filter>
     </ClInclude>
     <ClInclude Include="Include\SpriteAnimator.h">
-      <Filter>Component\Renderable\SpriteAnimator</Filter>
+      <Filter>Component\Behaviour\SpriteAnimator</Filter>
     </ClInclude>
     <ClInclude Include="Include\StateMachine.h">
       <Filter>Component\Behaviour\StateMachine</Filter>
     </ClInclude>
     <ClInclude Include="Include\State.h">
       <Filter>Patterns\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\FixedBehaviour.h">
-      <Filter>Component\FixedBehaviour\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\RigidBody.h">
-      <Filter>Component\FixedBehaviour\RigidBody</Filter>
     </ClInclude>
     <ClInclude Include="Include\Reference.hpp">
       <Filter>References</Filter>
@@ -357,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="Include\BaseReference.h">
       <Filter>References\BaseReference</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RigidBody.h">
+      <Filter>Component\Behaviour\RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
