@@ -24,7 +24,11 @@ namespace fro
 
 		void render() const;
 		void display() const;
-		fro::Reference<fro::Scene> addScene(std::string name);
+
+		fro::Reference<fro::Scene> loadScene(std::string name);
+		bool unloadScene(std::string name);
+
+		fro::Reference<fro::Scene> getScene(std::string_view const name);
 
 	private:
 		SceneManager() = default;
@@ -33,6 +37,8 @@ namespace fro
 
 		SceneManager& operator=(SceneManager const&) = delete;
 		SceneManager& operator=(SceneManager&&) noexcept = delete;
+
+		std::vector<Scene>::iterator findScene(std::string_view const name);
 
 		std::vector<Scene> m_vScenes{};
 		std::size_t m_ActiveSceneIndex{};

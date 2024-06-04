@@ -13,13 +13,17 @@ namespace fro
 	{
 	public:
 		Scene(std::string name);
-		Scene(Scene const&) = default;
+		Scene(Scene const&) = delete;
 		Scene(Scene&&) noexcept = default;
 
 		~Scene() = default;
 
-		Scene& operator=(Scene const&) = default;
+		Scene& operator=(Scene const&) = delete;
 		Scene& operator=(Scene&&) noexcept = default;
+		bool operator==(Scene const& other) const;
+		bool operator==(std::string_view const sceneName) const;
+		std::strong_ordering operator<=>(Scene const& other) const;
+		std::strong_ordering operator<=>(std::string_view const sceneName) const;
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
@@ -30,7 +34,7 @@ namespace fro
 		fro::Reference<fro::GameObject> addGameObject(std::string name);
 
 	private:
-		std::string const m_Name;
+		std::string m_Name;
 
 		std::vector<GameObject> m_vGameObjects{};
 	};

@@ -31,8 +31,46 @@ void fro::SceneManager::display() const
 		m_vScenes[m_ActiveSceneIndex].display();
 }
 
-fro::Reference<fro::Scene> fro::SceneManager::addScene(std::string name)
+fro::Reference<fro::Scene> fro::SceneManager::getScene(std::string_view const name)
 {
+	auto iFoundScene{ findScene(name) };
+
+	if (iFoundScene == m_vScenes.end())
+		return {};
+
+	return *iFoundScene;
+}
+
+fro::Reference<fro::Scene> fro::SceneManager::loadScene(std::string name)
+{
+	auto iFoundScene{ findScene(name) };
+
+	if (iFoundScene not_eq m_vScenes.end())
+		return {};
+
 	return m_vScenes.emplace_back(std::move(name));
 }
+
+bool fro::SceneManager::unloadScene(std::string name)
+{
+	auto iFoundScene{ findScene(name) };
+
+	if (iFoundScene == m_vScenes.end())
+		return false;
+
+	m_vScenes.erase(iFoundScene);
+}
 #pragma endregion PublicMethods
+
+
+
+#pragma region PrivateMethods
+std::vector<fro::Scene>::iterator fro::SceneManager::findScene(std::string_view const name)
+{
+	return std::find_if(m_vScenes.begin(), m_vScenes.end(),
+		[name](Scene const& scene)
+		{
+			return scene == name;
+		});
+}
+#pragma endregion PrivateMethods

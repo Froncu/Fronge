@@ -9,6 +9,30 @@ fro::Scene::Scene(std::string name)
 
 
 
+#pragma region Operators
+bool fro::Scene::operator==(Scene const& other) const
+{
+	return m_Name == other.m_Name;
+}
+
+bool fro::Scene::operator==(std::string_view const sceneName) const
+{
+	return m_Name == sceneName;
+}
+
+std::strong_ordering fro::Scene::operator<=>(Scene const& other) const
+{
+	return m_Name <=> other.m_Name;
+}
+
+std::strong_ordering fro::Scene::operator<=>(std::string_view const sceneName) const
+{
+	return m_Name <=> sceneName;
+}
+#pragma endregion Operators
+
+
+
 #pragma region PublicMethods
 void fro::Scene::fixedUpdate(float const fixedDeltaSeconds) const
 {
