@@ -6,7 +6,7 @@
 
 #pragma region Constructors/Destructor
 fro::GridMovement::GridMovement(Reference<GameObject> const parentingGameObject)
-	: Behaviour(std::move(parentingGameObject))
+	: Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

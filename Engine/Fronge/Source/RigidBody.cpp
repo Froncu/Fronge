@@ -8,7 +8,7 @@
 
 #pragma region Constructors/Destructor
 fro::RigidBody::RigidBody(Reference<GameObject> const parentingGameObject)
-	: Behaviour(std::move(parentingGameObject))
+	: Behaviour(parentingGameObject)
 {
 	m_Body.SetGravityScale(0.0f);
 }

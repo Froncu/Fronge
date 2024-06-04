@@ -8,7 +8,7 @@
 
 #pragma region Constructors/Destructor
 fro::Text::Text(Reference<GameObject> const parentingGameObject)
-	: Renderable(std::move(parentingGameObject))
+	: Renderable(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

@@ -96,14 +96,14 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 		return;
 
 	if (m_Parent.valid())
-		m_Parent.get().m_sChildren.erase(this);
+		m_Parent.get().m_sChildren.insert(this);
 
 	Reference<Transform> transform{ getComponent<Transform>() };
 	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
 		oldWorldTransform = transform.get().getWorldTransform();
 
-	m_Parent = std::move(parent);
+	m_Parent = parent;
 
 	if (m_Parent.valid())
 		m_Parent.get().m_sChildren.insert(this);

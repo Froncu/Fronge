@@ -8,7 +8,7 @@
 
 #pragma region Constructors/Destructor
 fro::PumpState::PumpState(Reference<GameObject> const parentingGameObject)
-	: State(std::move(parentingGameObject))
+	: State(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

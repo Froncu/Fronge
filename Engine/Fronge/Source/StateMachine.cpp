@@ -4,7 +4,7 @@
 
 #pragma region Constructors/Destructor
 fro::StateMachine::StateMachine(Reference<GameObject> const parentingGameObject)
-	: Behaviour(std::move(parentingGameObject))
+	: Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

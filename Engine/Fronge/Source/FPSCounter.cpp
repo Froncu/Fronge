@@ -7,7 +7,7 @@
 
 #pragma region Constructors/Destructor
 fro::FPSCounter::FPSCounter(Reference<GameObject> const parentingGameObject)
-	: Behaviour(std::move(parentingGameObject))
+	: Behaviour(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor

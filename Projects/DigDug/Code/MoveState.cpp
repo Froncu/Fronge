@@ -9,7 +9,7 @@
 
 #pragma region Constructors/Destructor
 fro::MoveState::MoveState(Reference<GameObject> const parentingGameObject)
-	: State(std::move(parentingGameObject))
+	: State(parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
