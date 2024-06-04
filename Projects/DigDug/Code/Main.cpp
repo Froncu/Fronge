@@ -63,7 +63,8 @@ int main(int, char**)
 		player1.get().getComponent<fro::SpriteAnimator>().get().setLoop("pumping", false);
 		player1.get().getComponent<fro::SpriteAnimator>().get().setFramesPerSecond("walking", 6);
 		player1.get().getComponent<fro::SpriteAnimator>().get().setFramesPerSecond("pumping", 6);
-		player1.get().addComponent<fro::StateMachine>().get().setCurrentState(std::make_unique<fro::IdleState>(player1));
+		player1.get().addComponent<fro::StateMachine>().get().setCurrentState(
+			player1.get().addComponent<fro::IdleState>());
 
 		pump.get().setParent(player1, false);
 

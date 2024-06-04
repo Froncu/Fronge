@@ -26,7 +26,7 @@ namespace fro
 
 		virtual ~RigidBody() override = default;
 
-		virtual void fixedUpdate(float const fixedDeltaTime) override;
+		virtual void fixedUpdate(float const) override;
 
 		void setType(b2BodyType const type);
 		void setVelocity(glm::vec2 const& velocity);

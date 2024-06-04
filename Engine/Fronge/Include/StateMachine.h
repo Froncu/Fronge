@@ -15,9 +15,11 @@ namespace fro
 
 		virtual ~StateMachine() override = default;
 
+		virtual void fixedUpdate(float const fixedDeltaSeconds) override;
 		virtual void update(float const deltaSeconds) override;
+		virtual void lateUpdate(float const deltaSeconds) override;
 
-		void setCurrentState(std::unique_ptr<State>&& pNewState);
+		void setCurrentState(Reference<State> const newState);
 
 	private:
 		StateMachine(StateMachine const&) = delete;
@@ -26,7 +28,9 @@ namespace fro
 		StateMachine& operator=(StateMachine const&) = delete;
 		StateMachine& operator=(StateMachine&&) noexcept = delete;
 
-		std::unique_ptr<State> m_pCurrentState{};
+		void updateState(Reference<State>&& newState);
+
+		Reference<State> m_CurrentState{};
 	};
 }
 

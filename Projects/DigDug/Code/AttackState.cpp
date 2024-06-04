@@ -7,7 +7,7 @@
 
 #pragma region Constructors/Destructor
 fro::AttackState::AttackState(Reference<GameObject> const parentingGameObject)
-	: Component(std::move(parentingGameObject))
+	: State(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -15,16 +15,17 @@ fro::AttackState::AttackState(Reference<GameObject> const parentingGameObject)
 
 
 #pragma region PublicMethods
-std::unique_ptr<fro::State> fro::AttackState::update(float const deltaSeconds)
+fro::Reference<fro::State> fro::AttackState::update(float const deltaSeconds)
 {
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds >= 0.5f)
-		return std::make_unique<PumpState>(m_ParentingGameObject);
+		return new PumpState(m_ParentingGameObject);
+		//return m_ParentingGameObject.get().forceGetComponent<PumpState>();
 
-	return nullptr;
+	return {};
 }
 
-void fro::AttackState::enter(std::unique_ptr<State> const&)
+void fro::AttackState::enter(Reference<State> const)
 {
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
@@ -39,8 +40,10 @@ void fro::AttackState::enter(std::unique_ptr<State> const&)
 	spriteAnimator.get().setActiveAnimation("attacking");
 }
 
-void fro::AttackState::exit(std::unique_ptr<State> const&)
+void fro::AttackState::exit(Reference<State> const)
 {
+	m_ElapsedSeconds = 0.0f;
+
 	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
 	{
 		Reference<SpriteAnimator> spriteAnimator{ child.get().getComponent<SpriteAnimator>()};

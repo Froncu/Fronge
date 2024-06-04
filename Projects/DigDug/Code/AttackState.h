@@ -1,23 +1,22 @@
 #if not defined fro_ATTACK_STATE_H
 #define fro_ATTACK_STATE_H
 
-#include "Component.h"
 #include "State.h"
 
 namespace fro
 {
 	class GameObject;
 
-	class AttackState final : public Component, public State
+	class AttackState final : public State
 	{
 	public:
 		AttackState(Reference<GameObject> const parentingGameObject);
 
 		virtual ~AttackState() override = default;
 
-		virtual std::unique_ptr<State> update(float const deltaSeconds) override;
-		virtual void enter(std::unique_ptr<State> const& pOldState) override;
-		virtual void exit(std::unique_ptr<State> const& pNewState) override;
+		virtual Reference<State> update(float const deltaSeconds) override;
+		virtual void enter(Reference<State> const oldState) override;
+		virtual void exit(Reference<State> const newState) override;
 
 	private:
 		AttackState(AttackState const&) = delete;

@@ -8,15 +8,15 @@ namespace fro
 {
 	class GameObject;
 
-	class IdleState final : public Component, public State
+	class IdleState final : public State
 	{
 	public:
 		IdleState(Reference<GameObject> const parentingGameObject);
 
 		virtual ~IdleState() override = default;
 
-		virtual std::unique_ptr<State> update(float const deltaSeconds) override;
-		virtual void enter(std::unique_ptr<State> const& pOldState) override;
+		virtual Reference<State> update(float const deltaSeconds) override;
+		virtual void enter(Reference<State> const pOldState) override;
 
 	private:
 		IdleState(IdleState const&) = delete;

@@ -12,22 +12,51 @@ fro::StateMachine::StateMachine(Reference<GameObject> const parentingGameObject)
 
 
 #pragma region PublicMethods
+void fro::StateMachine::fixedUpdate(float const fixedDeltaSeconds)
+{
+	if (not m_CurrentState.valid())
+		return;
+
+	updateState(m_CurrentState.get().fixedUpdate(fixedDeltaSeconds));
+}
+
 void fro::StateMachine::update(float const deltaSeconds)
 {
-	if (not m_pCurrentState.get())
+	if (not m_CurrentState.valid())
 		return;
 
-	std::unique_ptr pNewState{ m_pCurrentState->update(deltaSeconds) };
-	if (not pNewState.get())
-		return;
-
-	m_pCurrentState->exit(pNewState);
-	setCurrentState(std::move(pNewState));
+	updateState(m_CurrentState.get().update(deltaSeconds));
 }
 
-void fro::StateMachine::setCurrentState(std::unique_ptr<State>&& pNewState)
+void fro::StateMachine::lateUpdate(float const deltaSeconds)
 {
-	pNewState->enter(m_pCurrentState);
-	m_pCurrentState = std::move(pNewState);
+	if (not m_CurrentState.valid())
+		return;
+
+	updateState(m_CurrentState.get().lateUpdate(deltaSeconds));
+}
+
+void fro::StateMachine::setCurrentState(Reference<State> const newState)
+{
+	if (m_CurrentState.valid())
+		m_CurrentState.get().exit(newState);
+
+	if (newState.valid())
+		newState.get().enter(m_CurrentState);
+
+	m_CurrentState = std::move(newState);
+
 }
 #pragma endregion PublicMethods
+
+
+
+#pragma region PrivateMethods
+void fro::StateMachine::updateState(Reference<State>&& newState)
+{
+	if (not newState.valid())
+		return;
+
+	setCurrentState(std::move(newState));
+}
+#pragma endregion PrivateMethods

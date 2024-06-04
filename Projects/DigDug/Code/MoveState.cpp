@@ -9,7 +9,7 @@
 
 #pragma region Constructors/Destructor
 fro::MoveState::MoveState(Reference<GameObject> const parentingGameObject)
-	: Component(std::move(parentingGameObject))
+	: State(std::move(parentingGameObject))
 {
 }
 #pragma endregion Constructors/Destructor
@@ -17,30 +17,30 @@ fro::MoveState::MoveState(Reference<GameObject> const parentingGameObject)
 
 
 #pragma region PublicMethods
-std::unique_ptr<fro::State> fro::MoveState::update(float const)
+fro::Reference<fro::State> fro::MoveState::update(float const)
 {
 	InputManager& inputManager{ InputManager::getInstance() };
 
 	if (inputManager.getActionStrength("attack"))
-		return std::make_unique<AttackState>(m_ParentingGameObject);
+		return m_ParentingGameObject.get().forceGetComponent<AttackState>();
 
 	glm::vec2 const& inputAxis2D{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
 
 	if (not inputAxis2D.x and not inputAxis2D.y)
-		return std::make_unique<IdleState>(m_ParentingGameObject);
+		return m_ParentingGameObject.get().forceGetComponent<IdleState>();
 
 	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection(inputAxis2D);
-	return nullptr;
+	return {};
 }
 
-void fro::MoveState::enter(std::unique_ptr<State> const&)
+void fro::MoveState::enter(Reference<State> const)
 {
 	Reference<SpriteAnimator> spriteAnimator{ m_ParentingGameObject.get().getComponent<SpriteAnimator>() };
 	spriteAnimator.get().setActiveAnimation("walking");
 	spriteAnimator.get().play();
 }
 
-void fro::MoveState::exit(std::unique_ptr<State> const&)
+void fro::MoveState::exit(Reference<State> const)
 {
 	m_ParentingGameObject.get().getComponent<GridMovement>().get().setMoveDirection({});
 }
