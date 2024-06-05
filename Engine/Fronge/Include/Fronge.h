@@ -24,7 +24,7 @@ namespace fro
 		Fronge& operator=(Fronge const&) = delete;
 		Fronge& operator=(Fronge&&) noexcept = delete;
 
-		float m_FixedDeltaSeconds{ 1 / 30.0f };
+		float m_FixedDeltaSeconds{ 1 / 60.0f };
 	};
 }
 

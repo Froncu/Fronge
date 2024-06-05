@@ -13,9 +13,7 @@ namespace fro
 	{
 		friend class Singleton<PhysicsManager>;
 
-		// TODO: not sure about this
 		friend class RigidBody;
-		// END TODO
 
 	public:
 		~PhysicsManager() = default;
@@ -33,7 +31,7 @@ namespace fro
 		virtual void BeginContact(b2Contact* const pContact) override;
 		virtual void EndContact(b2Contact* const pContact) override;
 
-		b2World m_World{ { 0.0f, 10.0f} };
+		b2World m_World{ { 0.0f, 9.81f } };
 	};
 }
 

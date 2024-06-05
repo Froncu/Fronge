@@ -1,23 +1,26 @@
 #include "GridMovement.h"
 
-#include "GameObject.h"
-
 #include <glm.hpp>
 
 #pragma region Constructors/Destructor
 fro::GridMovement::GridMovement(Reference<GameObject> const parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
+	m_RigidBody.get().setType(RigidBody::Type::dynamicBody);
+	m_RigidBody.get().setGravityScale(0.0f);
 }
 #pragma endregion Constructors/Destructor
 
 
 
 #pragma region PublicMethods
-void fro::GridMovement::update(float const deltaSeconds)
+void fro::GridMovement::fixedUpdate(float const)
 {
 	if (not m_MoveDirection.x and not m_MoveDirection.y)
+	{
+		m_RigidBody.get().setVelocity({});
 		return;
+	}
 
 	glm::vec2 correctedMoveDirection{};
 
@@ -25,7 +28,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 	int const halfCellSizeX{ m_CellSizeX / 2 };
 	glm::ivec2 const worldPosition{ m_ParentingGameObject.get().getWorldTransform().getTranslation() };
 
-	if (std::fabs(m_MoveDirection.y) > std::fabs(m_MoveDirection.x))
+	if (std::abs(m_MoveDirection.y) > std::abs(m_MoveDirection.x))
 	{
 		bool const isAtMaximaY{ worldPosition.y >= m_CellSizeY * m_CellsY - halfCellSizeY };
 		bool const isAtMinimaY{ worldPosition.y <= halfCellSizeY };
@@ -58,7 +61,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 			correctedMoveDirection.x = std::signbit(m_MoveDirection.x) ? -1.0f : 1.0f;
 	}
 
-	m_ParentingGameObject.get().localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
+	m_RigidBody.get().setVelocity(correctedMoveDirection * m_MoveSpeed);
 
 	if (correctedMoveDirection.x)
 		m_ParentingGameObject.get().setLocalScale({ correctedMoveDirection.x, 1.0f });

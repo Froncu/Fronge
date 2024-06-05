@@ -1,7 +1,8 @@
 #if not defined fro_RIGD_BODY_H
 #define fro_RIGD_BODY_H
 
-#include "Behaviour.h"
+#include "Component.h"
+#include "Event.hpp"
 #include "Typenames.hpp"
 
 #include <b2_body.h>
@@ -11,28 +12,36 @@
 #include <map>
 #include <memory>
 #include <set>
-#include <xstring>
+#include <string>
 
 namespace fro
 {
-	class RigidBody final : public Behaviour
+	class RigidBody final : public Component
 	{
-		// TODO: not sure about this
 		friend class PhysicsManager;
-		// END TODO
 		
 	public:
+		enum class Type
+		{
+			dynamicBody,
+			staticBody
+		};
+
 		RigidBody(Reference<GameObject> const parentingGameObject);
 
 		virtual ~RigidBody() override = default;
 
-		virtual void fixedUpdate(float const) override;
+		void setGravityScale(float const scale);
+		void setType(Type const type);
+		void setVelocity(glm::vec2 velocity);
 
-		void setType(b2BodyType const type);
-		void setVelocity(glm::vec2 const& velocity);
+		std::set<Reference<RigidBody>> const& getOverlappingRigidBodies() const;
 
-		void addBoxCollider(std::string const& name, glm::vec2 const& size);
-		void removeBoxCollider(std::string const& name);
+		void addBoxShape(std::string name, glm::vec2 const& size, bool shouldCollide = false);
+		void removeBoxShape(std::string const& name);
+
+		Event<Reference<RigidBody>> beginOverlap{};
+		Event<Reference<RigidBody>> endOverlap{};
 
 	private:
 		RigidBody(RigidBody const&) = delete;
@@ -44,9 +53,9 @@ namespace fro
 		b2Body& createBody() const;
 
 		b2Body& m_Body{ createBody() };
-		std::map<std::string_view, b2Fixture*> m_spColliders{};
+		std::map<std::string, b2Fixture*> m_mpColliders{};
 
-		std::set<RigidBody const*> m_spOverlappingRigidBodies{};
+		std::set<Reference<RigidBody>> m_sOverlappingRigidBodies{};
 	};
 }
 

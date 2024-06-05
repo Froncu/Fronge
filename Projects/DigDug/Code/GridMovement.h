@@ -3,6 +3,8 @@
 
 #include "Behaviour.h"
 #include "Event.hpp"
+#include "GameObject.h"
+#include "RigidBody.h"
 
 #include <vec2.hpp>
 
@@ -15,7 +17,7 @@ namespace fro
 
 		virtual ~GridMovement() override = default;
 
-		virtual void update(float const deltaSeconds) override;
+		virtual void fixedUpdate(float const) override;
 
 		void setMoveDirection(glm::vec2 const& direction);
 		void setMoveSpeed(float const speed);
@@ -28,6 +30,8 @@ namespace fro
 
 		GridMovement& operator=(GridMovement const&) = delete;
 		GridMovement& operator=(GridMovement&&) noexcept = delete;
+
+		Reference<RigidBody> m_RigidBody{ m_ParentingGameObject.get().forceGetComponent<RigidBody>() };
 
 		glm::vec2 m_PreviousCorrectedMoveDirection{};
 

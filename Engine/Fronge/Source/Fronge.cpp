@@ -53,8 +53,8 @@ int fro::Fronge::run() const
 			fixedUpdateElapsedSeconds >= m_FixedDeltaSeconds;
 			fixedUpdateElapsedSeconds -= m_FixedDeltaSeconds)
 		{
-			PhysicsManager::getInstance().update(m_FixedDeltaSeconds);
 			SceneManager::getInstance().fixedUpdate(m_FixedDeltaSeconds);
+			PhysicsManager::getInstance().update(m_FixedDeltaSeconds);
 		}
 
 		SceneManager::getInstance().update(deltaSeconds);

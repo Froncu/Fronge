@@ -8,45 +8,61 @@
 
 #pragma region Constructors/Destructor
 fro::RigidBody::RigidBody(Reference<GameObject> const parentingGameObject)
-	: Behaviour(parentingGameObject)
+	: Component(parentingGameObject)
 {
-	m_Body.SetGravityScale(0.0f);
 }
 #pragma endregion Constructors/Destructor
 
 
 
 #pragma region PublicMethods
-void fro::RigidBody::fixedUpdate(float const)
+void fro::RigidBody::setGravityScale(float const scale)
 {
-	b2Vec2 const& translation{ m_Body.GetPosition() };
-	float const rotation{ m_Body.GetAngle() };
-
-	m_ParentingGameObject.get().setWorldTranslation({ translation.x, translation.y });
-	m_ParentingGameObject.get().setWorldRotation(rotation);
+	m_Body.SetGravityScale(scale);
 }
 
-void fro::RigidBody::setType(b2BodyType const type)
+void fro::RigidBody::setType(Type const type)
 {
-	m_Body.SetType(type);
+	b2BodyType bodyType{};
+	switch (type)
+	{
+	case Type::dynamicBody:
+		bodyType = b2BodyType::b2_dynamicBody;
+		break;
+
+	case Type::staticBody:
+		bodyType = b2BodyType::b2_staticBody;
+		break;
+	}
+
+	m_Body.SetType(bodyType);
 }
 
-void fro::RigidBody::setVelocity(glm::vec2 const& velocity)
+void fro::RigidBody::setVelocity(glm::vec2 velocity)
 {
 	m_Body.SetLinearVelocity({ velocity.x, velocity.y });
 }
 
-void fro::RigidBody::addBoxCollider(std::string const& name, glm::vec2 const& size)
+std::set<fro::Reference<fro::RigidBody>> const& fro::RigidBody::getOverlappingRigidBodies() const
+{
+	return m_sOverlappingRigidBodies;
+}
+
+void fro::RigidBody::addBoxShape(std::string name, glm::vec2 const& size, bool shouldCollide)
 {
 	b2PolygonShape boxShape{};
 	boxShape.SetAsBox(size.x / 2, size.y / 2);
 
-	m_spColliders.emplace(name, m_Body.CreateFixture(&boxShape, 1.0f));
+	b2FixtureDef fixtureDefinition{};
+	fixtureDefinition.isSensor = shouldCollide;
+	fixtureDefinition.shape = &boxShape;
+
+	m_mpColliders.emplace(std::move(name), m_Body.CreateFixture(&fixtureDefinition));
 }
 
-void fro::RigidBody::removeBoxCollider(std::string const& name)
+void fro::RigidBody::removeBoxShape(std::string const& name)
 {
-	m_spColliders.erase(name);
+	m_mpColliders.erase(name);
 }
 #pragma endregion PublicMethods
 
@@ -60,10 +76,10 @@ b2Body& fro::RigidBody::createBody() const
 	glm::vec2 const& worldTranslation{ m_ParentingGameObject.get().getWorldTransform().getTranslation() };
 	bodyDefinition.position.x = worldTranslation.x;
 	bodyDefinition.position.y = worldTranslation.y;
+	bodyDefinition.fixedRotation = true;
 
 	bodyDefinition.userData.pointer = reinterpret_cast<uintptr_t>(this);
 
-	PhysicsManager& physicsManager{ PhysicsManager::getInstance() };
-	return *physicsManager.m_World.CreateBody(&bodyDefinition);
+	return *PhysicsManager::getInstance().m_World.CreateBody(&bodyDefinition);
 }
 #pragma endregion PrivateMethods

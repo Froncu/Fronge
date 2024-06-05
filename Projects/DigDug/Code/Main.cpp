@@ -10,6 +10,7 @@
 #include "MovementRotation.h"
 #include "GridMovement.h"
 #include "RenderContext.h"
+#include "RigidBody.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "ServiceLocator.hpp"
@@ -82,9 +83,11 @@ int main(int, char**)
 		spriteAnimator.get().setLoop("pumping", false);
 		spriteAnimator.get().setFramesPerSecond("walking", 6);
 		spriteAnimator.get().setFramesPerSecond("pumping", 6);
-
+		
 		player1.get().forceGetComponent<fro::StateMachine>().get().setCurrentState(
 			player1.get().forceGetComponent<fro::IdleState>());
+
+		player1.get().forceGetComponent<fro::RigidBody>().get().addBoxShape("mainShape", { 8, 8 });
 
 
 
@@ -97,6 +100,7 @@ int main(int, char**)
 		player2.get().addComponent<fro::GridMovement>().get();
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });
+		player2.get().forceGetComponent<fro::RigidBody>().get().addBoxShape("mainShape", { 8, 8 });
 
 
 		auto& inputManager{ fro::InputManager::getInstance() };
