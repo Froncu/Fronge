@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\GridMovement.cpp">
       <Filter>GridMovement</Filter>
     </ClCompile>
@@ -16,6 +15,10 @@
     </ClCompile>
     <ClCompile Include="Code\PumpState.cpp">
       <Filter>States\PumpState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Main.cpp" />
+    <ClCompile Include="Code\MovementRotation.cpp">
+      <Filter>MoveRotation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +40,9 @@
     <Filter Include="States\PumpState">
       <UniqueIdentifier>{63fe9360-79c4-4bc1-b409-e7f4058f70de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MoveRotation">
+      <UniqueIdentifier>{25a7fd70-ed12-4a15-9eca-168d08dd891a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GridMovement.h">
@@ -53,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="Code\PumpState.h">
       <Filter>States\PumpState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\MovementRotation.h">
+      <Filter>MoveRotation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@
     <ClCompile Include="Code\GridMovement.cpp" />
     <ClCompile Include="Code\MoveState.cpp" />
     <ClCompile Include="Code\PumpState.cpp" />
+    <ClCompile Include="Code\MovementRotation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\AttackState.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="Code\IdleState.h" />
     <ClInclude Include="Code\MoveState.h" />
     <ClInclude Include="Code\PumpState.h" />
+    <ClInclude Include="Code\MovementRotation.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -2,6 +2,7 @@
 #define fro_GRID_MOVEMENT_H
 
 #include "Behaviour.h"
+#include "Event.hpp"
 
 #include <vec2.hpp>
 
@@ -19,6 +20,8 @@ namespace fro
 		void setMoveDirection(glm::vec2 const& direction);
 		void setMoveSpeed(float const speed);
 
+		Event<glm::vec2, glm::vec2> m_CorrectedMoveDirectionChanged{};
+
 	private:
 		GridMovement(GridMovement const&) = delete;
 		GridMovement(GridMovement&&) noexcept = delete;
@@ -26,9 +29,10 @@ namespace fro
 		GridMovement& operator=(GridMovement const&) = delete;
 		GridMovement& operator=(GridMovement&&) noexcept = delete;
 
+		glm::vec2 m_PreviousCorrectedMoveDirection{};
+
 		glm::vec2 m_MoveDirection{};
 		float m_MoveSpeed{ 32.0f };
-		float m_ScalarX{ 1.0f };
 
 		int m_CellsX{ 10 };
 		int m_CellsY{ 8 };

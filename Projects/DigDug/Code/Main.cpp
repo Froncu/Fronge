@@ -7,6 +7,7 @@
 #include "GUIContext.h"
 #include "IdleState.h"
 #include "InputManager.h"
+#include "MovementRotation.h"
 #include "GridMovement.h"
 #include "RenderContext.h"
 #include "Scene.h"
@@ -62,7 +63,16 @@ int main(int, char**)
 		auto const player1{ scene.get().addGameObject("DigDug") };
 
 		player1.get().setLocalTranslation({ 8, 8 });
-		player1.get().addComponent<fro::GridMovement>();
+
+		auto const movementRotation{ player1.get().addComponent<fro::MovementRotation>() };
+
+		player1.get().addComponent<fro::GridMovement>().get().
+			m_CorrectedMoveDirectionChanged.addSubscriber(
+				std::bind(
+					&fro::MovementRotation::onCorrectedMoveDirectionChanged,
+					&movementRotation.get(),
+					std::placeholders::_1,
+					std::placeholders::_2));
 
 		spriteAnimator = player1.get().forceGetComponent<fro::SpriteAnimator>();
 
@@ -84,9 +94,9 @@ int main(int, char**)
 
 		auto const player2{ scene.get().addGameObject("Fygar") };
 
+		player2.get().addComponent<fro::GridMovement>().get();
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });
-
 
 
 		auto& inputManager{ fro::InputManager::getInstance() };

@@ -59,6 +59,17 @@ void fro::GridMovement::update(float const deltaSeconds)
 	}
 
 	m_ParentingGameObject.get().localTranslate(deltaSeconds * m_MoveSpeed * correctedMoveDirection);
+
+	if (correctedMoveDirection.x)
+		m_ParentingGameObject.get().setLocalScale({ correctedMoveDirection.x, 1.0f });
+
+	if (m_PreviousCorrectedMoveDirection not_eq correctedMoveDirection)
+	{
+		m_CorrectedMoveDirectionChanged.notifySubscribers(
+			m_PreviousCorrectedMoveDirection, correctedMoveDirection);
+
+		m_PreviousCorrectedMoveDirection = correctedMoveDirection;
+	}
 }
 
 void fro::GridMovement::setMoveDirection(glm::vec2 const& direction)
