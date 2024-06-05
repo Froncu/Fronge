@@ -35,7 +35,10 @@ void fro::GridMovement::fixedUpdate(float const)
 
 		if ((isAtMaximaY and m_MoveDirection.y < 0.0f) or
 			(isAtMinimaY and m_MoveDirection.y > 0.0f))
+		{
+			m_RigidBody.get().setVelocity({});
 			return;
+		}
 
 		if (int const offset{ worldPosition.x % m_CellSizeX }; offset > halfCellSizeX)
 			correctedMoveDirection.x = -1.0f;
@@ -51,7 +54,10 @@ void fro::GridMovement::fixedUpdate(float const)
 
 		if ((isAtMaximaX and m_MoveDirection.x > 0.0f) or
 			(isAtMinimaX and m_MoveDirection.x < 0.0f))
+		{
+			m_RigidBody.get().setVelocity({});
 			return;
+		}
 
 		if (int const offset{ worldPosition.y % m_CellSizeY }; offset < halfCellSizeY)
 			correctedMoveDirection.y = 1.0f;
