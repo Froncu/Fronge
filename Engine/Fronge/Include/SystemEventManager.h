@@ -17,7 +17,7 @@ namespace fro
 
 		[[nodiscard("eventual SDL_QUIT event ignored")]] bool processSystemEvents() const;
 
-		Event<SDL_Event const&> m_SystemEvent{};
+		Event<SDL_Event const&> systemEvent{};
 
 	private:
 		SystemEventManager();

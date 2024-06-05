@@ -20,7 +20,7 @@ namespace fro
 		void setMoveDirection(glm::vec2 const& direction);
 		void setMoveSpeed(float const speed);
 
-		Event<glm::vec2, glm::vec2> m_CorrectedMoveDirectionChanged{};
+		Event<glm::vec2, glm::vec2> correctedMoveDirectionChanged{};
 
 	private:
 		GridMovement(GridMovement const&) = delete;

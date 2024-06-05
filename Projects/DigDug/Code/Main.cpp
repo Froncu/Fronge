@@ -67,7 +67,7 @@ int main(int, char**)
 		auto const movementRotation{ player1.get().addComponent<fro::MovementRotation>() };
 
 		player1.get().addComponent<fro::GridMovement>().get().
-			m_CorrectedMoveDirectionChanged.addSubscriber(
+			correctedMoveDirectionChanged.addSubscriber(
 				std::bind(
 					&fro::MovementRotation::onCorrectedMoveDirectionChanged,
 					&movementRotation.get(),

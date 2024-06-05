@@ -17,7 +17,7 @@
 #pragma region Constructors/Destructor
 fro::Fronge::Fronge()
 {
-	SystemEventManager::getInstance().m_SystemEvent.addSubscribers({
+	SystemEventManager::getInstance().systemEvent.addSubscribers({
 		std::bind(&InputManager::processInputEvent, &InputManager::getInstance(), std::placeholders::_1),
 		std::bind(&GUIContext::processSystemEvent, &GUIContext::getInstance(), std::placeholders::_1),
 		std::bind(&RenderContext::processSystemEvent, &RenderContext::getInstance(), std::placeholders::_1) });

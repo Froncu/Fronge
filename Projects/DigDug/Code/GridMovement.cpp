@@ -65,7 +65,7 @@ void fro::GridMovement::update(float const deltaSeconds)
 
 	if (m_PreviousCorrectedMoveDirection not_eq correctedMoveDirection)
 	{
-		m_CorrectedMoveDirectionChanged.notifySubscribers(
+		correctedMoveDirectionChanged.notifySubscribers(
 			m_PreviousCorrectedMoveDirection, correctedMoveDirection);
 
 		m_PreviousCorrectedMoveDirection = correctedMoveDirection;

@@ -33,7 +33,7 @@ bool fro::SystemEventManager::processSystemEvents() const
 		if (event.type == SDL_EventType::SDL_QUIT)
 			return false;
 
-		m_SystemEvent.notifySubscribers(event);
+		systemEvent.notifySubscribers(event);
 	}
 
 	return true;
