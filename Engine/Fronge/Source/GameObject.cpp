@@ -185,6 +185,9 @@ void fro::GameObject::worldTransform(TransformationMatrix2D const& transformatio
 	m_WorldTransform.transform(transformation.getTransformation());
 
 	calculateLocalTransform();
+
+	for (Reference<GameObject> const child : m_vChildren)
+		child.get().setWorldTransformDirty();
 }
 
 void fro::GameObject::worldTranslate(glm::vec2 const& translation)
@@ -201,6 +204,9 @@ void fro::GameObject::worldTranslate(glm::vec2 const& translation)
 	m_WorldTransform.translate(translation);
 
 	calculateLocalTransform();
+
+	for (Reference<GameObject> const child : m_vChildren)
+		child.get().setWorldTransformDirty();
 }
 
 void fro::GameObject::worldRotate(float const rotation)
@@ -217,6 +223,9 @@ void fro::GameObject::worldRotate(float const rotation)
 	m_WorldTransform.rotate(rotation);
 
 	calculateLocalTransform();
+
+	for (Reference<GameObject> const child : m_vChildren)
+		child.get().setWorldTransformDirty();
 }
 
 void fro::GameObject::worldScale(glm::vec2 const& scale)
@@ -233,6 +242,9 @@ void fro::GameObject::worldScale(glm::vec2 const& scale)
 	m_WorldTransform.scale(scale);
 
 	calculateLocalTransform();
+
+	for (Reference<GameObject> const child : m_vChildren)
+		child.get().setWorldTransformDirty();
 }
 
 void fro::GameObject::setLocalTransformation(TransformationMatrix2D const& transformation)
