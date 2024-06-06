@@ -59,7 +59,6 @@ void fro::PumpState::exit(Reference<State> const)
 	m_ElapsedSecondsWithoutInput = 0.0f;
 	m_RemainingCooldownSeconds = 0.0f;
 
-	for (Reference<GameObject> const child : m_ParentingGameObject.get().getChildren())
-		child.get().setActive(false);
+	m_ParentingGameObject.get().getChild("pump").get().setActive(false);
 }
 #pragma endregion PublicMethods
