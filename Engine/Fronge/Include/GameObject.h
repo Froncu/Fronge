@@ -10,10 +10,10 @@
 #include "TransformationMatrix2D.h"
 
 #include <memory>
-#include <set>
 #include <string>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 namespace fro
 {
@@ -23,7 +23,7 @@ namespace fro
 	class GameObject final : public BaseReferencable
 	{
 	public:
-		GameObject(std::string name);
+		GameObject(std::string name, std::string tag);
 		GameObject(GameObject&& other) noexcept;
 
 		~GameObject() = default;
@@ -58,9 +58,12 @@ namespace fro
 		void setWorldRotation(float const rotation);
 		void setWorldScale(glm::vec2 const& scale);
 
+		fro_NODISCARD std::string_view getName() const;
+		fro_NODISCARD std::string_view getTag() const;
 		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;
 		fro_NODISCARD Reference<GameObject> getParent() const;
-		fro_NODISCARD std::set<Reference<GameObject>> const& getChildren() const;
+		fro_NODISCARD std::vector<Reference<GameObject>> const& getChildren() const;
+		fro_NODISCARD Reference<GameObject> getChild(std::string_view const name) const;
 		fro_NODISCARD TransformationMatrix2D const& getLocalTransform() const;
 		fro_NODISCARD TransformationMatrix2D const& getWorldTransform() const;
 
@@ -141,6 +144,7 @@ namespace fro
 		void calculateWorldTransform() const;
 
 		std::string m_Name;
+		std::string m_Tag;
 
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 
@@ -151,7 +155,7 @@ namespace fro
 		std::vector<Reference<Renderable>> m_vRenderables{};
 		std::vector<Reference<GUI>> m_vGUIs{};
 
-		std::set<Reference<GameObject>> m_sChildren{};
+		std::vector<Reference<GameObject>> m_vChildren{};
 		Reference<GameObject> m_Parent{};
 
 		mutable bool m_IsWorldTransformDirty{};

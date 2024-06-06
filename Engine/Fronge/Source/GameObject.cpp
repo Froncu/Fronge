@@ -3,8 +3,9 @@
 #include <algorithm>
 
 #pragma region Constructors/Destructor
-fro::GameObject::GameObject(std::string name)
+fro::GameObject::GameObject(std::string name, std::string tag)
 	: m_Name{ std::move(name) }
+	, m_Tag{ std::move(tag) }
 {
 }
 
@@ -12,6 +13,7 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 	: BaseReferencable(std::move(other))
 
 	, m_Name{ std::move(other.m_Name) }
+	, m_Tag{ std::move(other.m_Tag) }
 	
 	, m_mpComponents{ std::move(other.m_mpComponents) }
 
@@ -19,7 +21,7 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 	, m_vRenderables{ std::move(other.m_vRenderables) }
 	, m_vGUIs{ std::move(other.m_vGUIs) }
 
-	, m_sChildren{ std::move(other.m_sChildren) }
+	, m_vChildren{ std::move(other.m_vChildren) }
 	, m_Parent{ std::move(other.m_Parent) }
 
 	, m_LocalTransform{ std::move(other.m_LocalTransform) }
@@ -40,15 +42,13 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 {
 	BaseReferencable::operator=(std::move(other));
 
-	m_Name = std::move(other.m_Name);
-
 	m_mpComponents = std::move(other.m_mpComponents);
 
 	m_vBehaviours = std::move(other.m_vBehaviours);
 	m_vRenderables = std::move(other.m_vRenderables);
 	m_vGUIs = std::move(other.m_vGUIs);
 
-	m_sChildren = std::move(other.m_sChildren);
+	m_vChildren = std::move(other.m_vChildren);
 	m_Parent = std::move(other.m_Parent);
 
 	m_IsActive = other.m_IsActive;
@@ -106,7 +106,9 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 		return;
 
 	if (m_Parent.valid())
-		m_Parent.get().m_sChildren.insert(this);
+		m_vChildren.erase(
+			std::remove(m_vChildren.begin(), m_vChildren.end(), this),
+			m_vChildren.end());
 
 	TransformationMatrix2D oldWorldTransform;
 	if (keepWorldTransform)
@@ -115,7 +117,7 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 	m_Parent = parent;
 
 	if (m_Parent.valid())
-		m_Parent.get().m_sChildren.insert(this);
+		m_Parent.get().m_vChildren.push_back(this);
 
 	if (m_Parent.valid() and keepWorldTransform)
 		setWorldTransformation(oldWorldTransform);
@@ -282,7 +284,7 @@ void fro::GameObject::setWorldTransformation(TransformationMatrix2D const& trans
 
 	calculateLocalTransform();
 
-	for (Reference<GameObject> const child : m_sChildren)
+	for (Reference<GameObject> const child : m_vChildren)
 		child.get().setWorldTransformDirty();
 }
 
@@ -295,7 +297,7 @@ void fro::GameObject::setWorldTranslation(glm::vec2 const& translation)
 
 	calculateLocalTransform();
 
-	for (Reference<GameObject> const child : m_sChildren)
+	for (Reference<GameObject> const child : m_vChildren)
 		child.get().setWorldTransformDirty();
 }
 
@@ -308,7 +310,7 @@ void fro::GameObject::setWorldRotation(float const rotation)
 
 	calculateLocalTransform();
 
-	for (Reference<GameObject> const child : m_sChildren)
+	for (Reference<GameObject> const child : m_vChildren)
 		child.get().setWorldTransformDirty();
 }
 
@@ -321,13 +323,24 @@ void fro::GameObject::setWorldScale(glm::vec2 const& scale)
 
 	calculateLocalTransform();
 
+	for (Reference<GameObject> const child : m_vChildren)
+		child.get().setWorldTransformDirty();
+}
+
+void fro::GameObject::setWorldTransformDirty()
+{
+	if (m_IsWorldTransformDirty)
+		return;
+
+	m_IsWorldTransformDirty = true;
+
 	for (Reference<GameObject> const child : m_sChildren)
 		child.get().setWorldTransformDirty();
 }
 
 bool fro::GameObject::owns(Reference<GameObject> const gameObject) const
 {
-	return std::any_of(m_sChildren.begin(), m_sChildren.end(),
+	return std::any_of(m_vChildren.begin(), m_vChildren.end(),
 		[gameObject](Reference<GameObject> const child)
 		{
 			return gameObject == child;
@@ -339,9 +352,26 @@ fro::Reference<fro::GameObject> fro::GameObject::getParent() const
 	return m_Parent;
 }
 
-std::set<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() const
+std::vector<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() const
 {
-	return m_sChildren;
+	return m_vChildren;
+}
+
+fro::Reference<fro::GameObject> fro::GameObject::getChild(std::string_view const name) const
+{
+	auto const iFoundChild
+	{
+		std::find_if(m_vChildren.begin(), m_vChildren.end(),
+			[name](Reference<GameObject> const child)
+			{
+				return name == child.get().getName();
+			})
+	};
+
+	if (iFoundChild == m_vChildren.end())
+		return {};
+
+	return *iFoundChild;
 }
 
 fro::TransformationMatrix2D const& fro::GameObject::getLocalTransform() const

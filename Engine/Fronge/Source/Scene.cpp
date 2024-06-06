@@ -64,8 +64,8 @@ void fro::Scene::display() const
 		gameObject.display();
 }
 
-fro::Reference<fro::GameObject> fro::Scene::addGameObject(std::string name)
+fro::Reference<fro::GameObject> fro::Scene::addGameObject(std::string name, std::string tag)
 {
-	return m_vGameObjects.emplace_back(std::move(name));
+	return m_vGameObjects.emplace_back(std::move(name), std::move(tag));
 }
 #pragma endregion PublicMethods

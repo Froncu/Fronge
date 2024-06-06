@@ -31,7 +31,7 @@ namespace fro
 
 		void render() const;
 		void display() const;
-		fro::Reference<fro::GameObject> addGameObject(std::string name);
+		fro::Reference<fro::GameObject> addGameObject(std::string name, std::string tag = {});
 
 	private:
 		std::string m_Name;
