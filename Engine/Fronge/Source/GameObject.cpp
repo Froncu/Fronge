@@ -10,6 +10,8 @@ fro::GameObject::GameObject(std::string name)
 
 fro::GameObject::GameObject(GameObject&& other) noexcept
 	: BaseReferencable(std::move(other))
+
+	, m_Name{ std::move(other.m_Name) }
 	
 	, m_mpComponents{ std::move(other.m_mpComponents) }
 
@@ -37,6 +39,8 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 {
 	BaseReferencable::operator=(std::move(other));
+
+	m_Name = std::move(other.m_Name);
 
 	m_mpComponents = std::move(other.m_mpComponents);
 
@@ -121,6 +125,12 @@ void fro::GameObject::setParent(Reference<GameObject> const parent, bool const k
 
 void fro::GameObject::localTransform(TransformationMatrix2D const& transformation)
 {
+	if (transformation.getTransformation() == glm::mat3x3(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f))
+		return;
+
 	m_LocalTransform.transform(transformation.getTransformation());
 
 	setWorldTransformDirty();
@@ -128,6 +138,9 @@ void fro::GameObject::localTransform(TransformationMatrix2D const& transformatio
 
 void fro::GameObject::localTranslate(glm::vec2 const& translation)
 {
+	if (not translation.x and not translation.y)
+		return;
+
 	m_LocalTransform.translate(translation);
 
 	setWorldTransformDirty();
@@ -135,6 +148,9 @@ void fro::GameObject::localTranslate(glm::vec2 const& translation)
 
 void fro::GameObject::localRotate(float const rotation)
 {
+	if (not rotation)
+		return;
+
 	m_LocalTransform.rotate(rotation);
 
 	setWorldTransformDirty();
@@ -142,6 +158,9 @@ void fro::GameObject::localRotate(float const rotation)
 
 void fro::GameObject::localScale(glm::vec2 const& scale)
 {
+	if (not scale.x and not scale.y)
+		return;
+
 	m_LocalTransform.scale(scale);
 
 	setWorldTransformDirty();
@@ -149,6 +168,12 @@ void fro::GameObject::localScale(glm::vec2 const& scale)
 
 void fro::GameObject::worldTransform(TransformationMatrix2D const& transformation)
 {
+	if (transformation.getTransformation() == glm::mat3x3(
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f))
+		return;
+
 	if (m_IsWorldTransformDirty)
 	{
 		calculateWorldTransform();
@@ -162,6 +187,9 @@ void fro::GameObject::worldTransform(TransformationMatrix2D const& transformatio
 
 void fro::GameObject::worldTranslate(glm::vec2 const& translation)
 {
+	if (not translation.x and not translation.y)
+		return;
+
 	if (m_IsWorldTransformDirty)
 	{
 		calculateWorldTransform();
@@ -175,6 +203,9 @@ void fro::GameObject::worldTranslate(glm::vec2 const& translation)
 
 void fro::GameObject::worldRotate(float const rotation)
 {
+	if (not rotation)
+		return;
+
 	if (m_IsWorldTransformDirty)
 	{
 		calculateWorldTransform();
@@ -188,6 +219,9 @@ void fro::GameObject::worldRotate(float const rotation)
 
 void fro::GameObject::worldScale(glm::vec2 const& scale)
 {
+	if (not scale.x and not scale.y)
+		return;
+
 	if (m_IsWorldTransformDirty)
 	{
 		calculateWorldTransform();
@@ -201,6 +235,9 @@ void fro::GameObject::worldScale(glm::vec2 const& scale)
 
 void fro::GameObject::setLocalTransformation(TransformationMatrix2D const& transformation)
 {
+	if (getLocalTransform().getTransformation() == transformation.getTransformation())
+		return;
+
 	m_LocalTransform = transformation;
 
 	setWorldTransformDirty();
@@ -208,6 +245,9 @@ void fro::GameObject::setLocalTransformation(TransformationMatrix2D const& trans
 
 void fro::GameObject::setLocalTranslation(glm::vec2 const& translation)
 {
+	if (getLocalTransform().getTranslation() == translation)
+		return;
+
 	m_LocalTransform.setTranslation(translation);
 
 	setWorldTransformDirty();
@@ -215,6 +255,9 @@ void fro::GameObject::setLocalTranslation(glm::vec2 const& translation)
 
 void fro::GameObject::setLocalRotation(float const rotation)
 {
+	if (getLocalTransform().getRotation() == rotation)
+		return;
+
 	m_LocalTransform.setRotation(rotation);
 
 	setWorldTransformDirty();
@@ -222,6 +265,9 @@ void fro::GameObject::setLocalRotation(float const rotation)
 
 void fro::GameObject::setLocalScale(glm::vec2 const& scale)
 {
+	if (getLocalTransform().getScale() == scale)
+		return;
+
 	m_LocalTransform.setScale(scale);
 
 	setWorldTransformDirty();
@@ -229,8 +275,10 @@ void fro::GameObject::setLocalScale(glm::vec2 const& scale)
 
 void fro::GameObject::setWorldTransformation(TransformationMatrix2D const& transformation)
 {
+	if (getWorldTransform().getTransformation() == transformation.getTransformation())
+		return;
+
 	m_WorldTransform = transformation;
-	m_IsWorldTransformDirty = false;
 
 	calculateLocalTransform();
 
@@ -240,11 +288,8 @@ void fro::GameObject::setWorldTransformation(TransformationMatrix2D const& trans
 
 void fro::GameObject::setWorldTranslation(glm::vec2 const& translation)
 {
-	if (m_IsWorldTransformDirty)
-	{
-		calculateWorldTransform();
-		m_IsWorldTransformDirty = false;
-	}
+	if (getWorldTransform().getTranslation() == translation)
+		return;
 
 	m_WorldTransform.setTranslation(translation);
 
@@ -256,11 +301,8 @@ void fro::GameObject::setWorldTranslation(glm::vec2 const& translation)
 
 void fro::GameObject::setWorldRotation(float const rotation)
 {
-	if (m_IsWorldTransformDirty)
-	{
-		calculateWorldTransform();
-		m_IsWorldTransformDirty = false;
-	}
+	if (getWorldTransform().getRotation() == rotation)
+		return;
 
 	m_WorldTransform.setRotation(rotation);
 
@@ -272,26 +314,12 @@ void fro::GameObject::setWorldRotation(float const rotation)
 
 void fro::GameObject::setWorldScale(glm::vec2 const& scale)
 {
-	if (m_IsWorldTransformDirty)
-	{
-		calculateWorldTransform();
-		m_IsWorldTransformDirty = false;
-	}
+	if (getWorldTransform().getScale() == scale)
+		return;
 
 	m_WorldTransform.setScale(scale);
 
 	calculateLocalTransform();
-
-	for (Reference<GameObject> const child : m_sChildren)
-		child.get().setWorldTransformDirty();
-}
-
-void fro::GameObject::setWorldTransformDirty()
-{
-	if (m_IsWorldTransformDirty)
-		return;
-
-	m_IsWorldTransformDirty = true;
 
 	for (Reference<GameObject> const child : m_sChildren)
 		child.get().setWorldTransformDirty();
@@ -336,6 +364,17 @@ fro::TransformationMatrix2D const& fro::GameObject::getWorldTransform() const
 
 
 #pragma region PrivateMethods
+void fro::GameObject::setWorldTransformDirty()
+{
+	if (m_IsWorldTransformDirty)
+		return;
+
+	m_IsWorldTransformDirty = true;
+
+	for (Reference<GameObject> const child : m_sChildren)
+		child.get().setWorldTransformDirty();
+}
+
 void fro::GameObject::calculateLocalTransform()
 {
 	if (m_Parent.valid())

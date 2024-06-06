@@ -4,6 +4,7 @@
 #include "BaseReferencable.h"
 #include "Behaviour.h"
 #include "Defines.hpp"
+#include "Event.hpp"
 #include "GUI.h"
 #include "Renderable.h"
 #include "TransformationMatrix2D.h"
@@ -56,7 +57,6 @@ namespace fro
 		void setWorldTranslation(glm::vec2 const& translation);
 		void setWorldRotation(float const rotation);
 		void setWorldScale(glm::vec2 const& scale);
-		void setWorldTransformDirty();
 
 		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;
 		fro_NODISCARD Reference<GameObject> getParent() const;
@@ -136,10 +136,11 @@ namespace fro
 
 		GameObject& operator=(GameObject const&) = delete;
 
+		void setWorldTransformDirty();
 		void calculateLocalTransform();
 		void calculateWorldTransform() const;
 
-		std::string const m_Name;
+		std::string m_Name;
 
 		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 
