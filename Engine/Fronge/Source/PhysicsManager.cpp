@@ -3,12 +3,12 @@
 #include "GameObject.h"
 #include "RigidBody.h"
 
-#include <b2_contact.h>
+#include <algorithm>
+#include <ranges>
 
 #pragma region Constructors/Destructor
 fro::PhysicsManager::PhysicsManager()
 {
-	m_World.SetContactListener(this);
 }
 #pragma endregion Constructors/Destructor
 
@@ -17,61 +17,97 @@ fro::PhysicsManager::PhysicsManager()
 #pragma region PublicMethods
 void fro::PhysicsManager::update(float const fixedDeltaSeconds)
 {
-	b2Body* pBody{ m_World.GetBodyList() };
-	for (; pBody; pBody = pBody->GetNext())
+	for (auto&& [rigidBody1, sOverlappingBodies1, didCheck1] : m_vRigidBodyTuples)
 	{
-		Reference<GameObject> const gameObject
+		glm::vec2 const velocity{ rigidBody1.get().velocity };
+		if (not velocity.x and not velocity.y)
 		{
-			reinterpret_cast<RigidBody*>(pBody->GetUserData().pointer)->m_ParentingGameObject
-		};
+			didCheck1 = false;
+			continue;
+		}
 
-		glm::vec2 const translation{ gameObject.get().getWorldTransform().getTranslation() };
-		float const rotation{ gameObject.get().getWorldTransform().getRotation() };
+		rigidBody1.get().m_ParentingGameObject.get().worldTranslate(
+			velocity * fixedDeltaSeconds);
 
-		pBody->SetTransform({ translation.x, translation.y }, rotation);
+		for (auto&& [rigidBody2, sOverlappingBodies2, didCheck2] : m_vRigidBodyTuples)
+		{
+			if (didCheck2)
+				continue;
+
+			if (rigidBody1 == rigidBody2)
+				continue;
+
+			bool const contains{ sOverlappingBodies1.contains(rigidBody2) };
+			bool const overlapping{ areOverlapping(rigidBody1, rigidBody2) };
+
+			if (overlapping and not contains)
+			{
+				sOverlappingBodies1.insert(rigidBody2);
+				sOverlappingBodies2.insert(rigidBody1);
+
+				beginOverlap.notifySubscribers(rigidBody1, rigidBody2);
+			}
+			else if (not overlapping and contains)
+			{
+				sOverlappingBodies1.erase(rigidBody2);
+				sOverlappingBodies2.erase(rigidBody1);
+
+				endOverlap.notifySubscribers(rigidBody1, rigidBody2);
+			}
+		}
+
+		didCheck1 = true;
 	}
+}
 
-	m_World.Step(fixedDeltaSeconds, 8, 4);
+void fro::PhysicsManager::registerRigidBody(Reference<RigidBody> const rigidBody)
+{
+	m_vRigidBodyTuples.push_back({ rigidBody, {}, {} });
+}
 
-	pBody = m_World.GetBodyList();
-	for (; pBody; pBody = pBody->GetNext())
+void fro::PhysicsManager::unregisterRigidBody(Reference<RigidBody> const rigidBody)
+{
+	auto const iNewEnd
 	{
-		b2Vec2 const& translation{ pBody->GetPosition() };
-		float const rotation{ pBody->GetAngle() };
+		std::remove_if(m_vRigidBodyTuples.begin(), m_vRigidBodyTuples.end(),
+			[rigidBody](RigidBodyTuple const rigidBodyTuple)
+			{
+				return rigidBody == std::get<0>(rigidBodyTuple);
+			})
+	};
 
-		Reference<RigidBody> const rigidBody{
-			*reinterpret_cast<RigidBody*>(pBody->GetUserData().pointer) };
-
-		rigidBody.get().m_ParentingGameObject.get().setWorldTranslation({ translation.x, translation.y });
-		rigidBody.get().m_ParentingGameObject.get().setWorldRotation(rotation);
-	}
+	if (iNewEnd not_eq m_vRigidBodyTuples.end())
+		m_vRigidBodyTuples.erase(iNewEnd, m_vRigidBodyTuples.end());
 }
 #pragma endregion PublicMethods
 
 
 
 #pragma region PrivateMethods
-void fro::PhysicsManager::BeginContact(b2Contact* const pContact)
+bool fro::PhysicsManager::areOverlapping(Reference<RigidBody> const body1, Reference<RigidBody> const body2)
 {
-	Reference<RigidBody> const rigidBodyA{ reinterpret_cast<RigidBody*>(pContact->GetFixtureA()->GetBody()->GetUserData().pointer) };
-	Reference<RigidBody> const rigidBodyB{ reinterpret_cast<RigidBody*>(pContact->GetFixtureB()->GetBody()->GetUserData().pointer) };
+	glm::vec2 const halfSize1{ body1.get().getColliderSize() * 0.5f };
+	if (not halfSize1.x and not halfSize1.y)
+		return false;
 
-	rigidBodyA.get().m_sOverlappingRigidBodies.insert(rigidBodyB);
-	rigidBodyB.get().m_sOverlappingRigidBodies.insert(rigidBodyA);
+	glm::vec2 const halfSize2{ body2.get().getColliderSize() * 0.5f };
+	if (not halfSize2.x and not halfSize2.y)
+		return false;
 
-	rigidBodyA.get().beginOverlap.notifySubscribers(rigidBodyB);
-	rigidBodyB.get().beginOverlap.notifySubscribers(rigidBodyA);
-}
+	glm::vec2 const translation1{
+		body1.get().m_ParentingGameObject.get().getWorldTransform().getTranslation() };
+	glm::vec2 const translation2{
+		body2.get().m_ParentingGameObject.get().getWorldTransform().getTranslation() };
 
-void fro::PhysicsManager::EndContact(b2Contact* const pContact)
-{
-	Reference<RigidBody> const rigidBodyA{ reinterpret_cast<RigidBody*>(pContact->GetFixtureA()->GetBody()->GetUserData().pointer) };
-	Reference<RigidBody> const rigidBodyB{ reinterpret_cast<RigidBody*>(pContact->GetFixtureB()->GetBody()->GetUserData().pointer) };
+	glm::vec2 const topLeft1{ translation1 - halfSize1 };
+	glm::vec2 const bottomRight1{ translation1 + halfSize1 };
+	glm::vec2 const topLeft2{ translation2 - halfSize2 };
+	glm::vec2 const bottomRight2{ translation2 + halfSize2 };
 
-	rigidBodyA.get().m_sOverlappingRigidBodies.erase(rigidBodyB);
-	rigidBodyB.get().m_sOverlappingRigidBodies.erase(rigidBodyA);
-
-	rigidBodyA.get().endOverlap.notifySubscribers(rigidBodyB);
-	rigidBodyB.get().endOverlap.notifySubscribers(rigidBodyA);
+	return
+		not (topLeft1.x >= bottomRight2.x) and
+		not (bottomRight1.x <= topLeft2.x) and
+		not (topLeft1.y >= bottomRight2.y) and
+		not (bottomRight1.y <= topLeft2.y);
 }
 #pragma endregion PrivateMethods

@@ -6,8 +6,6 @@
 fro::GridMovement::GridMovement(Reference<GameObject> const parentingGameObject)
 	: Behaviour(parentingGameObject)
 {
-	m_RigidBody.get().setType(RigidBody::Type::dynamicBody);
-	m_RigidBody.get().setGravityScale(0.0f);
 }
 #pragma endregion Constructors/Destructor
 
@@ -18,7 +16,7 @@ void fro::GridMovement::fixedUpdate(float const)
 {
 	if (not m_MoveDirection.x and not m_MoveDirection.y)
 	{
-		m_RigidBody.get().setVelocity({});
+		m_RigidBody.get().velocity = {};
 		return;
 	}
 
@@ -36,7 +34,7 @@ void fro::GridMovement::fixedUpdate(float const)
 		if ((isAtMaximaY and m_MoveDirection.y < 0.0f) or
 			(isAtMinimaY and m_MoveDirection.y > 0.0f))
 		{
-			m_RigidBody.get().setVelocity({});
+			m_RigidBody.get().velocity = {};
 			return;
 		}
 
@@ -55,7 +53,7 @@ void fro::GridMovement::fixedUpdate(float const)
 		if ((isAtMaximaX and m_MoveDirection.x > 0.0f) or
 			(isAtMinimaX and m_MoveDirection.x < 0.0f))
 		{
-			m_RigidBody.get().setVelocity({});
+			m_RigidBody.get().velocity = {};
 			return;
 		}
 
@@ -67,7 +65,7 @@ void fro::GridMovement::fixedUpdate(float const)
 			correctedMoveDirection.x = std::signbit(m_MoveDirection.x) ? -1.0f : 1.0f;
 	}
 
-	m_RigidBody.get().setVelocity(correctedMoveDirection * m_MoveSpeed);
+	m_RigidBody.get().velocity = correctedMoveDirection * m_MoveSpeed;
 
 	if (correctedMoveDirection.x)
 		m_ParentingGameObject.get().setLocalScale({ correctedMoveDirection.x, 1.0f });

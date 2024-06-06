@@ -1,24 +1,31 @@
 #if not defined fro_PHYSICS_MANAGER_H
 #define fro_PHYSICS_MANAGER_H
 
+#include "Event.hpp"
 #include "Singleton.hpp"
+#include "Reference.hpp"
 
-#include <b2_world.h>
-
-#include <memory>
+#include <set>
+#include <vector>
 
 namespace fro
 {
-	class PhysicsManager final : public Singleton<PhysicsManager>, public b2ContactListener
+	class RigidBody;
+
+	class PhysicsManager final : public Singleton<PhysicsManager>
 	{
 		friend class Singleton<PhysicsManager>;
-
-		friend class RigidBody;
 
 	public:
 		~PhysicsManager() = default;
 
 		void update(float const fixedDeltaSeconds);
+
+		void registerRigidBody(Reference<RigidBody> const rigidBody);
+		void unregisterRigidBody(Reference<RigidBody> const rigidBody);
+
+		Event<Reference<RigidBody>, Reference<RigidBody>> beginOverlap{};
+		Event<Reference<RigidBody>, Reference<RigidBody>> endOverlap{};
 
 	private:
 		PhysicsManager();
@@ -28,10 +35,10 @@ namespace fro
 		PhysicsManager& operator=(PhysicsManager const&) = delete;
 		PhysicsManager& operator=(PhysicsManager&&) noexcept = delete;
 
-		virtual void BeginContact(b2Contact* const pContact) override;
-		virtual void EndContact(b2Contact* const pContact) override;
+		bool areOverlapping(Reference<RigidBody> const body1, Reference<RigidBody> const body2);
 
-		b2World m_World{ { 0.0f, 9.81f } };
+		using RigidBodyTuple = std::tuple<Reference<RigidBody>, std::set<Reference<RigidBody>>, bool>;
+		std::vector<RigidBodyTuple> m_vRigidBodyTuples{};
 	};
 }
 

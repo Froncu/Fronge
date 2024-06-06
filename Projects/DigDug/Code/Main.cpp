@@ -20,6 +20,7 @@
 #include "Steam.h"
 #include "SystemEventManager.h"
 #include "Text.h"
+#include "PhysicsManager.h"
 
 #include <sdl_main.h>
 #include <sdl_mixer.h>
@@ -87,7 +88,7 @@ int main(int, char**)
 		player1.get().forceGetComponent<fro::StateMachine>().get().setCurrentState(
 			player1.get().forceGetComponent<fro::IdleState>());
 
-		player1.get().forceGetComponent<fro::RigidBody>().get().addBoxShape("mainShape", { 8, 8 });
+		player1.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
 
 
 
@@ -95,12 +96,13 @@ int main(int, char**)
 
 
 
-		auto const player2{ scene.get().addGameObject("fygar") };
+		auto const player2{ scene.get().addGameObject("fygar1") };
 
 		player2.get().addComponent<fro::GridMovement>().get();
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });
-		player2.get().forceGetComponent<fro::RigidBody>().get().addBoxShape("mainShape", { 8, 8 });
+		player2.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
+
 
 
 		auto& inputManager{ fro::InputManager::getInstance() };
