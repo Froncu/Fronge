@@ -58,6 +58,7 @@ namespace fro
 		void setWorldRotation(float const rotation);
 		void setWorldScale(glm::vec2 const& scale);
 
+		fro_NODISCARD bool isActive() const;
 		fro_NODISCARD std::string_view getName() const;
 		fro_NODISCARD std::string_view getTag() const;
 		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;

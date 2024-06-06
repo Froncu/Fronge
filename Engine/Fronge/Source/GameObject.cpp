@@ -327,6 +327,14 @@ void fro::GameObject::setWorldScale(glm::vec2 const& scale)
 		child.get().setWorldTransformDirty();
 }
 
+bool fro::GameObject::isActive() const
+{
+	if (m_Parent.valid() and not m_Parent.get().isActive())
+		return false;
+
+	return m_IsActive;
+}
+
 std::string_view fro::GameObject::getName() const
 {
 	return m_Name;
