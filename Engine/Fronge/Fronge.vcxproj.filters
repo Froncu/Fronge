@@ -89,7 +89,7 @@
       <Filter>References\BaseReference</Filter>
     </ClCompile>
     <ClCompile Include="Source\RigidBody.cpp">
-      <Filter>Component\Behaviour\RigidBody</Filter>
+      <Filter>Component\RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,11 +210,11 @@
     <Filter Include="References\BaseReference">
       <UniqueIdentifier>{252e9025-8448-485c-addb-a0d235aedf4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Behaviour\RigidBody">
-      <UniqueIdentifier>{b6e84b09-4237-4684-a65b-1ac9a3ddac46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Behaviour\SpriteAnimator">
       <UniqueIdentifier>{1bbc9091-e000-40ce-8b63-ca959222dc7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\RigidBody">
+      <UniqueIdentifier>{b6e84b09-4237-4684-a65b-1ac9a3ddac46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -335,7 +335,7 @@
       <Filter>References\BaseReference</Filter>
     </ClInclude>
     <ClInclude Include="Include\RigidBody.h">
-      <Filter>Component\Behaviour\RigidBody</Filter>
+      <Filter>Component\RigidBody</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
