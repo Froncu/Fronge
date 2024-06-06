@@ -327,15 +327,14 @@ void fro::GameObject::setWorldScale(glm::vec2 const& scale)
 		child.get().setWorldTransformDirty();
 }
 
-void fro::GameObject::setWorldTransformDirty()
+std::string_view fro::GameObject::getName() const
 {
-	if (m_IsWorldTransformDirty)
-		return;
+	return m_Name;
+}
 
-	m_IsWorldTransformDirty = true;
-
-	for (Reference<GameObject> const child : m_sChildren)
-		child.get().setWorldTransformDirty();
+std::string_view fro::GameObject::getTag() const
+{
+	return m_Tag;
 }
 
 bool fro::GameObject::owns(Reference<GameObject> const gameObject) const
@@ -401,7 +400,7 @@ void fro::GameObject::setWorldTransformDirty()
 
 	m_IsWorldTransformDirty = true;
 
-	for (Reference<GameObject> const child : m_sChildren)
+	for (Reference<GameObject> const child : m_vChildren)
 		child.get().setWorldTransformDirty();
 }
 
