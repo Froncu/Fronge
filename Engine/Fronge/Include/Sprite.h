@@ -5,8 +5,9 @@
 #include "Renderable.h"
 
 #include <sdl_rect.h>
+#include <vec2.hpp>
 
-#include <xstring>
+#include <string>
 
 struct SDL_Texture;
 
@@ -25,6 +26,7 @@ namespace fro
 		void setSourceRectangle(SDL_FRect const sourceRectangle);
 
 		std::string_view getFileName() const;
+		glm::ivec2 getSize() const;
 
 	private:
 		Sprite(Sprite const&) = delete;
@@ -36,6 +38,8 @@ namespace fro
 		std::string m_FileName{};
 		SDL_Texture* m_pTexture{};
 		SDL_FRect m_SourceRectangle{};
+
+		glm::ivec2 m_Size{};
 	};
 }
 

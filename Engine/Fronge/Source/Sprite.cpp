@@ -27,6 +27,7 @@ void fro::Sprite::setFileName(std::string fileName)
 {
 	m_FileName = std::move(fileName);
 	m_pTexture = ResourceManager::getInstance().getImageTexture(RenderContext::getInstance().getRenderer(), m_FileName);
+	SDL_QueryTexture(m_pTexture, nullptr, nullptr, &m_Size.x, &m_Size.y);
 }
 
 void fro::Sprite::setSourceRectangle(SDL_FRect const sourceRectangle)
@@ -37,5 +38,10 @@ void fro::Sprite::setSourceRectangle(SDL_FRect const sourceRectangle)
 std::string_view fro::Sprite::getFileName() const 
 {
 	return m_FileName;
+}
+
+glm::ivec2 fro::Sprite::getSize() const
+{
+	return m_Size;
 }
 #pragma endregion PublicMethods
