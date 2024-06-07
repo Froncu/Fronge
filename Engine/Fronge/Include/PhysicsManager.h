@@ -5,6 +5,8 @@
 #include "Singleton.hpp"
 #include "Reference.hpp"
 
+#include <vec2.hpp>
+
 #include <set>
 #include <vector>
 
@@ -35,10 +37,12 @@ namespace fro
 		PhysicsManager& operator=(PhysicsManager const&) = delete;
 		PhysicsManager& operator=(PhysicsManager&&) noexcept = delete;
 
+		void updateOverlap(Reference<RigidBody> const body1, Reference<RigidBody> const body2);
 		bool areOverlapping(Reference<RigidBody> const body1, Reference<RigidBody> const body2);
 
-		using RigidBodyTuple = std::tuple<Reference<RigidBody>, std::set<Reference<RigidBody>>, bool>;
-		std::vector<RigidBodyTuple> m_vRigidBodyTuples{};
+		std::vector<Reference<RigidBody>> m_vRigidBodies{};
+
+		std::vector<std::size_t> m_vIdleBodyIndices{};
 	};
 }
 

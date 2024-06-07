@@ -21,8 +21,8 @@ void fro::Rotator::update(float const deltaSeconds)
 
 	m_Angle = glm::mod(m_Angle, twoPi);
 
-	m_ParentingGameObject.get().setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
-	m_ParentingGameObject.get().setWorldRotation(m_Angle);
+	parentingGameObject.get().setWorldTranslation(m_Center + m_Radius * glm::vec2(glm::cos(m_Angle), glm::sin(m_Angle)));
+	parentingGameObject.get().setWorldRotation(m_Angle);
 }
 
 void fro::Rotator::setCenter(glm::vec2 const& center)

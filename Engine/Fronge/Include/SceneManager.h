@@ -1,13 +1,12 @@
 #if not defined fro_SCENE_MANAGER_H
 #define fro_SCENE_MANAGER_H
 
+#include "Defines.hpp"
 #include "Reference.hpp"
 #include "Scene.h"
 #include "Singleton.hpp"
 
 #include <vector>
-
-struct SDL_Renderer;
 
 namespace fro
 {
@@ -25,12 +24,16 @@ namespace fro
 		void render() const;
 		void display() const;
 
-		fro::Reference<fro::Scene> loadScene(std::string name);
-		bool unloadScene(std::string name);
+		bool setActiveScene(Reference<Scene> const scene);
 
-		fro::Reference<fro::Scene> getScene(std::string_view const name);
+		Reference<Scene> addScene(std::string name);
+		fro_NODISCARD Reference<Scene> getScene(std::string_view const name);
+		fro_NODISCARD Reference<Scene> forceGetScene(std::string const& name);
+		bool removeScene(std::string const& name);
 
 	private:
+		using Scenes = std::vector<Scene>;
+
 		SceneManager() = default;
 		SceneManager(SceneManager const&) = delete;
 		SceneManager(SceneManager&&) noexcept = delete;
@@ -38,10 +41,10 @@ namespace fro
 		SceneManager& operator=(SceneManager const&) = delete;
 		SceneManager& operator=(SceneManager&&) noexcept = delete;
 
-		std::vector<Scene>::iterator findScene(std::string_view const name);
+		Scenes::iterator findScene(std::string_view const name);
 
-		std::vector<Scene> m_vScenes{};
-		std::size_t m_ActiveSceneIndex{};
+		Scenes m_Scenes{};
+		Reference<Scene> m_ActiveScene{};
 	};
 }
 

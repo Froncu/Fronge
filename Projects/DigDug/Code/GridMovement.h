@@ -31,7 +31,7 @@ namespace fro
 		GridMovement& operator=(GridMovement const&) = delete;
 		GridMovement& operator=(GridMovement&&) noexcept = delete;
 
-		Reference<RigidBody> m_RigidBody{ m_ParentingGameObject.get().forceGetComponent<RigidBody>() };
+		Reference<RigidBody> m_RigidBody{ parentingGameObject.get().forceGetComponent<RigidBody>() };
 
 		glm::vec2 m_PreviousCorrectedMoveDirection{};
 

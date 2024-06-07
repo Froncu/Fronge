@@ -34,7 +34,7 @@ namespace fro
 		void notifySubscribers(Payload... payload) const
 		{
 			for (Subscriber subscriber : m_vSubscribers)
-				subscriber(std::forward<Payload>(payload)...);
+				subscriber(std::forward<Payload&&>(payload)...);
 		}
 
 	private:

@@ -13,7 +13,7 @@ namespace fro
 	public:
 		virtual ~Component() = default;
 
-		Reference<GameObject> const m_ParentingGameObject;
+		Reference<GameObject> const parentingGameObject;
 
 	protected:
 		Component(Reference<GameObject> const parentingGameObject);

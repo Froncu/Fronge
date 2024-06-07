@@ -17,20 +17,20 @@ void fro::MovementRotation::onCorrectedMoveDirectionChanged(
 {
 	if (previous.y and current.x)
 	{
-		m_ParentingGameObject.get().setLocalRotation(0.0f);
+		parentingGameObject.get().setLocalRotation(0.0f);
 		return;
 	}
 
 	if (previous.x and current.y)
 	{
 		if (previous.x > 0.0f)
-			m_ParentingGameObject.get().setLocalRotation(glm::radians(
+			parentingGameObject.get().setLocalRotation(glm::radians(
 				current.y > 0.0f ? 90.0f : -90.0f));
 		else
-			m_ParentingGameObject.get().setLocalRotation(glm::radians(
+			parentingGameObject.get().setLocalRotation(glm::radians(
 				current.y > 0.0f ? -90.0f : 90.0f));
 	}
 	else
-		m_ParentingGameObject.get().localScale({ previous.y not_eq current.y ? -1.0f : 1.0f, 1.0f });
+		parentingGameObject.get().localScale({ previous.y not_eq current.y ? -1.0f : 1.0f, 1.0f });
 }
 #pragma endregion PublicMethods

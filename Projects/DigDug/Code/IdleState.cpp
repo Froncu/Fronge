@@ -19,17 +19,19 @@ fro::Reference<fro::State> fro::IdleState::update(float const)
 	InputManager& inputManager{ InputManager::getInstance() };
 
 	if (inputManager.isActionJustPressed("attack"))
-		return m_ParentingGameObject.get().forceGetComponent<AttackState>();
+		return parentingGameObject.get().forceGetComponent<AttackState>();
 
 	glm::vec2 const& inputAxis2D{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
 	if (inputAxis2D.x or inputAxis2D.y)
-		return m_ParentingGameObject.get().forceGetComponent<MoveState>();
+		return parentingGameObject.get().forceGetComponent<MoveState>();
 
 	return {};
 }
 
 void fro::IdleState::enter(Reference<State> const)
 {
+ 	m_Pump.get().setActive(false);
+
 	m_SpriteAnimator.get().setActiveAnimation("walking");
 	m_SpriteAnimator.get().pause();
 

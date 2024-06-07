@@ -1,35 +1,40 @@
 #include "GameObject.h"
 
+#include "Scene.h"
+
 #include <algorithm>
 
 #pragma region Constructors/Destructor
-fro::GameObject::GameObject(std::string name, std::string tag)
-	: m_Name{ std::move(name) }
-	, m_Tag{ std::move(tag) }
+fro::GameObject::GameObject(Reference<Scene> const parentingScene, std::string name)
+	: m_ParentingScene{ parentingScene }
+	, m_Name{ std::move(name) }
 {
 }
 
 fro::GameObject::GameObject(GameObject&& other) noexcept
 	: BaseReferencable(std::move(other))
 
+	, activeStateChanged{ std::move(other.activeStateChanged) }
+
+	, m_ParentingScene{ std::move(other.m_ParentingScene) }
 	, m_Name{ std::move(other.m_Name) }
+
 	, m_Tag{ std::move(other.m_Tag) }
-	
-	, m_mpComponents{ std::move(other.m_mpComponents) }
 
-	, m_vBehaviours{ std::move(other.m_vBehaviours) }
-	, m_vRenderables{ std::move(other.m_vRenderables) }
-	, m_vGUIs{ std::move(other.m_vGUIs) }
-
-	, m_vChildren{ std::move(other.m_vChildren) }
 	, m_Parent{ std::move(other.m_Parent) }
+	, m_vChildren{ std::move(other.m_vChildren) }
 
 	, m_LocalTransform{ std::move(other.m_LocalTransform) }
 	, m_WorldTransform{ std::move(other.m_WorldTransform) }
 
-	, m_IsWorldTransformDirty{ other.m_IsWorldTransformDirty }
+	, m_mpComponents{ std::move(other.m_mpComponents) }
+	, m_vBehaviours{ std::move(other.m_vBehaviours) }
+	, m_vRenderables{ std::move(other.m_vRenderables) }
+	, m_vGUIs{ std::move(other.m_vGUIs) }
 
 	, m_IsActive{ other.m_IsActive }
+	, m_IsWorldTransformDirty{ other.m_IsWorldTransformDirty }
+
 {
 	other.m_IsWorldTransformDirty = false;
 }
@@ -42,16 +47,26 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 {
 	BaseReferencable::operator=(std::move(other));
 
-	m_mpComponents = std::move(other.m_mpComponents);
+	activeStateChanged = std::move(other.activeStateChanged);
 
+	m_ParentingScene = std::move(other.m_ParentingScene);
+	m_Name = std::move(other.m_Name);
+
+	m_Tag = std::move(other.m_Tag);
+
+	m_Parent = std::move(other.m_Parent);
+	m_vChildren = std::move(other.m_vChildren);
+
+	m_LocalTransform = std::move(other.m_LocalTransform);
+	m_WorldTransform = std::move(other.m_WorldTransform);
+
+	m_mpComponents = std::move(other.m_mpComponents);
 	m_vBehaviours = std::move(other.m_vBehaviours);
 	m_vRenderables = std::move(other.m_vRenderables);
 	m_vGUIs = std::move(other.m_vGUIs);
 
-	m_vChildren = std::move(other.m_vChildren);
-	m_Parent = std::move(other.m_Parent);
-
 	m_IsActive = other.m_IsActive;
+	m_IsWorldTransformDirty = other.m_IsWorldTransformDirty;
 
 	return *this;
 }
@@ -62,67 +77,37 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 #pragma region PublicMethods
 void fro::GameObject::fixedUpdate(float const fixedDeltaSeconds) const
 {
-	if (m_IsActive)
+	if (isActive())
 		for (Reference<Behaviour> const behaviour : m_vBehaviours)
 			behaviour.get().fixedUpdate(fixedDeltaSeconds);
 }
 
 void fro::GameObject::update(float const deltaSeconds) const
 {
-	if (m_IsActive)
+	if (isActive())
 		for (Reference<Behaviour> const behaviour : m_vBehaviours)
 			behaviour.get().update(deltaSeconds);
 }
 
 void fro::GameObject::lateUpdate(float const deltaSeconds) const
 {
-	if (m_IsActive)
+	if (isActive())
 		for (Reference<Behaviour> const behaviour : m_vBehaviours)
 			behaviour.get().lateUpdate(deltaSeconds);
 }
 
 void fro::GameObject::render() const
 {
-	if (m_IsActive)
+	if (isActive())
 		for (Reference<Renderable> const renderable : m_vRenderables)
 			renderable.get().render();
 }
 
 void fro::GameObject::display() const
 {
-	if (m_IsActive)
+	if (isActive())
 		for (Reference<GUI> const GUI : m_vGUIs)
 			GUI.get().display();
-}
-
-void fro::GameObject::setActive(bool const isActive)
-{
-	m_IsActive = isActive;
-}
-
-void fro::GameObject::setParent(Reference<GameObject> const parent, bool const keepWorldTransform)
-{
-	if (parent == this || parent == m_Parent || owns(parent))
-		return;
-
-	if (m_Parent.valid())
-		m_vChildren.erase(
-			std::remove(m_vChildren.begin(), m_vChildren.end(), this),
-			m_vChildren.end());
-
-	TransformationMatrix2D oldWorldTransform;
-	if (keepWorldTransform)
-		oldWorldTransform = getWorldTransform();
-
-	m_Parent = parent;
-
-	if (m_Parent.valid())
-		m_Parent.get().m_vChildren.push_back(this);
-
-	if (m_Parent.valid() and keepWorldTransform)
-		setWorldTransformation(oldWorldTransform);
-	else
-		setWorldTransformDirty();
 }
 
 void fro::GameObject::localTransform(TransformationMatrix2D const& transformation)
@@ -339,12 +324,93 @@ void fro::GameObject::setWorldScale(glm::vec2 const& scale)
 		child.get().setWorldTransformDirty();
 }
 
-bool fro::GameObject::isActive() const
+bool fro::GameObject::setParent(Reference<GameObject> const parent, bool const keepWorldTransform)
 {
-	if (m_Parent.valid() and not m_Parent.get().isActive())
+	if (parent == this or parent == m_Parent or getGameObject(parent.get().getName()).valid())
 		return false;
 
-	return m_IsActive;
+	if (m_Parent.valid())
+		m_vChildren.erase(
+			std::remove(m_vChildren.begin(), m_vChildren.end(), this),
+			m_vChildren.end());
+
+	TransformationMatrix2D oldWorldTransform;
+	if (keepWorldTransform)
+		oldWorldTransform = getWorldTransform();
+
+	m_Parent = parent;
+
+	if (m_Parent.valid())
+		m_Parent.get().m_vChildren.push_back(this);
+
+	if (m_Parent.valid() and keepWorldTransform)
+		setWorldTransformation(oldWorldTransform);
+	else
+		setWorldTransformDirty();
+
+	return true;
+}
+
+void fro::GameObject::setTag(std::string tag)
+{
+	m_Tag = std::move(tag);
+}
+
+void fro::GameObject::setActive(bool const isActive)
+{
+	if (m_IsActive == isActive)
+		return;
+
+	m_IsActive = isActive;
+
+	if (m_Parent.valid() and not m_Parent.get().isActive())
+		return;
+
+	notifyActiveStateChanged(isActive);
+}
+
+fro::Reference<fro::GameObject> fro::GameObject::getParent() const
+{
+	return m_Parent;
+}
+
+fro::Reference<fro::GameObject> fro::GameObject::getGameObject(std::string_view const name)
+{
+	if (m_Name == name)
+		return this;
+
+	Reference<GameObject> foundGameObject{};
+	for (Reference<GameObject> const child : m_vChildren)
+	{
+		foundGameObject = child.get().getGameObject(name);
+		if (foundGameObject.valid())
+			return foundGameObject;
+	}
+
+	return foundGameObject;
+}
+
+fro::Reference<fro::GameObject> fro::GameObject::forceGetGameObject(std::string const& name)
+{
+	Reference<GameObject> gameObject{ getGameObject(name) };
+	if (gameObject.valid())
+		return gameObject;
+
+	gameObject = m_ParentingScene.get().addGameObject(name);
+	if (gameObject.valid())
+		gameObject.get().setParent(this, false);
+
+	return gameObject;
+}
+
+std::vector<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() const
+{
+	return m_vChildren;
+}
+
+fro::Reference<fro::Scene> fro::GameObject::getParentingScene() const
+{
+	return m_ParentingScene;
 }
 
 std::string_view fro::GameObject::getName() const
@@ -357,40 +423,12 @@ std::string_view fro::GameObject::getTag() const
 	return m_Tag;
 }
 
-bool fro::GameObject::owns(Reference<GameObject> const gameObject) const
+bool fro::GameObject::isActive() const
 {
-	return std::any_of(m_vChildren.begin(), m_vChildren.end(),
-		[gameObject](Reference<GameObject> const child)
-		{
-			return gameObject == child;
-		});
-}
+	if (m_Parent.valid() and not m_Parent.get().isActive())
+		return false;
 
-fro::Reference<fro::GameObject> fro::GameObject::getParent() const
-{
-	return m_Parent;
-}
-
-std::vector<fro::Reference<fro::GameObject>> const& fro::GameObject::getChildren() const
-{
-	return m_vChildren;
-}
-
-fro::Reference<fro::GameObject> fro::GameObject::getChild(std::string_view const name) const
-{
-	auto const iFoundChild
-	{
-		std::find_if(m_vChildren.begin(), m_vChildren.end(),
-			[name](Reference<GameObject> const child)
-			{
-				return name == child.get().getName();
-			})
-	};
-
-	if (iFoundChild == m_vChildren.end())
-		return {};
-
-	return *iFoundChild;
+	return m_IsActive;
 }
 
 fro::TransformationMatrix2D const& fro::GameObject::getLocalTransform() const
@@ -438,5 +476,16 @@ void fro::GameObject::calculateWorldTransform() const
 		m_WorldTransform = getLocalTransform() * m_Parent.get().getWorldTransform();
 	else
 		m_WorldTransform = getLocalTransform();
+}
+
+void fro::GameObject::notifyActiveStateChanged(bool const newIsActive) const
+{
+	activeStateChanged.notifySubscribers(newIsActive);
+
+	for (Reference<GameObject> const child : m_vChildren)
+		if (newIsActive and child.get().m_IsActive)
+			child.get().notifyActiveStateChanged(true);
+		else if (not newIsActive)
+			child.get().notifyActiveStateChanged(false);
 }
 #pragma endregion PrivateMethods

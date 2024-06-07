@@ -17,13 +17,15 @@
 
 namespace fro
 {
+	class Scene;
+
 	template<typename ComponentType>
 	concept ComponentDerived = std::derived_from<ComponentType, Component>;
 
 	class GameObject final : public BaseReferencable
 	{
 	public:
-		GameObject(std::string name, std::string tag);
+		GameObject(Reference<Scene> const parentingScene, std::string name);
 		GameObject(GameObject&& other) noexcept;
 
 		~GameObject() = default;
@@ -36,9 +38,6 @@ namespace fro
 
 		void render() const;
 		void display() const;
-
-		void setActive(bool const isActive);
-		void setParent(Reference<GameObject> const parent, bool const keepWorldTransform = true);
 
 		void localTransform(TransformationMatrix2D const& transformation);
 		void localTranslate(glm::vec2 const& translation);
@@ -58,18 +57,23 @@ namespace fro
 		void setWorldRotation(float const rotation);
 		void setWorldScale(glm::vec2 const& scale);
 
-		fro_NODISCARD bool isActive() const;
+		bool setParent(Reference<GameObject> const parent, bool const keepWorldTransform = true);
+		void setTag(std::string tag);
+		void setActive(bool const isActive);
+
+		fro_NODISCARD Reference<Scene> getParentingScene() const;
 		fro_NODISCARD std::string_view getName() const;
 		fro_NODISCARD std::string_view getTag() const;
-		fro_NODISCARD bool owns(Reference<GameObject> const gameObject) const;
 		fro_NODISCARD Reference<GameObject> getParent() const;
+		fro_NODISCARD Reference<GameObject> getGameObject(std::string_view const name);
+		fro_NODISCARD Reference<GameObject> forceGetGameObject(std::string const& name);
 		fro_NODISCARD std::vector<Reference<GameObject>> const& getChildren() const;
-		fro_NODISCARD Reference<GameObject> getChild(std::string_view const name) const;
+		fro_NODISCARD bool isActive() const;
 		fro_NODISCARD TransformationMatrix2D const& getLocalTransform() const;
 		fro_NODISCARD TransformationMatrix2D const& getWorldTransform() const;
 
 		template<ComponentDerived ComponentType>
-		Reference<ComponentType> addComponent() noexcept
+		Reference<ComponentType> addComponent()
 		{
 			if (m_mpComponents.contains(typeid(ComponentType)))
 				return {};
@@ -93,40 +97,34 @@ namespace fro
 		}
 
 		template<ComponentDerived ComponentType>
-		bool removeComponent() noexcept
+		bool removeComponent()
 		{
 			Reference<ComponentType> const foundComponent{ getComponent<ComponentType>() };
 			if (not foundComponent.valid())
 				return false;
 
 			if constexpr (std::derived_from<ComponentType, Behaviour>)
-				m_vBehaviours.erase(
-					std::remove(m_vBehaviours.begin(), m_vBehaviours.end(), foundComponent),
-					m_vBehaviours.end());
+				m_vBehaviours.erase(std::find(m_vBehaviours.begin(), m_vBehaviours.end(), foundComponent));
 			if constexpr (std::derived_from<ComponentType, Renderable>)
-				m_vRenderables.erase(
-					std::remove(m_vRenderables.begin(), m_vRenderables.end(), foundComponent),
-					m_vRenderables.end());
+				m_vRenderables.erase(std::find(m_vRenderables.begin(), m_vRenderables.end(), foundComponent));
 			if constexpr (std::derived_from<ComponentType, GUI>)
-				m_vGUIs.erase(
-					std::remove(m_vGUIs.begin(), m_vGUIs.end(), foundComponent),
-					m_vGUIs.end());
+				m_vGUIs.erase(std::find(m_vGUIs.begin(), m_vGUIs.end(), foundComponent));
 
 			return m_mpComponents.erase(typeid(ComponentType));
 		}
 
 		template<ComponentDerived ComponentType>
-		fro_NODISCARD Reference<ComponentType> getComponent() const noexcept
+		fro_NODISCARD Reference<ComponentType> getComponent() const
 		{
-			auto const iterator{ m_mpComponents.find(typeid(ComponentType)) };
-			if (iterator == m_mpComponents.end())
+			auto const iFoundComponent{ m_mpComponents.find(typeid(ComponentType)) };
+			if (iFoundComponent == m_mpComponents.end())
 				return {};
 
-			return static_cast<ComponentType* const>(iterator->second.get());
+			return static_cast<ComponentType* const>(iFoundComponent->second.get());
 		}
 
 		template<ComponentDerived ComponentType>
-		fro_NODISCARD Reference<ComponentType> forceGetComponent() noexcept
+		fro_NODISCARD Reference<ComponentType> forceGetComponent()
 		{
 			Reference<ComponentType> foundComponent{ getComponent<ComponentType>() };
 			if (not foundComponent.valid())
@@ -134,6 +132,8 @@ namespace fro
 
 			return foundComponent;
 		}
+
+		Event<bool> activeStateChanged{};
 
 	private:
 		GameObject(GameObject const&) = delete;
@@ -143,25 +143,26 @@ namespace fro
 		void setWorldTransformDirty();
 		void calculateLocalTransform();
 		void calculateWorldTransform() const;
+		void notifyActiveStateChanged(bool const newIsActive) const;
 
+		Reference<Scene> m_ParentingScene{};
 		std::string m_Name;
-		std::string m_Tag;
 
-		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
+		std::string m_Tag{};
+
+		Reference<GameObject> m_Parent{};
+		std::vector<Reference<GameObject>> m_vChildren{};
 
 		TransformationMatrix2D m_LocalTransform{};
 		mutable TransformationMatrix2D m_WorldTransform{};
 
+		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_mpComponents{};
 		std::vector<Reference<Behaviour>> m_vBehaviours{};
 		std::vector<Reference<Renderable>> m_vRenderables{};
 		std::vector<Reference<GUI>> m_vGUIs{};
 
-		std::vector<Reference<GameObject>> m_vChildren{};
-		Reference<GameObject> m_Parent{};
-
-		mutable bool m_IsWorldTransformDirty{};
-
 		bool m_IsActive{ true };
+		mutable bool m_IsWorldTransformDirty{};
 	};
 }
 

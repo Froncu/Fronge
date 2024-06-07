@@ -23,7 +23,7 @@ namespace fro
 		FPSCounter& operator=(FPSCounter const&) = delete;
 		FPSCounter& operator=(FPSCounter&&) noexcept = delete;
 
-		Reference<Text> m_Text{ m_ParentingGameObject.get().forceGetComponent<Text>() };
+		Reference<Text> m_Text{ parentingGameObject.get().forceGetComponent<Text>() };
 
 		int m_Ticks{};
 		float m_ElapsedSeconds{};

@@ -24,7 +24,7 @@ void fro::GridMovement::fixedUpdate(float const)
 
 	int const halfCellSizeY{ m_CellSizeY / 2 };
 	int const halfCellSizeX{ m_CellSizeX / 2 };
-	glm::ivec2 const worldPosition{ m_ParentingGameObject.get().getWorldTransform().getTranslation() };
+	glm::ivec2 const worldPosition{ parentingGameObject.get().getWorldTransform().getTranslation() };
 
 	if (std::abs(m_MoveDirection.y) > std::abs(m_MoveDirection.x))
 	{
@@ -68,7 +68,7 @@ void fro::GridMovement::fixedUpdate(float const)
 	m_RigidBody.get().velocity = correctedMoveDirection * m_MoveSpeed;
 
 	if (correctedMoveDirection.x)
-		m_ParentingGameObject.get().setLocalScale({ correctedMoveDirection.x, 1.0f });
+		parentingGameObject.get().setLocalScale({ correctedMoveDirection.x, 1.0f });
 
 	if (m_PreviousCorrectedMoveDirection not_eq correctedMoveDirection)
 	{

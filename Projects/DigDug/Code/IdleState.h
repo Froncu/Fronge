@@ -5,12 +5,11 @@
 #include "GameObject.h"
 #include "GridMovement.h"
 #include "SpriteAnimator.h"
+#include "Scene.h"
 #include "State.h"
 
 namespace fro
 {
-	class GameObject;
-
 	class IdleState final : public State
 	{
 	public:
@@ -29,9 +28,11 @@ namespace fro
 		IdleState& operator=(IdleState&&) noexcept = delete;
 
 		Reference<SpriteAnimator> m_SpriteAnimator{
-			m_ParentingGameObject.get().forceGetComponent<SpriteAnimator>() };
+			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };
 		Reference<GridMovement> m_GridMovement{
-			m_ParentingGameObject.get().getComponent<GridMovement>() };
+			parentingGameObject.get().getComponent<GridMovement>() };
+
+		Reference<GameObject> m_Pump{ parentingGameObject.get().getParentingScene().get().forceGetGameObject("pump") };
 	};
 }
 

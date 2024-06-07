@@ -21,7 +21,7 @@ fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 	glm::vec2 const& actionStrength{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
 
 	if (actionStrength.x or actionStrength.y)
-		return m_ParentingGameObject.get().forceGetComponent<MoveState>();
+		return parentingGameObject.get().forceGetComponent<MoveState>();
 
 	m_RemainingCooldownSeconds -= deltaSeconds;
 
@@ -29,7 +29,7 @@ fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 	{
 		m_ElapsedSecondsWithoutInput += deltaSeconds;
 		if (m_ElapsedSecondsWithoutInput >= m_IdleTimeoutSeconds)
-			return m_ParentingGameObject.get().forceGetComponent<IdleState>();
+			return parentingGameObject.get().forceGetComponent<IdleState>();
 	}
 	else if (m_RemainingCooldownSeconds <= 0.0f)
 	{
@@ -58,7 +58,5 @@ void fro::PumpState::exit(Reference<State> const)
 
 	m_ElapsedSecondsWithoutInput = 0.0f;
 	m_RemainingCooldownSeconds = 0.0f;
-
-	m_ParentingGameObject.get().getChild("pump").get().setActive(false);
 }
 #pragma endregion PublicMethods

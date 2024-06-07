@@ -2,6 +2,7 @@
 #define fro_SPRITE_ANIMATOR_H
 
 #include "Behaviour.h"
+#include "Event.hpp"
 #include "GameObject.h"
 #include "Sprite.h"
 
@@ -21,6 +22,13 @@ namespace fro
 		{
 			std::string fileName;
 			SDL_FRect sourceRectangle;
+		};
+
+		struct Animation final
+		{
+			std::vector<AnimationFrame> vAnimationFrames{};
+			float frameTimeSeconds{ 1.0f / 5 };
+			bool shouldLoop{ true };
 		};
 
 		SpriteAnimator(Reference<GameObject> const parentingGameObject);
@@ -45,14 +53,15 @@ namespace fro
 		void setFramesPerSecond(std::string const& animationName, int const framesPerSecond);
 		void setLoop(std::string const& animationName, bool shouldLoop);
 
-	private:
-		struct Animation final
-		{
-			std::vector<AnimationFrame> vAnimationFrames{};
-			float frameTimeSeconds{ 1.0f / 5 };
-			bool shouldLoop{ true };
-		};
+		Animation const& getAnimation(std::string const& animationName);
+		float getAnimationProgress() const;
 
+		std::size_t getCurrentFrameIndex() const;
+
+		Event<std::size_t> frameChanged{};
+		Event<> animationFinished{};
+
+	private:
 		SpriteAnimator(SpriteAnimator const&) = delete;
 		SpriteAnimator(SpriteAnimator&&) noexcept = delete;
 
@@ -61,7 +70,7 @@ namespace fro
 
 		void updateSprite() const;
 
-		Reference<Sprite> m_Sprite{ m_ParentingGameObject.get().forceGetComponent<Sprite>() };
+		Reference<Sprite> m_Sprite{ parentingGameObject.get().forceGetComponent<Sprite>() };
 
 		std::map<std::string, Animation> m_mAnimations{};
 		Animation* m_pActiveAnimation{};

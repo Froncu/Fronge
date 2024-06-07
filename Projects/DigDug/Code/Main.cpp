@@ -29,6 +29,24 @@ int main(int, char**)
 {
 	try
 	{
+		fro::PhysicsManager::getInstance().beginOverlap.addSubscriber(
+			[](fro::Reference<fro::RigidBody> const body1, fro::Reference<fro::RigidBody> const body2)
+			{
+				fro::Console::getInstance().log("BEGIN OVERLAP");
+				fro::Console::getInstance().log(body1.get().parentingGameObject.get().getName());
+				fro::Console::getInstance().log(body2.get().parentingGameObject.get().getName());
+				fro::Console::getInstance().log('\n');
+			});
+
+		fro::PhysicsManager::getInstance().endOverlap.addSubscriber(
+			[](fro::Reference<fro::RigidBody> const body1, fro::Reference<fro::RigidBody> const body2)
+			{
+				fro::Console::getInstance().log("END OVERLAP");
+				fro::Console::getInstance().log(body1.get().parentingGameObject.get().getName());
+				fro::Console::getInstance().log(body2.get().parentingGameObject.get().getName());
+				fro::Console::getInstance().log('\n');
+			});
+
 		auto& audioService{ fro::ServiceLocator<fro::AudioService>::getInstance() };
 		audioService.setProvider<fro::AudioSDL>();
 
@@ -44,11 +62,12 @@ int main(int, char**)
 
 
 
-		auto const scene{ fro::SceneManager::getInstance().loadScene("main") };
+		auto const scene{ fro::SceneManager::getInstance().addScene("main") };
+		fro::SceneManager::getInstance().setActiveScene(scene);
 
 
 
-		auto const pump{ scene.get().addGameObject("pump") };
+		auto const pump{ scene.get().forceGetGameObject("pump") };
 
 		auto spriteAnimator{ pump.get().forceGetComponent<fro::SpriteAnimator>() };
 
@@ -62,13 +81,23 @@ int main(int, char**)
 
 
 
-		auto const player1{ scene.get().addGameObject("digDug") };
+		auto const pumpHitBox{ scene.get().forceGetGameObject("pumpHitBox") };
+
+		auto rigidBody{ pumpHitBox.get().forceGetComponent<fro::RigidBody>() };
+		
+		rigidBody.get().setColliderSize({ 2, 2 });
+		
+		pumpHitBox.get().setParent(pump, false);
+
+
+
+		auto const player1{ scene.get().forceGetGameObject("digDug") };
 
 		player1.get().setLocalTranslation({ 8, 8 });
 
-		auto const movementRotation{ player1.get().addComponent<fro::MovementRotation>() };
+		auto const movementRotation{ player1.get().forceGetComponent<fro::MovementRotation>() };
 
-		player1.get().addComponent<fro::GridMovement>().get().
+		player1.get().forceGetComponent<fro::GridMovement>().get().
 			correctedMoveDirectionChanged.addSubscriber(
 				std::bind(
 					&fro::MovementRotation::onCorrectedMoveDirectionChanged,
@@ -98,6 +127,7 @@ int main(int, char**)
 
 		auto const player2{ scene.get().addGameObject("fygar1") };
 
+		player2.get().setTag("enemy");
 		player2.get().addComponent<fro::GridMovement>().get();
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });

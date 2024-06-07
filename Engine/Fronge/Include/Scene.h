@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "BaseReferencable.h"
+#include "Defines.hpp"
 
 #include <string>
 #include <vector>
@@ -20,10 +21,6 @@ namespace fro
 
 		Scene& operator=(Scene const&) = delete;
 		Scene& operator=(Scene&&) noexcept = default;
-		bool operator==(Scene const& other) const;
-		bool operator==(std::string_view const sceneName) const;
-		std::strong_ordering operator<=>(Scene const& other) const;
-		std::strong_ordering operator<=>(std::string_view const sceneName) const;
 
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
@@ -31,12 +28,22 @@ namespace fro
 
 		void render() const;
 		void display() const;
-		fro::Reference<fro::GameObject> addGameObject(std::string name, std::string tag = {});
+
+		std::string_view getName() const;
+
+		Reference<GameObject> addGameObject(std::string name);
+		fro_NODISCARD Reference<GameObject> getGameObject(std::string_view const name);
+		fro_NODISCARD Reference<GameObject> forceGetGameObject(std::string const& name);
+		bool removeGameObject(std::string const& name);
 
 	private:
+		using GameObjects = std::vector<GameObject>;
+
+		GameObjects::iterator findGameObject(std::string_view const name);
+
 		std::string m_Name;
 
-		std::vector<GameObject> m_vGameObjects{};
+		GameObjects m_GameObjects{};
 	};
 }
 

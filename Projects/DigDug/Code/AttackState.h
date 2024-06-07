@@ -18,7 +18,7 @@ namespace fro
 
 		virtual ~AttackState() override = default;
 
-		virtual Reference<State> update(float const deltaSeconds) override;
+		virtual Reference<State> fixedUpdate(float const) override;
 		virtual void enter(Reference<State> const oldState) override;
 		virtual void exit(Reference<State> const newState) override;
 
@@ -32,9 +32,12 @@ namespace fro
 		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
 
 		Reference<SpriteAnimator> m_SpriteAnimator{
-			m_ParentingGameObject.get().forceGetComponent<SpriteAnimator>() };
+			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };
 
-		float m_ElapsedSeconds{};
+		Reference<GameObject> m_Pump{ parentingGameObject.get().getGameObject("pump") };
+		Reference<SpriteAnimator> m_PumpSpriteAnimator{ m_Pump.get().forceGetComponent<fro::SpriteAnimator>() };
+
+		Reference<GameObject> m_PumpHitBox{ parentingGameObject.get().forceGetGameObject("pumpHitBox") };
 	};
 }
 

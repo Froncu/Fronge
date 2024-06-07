@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "GridMovement.h"
 #include "State.h"
+#include "Scene.h"
 #include "ServiceLocator.hpp"
 #include "SpriteAnimator.h"
 
@@ -33,10 +34,12 @@ namespace fro
 		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
 
 		Reference<SpriteAnimator> m_SpriteAnimator{
-			m_ParentingGameObject.get().forceGetComponent<SpriteAnimator>() };
+			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };
 
 		Reference<GridMovement> m_GridMovement{
-			m_ParentingGameObject.get().forceGetComponent<GridMovement>() };
+			parentingGameObject.get().forceGetComponent<GridMovement>() };
+
+		Reference<GameObject> m_Pump{ parentingGameObject.get().getParentingScene().get().forceGetGameObject("pump") };
 	};
 }
 

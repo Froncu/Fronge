@@ -17,20 +17,27 @@ void fro::SpriteAnimator::update(float const deltaSeconds)
 
 	auto& [vAnimationFrames, frameTimeSeconds, shouldLoop] { *m_pActiveAnimation };
 
-	if (vAnimationFrames.size() <= 1)
+	if (vAnimationFrames.empty())
 		return;
 
 	m_ElapsedSeconds += deltaSeconds;
 	if (m_ElapsedSeconds < frameTimeSeconds)
 		return;
 
+	if (m_CurrentFrameIndex == vAnimationFrames.size() - 1 and not shouldLoop)
+	{
+		m_ElapsedSeconds = frameTimeSeconds;
+		m_Play = false;
+		animationFinished.notifySubscribers();
+		return;
+	}
+
 	m_ElapsedSeconds -= frameTimeSeconds;
 
 	++m_CurrentFrameIndex %= vAnimationFrames.size();
 	updateSprite();
 
-	if (not shouldLoop and m_CurrentFrameIndex == vAnimationFrames.size() - 1)
-		m_Play = false;
+	frameChanged.notifySubscribers(m_CurrentFrameIndex);
 }
 
 void fro::SpriteAnimator::setActiveAnimation(std::string const& animationName)
@@ -57,6 +64,8 @@ void fro::SpriteAnimator::reset()
 {
 	m_CurrentFrameIndex = 0;
 	updateSprite();
+
+	frameChanged.notifySubscribers(m_CurrentFrameIndex);
 
 	m_ElapsedSeconds = 0.0f;
 }
@@ -118,6 +127,29 @@ void fro::SpriteAnimator::setFramesPerSecond(std::string const& animationName, i
 void fro::SpriteAnimator::setLoop(std::string const& animationName, bool const shouldLoop)
 {
 	m_mAnimations[animationName].shouldLoop = shouldLoop;
+}
+
+fro::SpriteAnimator::Animation const& fro::SpriteAnimator::getAnimation(std::string const& animationName)
+{
+	return m_mAnimations[animationName];
+}
+
+float fro::SpriteAnimator::getAnimationProgress() const
+{
+	if (not m_pActiveAnimation)
+		return 0.0f;
+
+	return
+		(m_pActiveAnimation->frameTimeSeconds * m_CurrentFrameIndex + m_ElapsedSeconds) /
+		(m_pActiveAnimation->vAnimationFrames.size() * m_pActiveAnimation->frameTimeSeconds);
+}
+
+std::size_t fro::SpriteAnimator::getCurrentFrameIndex() const
+{
+	if (not m_pActiveAnimation)
+		return 0;
+
+	return m_CurrentFrameIndex;
 }
 #pragma endregion PublicMethods
 
