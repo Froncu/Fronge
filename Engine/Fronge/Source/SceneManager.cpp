@@ -72,15 +72,17 @@ fro::Reference<fro::Scene> fro::SceneManager::forceGetScene(std::string const& n
 	return m_Scenes.emplace_back(name);
 }
 
-bool fro::SceneManager::removeScene(std::string const& name)
+void fro::SceneManager::removeScene(std::string_view const name)
 {
-	auto const iFoundScene{ findScene(name) };
+	m_ScenesToRemove.pushEvent(name);
+}
 
-	if (iFoundScene == m_Scenes.end())
-		return false;
+void fro::SceneManager::cleanUp()
+{
+	m_ScenesToRemove.processAllEvents();
 
-	m_Scenes.erase(iFoundScene);
-	return true;
+	for (Scene& scene : m_Scenes)
+		scene.cleanUp();
 }
 #pragma endregion PublicMethods
 

@@ -1,6 +1,7 @@
 #include "MoveState.h"
 
 #include "AttackState.h"
+#include "DeadState.h"
 #include "IdleState.h"
 #include "InputManager.h"
 
@@ -16,6 +17,9 @@ fro::MoveState::MoveState(Reference<GameObject> const parentingGameObject)
 #pragma region PublicMethods
 fro::Reference<fro::State> fro::MoveState::update(float const)
 {
+	if (m_RigidBody.get().isOverlapping("enemy"))
+		return parentingGameObject.get().forceGetComponent<DeadState>();
+
 	InputManager& inputManager{ InputManager::getInstance() };
 
 	if (inputManager.isActionJustPressed("attack"))

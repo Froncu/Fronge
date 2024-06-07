@@ -68,6 +68,8 @@ int fro::Fronge::run() const
 
 		GUIContext::getInstance().endFrame();
 		RenderContext::getInstance().present();
+
+		SceneManager::getInstance().cleanUp();
 	}
 
 	return 0;

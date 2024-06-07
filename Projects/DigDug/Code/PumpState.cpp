@@ -1,6 +1,7 @@
 #include "PumpState.h"
 
 #include "GameObject.h"
+#include "DeadState.h"
 #include "IdleState.h"
 #include "InputManager.h"
 #include "MoveState.h"
@@ -17,6 +18,9 @@ fro::PumpState::PumpState(Reference<GameObject> const parentingGameObject)
 #pragma region PublicMethods
 fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 {
+	if (m_RigidBody.get().isOverlapping("enemy"))
+		return parentingGameObject.get().forceGetComponent<DeadState>();
+
 	InputManager& inputManager{ InputManager::getInstance() };
 	glm::vec2 const& actionStrength{ inputManager.getActionStrengthAxis2D("moveRight1", "moveLeft1", "moveUp1", "moveDown1") };
 

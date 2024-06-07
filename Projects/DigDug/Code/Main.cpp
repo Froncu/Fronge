@@ -29,24 +29,6 @@ int main(int, char**)
 {
 	try
 	{
-		fro::PhysicsManager::getInstance().beginOverlap.addSubscriber(
-			[](fro::Reference<fro::RigidBody> const body1, fro::Reference<fro::RigidBody> const body2)
-			{
-				fro::Console::getInstance().log("BEGIN OVERLAP");
-				fro::Console::getInstance().log(body1.get().parentingGameObject.get().getName());
-				fro::Console::getInstance().log(body2.get().parentingGameObject.get().getName());
-				fro::Console::getInstance().log('\n');
-			});
-
-		fro::PhysicsManager::getInstance().endOverlap.addSubscriber(
-			[](fro::Reference<fro::RigidBody> const body1, fro::Reference<fro::RigidBody> const body2)
-			{
-				fro::Console::getInstance().log("END OVERLAP");
-				fro::Console::getInstance().log(body1.get().parentingGameObject.get().getName());
-				fro::Console::getInstance().log(body2.get().parentingGameObject.get().getName());
-				fro::Console::getInstance().log('\n');
-			});
-
 		auto& audioService{ fro::ServiceLocator<fro::AudioService>::getInstance() };
 		audioService.setProvider<fro::AudioSDL>();
 
@@ -110,9 +92,12 @@ int main(int, char**)
 		spriteAnimator.get().addAnimationFrames("walking", "DigDug/Walking.png", { 16, 16 }, 2, 1);
 		spriteAnimator.get().addAnimationFrames("attacking", "DigDug/Attacking.png", { 16, 16 }, 1, 1);
 		spriteAnimator.get().addAnimationFrames("pumping", "DigDug/Pumping.png", { 16, 16 }, 2, 1);
+		spriteAnimator.get().addAnimationFrames("dead", "DigDug/Dead.png", { 16, 16 }, 5, 1);
 		spriteAnimator.get().setLoop("pumping", false);
 		spriteAnimator.get().setFramesPerSecond("walking", 6);
 		spriteAnimator.get().setFramesPerSecond("pumping", 6);
+		spriteAnimator.get().setFramesPerSecond("dead", 3);
+		spriteAnimator.get().setLoop("dead", false);
 		
 		player1.get().forceGetComponent<fro::StateMachine>().get().setCurrentState(
 			player1.get().forceGetComponent<fro::IdleState>());
@@ -125,10 +110,11 @@ int main(int, char**)
 
 
 
-		auto const player2{ scene.get().addGameObject("fygar1") };
+		auto player2{ scene.get().addGameObject("fygar1") };
 
 		player2.get().setTag("enemy");
-		player2.get().addComponent<fro::GridMovement>().get();
+		player2.get().forceGetComponent<fro::GridMovement>().get().setMoveDirection({ 1.0f, 0.0f });
+		player2.get().forceGetComponent<fro::GridMovement>().get().setMoveSpeed(8.0f);
 		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
 		player2.get().setLocalTranslation({ 40, 8 });
 		player2.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });

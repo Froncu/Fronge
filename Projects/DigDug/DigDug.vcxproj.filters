@@ -20,6 +20,9 @@
     <ClCompile Include="Code\MovementRotation.cpp">
       <Filter>DigDug\MoveRotation</Filter>
     </ClCompile>
+    <ClCompile Include="Code\DeadState.cpp">
+      <Filter>DigDug\States\DeadState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GridMovement">
@@ -46,6 +49,9 @@
     <Filter Include="DigDug\MoveRotation">
       <UniqueIdentifier>{25a7fd70-ed12-4a15-9eca-168d08dd891a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DigDug\States\DeadState">
+      <UniqueIdentifier>{cc968990-20f7-4d7d-9efd-e66c0c9da01d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GridMovement.h">
@@ -65,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="Code\MovementRotation.h">
       <Filter>DigDug\MoveRotation</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\DeadState.h">
+      <Filter>DigDug\States\DeadState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

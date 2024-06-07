@@ -2,6 +2,7 @@
 #define fro_SCENE_MANAGER_H
 
 #include "Defines.hpp"
+#include "EventQueue.hpp"
 #include "Reference.hpp"
 #include "Scene.h"
 #include "Singleton.hpp"
@@ -24,12 +25,14 @@ namespace fro
 		void render() const;
 		void display() const;
 
+		void cleanUp();
+
 		bool setActiveScene(Reference<Scene> const scene);
 
 		Reference<Scene> addScene(std::string name);
 		fro_NODISCARD Reference<Scene> getScene(std::string_view const name);
 		fro_NODISCARD Reference<Scene> forceGetScene(std::string const& name);
-		bool removeScene(std::string const& name);
+		void removeScene(std::string_view const name);
 
 	private:
 		using Scenes = std::vector<Scene>;
@@ -45,6 +48,19 @@ namespace fro
 
 		Scenes m_Scenes{};
 		Reference<Scene> m_ActiveScene{};
+
+		EventQueue<std::string_view> m_ScenesToRemove
+		{
+			[this](std::string_view const sceneName)
+			{
+				auto const iFoundScene{ findScene(sceneName) };
+
+				if (iFoundScene == m_Scenes.end())
+					return;
+
+				m_Scenes.erase(iFoundScene);
+			}
+		};
 	};
 }
 

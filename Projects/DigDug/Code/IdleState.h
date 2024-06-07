@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "GridMovement.h"
+#include "RigidBody.h"
 #include "SpriteAnimator.h"
 #include "Scene.h"
 #include "State.h"
@@ -26,6 +27,9 @@ namespace fro
 
 		IdleState& operator=(IdleState const&) = delete;
 		IdleState& operator=(IdleState&&) noexcept = delete;
+
+		Reference<RigidBody> const m_RigidBody{
+			parentingGameObject.get().forceGetComponent<RigidBody>() };
 
 		Reference<SpriteAnimator> m_SpriteAnimator{
 			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };

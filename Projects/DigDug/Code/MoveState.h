@@ -4,6 +4,7 @@
 #include "AudioService.h"
 #include "GameObject.h"
 #include "GridMovement.h"
+#include "RigidBody.h"
 #include "State.h"
 #include "Scene.h"
 #include "ServiceLocator.hpp"
@@ -32,6 +33,9 @@ namespace fro
 		MoveState& operator=(MoveState&&) noexcept = delete;
 
 		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
+
+		Reference<RigidBody> const m_RigidBody{
+			parentingGameObject.get().forceGetComponent<RigidBody>() };
 
 		Reference<SpriteAnimator> m_SpriteAnimator{
 			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };

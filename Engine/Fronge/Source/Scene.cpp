@@ -42,6 +42,11 @@ void fro::Scene::display() const
 		gameObject.display();
 }
 
+void fro::Scene::cleanUp()
+{
+	m_GameObjectsToRemove.processAllEvents();
+}
+
 std::string_view fro::Scene::getName() const
 {
 	return m_Name;
@@ -77,15 +82,9 @@ fro::Reference<fro::GameObject> fro::Scene::forceGetGameObject(std::string const
 	return m_GameObjects.emplace_back(this, name);
 }
 
-bool fro::Scene::removeGameObject(std::string const& name)
+void fro::Scene::removeGameObject(std::string_view const name)
 {
-	auto const iFoundGameObject{ findGameObject(name) };
-
-	if (iFoundGameObject == m_GameObjects.end())
-		return false;
-
-	m_GameObjects.erase(iFoundGameObject);
-	return true;
+	m_GameObjectsToRemove.pushEvent(name);
 }
 #pragma endregion PublicMethods
 

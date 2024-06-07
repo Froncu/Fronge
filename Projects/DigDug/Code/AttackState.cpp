@@ -1,6 +1,6 @@
 #include "AttackState.h"
 
-#include "Console.hpp"
+#include "DeadState.h"
 #include "IdleState.h"
 #include "InputManager.h"
 #include "PumpState.h"
@@ -17,6 +17,9 @@ fro::AttackState::AttackState(Reference<GameObject> const parentingGameObject)
 #pragma region PublicMethods
 fro::Reference<fro::State> fro::AttackState::fixedUpdate(float const)
 {
+	if (m_RigidBody.get().isOverlapping("enemy"))
+		return parentingGameObject.get().forceGetComponent<DeadState>();
+
 	auto const& animation{ m_PumpSpriteAnimator.get().getAnimation("shooting") };
 
 	float const animationProgress{ m_PumpSpriteAnimator.get().getAnimationProgress() };

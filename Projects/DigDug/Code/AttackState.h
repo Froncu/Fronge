@@ -3,6 +3,7 @@
 
 #include "AudioService.h"
 #include "GameObject.h"
+#include "RigidBody.h"
 #include "State.h"
 #include "ServiceLocator.hpp"
 #include "SpriteAnimator.h"
@@ -31,13 +32,16 @@ namespace fro
 
 		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
 
-		Reference<SpriteAnimator> m_SpriteAnimator{
+		Reference<RigidBody> const m_RigidBody{
+			parentingGameObject.get().forceGetComponent<RigidBody>() };
+
+		Reference<SpriteAnimator> const m_SpriteAnimator{
 			parentingGameObject.get().forceGetComponent<SpriteAnimator>() };
 
-		Reference<GameObject> m_Pump{ parentingGameObject.get().getGameObject("pump") };
-		Reference<SpriteAnimator> m_PumpSpriteAnimator{ m_Pump.get().forceGetComponent<fro::SpriteAnimator>() };
+		Reference<GameObject> const m_Pump{ parentingGameObject.get().getGameObject("pump") };
+		Reference<SpriteAnimator> const m_PumpSpriteAnimator{ m_Pump.get().forceGetComponent<fro::SpriteAnimator>() };
 
-		Reference<GameObject> m_PumpHitBox{ parentingGameObject.get().forceGetGameObject("pumpHitBox") };
+		Reference<GameObject> const m_PumpHitBox{ parentingGameObject.get().forceGetGameObject("pumpHitBox") };
 	};
 }
 

@@ -3,6 +3,7 @@
 
 #include "AudioService.h"
 #include "GameObject.h"
+#include "RigidBody.h"
 #include "State.h"
 #include "ServiceLocator.hpp"
 #include "SpriteAnimator.h"
@@ -28,6 +29,9 @@ namespace fro
 
 		PumpState& operator=(PumpState const&) = delete;
 		PumpState& operator=(PumpState&&) noexcept = delete;
+
+		Reference<RigidBody> const m_RigidBody{
+			parentingGameObject.get().forceGetComponent<RigidBody>() };
 
 		Reference<SpriteAnimator> m_SpriteAnimator
 		{
