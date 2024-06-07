@@ -29,6 +29,9 @@ fro::Reference<fro::State> fro::PumpState::update(float const deltaSeconds)
 
 	m_RemainingCooldownSeconds -= deltaSeconds;
 
+	if (inputManager.isActionJustPressed("attack"))
+		m_RemainingCooldownSeconds -= 0.08f;
+
 	if (not inputManager.getActionStrength("attack"))
 	{
 		m_ElapsedSecondsWithoutInput += deltaSeconds;

@@ -40,7 +40,7 @@ namespace fro
 
 		AudioService& m_AudioService{ ServiceLocator<AudioService>::getInstance().getService() };
 
-		float const m_CooldownSeconds{ 0.4f };
+		float const m_CooldownSeconds{ 0.5f };
 		float const m_IdleTimeoutSeconds{ 0.6f };
 
 		float m_ElapsedSecondsWithoutInput{};
