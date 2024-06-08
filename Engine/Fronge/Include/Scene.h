@@ -23,6 +23,8 @@ namespace fro
 		Scene& operator=(Scene const&) = delete;
 		Scene& operator=(Scene&&) noexcept = default;
 
+		void awake();
+
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
 		void lateUpdate(float const deltaSeconds) const;
@@ -60,6 +62,7 @@ namespace fro
 		std::string m_Name;
 
 		GameObjects m_GameObjects{};
+		std::vector<Reference<GameObject>> m_vGameObjectsToAwake{};
 	};
 }
 

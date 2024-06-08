@@ -33,7 +33,7 @@ namespace fro
 
 		Reference<RigidBody> m_RigidBody{ parentingGameObject.get().forceGetComponent<RigidBody>() };
 
-		glm::vec2 m_PreviousCorrectedMoveDirection{};
+		glm::vec2 m_PreviousCorrectedMoveDirection{ 1.0f, 0.0f };
 
 		glm::vec2 m_MoveDirection{};
 		float m_MoveSpeed{ 32.0f };

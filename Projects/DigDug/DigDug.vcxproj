@@ -19,23 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\AttackState.cpp" />
-    <ClCompile Include="Code\IdleState.cpp" />
+    <ClCompile Include="Code\DigDugAttackState.cpp" />
+    <ClCompile Include="Code\DigDugIdleState.cpp" />
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\GridMovement.cpp" />
-    <ClCompile Include="Code\MoveState.cpp" />
-    <ClCompile Include="Code\PumpState.cpp" />
+    <ClCompile Include="Code\DigDugMoveState.cpp" />
+    <ClCompile Include="Code\DigDugPumpState.cpp" />
     <ClCompile Include="Code\MovementRotation.cpp" />
-    <ClCompile Include="Code\DeadState.cpp" />
+    <ClCompile Include="Code\DigDugDeadState.cpp" />
+    <ClCompile Include="Code\FygarDefaultState.cpp" />
+    <ClCompile Include="Code\FygarAttackState.cpp" />
+    <ClCompile Include="Code\FygarFireState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\AttackState.h" />
+    <ClInclude Include="Code\DigDugAttackState.h" />
     <ClInclude Include="Code\GridMovement.h" />
-    <ClInclude Include="Code\IdleState.h" />
-    <ClInclude Include="Code\MoveState.h" />
-    <ClInclude Include="Code\PumpState.h" />
+    <ClInclude Include="Code\DigDugIdleState.h" />
+    <ClInclude Include="Code\DigDugMoveState.h" />
+    <ClInclude Include="Code\DigDugPumpState.h" />
     <ClInclude Include="Code\MovementRotation.h" />
-    <ClInclude Include="Code\DeadState.h" />
+    <ClInclude Include="Code\DigDugDeadState.h" />
+    <ClInclude Include="Code\FygarDefaultState.h" />
+    <ClInclude Include="Code\FygarAttackState.h" />
+    <ClInclude Include="Code\FygarFireState.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

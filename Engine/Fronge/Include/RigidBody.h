@@ -27,6 +27,7 @@ namespace fro
 		fro_NODISCARD glm::vec2 getColliderSize() const;
 		fro_NODISCARD bool isOverlapping(Reference<RigidBody> const other) const;
 		fro_NODISCARD bool isOverlapping(std::string_view const tag) const;
+		fro_NODISCARD Reference<RigidBody> getOverlapping(std::string_view const tag) const;
 
 		Event<Reference<RigidBody>> beginOverlap;
 		Event<Reference<RigidBody>> endOverlap;

@@ -21,11 +21,32 @@ fro::InputManager::~InputManager()
 
 
 
+#pragma region Operators
+bool fro::InputManager::SimulateActionStrengthEvent::operator==(SimulateActionStrengthEvent const& other) const
+{
+	return
+		pActionInfo == other.pActionInfo and
+		simulatedStrength == other.simulatedStrength;
+}
+#pragma endregion Operators
+
+
+
 #pragma region PublicMethods
 void fro::InputManager::processInputContinous()
 {
 	for (auto& [input, info] : m_mInputs)
 		info.relativeStrength = 0.0f;
+
+	m_SimulateActionStrengthEvents.processAllEvents();
+
+	for (auto& [name, info] : m_mActions)
+		if (info.simulatedAbsoluteStrength or info.simulatedRelativeStrength)
+			m_SimulateActionStrengthEvents.pushEvent(
+				{
+					.pActionInfo{ &info },
+					.simulatedStrength{ 0.0f }
+				});
 }
 
 void fro::InputManager::processInputEvent(SDL_Event const& event)
@@ -144,6 +165,25 @@ void fro::InputManager::setActionDeadzone(std::string const& actionName, float c
 	m_mActions[actionName].deadzone = deadzone;
 }
 
+void fro::InputManager::simulateActionStrength(std::string const& actionName, float const strength)
+{
+	ActionInfo& actionInfo{ m_mActions[actionName] };
+
+	SimulateActionStrengthEvent event
+	{
+		.pActionInfo{ &actionInfo },
+		.simulatedStrength{ strength }
+	};
+
+	m_SimulateActionStrengthEvents.overridePushIf(std::move(event),
+		[&actionInfo](SimulateActionStrengthEvent const& queuedEvent)
+		{
+			return
+				queuedEvent.pActionInfo == &actionInfo and
+				queuedEvent.simulatedStrength == 0.0f;
+		});
+}
+
 float fro::InputManager::getInputStrength(Input const input)
 {
 	return m_mInputs[input].absoluteStrength;
@@ -165,7 +205,7 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positive
 	std::string const& negativeActionNameY)
 {
 	glm::vec2 const actionAxis2D
-	{ 
+	{
 		getActionStrength(positiveActionNameX, 0.0f) - getActionStrength(negativeActionNameX, 0.0f),
 		getActionStrength(positiveActionNameY, 0.0f) - getActionStrength(negativeActionNameY, 0.0f)
 	};
@@ -198,20 +238,43 @@ glm::vec2 fro::InputManager::getActionStrengthAxis2D(std::string const& positive
 bool fro::InputManager::isInputJustPressed(Input const input)
 {
 	auto const& [absoluteStrength, relativeStrength] { m_mInputs[input] };
-	return relativeStrength > 0.0f and absoluteStrength == relativeStrength;
+
+	auto const [isOverDeadzone, didJustCrossDeadzone] { getStrengthInfo(absoluteStrength, relativeStrength, 0.0f) };
+	return isOverDeadzone and didJustCrossDeadzone;
 }
 
 bool fro::InputManager::isActionJustPressed(std::string const& actionName)
 {
-	auto const& [spBoundInputInfos, deadzone] { m_mActions[actionName] };
+	auto const& [spBoundInputInfos, simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone]
+		{
+			m_mActions[actionName]
+		};
 
 	bool justCrossedDeadzoneInputPresent{};
 	for (InputInfo const* const pBoundInputInfo : spBoundInputInfos)
-		if (pBoundInputInfo->absoluteStrength > deadzone)
-			if (pBoundInputInfo->absoluteStrength - pBoundInputInfo->relativeStrength <= deadzone)
+	{
+		auto const [isOverDeadzone, didJustCrossDeadzone]
+			{
+				getStrengthInfo(pBoundInputInfo->absoluteStrength, pBoundInputInfo->relativeStrength, deadzone)
+			};
+
+		if (isOverDeadzone)
+			if (didJustCrossDeadzone)
 				justCrossedDeadzoneInputPresent = true;
 			else
 				return false;
+	}
+
+	auto const [isOverDeadzone, didJustCrossDeadzone]
+		{
+			getStrengthInfo(simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone)
+		};
+
+	if (isOverDeadzone)
+		if (didJustCrossDeadzone)
+			justCrossedDeadzoneInputPresent = true;
+		else
+			return false;
 
 	return justCrossedDeadzoneInputPresent;
 }
@@ -219,22 +282,43 @@ bool fro::InputManager::isActionJustPressed(std::string const& actionName)
 bool fro::InputManager::isInputJustReleased(Input const input)
 {
 	auto const& [absoluteStrength, relativeStrength] { m_mInputs[input] };
-	return relativeStrength < 0.0f and absoluteStrength == 0.0f;
+
+	auto const [isOverDeadzone, didJustCrossDeadzone] { getStrengthInfo(absoluteStrength, relativeStrength, 0.0f) };
+	return not isOverDeadzone and didJustCrossDeadzone;
 }
 
 bool fro::InputManager::isActionJustReleased(std::string const& actionName)
 {
-	auto const& [spBoundInputInfos, deadzone] { m_mActions[actionName] };
+	auto const& [spBoundInputInfos, simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone]
+		{
+			m_mActions[actionName]
+		};
 
 	bool justCrossedDeadzoneInputPresent{};
 	for (InputInfo const* const pBoundInputInfo : spBoundInputInfos)
 	{
-		if (pBoundInputInfo->absoluteStrength > deadzone)
+		auto const [isOverDeadzone, didJustCrossDeadzone]
+			{
+				getStrengthInfo(pBoundInputInfo->absoluteStrength, pBoundInputInfo->relativeStrength, deadzone)
+			};
+
+		if (isOverDeadzone)
 			return false;
 
-		if (pBoundInputInfo->absoluteStrength - pBoundInputInfo->relativeStrength > deadzone)
+		if (didJustCrossDeadzone)
 			justCrossedDeadzoneInputPresent = true;
 	}
+
+	auto const [isOverDeadzone, didJustCrossDeadzone]
+		{
+			getStrengthInfo(simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone)
+		};
+
+	if (isOverDeadzone)
+		return false;
+
+	if (didJustCrossDeadzone)
+		justCrossedDeadzoneInputPresent = true;
 
 	return justCrossedDeadzoneInputPresent;
 }
@@ -279,6 +363,33 @@ fro::InputManager::JoypadAxis fro::InputManager::SDLToJoypadStick(Sint16 const s
 	}
 }
 
+fro_NODISCARD std::pair<bool, bool> fro::InputManager::getStrengthInfo
+(float const absoluteStrength, float const relativeStrength, float const deadzone)
+{
+	bool const isOverDeadzone{ absoluteStrength >= deadzone };
+	float const previousAbsoluteStrength{ absoluteStrength - relativeStrength };
+
+	return
+	{
+		isOverDeadzone,
+		isOverDeadzone ?
+		previousAbsoluteStrength < deadzone :
+		previousAbsoluteStrength >= deadzone
+	};
+}
+
+fro_NODISCARD float fro::InputManager::getLargestStrength(float const strength, float const largestStrength, float const deadzone)
+{
+	float const deadzonedStrength
+	{
+		strength <= deadzone ?
+		0.0f :
+		(strength - deadzone) / (1.0f - deadzone)
+	};
+
+	return std::max(deadzonedStrength, largestStrength);
+}
+
 void fro::InputManager::setInputState(float const newStrength, Input const input)
 {
 	auto& [absoluteStrength, relativeStrength] { m_mInputs[input] };
@@ -290,21 +401,17 @@ void fro::InputManager::setInputState(float const newStrength, Input const input
 float fro::InputManager::getActionStrength(std::string const& actionName, float const deadzone)
 {
 	float largestStrength{};
+	ActionInfo const& actionInfo{ m_mActions[actionName] };
+
+	largestStrength = getLargestStrength(actionInfo.simulatedAbsoluteStrength, largestStrength, deadzone);
+	if (largestStrength == 1.0f)
+		return largestStrength;
+
 	for (InputInfo const* const pBoundInputInfo : m_mActions[actionName].spBoundInputInfos)
 	{
-		float const deadzonedStrength
-		{
-			pBoundInputInfo->absoluteStrength <= deadzone ?
-			0.0f :
-			(pBoundInputInfo->absoluteStrength - deadzone) / (1.0f - deadzone)
-		};
-
-		if (deadzonedStrength > largestStrength)
-		{
-			largestStrength = deadzonedStrength;
-			if (largestStrength == 1.0f)
-				break;
-		};
+		largestStrength = getLargestStrength(pBoundInputInfo->absoluteStrength, largestStrength, deadzone);
+		if (largestStrength == 1.0f)
+			return largestStrength;
 	}
 
 	return largestStrength;

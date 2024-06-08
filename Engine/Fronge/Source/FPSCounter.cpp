@@ -1,5 +1,8 @@
 #include "FPSCounter.h"
 
+#include "GameObject.h"
+#include "Text.h"
+
 #include <format>
 
 #pragma region Constructors/Destructor
@@ -12,8 +15,16 @@ fro::FPSCounter::FPSCounter(Reference<GameObject> const parentingGameObject)
 
 
 #pragma region PublicMethods
+void fro::FPSCounter::awake()
+{
+	m_Text = parentingGameObject.get().forceGetComponent<Text>();
+}
+
 void fro::FPSCounter::update(float const deltaSeconds)
 {
+	if (not m_Text.valid())
+		return;
+
 	float constexpr maxElapsedSeconds{ 0.2f };
 
 	++m_Ticks;

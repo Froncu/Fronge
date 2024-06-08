@@ -12,6 +12,17 @@ fro::Scene::Scene(std::string name)
 
 
 #pragma region PublicMethods
+void fro::Scene::awake()
+{
+	while (m_vGameObjectsToAwake.size())
+	{
+		if (m_vGameObjectsToAwake.front().valid())
+			m_vGameObjectsToAwake.front().get().awake();
+
+		m_vGameObjectsToAwake.erase(m_vGameObjectsToAwake.begin());
+	}
+}
+
 void fro::Scene::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	for (GameObject const& gameObject : m_GameObjects)
@@ -59,7 +70,8 @@ fro::Reference<fro::GameObject> fro::Scene::addGameObject(std::string name)
 	if (iFoundGameObject not_eq m_GameObjects.end())
 		return {};
 
-	return m_GameObjects.emplace_back(this, std::move(name));
+	m_vGameObjectsToAwake.emplace_back(m_GameObjects.emplace_back(this, std::move(name)));
+	return m_vGameObjectsToAwake.back();
 }
 
 fro::Reference<fro::GameObject> fro::Scene::getGameObject(std::string_view const name)
@@ -79,7 +91,8 @@ fro::Reference<fro::GameObject> fro::Scene::forceGetGameObject(std::string const
 	if (iFoundGameObject not_eq m_GameObjects.end())
 		return *iFoundGameObject;
 
-	return m_GameObjects.emplace_back(this, name);
+	m_vGameObjectsToAwake.emplace_back(m_GameObjects.emplace_back(this, name));
+	return m_vGameObjectsToAwake.back();
 }
 
 void fro::Scene::removeGameObject(std::string_view const name)

@@ -5,7 +5,7 @@
 #include "Fronge.h"
 #include "GameObject.h"
 #include "GUIContext.h"
-#include "IdleState.h"
+#include "DigDugIdleState.h"
 #include "InputManager.h"
 #include "MovementRotation.h"
 #include "GridMovement.h"
@@ -44,42 +44,18 @@ int main(int, char**)
 
 
 
-		auto const scene{ fro::SceneManager::getInstance().addScene("main") };
+		auto const scene{ fro::SceneManager::getInstance().addScene("level1") };
 		fro::SceneManager::getInstance().setActiveScene(scene);
 
 
 
-		auto const pump{ scene.get().forceGetGameObject("pump") };
+		auto const digDug{ scene.get().forceGetGameObject("digDug") };
 
-		auto spriteAnimator{ pump.get().forceGetComponent<fro::SpriteAnimator>() };
+		digDug.get().setLocalTranslation({ 8, 8 });
 
-		spriteAnimator.get().addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
-		spriteAnimator.get().setFramesPerSecond("shooting", 12);
-		spriteAnimator.get().setLoop("shooting", false);
+		auto const movementRotation{ digDug.get().forceGetComponent<fro::MovementRotation>() };
 
-		pump.get().setLocalTranslation({ 24, 0 });
-
-		pump.get().setActive(false);
-
-
-
-		auto const pumpHitBox{ scene.get().forceGetGameObject("pumpHitBox") };
-
-		auto rigidBody{ pumpHitBox.get().forceGetComponent<fro::RigidBody>() };
-		
-		rigidBody.get().setColliderSize({ 2, 2 });
-		
-		pumpHitBox.get().setParent(pump, false);
-
-
-
-		auto const player1{ scene.get().forceGetGameObject("digDug") };
-
-		player1.get().setLocalTranslation({ 8, 8 });
-
-		auto const movementRotation{ player1.get().forceGetComponent<fro::MovementRotation>() };
-
-		player1.get().forceGetComponent<fro::GridMovement>().get().
+		digDug.get().forceGetComponent<fro::GridMovement>().get().
 			correctedMoveDirectionChanged.addSubscriber(
 				std::bind(
 					&fro::MovementRotation::onCorrectedMoveDirectionChanged,
@@ -87,7 +63,7 @@ int main(int, char**)
 					std::placeholders::_1,
 					std::placeholders::_2));
 
-		spriteAnimator = player1.get().forceGetComponent<fro::SpriteAnimator>();
+		auto spriteAnimator{ digDug.get().forceGetComponent<fro::SpriteAnimator>() };
 
 		spriteAnimator.get().addAnimationFrames("walking", "DigDug/Walking.png", { 16, 16 }, 2, 1);
 		spriteAnimator.get().addAnimationFrames("attacking", "DigDug/Attacking.png", { 16, 16 }, 1, 1);
@@ -99,68 +75,114 @@ int main(int, char**)
 		spriteAnimator.get().setFramesPerSecond("dead", 3);
 		spriteAnimator.get().setLoop("dead", false);
 		
-		player1.get().forceGetComponent<fro::StateMachine>().get().setCurrentState(
-			player1.get().forceGetComponent<fro::IdleState>());
+		auto const idleState{ digDug.get().forceGetComponent<fro::DigDugIdleState>() };
+		digDug.get().forceGetComponent<fro::StateMachine>().get().setCurrentState(idleState);
 
-		player1.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
-
-
-
-		pump.get().setParent(player1, false);
+		digDug.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
 
 
 
-		auto player2{ scene.get().addGameObject("fygar1") };
+		auto const pump{ scene.get().forceGetGameObject("pump") };
 
-		player2.get().setTag("enemy");
-		player2.get().forceGetComponent<fro::GridMovement>().get().setMoveDirection({ 1.0f, 0.0f });
-		player2.get().forceGetComponent<fro::GridMovement>().get().setMoveSpeed(8.0f);
-		player2.get().forceGetComponent<fro::Sprite>().get().setFileName("Fygar.png");
-		player2.get().setLocalTranslation({ 40, 8 });
-		player2.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
+		spriteAnimator = pump.get().forceGetComponent<fro::SpriteAnimator>();
+
+		spriteAnimator.get().addAnimationFrames("shooting", "DigDug/Pump.png", { 48, 16 }, 1, 6);
+		spriteAnimator.get().setFramesPerSecond("shooting", 12);
+		spriteAnimator.get().setLoop("shooting", false);
+
+		pump.get().setLocalTranslation({ 24, 0 });
+
+		pump.get().setActive(false);
+
+		pump.get().setParent(digDug, false);
+
+
+
+		auto const pumpHitBox{ scene.get().forceGetGameObject("pumpHitBox") };
+
+		auto rigidBody{ pumpHitBox.get().forceGetComponent<fro::RigidBody>() };
+
+		rigidBody.get().setColliderSize({ 2, 2 });
+
+		pumpHitBox.get().setParent(pump, false);
+
+
+
+		auto fygar{ scene.get().forceGetGameObject("fygar") };
+
+		fygar.get().setTag("enemy");
+
+		spriteAnimator = fygar.get().forceGetComponent<fro::SpriteAnimator>().get();
+
+		spriteAnimator.get().addAnimationFrames("walking", "Fygar/Walking.png", { 16, 16 }, 2, 1);
+		spriteAnimator.get().addAnimationFrames("charging", "Fygar/Charging.png", { 16, 16 }, 2, 1);
+		spriteAnimator.get().addAnimationFrames("dying", "Fygar/Dying.png", { 24, 24 }, 3, 1);
+		spriteAnimator.get().setFramesPerSecond("walking", 3);
+		spriteAnimator.get().setFramesPerSecond("charging", 3);
+		spriteAnimator.get().setFramesPerSecond("dying", 2);
+
+		fygar.get().setLocalTranslation({ 40, 8 });
+		fygar.get().forceGetComponent<fro::RigidBody>().get().setColliderSize({ 8, 8 });
+
+		fygar.get().addComponent<fro::GridMovement>().get();
+
+
+
+		auto fygarFire{ scene.get().addGameObject("fygarFire") };
+
+		spriteAnimator = fygarFire.get().forceGetComponent<fro::SpriteAnimator>();
+
+		spriteAnimator.get().addAnimationFrames("fireSpit", "Fygar/Fire.png", { 40, 16 }, 1, 3);
+		spriteAnimator.get().setFramesPerSecond("fireSpit", 2);
+		spriteAnimator.get().setLoop("fireSpit", false);
+
+		fygarFire.get().setLocalTranslation({ 24, 0 });
+
+		fygarFire.get().setActive(true);
+
+		fygarFire.get().setParent(fygar, false);
+
+
+
+
+		auto fygarFireHitBox{ scene.get().addGameObject("fygarFireHitBox") };
+
+		rigidBody = fygarFireHitBox.get().forceGetComponent<fro::RigidBody>();
+
+		rigidBody.get().setColliderSize({ 0, 16 });
+
+		fygarFireHitBox.get().setParent(fygarFire, false);
 
 
 
 		auto& inputManager{ fro::InputManager::getInstance() };
 
-		inputManager.setActionDeadzone("attack", 0.25f);
-		inputManager.setActionDeadzone("moveRight1", 0.25f);
-		inputManager.setActionDeadzone("moveLeft1", 0.25f);
-		inputManager.setActionDeadzone("moveUp1", 0.25f);
-		inputManager.setActionDeadzone("moveDown1", 0.25f);
+		inputManager.bindActionToInput("attackDigDug", SDL_SCANCODE_SPACE);
+		inputManager.bindActionToInput("moveRightDigDug", SDL_SCANCODE_D);
+		inputManager.bindActionToInput("moveLeftDigDug", SDL_SCANCODE_A);
+		inputManager.bindActionToInput("moveUpDigDug", SDL_SCANCODE_W);
+		inputManager.bindActionToInput("moveDownDigDug", SDL_SCANCODE_S);
 
-		inputManager.bindActionToInput("attack", SDL_SCANCODE_SPACE);
-		inputManager.bindActionToInput("moveRight1", SDL_SCANCODE_D);
-		inputManager.bindActionToInput("moveLeft1", SDL_SCANCODE_A);
-		inputManager.bindActionToInput("moveUp1", SDL_SCANCODE_W);
-		inputManager.bindActionToInput("moveDown1", SDL_SCANCODE_S);
-
-		inputManager.bindActionToInput("moveRight1",
+		inputManager.bindActionToInput("attackDigDug",
+			fro::InputManager::JoypadInput{ 1, SDL_CONTROLLER_BUTTON_A });
+		inputManager.bindActionToInput("moveRightDigDug",
 			fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickRight });
-		inputManager.bindActionToInput("moveLeft1",
+		inputManager.bindActionToInput("moveLeftDigDug",
 			fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickLeft });
-		inputManager.bindActionToInput("moveUp1",
+		inputManager.bindActionToInput("moveUpDigDug",
 			fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickUp });
-		inputManager.bindActionToInput("moveDown1",
+		inputManager.bindActionToInput("moveDownDigDug",
 			fro::InputManager::JoypadInput{ 1, fro::InputManager::JoypadAxis::leftStickDown });
 
-		inputManager.setActionDeadzone("moveRight2", 0.25f);
-		inputManager.setActionDeadzone("moveLeft2", 0.25f);
-		inputManager.setActionDeadzone("moveUp2", 0.25f);
-		inputManager.setActionDeadzone("moveDown2", 0.25f);
-
-		inputManager.bindActionToInput("moveRight2", SDL_SCANCODE_D);
-		inputManager.bindActionToInput("moveLeft2", SDL_SCANCODE_A);
-		inputManager.bindActionToInput("moveUp2", SDL_SCANCODE_W);
-		inputManager.bindActionToInput("moveDown2", SDL_SCANCODE_S);
-
-		inputManager.bindActionToInput("moveRight2",
+		inputManager.bindActionToInput("attackFygar",
+			fro::InputManager::JoypadInput{ 0, SDL_CONTROLLER_BUTTON_A });
+		inputManager.bindActionToInput("moveRightFygar",
 			fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickRight });
-		inputManager.bindActionToInput("moveLeft2",
+		inputManager.bindActionToInput("moveLeftFygar",
 			fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickLeft });
-		inputManager.bindActionToInput("moveUp2",
+		inputManager.bindActionToInput("moveUpFygar",
 			fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickUp });
-		inputManager.bindActionToInput("moveDown2",
+		inputManager.bindActionToInput("moveDownFygar",
 			fro::InputManager::JoypadInput{ 0, fro::InputManager::JoypadAxis::leftStickDown });
 
 		return fro::Fronge::getInstance().run();

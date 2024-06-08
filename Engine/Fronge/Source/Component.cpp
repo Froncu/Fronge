@@ -8,3 +8,11 @@ fro::Component::Component(Reference<GameObject> const parentingGameObject)
 {
 }
 #pragma endregion Constructors/Destructor
+
+
+
+#pragma region PublicMethods
+void fro::Component::awake()
+{
+}
+#pragma endregion PublicMethods

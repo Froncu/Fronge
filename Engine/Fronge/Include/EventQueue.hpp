@@ -12,7 +12,7 @@ namespace fro
 	template<std::copyable EventType, bool unique = std::equality_comparable<EventType>>
 	class EventQueue final
 	{
-		static_assert(not unique or std::equality_comparable<EventType>, 
+		static_assert(not unique or std::equality_comparable<EventType>,
 			"queue declared unique, but event is not equality comparable");
 
 	public:
@@ -35,6 +35,20 @@ namespace fro
 			if constexpr (unique)
 				if (not isEventUnqiue(event))
 					return;
+
+			m_dQueue.emplace_back(std::move(event));
+		}
+
+		void overridePushIf(EventType event, std::function<bool(EventType const&)> unaryPredicate)
+		{
+			if constexpr (unique)
+				if (not isEventUnqiue(event))
+					return;
+
+			auto const iNewEnd{ std::remove_if(m_dQueue.begin(), m_dQueue.end(), unaryPredicate) };
+
+			if (iNewEnd not_eq m_dQueue.end())
+				m_dQueue.erase(iNewEnd, m_dQueue.end());
 
 			m_dQueue.emplace_back(std::move(event));
 		}

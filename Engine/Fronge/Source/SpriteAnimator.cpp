@@ -1,5 +1,8 @@
 #include "SpriteAnimator.h"
 
+#include "GameObject.h"
+#include "Sprite.h"
+
 #pragma region Constructors/Destructor
 fro::SpriteAnimator::SpriteAnimator(Reference<GameObject> const parentingGameObject)
 	: Behaviour(parentingGameObject)
@@ -10,6 +13,11 @@ fro::SpriteAnimator::SpriteAnimator(Reference<GameObject> const parentingGameObj
 
 
 #pragma region PublicMethods
+void fro::SpriteAnimator::awake()
+{
+	m_Sprite = parentingGameObject.get().forceGetComponent<Sprite>();
+}
+
 void fro::SpriteAnimator::update(float const deltaSeconds)
 {
 	if (not m_Play or not m_pActiveAnimation)
@@ -158,6 +166,9 @@ std::size_t fro::SpriteAnimator::getCurrentFrameIndex() const
 #pragma region PrivateMethods
 void fro::SpriteAnimator::updateSprite() const
 {
+	if (not m_Sprite.valid())
+		return;
+
 	AnimationFrame const& currentAnimationFrame
 	{
 		m_pActiveAnimation->vAnimationFrames[m_CurrentFrameIndex]

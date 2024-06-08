@@ -2,12 +2,13 @@
 #define fro_STATE_MACHINE_H
 
 #include "Behaviour.h"
-#include "State.h"
 
 #include <memory>
 
 namespace fro
 {
+	class State;
+
 	class StateMachine final : public Behaviour
 	{
 	public:

@@ -3,8 +3,6 @@
 
 #include "Behaviour.h"
 #include "Event.hpp"
-#include "GameObject.h"
-#include "Sprite.h"
 
 #include <sdl_rect.h>
 #include <vec2.hpp>
@@ -15,6 +13,8 @@
 
 namespace fro
 {
+	class Sprite;
+
 	class SpriteAnimator final : public Behaviour
 	{
 	public:
@@ -34,6 +34,8 @@ namespace fro
 		SpriteAnimator(Reference<GameObject> const parentingGameObject);
 
 		virtual ~SpriteAnimator() override = default;
+
+		virtual void awake() override;
 
 		virtual void update(float const deltaSeconds) override;
 
@@ -70,7 +72,7 @@ namespace fro
 
 		void updateSprite() const;
 
-		Reference<Sprite> m_Sprite{ parentingGameObject.get().forceGetComponent<Sprite>() };
+		Reference<Sprite> m_Sprite{};
 
 		std::map<std::string, Animation> m_mAnimations{};
 		Animation* m_pActiveAnimation{};

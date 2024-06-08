@@ -32,12 +32,16 @@ namespace fro
 
 		GameObject& operator=(GameObject&& other) noexcept;
 
+		void awake();
+
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
 		void lateUpdate(float const deltaSeconds) const;
 
 		void render() const;
 		void display() const;
+
+		void destroy();
 
 		void localTransform(TransformationMatrix2D const& transformation);
 		void localTranslate(glm::vec2 const& translation);
@@ -92,7 +96,8 @@ namespace fro
 				m_vRenderables.push_back(addedComponent);
 			if constexpr (std::derived_from<ComponentType, GUI>)
 				m_vGUIs.push_back(addedComponent);
-
+			
+			m_vComponentsToAwake.emplace_back(addedComponent);
 			return addedComponent;
 		}
 
@@ -160,6 +165,8 @@ namespace fro
 		std::vector<Reference<Behaviour>> m_vBehaviours{};
 		std::vector<Reference<Renderable>> m_vRenderables{};
 		std::vector<Reference<GUI>> m_vGUIs{};
+
+		std::vector<Reference<Component>> m_vComponentsToAwake{};
 
 		bool m_IsActive{ true };
 		mutable bool m_IsWorldTransformDirty{};

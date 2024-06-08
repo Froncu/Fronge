@@ -32,6 +32,8 @@ fro::GameObject::GameObject(GameObject&& other) noexcept
 	, m_vRenderables{ std::move(other.m_vRenderables) }
 	, m_vGUIs{ std::move(other.m_vGUIs) }
 
+	, m_vComponentsToAwake{ std::move(other.m_vComponentsToAwake) }
+
 	, m_IsActive{ other.m_IsActive }
 	, m_IsWorldTransformDirty{ other.m_IsWorldTransformDirty }
 
@@ -65,10 +67,23 @@ fro::GameObject& fro::GameObject::operator=(GameObject&& other) noexcept
 	m_vRenderables = std::move(other.m_vRenderables);
 	m_vGUIs = std::move(other.m_vGUIs);
 
+	m_vComponentsToAwake = std::move(other.m_vComponentsToAwake);
+
 	m_IsActive = other.m_IsActive;
 	m_IsWorldTransformDirty = other.m_IsWorldTransformDirty;
 
 	return *this;
+}
+
+void fro::GameObject::awake()
+{
+	while (m_vComponentsToAwake.size())
+	{
+		if (m_vComponentsToAwake.front().valid())
+			m_vComponentsToAwake.front().get().awake();
+
+		m_vComponentsToAwake.erase(m_vComponentsToAwake.begin());
+	}
 }
 #pragma endregion Operators
 
@@ -108,6 +123,11 @@ void fro::GameObject::display() const
 	if (isActive())
 		for (Reference<GUI> const GUI : m_vGUIs)
 			GUI.get().display();
+}
+
+void fro::GameObject::destroy()
+{
+	m_ParentingScene.get().removeGameObject(m_Name);
 }
 
 void fro::GameObject::localTransform(TransformationMatrix2D const& transformation)

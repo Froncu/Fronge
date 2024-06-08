@@ -4,24 +4,33 @@
     <ClCompile Include="Code\GridMovement.cpp">
       <Filter>GridMovement</Filter>
     </ClCompile>
-    <ClCompile Include="Code\MoveState.cpp">
-      <Filter>DigDug\States\MoveState</Filter>
+    <ClCompile Include="Code\DigDugMoveState.cpp">
+      <Filter>DigDug\States\DigDugMoveState</Filter>
     </ClCompile>
-    <ClCompile Include="Code\IdleState.cpp">
-      <Filter>DigDug\States\IdleState</Filter>
+    <ClCompile Include="Code\DigDugIdleState.cpp">
+      <Filter>DigDug\States\DigDugIdleState</Filter>
     </ClCompile>
-    <ClCompile Include="Code\AttackState.cpp">
-      <Filter>DigDug\States\AttackState</Filter>
+    <ClCompile Include="Code\DigDugAttackState.cpp">
+      <Filter>DigDug\States\DigDugAttackState</Filter>
     </ClCompile>
-    <ClCompile Include="Code\PumpState.cpp">
-      <Filter>DigDug\States\PumpState</Filter>
+    <ClCompile Include="Code\DigDugPumpState.cpp">
+      <Filter>DigDug\States\DigDugPumpState</Filter>
     </ClCompile>
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\MovementRotation.cpp">
       <Filter>DigDug\MoveRotation</Filter>
     </ClCompile>
-    <ClCompile Include="Code\DeadState.cpp">
-      <Filter>DigDug\States\DeadState</Filter>
+    <ClCompile Include="Code\DigDugDeadState.cpp">
+      <Filter>DigDug\States\DigDugDeadState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FygarDefaultState.cpp">
+      <Filter>Fygar\States\FygarDefaultState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FygarAttackState.cpp">
+      <Filter>Fygar\States\FygarAttackState</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FygarFireState.cpp">
+      <Filter>Fygar\States\FygarFireState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -34,46 +43,70 @@
     <Filter Include="DigDug\States">
       <UniqueIdentifier>{7d7d34dd-a29d-47f0-9dea-1dbd7155a7c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DigDug\States\MoveState">
-      <UniqueIdentifier>{d1c71a38-158f-475d-9203-2e3af9838604}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DigDug\States\IdleState">
-      <UniqueIdentifier>{08eeca2f-5982-4be9-8c22-79ea5dce4e12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DigDug\States\AttackState">
-      <UniqueIdentifier>{e5cabd9b-220f-49f1-bad6-0f8e416a5540}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DigDug\States\PumpState">
-      <UniqueIdentifier>{63fe9360-79c4-4bc1-b409-e7f4058f70de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DigDug\MoveRotation">
       <UniqueIdentifier>{25a7fd70-ed12-4a15-9eca-168d08dd891a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DigDug\States\DeadState">
+    <Filter Include="DigDug\States\DigDugIdleState">
+      <UniqueIdentifier>{08eeca2f-5982-4be9-8c22-79ea5dce4e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DigDug\States\DigDugDeadState">
       <UniqueIdentifier>{cc968990-20f7-4d7d-9efd-e66c0c9da01d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DigDug\States\DigDugAttackState">
+      <UniqueIdentifier>{e5cabd9b-220f-49f1-bad6-0f8e416a5540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DigDug\States\DigDugMoveState">
+      <UniqueIdentifier>{d1c71a38-158f-475d-9203-2e3af9838604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fygar">
+      <UniqueIdentifier>{a1b17bae-3c70-4ae5-900c-5c731282232c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DigDug\States\DigDugPumpState">
+      <UniqueIdentifier>{63fe9360-79c4-4bc1-b409-e7f4058f70de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fygar\States">
+      <UniqueIdentifier>{7228c10c-64de-4d2a-a941-2735281b3318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fygar\States\FygarAttackState">
+      <UniqueIdentifier>{6aba7bf6-23c6-47db-86f5-d4abea8ddf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fygar\States\FygarDefaultState">
+      <UniqueIdentifier>{fd27083d-1dee-4e9e-a2db-be25e3c97e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fygar\States\FygarFireState">
+      <UniqueIdentifier>{75a9c70a-42e2-4c18-94cd-a505327e7cdb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\GridMovement.h">
       <Filter>GridMovement</Filter>
     </ClInclude>
-    <ClInclude Include="Code\MoveState.h">
-      <Filter>DigDug\States\MoveState</Filter>
+    <ClInclude Include="Code\DigDugMoveState.h">
+      <Filter>DigDug\States\DigDugMoveState</Filter>
     </ClInclude>
-    <ClInclude Include="Code\IdleState.h">
-      <Filter>DigDug\States\IdleState</Filter>
+    <ClInclude Include="Code\DigDugIdleState.h">
+      <Filter>DigDug\States\DigDugIdleState</Filter>
     </ClInclude>
-    <ClInclude Include="Code\AttackState.h">
-      <Filter>DigDug\States\AttackState</Filter>
+    <ClInclude Include="Code\DigDugAttackState.h">
+      <Filter>DigDug\States\DigDugAttackState</Filter>
     </ClInclude>
-    <ClInclude Include="Code\PumpState.h">
-      <Filter>DigDug\States\PumpState</Filter>
+    <ClInclude Include="Code\DigDugPumpState.h">
+      <Filter>DigDug\States\DigDugPumpState</Filter>
     </ClInclude>
     <ClInclude Include="Code\MovementRotation.h">
       <Filter>DigDug\MoveRotation</Filter>
     </ClInclude>
-    <ClInclude Include="Code\DeadState.h">
-      <Filter>DigDug\States\DeadState</Filter>
+    <ClInclude Include="Code\DigDugDeadState.h">
+      <Filter>DigDug\States\DigDugDeadState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FygarDefaultState.h">
+      <Filter>Fygar\States\FygarDefaultState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FygarAttackState.h">
+      <Filter>Fygar\States\FygarAttackState</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FygarFireState.h">
+      <Filter>Fygar\States\FygarFireState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

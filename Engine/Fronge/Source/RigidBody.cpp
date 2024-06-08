@@ -68,6 +68,15 @@ bool fro::RigidBody::isOverlapping(std::string_view const tag) const
 {
 	return m_sOverlappingBodies.contains(tag);
 }
+
+fro::Reference<fro::RigidBody> fro::RigidBody::getOverlapping(std::string_view const tag) const
+{
+	auto const iFoundOverlappingBody{ m_sOverlappingBodies.find(tag) };
+	if (iFoundOverlappingBody == m_sOverlappingBodies.end())
+		return {};
+
+	return *iFoundOverlappingBody;
+}
 #pragma endregion PublicMethods
 
 

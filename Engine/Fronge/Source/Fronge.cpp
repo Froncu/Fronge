@@ -49,6 +49,8 @@ int fro::Fronge::run() const
 		if (not SystemEventManager::getInstance().processSystemEvents())
 			break;
 
+		SceneManager::getInstance().awake();
+
 		for (fixedUpdateElapsedSeconds += deltaSeconds;
 			fixedUpdateElapsedSeconds >= m_FixedDeltaSeconds;
 			fixedUpdateElapsedSeconds -= m_FixedDeltaSeconds)

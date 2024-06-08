@@ -18,6 +18,8 @@ namespace fro
 	public:
 		virtual ~SceneManager() override = default;
 
+		void awake();
+
 		void fixedUpdate(float const fixedDeltaSeconds) const;
 		void update(float const deltaSeconds) const;
 		void lateUpdate(float const deltaSeconds) const;
@@ -48,6 +50,8 @@ namespace fro
 
 		Scenes m_Scenes{};
 		Reference<Scene> m_ActiveScene{};
+
+		std::vector<Reference<Scene>> m_vScenesToAwake{};
 
 		EventQueue<std::string_view> m_ScenesToRemove
 		{

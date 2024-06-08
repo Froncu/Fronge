@@ -2,17 +2,19 @@
 #define fro_FPS_COUNTER_H
 
 #include "Behaviour.h"
-#include "GameObject.h"
-#include "Text.h"
 
 namespace fro
 {
+	class Text;
+
 	class FPSCounter final : public Behaviour
 	{
 	public:
 		FPSCounter(Reference<GameObject> const parentingGameObject);
 
 		virtual ~FPSCounter() override = default;
+
+		virtual void awake() override;
 
 		virtual void update(float const deltaSeconds) override;
 
@@ -23,7 +25,7 @@ namespace fro
 		FPSCounter& operator=(FPSCounter const&) = delete;
 		FPSCounter& operator=(FPSCounter&&) noexcept = delete;
 
-		Reference<Text> m_Text{ parentingGameObject.get().forceGetComponent<Text>() };
+		Reference<Text> m_Text{};
 
 		int m_Ticks{};
 		float m_ElapsedSeconds{};

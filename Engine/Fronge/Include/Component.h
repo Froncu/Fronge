@@ -15,6 +15,8 @@ namespace fro
 
 		Reference<GameObject> const parentingGameObject;
 
+		virtual void awake();
+
 	protected:
 		Component(Reference<GameObject> const parentingGameObject);
 

@@ -1,6 +1,7 @@
 #include "StateMachine.h"
 
 #include "GameObject.h"
+#include "State.h"
 
 #pragma region Constructors/Destructor
 fro::StateMachine::StateMachine(Reference<GameObject> const parentingGameObject)

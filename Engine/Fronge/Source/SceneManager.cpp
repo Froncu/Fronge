@@ -1,8 +1,19 @@
 #include "SceneManager.h"
 
+#include "Console.hpp"
+
 #include <algorithm>
 
 #pragma region PublicMethods
+void fro::SceneManager::awake()
+{
+	for (Reference<Scene> const sceneToAwake : m_vScenesToAwake)
+		if(sceneToAwake.valid())
+			sceneToAwake.get().awake();
+
+	m_vScenesToAwake.clear();
+}
+
 void fro::SceneManager::fixedUpdate(float const fixedDeltaSeconds) const
 {
 	if (m_ActiveScene.valid())
@@ -49,7 +60,8 @@ fro::Reference<fro::Scene> fro::SceneManager::addScene(std::string name)
 	if (iFoundScene not_eq m_Scenes.end())
 		return {};
 
-	return m_Scenes.emplace_back(std::move(name));
+	m_vScenesToAwake.emplace_back(m_Scenes.emplace_back(std::move(name)));
+	return m_vScenesToAwake.back();
 }
 
 fro::Reference<fro::Scene> fro::SceneManager::getScene(std::string_view const name)
@@ -69,7 +81,8 @@ fro::Reference<fro::Scene> fro::SceneManager::forceGetScene(std::string const& n
 	if (iFoundScene not_eq m_Scenes.end())
 		return *iFoundScene;
 
-	return m_Scenes.emplace_back(name);
+	m_vScenesToAwake.push_back(m_Scenes.emplace_back(name));
+	return m_vScenesToAwake.back();
 }
 
 void fro::SceneManager::removeScene(std::string_view const name)

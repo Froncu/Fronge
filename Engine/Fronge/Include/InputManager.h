@@ -2,6 +2,7 @@
 #define fro_INPUT_MANAGER_H
 
 #include "Defines.hpp"
+#include "EventQueue.hpp"
 #include "Typenames.hpp"
 #include "Singleton.hpp"
 
@@ -72,9 +73,11 @@ namespace fro
 
 		void processInputContinous();
 		void processInputEvent(SDL_Event const& event);
-		void bindActionToInput(std::string const&, Input const input);
+		void bindActionToInput(std::string const& actionName, Input const input);
 
-		void setActionDeadzone(std::string const&, float const deadzone);
+		void setActionDeadzone(std::string const& actionName, float const deadzone);
+
+		void simulateActionStrength(std::string const& actionName, float const strength);
 
 		fro_NODISCARD float getInputStrength(Input const input);
 		fro_NODISCARD float getActionStrength(std::string const& actionName);
@@ -91,18 +94,32 @@ namespace fro
 	private:
 		struct InputInfo final
 		{
-			float absoluteStrength;
-			float relativeStrength;
+			float absoluteStrength{};
+			float relativeStrength{};
 		};
 
 		struct ActionInfo final
 		{
-			std::set<InputInfo const*> spBoundInputInfos;
-			float deadzone;
+			std::set<InputInfo const*> spBoundInputInfos{};
+
+			float simulatedAbsoluteStrength{};
+			float simulatedRelativeStrength{};
+
+			float deadzone{ 0.25f };
 		};
 
-		static JoypadAxis SDLToJoypadTrigger(Uint8 const SDLAxis);
-		static JoypadAxis SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis);
+		struct SimulateActionStrengthEvent final
+		{
+			bool operator==(SimulateActionStrengthEvent const& other) const;
+
+			ActionInfo* pActionInfo{};
+			float simulatedStrength{};
+		};
+
+		static fro_NODISCARD JoypadAxis SDLToJoypadTrigger(Uint8 const SDLAxis);
+		static fro_NODISCARD JoypadAxis SDLToJoypadStick(Sint16 const stickValue, Uint8 const SDLAxis);
+		static fro_NODISCARD std::pair<bool, bool> getStrengthInfo(float const absoluteStrength, float const relativeStrength, float const deadzone);
+		static fro_NODISCARD float getLargestStrength(float const strength, float const largestStrength, float const deadzone);
 
 		InputManager();
 		InputManager(InputManager const&) = delete;
@@ -114,6 +131,17 @@ namespace fro
 		void setInputState(float const newStrength, Input const input);
 
 		fro_NODISCARD float getActionStrength(std::string const& actionName, float const deadzone);
+
+		EventQueue<SimulateActionStrengthEvent, true> m_SimulateActionStrengthEvents
+		{
+			[](SimulateActionStrengthEvent&& event)
+			{
+				auto const [pActionInfo, simulatedStrength] { event };
+
+				pActionInfo->simulatedRelativeStrength = simulatedStrength - pActionInfo->simulatedAbsoluteStrength;
+				pActionInfo->simulatedAbsoluteStrength = simulatedStrength;
+			}
+		};
 
 		// TODO: only reason for this is to open and close connected and disconnected joypads; not sure if this is needed
 		std::map<SDL_JoystickID, CustomUniquePointer<SDL_GameController>> m_mpJoypads{};

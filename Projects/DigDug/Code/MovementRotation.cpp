@@ -12,8 +12,8 @@ fro::MovementRotation::MovementRotation(Reference<GameObject> const parentingGam
 
 
 #pragma region PublicMethods
-void fro::MovementRotation::onCorrectedMoveDirectionChanged(
-	glm::vec2 const previous, glm::vec2 const current)
+void fro::MovementRotation::onCorrectedMoveDirectionChanged
+(glm::vec2 const previous, glm::vec2 const current)
 {
 	if (previous.y and current.x)
 	{
