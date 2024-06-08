@@ -183,7 +183,6 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
-    <ClCompile Include="Source\Steam.cpp" />
     <ClCompile Include="Source\SystemEventManager.cpp" />
     <ClCompile Include="Source\Text.cpp" />
     <ClCompile Include="Source\StateMachine.cpp" />
@@ -225,7 +224,6 @@
     <ClInclude Include="Include\ServiceLocator.hpp" />
     <ClInclude Include="Include\Singleton.hpp" />
     <ClInclude Include="Include\Sprite.h" />
-    <ClInclude Include="Include\Steam.h" />
     <ClInclude Include="Include\SystemEventManager.h" />
     <ClInclude Include="Include\Text.h" />
     <ClInclude Include="Include\Typenames.hpp" />

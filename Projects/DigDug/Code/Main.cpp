@@ -17,7 +17,6 @@
 #include "Sprite.h"
 #include "SpriteAnimator.h"
 #include "StateMachine.h"
-#include "Steam.h"
 #include "SystemEventManager.h"
 #include "Text.h"
 #include "PhysicsManager.h"

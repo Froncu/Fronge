@@ -6,7 +6,6 @@
 #include "RenderContext.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "Steam.h"
 #include "SystemEventManager.h"
 
 #include <sdl.h>
@@ -39,8 +38,6 @@ int fro::Fronge::run() const
 
 	while (true)
 	{
-		Steam::getInstance().update();
-
 		auto const currentTimePoint{ std::chrono::steady_clock::now() };
 		float const deltaSeconds{ std::chrono::duration<float>(currentTimePoint - oldTimePoint).count() };
 		oldTimePoint = currentTimePoint;

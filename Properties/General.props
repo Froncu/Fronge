@@ -21,9 +21,7 @@
   <Import Project="SDL_image.props" Condition="'$(SDL_image_Imported)' != 'true'" />
   <Import Project="SDL_mixer.props" Condition="'$(SDL_mixer_Imported)' != 'true'" />
   <Import Project="SDL_ttf.props" Condition="'$(SDL_ttf_Imported)' != 'true'" />
-  <Import Project="Steam.props" Condition="'$(Steam_Imported)' != 'true'" />
   <Import Project="VLD.props" Condition="'$(VLD_Imported)' != 'true'" />
-  <Import Project="Xinput.props" Condition="'$(Xinput_Imported)' != 'true'" />
 
   <PropertyGroup>
     <External_IncludeDirectories>
@@ -36,9 +34,7 @@
       $(SDL_image_IncludeDirectories);
       $(SDL_mixer_IncludeDirectories);
       $(SDL_ttf_IncludeDirectories);
-      $(Steam_IncludeDirectories);
       $(VLD_IncludeDirectories);
-      $(Xinput_IncludeDirectories)
     </External_IncludeDirectories>
 
     <External_LibraryDirectories>
@@ -50,9 +46,7 @@
       $(SDL_image_LibraryDirectories);
       $(SDL_mixer_LibraryDirectories);
       $(SDL_ttf_LibraryDirectories);
-      $(Steam_LibraryDirectories);
       $(VLD_LibraryDirectories);
-      $(Xinput_LibraryDirectories)
     </External_LibraryDirectories>
 
     <External_Dependecies>
@@ -64,9 +58,7 @@
       $(SDL_image_Dependecies);
       $(SDL_mixer_Dependecies);
       $(SDL_ttf_Dependecies);
-      $(Steam_Dependecies);
       $(VLD_Dependecies);
-      $(Xinput_Dependecies)
     </External_Dependecies>
   </PropertyGroup>
 

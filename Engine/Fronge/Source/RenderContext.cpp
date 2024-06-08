@@ -1,7 +1,5 @@
 #include "RenderContext.h"
 
-#include "Steam.h"
-
 #include <sdl.h>
 
 #include <array>
@@ -18,10 +16,6 @@ fro::RenderContext::RenderContext()
 	m_pWindow = { SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_ViewportSize.x, m_ViewportSize.y, NULL), SDL_DestroyWindow };
 	if (not m_pWindow.get())
 		throw std::runtime_error(std::format("SDL_CreateWindow() failed: {}", SDL_GetError()));
-
-	// HACK: Steam must be initialized before the renderer, otherwise the overlay does not work for some reason
-	std::ignore = Steam::getInstance();
-	// END HACK
 
 	m_pRenderer = { SDL_CreateRenderer(m_pWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer };
 	if (not m_pRenderer.get())
