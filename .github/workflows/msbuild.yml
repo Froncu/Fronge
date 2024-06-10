@@ -2,9 +2,9 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "huge-refactor" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "huge-refactor" ]
 
 env:
   SOLUTION_FILE_PATH: .
