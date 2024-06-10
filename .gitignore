@@ -1,3 +1,7 @@
+# Directories
 .vs/
 Output/
 Intermediate/
+
+# Files
+*.user
