@@ -3,5 +3,6 @@
 
 #include "Fronge/Application.hpp"
 #include "Fronge/EntryPoint.hpp"
+#include "Fronge/Logger.hpp"
 
 #endif

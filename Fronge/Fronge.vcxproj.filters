@@ -5,6 +5,7 @@
     <ClInclude Include="Source\Fronge\Core.hpp" />
     <ClInclude Include="Source\Fronge.hpp" />
     <ClInclude Include="Source\Fronge\EntryPoint.hpp" />
+    <ClInclude Include="Source\Fronge\Logger.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Fronge\Application.cpp" />
