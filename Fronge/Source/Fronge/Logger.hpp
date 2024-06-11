@@ -1,5 +1,5 @@
-#if not defined FRO_LOGGER_H
-#define FRO_LOGGER_H
+#if not defined FRO_LOGGER_HPP
+#define FRO_LOGGER_HPP
 
 #include "Core.hpp"
 

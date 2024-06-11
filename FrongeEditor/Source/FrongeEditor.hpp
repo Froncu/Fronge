@@ -1,5 +1,5 @@
-#if not defined FRO_FRONGE_EDITOR
-#define FRO_FRONGE_EDITOR
+#if not defined FRO_FRONGE_EDITOR_HPP
+#define FRO_FRONGE_EDITOR_HPP
 
 #include "Fronge.hpp"
 

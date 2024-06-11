@@ -1,5 +1,5 @@
-#if not defined FRO_ENTRY_POINT
-#define FRO_ENTRY_POINT
+#if not defined FRO_ENTRY_POINT_HPP
+#define FRO_ENTRY_POINT_HPP
 
 #if defined FRO_PLATFORM_WINDOWS
 

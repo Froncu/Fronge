@@ -1,5 +1,5 @@
-#if not defined fro_APPLICATION_H
-#define fro_APPLICATION_H
+#if not defined fro_APPLICATION_HPP
+#define fro_APPLICATION_HPP
 
 #include "Core.hpp"
 
