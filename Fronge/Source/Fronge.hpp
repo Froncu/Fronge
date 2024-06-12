@@ -1,5 +1,5 @@
-#if not defined FRO_FRONGE_HPP
-#define FRO_FRONGE_HPP
+#if not defined FRONGE_HPP
+#define FRONGE_HPP
 
 #include "Fronge/Application.hpp"
 #include "Fronge/EntryPoint.hpp"

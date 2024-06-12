@@ -1,5 +1,5 @@
-#if not defined FRO_CORE_HPP
-#define FRO_CORE_HPP
+#if not defined CORE_HPP
+#define CORE_HPP
 
 #if defined FRO_BUILD_DLL
 	#define FRO_API _declspec(dllexport)
