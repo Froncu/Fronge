@@ -1,7 +1,3 @@
-# Directories
 .vs/
+Build/
 Output/
-Intermediate/
-
-# Files
-*.user
