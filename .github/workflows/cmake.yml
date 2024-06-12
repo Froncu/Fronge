@@ -1,0 +1,31 @@
+# A CMake build action by https://github.com/avadae
+
+name: CMake
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "huge-refactor" ]
+  pull_request:
+    branches: [ "main", "huge-refactor" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        BUILD_TYPE: [Release, Debug, Distribute]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{matrix.BUILD_TYPE}}
