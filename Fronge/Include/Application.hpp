@@ -22,8 +22,6 @@ namespace fro
 		Application& operator=(Application const&) = default;
 		Application& operator=(Application&&) noexcept = default;
 	};
-
-	std::unique_ptr<Application> createApplication();
 }
 
 #endif
