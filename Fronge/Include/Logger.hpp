@@ -101,9 +101,10 @@ namespace fro
 		Logger& operator=(Logger&&) noexcept = delete;
 
 		template<typename ...Arguments>
-		static void log(std::string_view const escSequence, std::string_view const loggerName,
-			std::format_string<Arguments...> const format, Arguments&&... arguments)
+		static void log([[maybe_unused]] std::string_view const escSequence, [[maybe_unused]] std::string_view const loggerName,
+			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
 		{
+#if not defined FRO_DISTRIBUTE
 			auto const now{ std::chrono::system_clock::now() };
 
 			std::cout
@@ -111,6 +112,7 @@ namespace fro
 				<< std::format("[{:%H:%M:%S}] {}: ", std::chrono::floor<std::chrono::seconds>(now), loggerName)
 				<< std::format(format, std::forward<Arguments>(arguments)...)
 				<< "\033[0m\n";
+#endif
 		}
 	};
 }
