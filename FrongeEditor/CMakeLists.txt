@@ -1,13 +1,17 @@
 add_executable(FrongeEditor
-"Source/FrongeEditor.cpp")
+"Code/FrongeEditor.cpp")
 
 target_compile_definitions(FrongeEditor PRIVATE
 	${CONFIGURATION_MACRO}
-	${CONFIGURATION_MACRO})
+	${PLATFORM_MACRO})
 set_target_properties(FrongeEditor PROPERTIES
-	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Output/${PRESET_NAME}/FrongeEditor
-	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Output/${PRESET_NAME}/FrongeEditor
-	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Output/${PRESET_NAME}/FrongeEditor)
+	ARCHIVE_OUTPUT_DIRECTORY ${GLOBAL_OUTPUT_DIRECTORY}/FrongeEditor
+	LIBRARY_OUTPUT_DIRECTORY ${GLOBAL_OUTPUT_DIRECTORY}/FrongeEditor
+	RUNTIME_OUTPUT_DIRECTORY ${GLOBAL_OUTPUT_DIRECTORY}/FrongeEditor)
 
-target_include_directories(FrongeEditor PRIVATE ${CMAKE_SOURCE_DIR}/Fronge/Source)
-target_link_libraries(FrongeEditor Fronge)
+target_link_libraries(FrongeEditor PRIVATE Fronge)
+add_custom_command(TARGET FrongeEditor
+POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy
+$<TARGET_FILE:Fronge>
+$<TARGET_FILE_DIR:FrongeEditor>)
