@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        BUILD_CONFIGURATION: [Release, Debug]
+        BUILD_CONFIGURATION: [Debug, Release, Distribute]
         BUILD_PLATFORM: [x64, Win32]
 
     steps:
