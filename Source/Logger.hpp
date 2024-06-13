@@ -17,8 +17,6 @@ namespace fro
 {
 	class FRO_API Logger final
 	{
-
-
 	public:
 		template<typename ...Arguments>
 		static void info(std::format_string<Arguments...> const format,
