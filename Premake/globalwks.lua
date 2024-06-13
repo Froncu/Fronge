@@ -7,4 +7,4 @@ filter "platforms:x64"
 filter "platforms:x86"
 	architecture "x86"
 
-filter ""
+filter {}

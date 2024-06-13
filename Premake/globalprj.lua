@@ -22,4 +22,4 @@ filter "configurations:Distribute"
 	symbols "off"
 	runtime "release"
 
-filter ""
+filter {}

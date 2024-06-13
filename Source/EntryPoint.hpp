@@ -6,9 +6,14 @@ namespace fro
 	std::unique_ptr<Application> createApplication();
 }
 
-int main(int, char**)
-{
-	fro::createApplication()->run();
-}
+#if defined FRO_DISTRIBUTE
+	#include "Windows.h"
+	int WINAPI wWinMain(HINSTANCE const, HINSTANCE const, LPWSTR const, int const)
+#else
+	int main(int const, char const* const* const)
+#endif
+	{
+		fro::createApplication()->run();
+	}
 
 #endif
