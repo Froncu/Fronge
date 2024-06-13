@@ -7,69 +7,38 @@
 #include <format>
 #include <iostream>
 
+#if defined FRO_BUILD_DLL
+	#define LOGGER_NAME "Fronge"
+#else
+	#define LOGGER_NAME "App"
+#endif
+
 namespace fro
 {
 	class FRO_API Logger final
 	{
+
+
 	public:
-		template<typename ...Arguments>
-		static void infoCore(std::format_string<Arguments...> const format,
-			Arguments&&... arguments)
-		{
-			log("37;40", "Fronge", format, std::forward<Arguments>(arguments)...);
-		}
-
-		template<typename ...Arguments>
-		static void warnCore(std::format_string<Arguments...> const format,
-			Arguments&&... arguments)
-		{
-			log("1;33;40", "Fronge", format, std::forward<Arguments>(arguments)...);
-		}
-
-		template<typename ...Arguments>
-		static void errorCore(std::format_string<Arguments...> const format,
-			Arguments&&... arguments)
-		{
-			log("1;31;40", "Fronge", format, std::forward<Arguments>(arguments)...);
-		}
-
-		template<typename Type>
-		static void infoCore(Type&& value)
-		{
-			infoCore("{}", std::forward<Type>(value));
-		}
-
-		template<typename Type>
-		static void warnCore(Type&& value)
-		{
-			warnCore("{}", std::forward<Type>(value));
-		}
-
-		template<typename Type>
-		static void errorCore(Type&& value)
-		{
-			errorCore("{}", std::forward<Type>(value));
-		}
-
 		template<typename ...Arguments>
 		static void info(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("37;40", "App", format, std::forward<Arguments>(arguments)...);
+			log("37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename ...Arguments>
 		static void warn(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("1;33;40", "App", format, std::forward<Arguments>(arguments)...);
+			log("1;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename ...Arguments>
 		static void error(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("1;31;40", "App", format, std::forward<Arguments>(arguments)...);
+			log("1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename Type>
@@ -120,5 +89,7 @@ namespace fro
 		}
 	};
 }
+
+#undef LOGGER_NAME
 
 #endif
