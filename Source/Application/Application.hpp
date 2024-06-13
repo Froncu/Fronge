@@ -7,12 +7,12 @@
 
 namespace fro
 {
-	class FRO_API Application
+	class Application
 	{
 	public:
-		virtual ~Application() = default;
+		FRO_API virtual ~Application() = default;
 
-		virtual void run() = 0;
+		FRO_API virtual void run() = 0;
 
 	protected:
 		Application() = default;
