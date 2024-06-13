@@ -105,7 +105,11 @@ namespace fro
 			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
 		{
 #if not defined FRO_DISTRIBUTE
-			auto const now{ std::chrono::system_clock::now() };
+			auto const now
+			{
+				std::chrono::zoned_time(std::chrono::current_zone(),
+					std::chrono::system_clock::now()).get_local_time()
+			};
 
 			std::cout
 				<< std::format("\033[{}m", escSequence)
