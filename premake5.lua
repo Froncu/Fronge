@@ -18,12 +18,15 @@ workspace "Fronge"
 		dofile "Premake/globalprj.lua"
 		dofile "Premake/defines.lua"
 
-		files {
-		"Include/**.hpp",
-		"Source/**.cpp" }
+		files "Source/**.*"
 
-		includedirs "Include"
+		includedirs "Source"
 
 		defines "FRO_BUILD_DLL"
+
+		postbuildcommands{
+			"mkdir %[Output/Include]",
+			"xcopy %[Source/*.h] %[Output/Include] /S /Y",
+			"xcopy %[Source/*.hpp] %[Output/Include] /S /Y" }
 
 	project "*"
