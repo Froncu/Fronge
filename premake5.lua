@@ -1,16 +1,18 @@
 workspace "Fronge"
-	configurations { "Debug", "Release", "Distribute" }
-	platforms { "x64", "x86" }
+	include "Premake/globalwks.lua"
 
-    filter "platforms:x64"
-        architecture "x64"
+	project "Fronge"
+		kind "SharedLib"
 
-	filter "platforms:x86"
-        architecture "x86"
+		dofile "Premake/globalprj.lua"
+		dofile "Premake/defines.lua"
 
-	filter ""
+		files {
+		"Include/**.hpp",
+		"Source/**.cpp" }
 
-	include "Fronge"
-	include "FrongeEditor"
+		includedirs "Include"
 
-	startproject "FrongeEditor"
+		defines "FRO_BUILD_DLL"
+
+	project "*"
