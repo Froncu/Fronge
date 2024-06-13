@@ -20,13 +20,14 @@ workspace "Fronge"
 
 		files "Source/**.*"
 
-		includedirs "Source"
-
 		defines "FRO_BUILD_DLL"
 
-		postbuildcommands{
+		includedirs "Source"
+		postbuildcommands {
 			"mkdir %[Output/Include]",
 			"xcopy %[Source/*.h] %[Output/Include] /S /Y",
 			"xcopy %[Source/*.hpp] %[Output/Include] /S /Y" }
+
+		include "External/SDL2"
 
 	project "*"

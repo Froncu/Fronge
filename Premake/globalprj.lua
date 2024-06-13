@@ -20,6 +20,7 @@ filter "configurations:Release"
 
 filter "configurations:Distribute"
 	optimize "full"
+	symbols "off"
 	runtime "release"
 
 filter ""
