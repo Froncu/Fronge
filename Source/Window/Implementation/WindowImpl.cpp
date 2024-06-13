@@ -1,5 +1,5 @@
 #include "Logger.hpp"
-#include "Window.hpp"
+#include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
 namespace fro
