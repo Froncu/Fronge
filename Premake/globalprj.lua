@@ -1,7 +1,6 @@
 language "C++"
 cppdialect "C++20"
 warnings "high"
-staticruntime "on"
 systemversion "latest"
 flags { "FatalWarnings", "MultiProcessorCompile" }
 
