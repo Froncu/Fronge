@@ -11,9 +11,9 @@
 
 #if defined FRO_DEBUG
 	#include "Logger.hpp"
-	#define FRO_ASSERT(x, ...) { if (not (x)) { fro::Logger::error("assertion failed: {}", __VA_ARGS__); __debugbreak(); } }
+	#define FRO_ASSERT(condition, ...) { if (not (condition)) { fro::Logger::error(__VA_ARGS__); __debugbreak(); } }
 #else
-	#define FRO_ASSERT(x, ...)
+	#define FRO_ASSERT(condition, ...)
 #endif
 
 #endif
