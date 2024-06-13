@@ -7,28 +7,30 @@ on:
     branches: [ "main", "huge-refactor" ]
 
 env:
-  SOLUTION_FILE_PATH: .
+  solution-path: .
 
 permissions:
   contents: read
 
 jobs:
- build:
+  build:
     runs-on: windows-latest
 
     strategy:
       matrix:
-        BUILD_CONFIGURATION: [Debug, Release, Distribute]
-        BUILD_PLATFORM: [x64, Win32]
+        configuration: [Debug, Release, Distribute]
+        platform: [x64, Win32]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.3
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+    - name: Clone repository to runner
+      uses: actions/checkout@v4
 
-      run: msbuild /m /p:Configuration=${{matrix.BUILD_CONFIGURATION}} /p:Platform=${{matrix.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}}
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1.3
+
+    - name: Build solution with Premake
+      run: ${{ github.workspace }}\build.bat
+
+    - name: Build program
+      working-directory: ${{ github.workspace }}
+      run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{ env.solution-path }}
