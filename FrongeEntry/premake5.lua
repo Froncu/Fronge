@@ -12,4 +12,6 @@ project "FrongeEntry"
 
 	dofile "../External/SDL2/premake5.lua"
 
+	links "SDL2main"
+
 project "*"
