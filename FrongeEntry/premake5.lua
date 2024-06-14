@@ -4,7 +4,9 @@ project "FrongeEntry"
 	dofile "../Premake/globalprj.lua"
 	dofile "../Premake/defines.lua"
 
-	files "Source/**.*"
+	files "Source/**"
+	targetdir ("../Output/" .. outputdir)
+	objdir ("../Intermediate/" .. outputdir)
 
 	includedirs "../Fronge/Source"
 

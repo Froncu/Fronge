@@ -6,9 +6,6 @@ flags { "FatalWarnings", "MultiProcessorCompile" }
 
 outputdir = "%{cfg.buildcfg} (%{cfg.platform})"
 
-targetdir ("../%{prj.location}/Output/" .. outputdir)
-objdir ("../%{prj.location}/Intermediate/" .. outputdir)
-
 filter "configurations:Debug"
 	symbols "full"
 	runtime "debug"
