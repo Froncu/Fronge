@@ -15,7 +15,7 @@
 
 namespace fro
 {
-	class FRO_API Logger final
+	class Logger final
 	{
 	public:
 		template<typename ...Arguments>
