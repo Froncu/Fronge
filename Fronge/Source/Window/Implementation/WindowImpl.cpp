@@ -31,7 +31,7 @@ namespace fro
 		SDL_SetWindowData(mSDLWindow, windowData.title.c_str(), static_cast<void*>(&windowData));
 	}
 
-	Window::Window(std::string title, int width, int height, bool vSync)
+	Window::Window(std::string title, int const width, int const height, bool const vSync)
 		: mData
 		{
 			.title{ std::move(title) },

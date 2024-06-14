@@ -12,8 +12,8 @@ namespace fro
 	{
 	public:
 		FRO_API Window(std::string title = "Fronge",
-			int width = 640, int height = 480,
-			bool vSync = true);
+			int const width = 640, int const height = 480,
+			bool const vSync = true);
 
 		FRO_API ~Window();
 
