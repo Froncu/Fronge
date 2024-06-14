@@ -8,9 +8,9 @@
 #include <iostream>
 
 #if defined FRO_ENGINE
-	#define LOGGER_NAME "Fronge"
+	#define LOGGER_NAME "FRONGE"
 #else
-	#define LOGGER_NAME "App"
+	#define LOGGER_NAME "APP"
 #endif
 
 namespace fro
@@ -22,7 +22,7 @@ namespace fro
 		static void info(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"Fronge")
+			if constexpr (*LOGGER_NAME == *"FRONGE")
 				log("1;2;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
@@ -32,7 +32,7 @@ namespace fro
 		static void warn(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"Fronge")
+			if constexpr (*LOGGER_NAME == *"FRONGE")
 				log("1;2;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
@@ -42,7 +42,7 @@ namespace fro
 		static void error(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"Fronge")
+			if constexpr (*LOGGER_NAME == *"FRONGE")
 				log("1;2;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
