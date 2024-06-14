@@ -12,5 +12,10 @@ end
 workspace "Fronge"
 	include "Premake/globalwks.lua"
 
-	include "Fronge"
-	include "FrongeEntry"
+	group "Engine"
+		include "Fronge"
+	
+	group "Engine"
+		include "FrongeEntry"
+
+	group ""
