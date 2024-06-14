@@ -22,21 +22,30 @@ namespace fro
 		static void info(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			if constexpr (*LOGGER_NAME == *"Fronge")
+				log("1;2;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			else
+				log("1;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename ...Arguments>
 		static void warn(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("1;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			if constexpr (*LOGGER_NAME == *"Fronge")
+				log("1;2;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			else
+				log("1;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename ...Arguments>
 		static void error(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			log("1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			if constexpr (*LOGGER_NAME == *"Fronge")
+				log("1;2;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+			else
+				log("1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 		}
 
 		template<typename Type>
