@@ -7,7 +7,7 @@
 #include <format>
 #include <iostream>
 
-#if defined FRO_BUILD_DLL
+#if defined FRO_ENGINE
 	#define LOGGER_NAME "Fronge"
 #else
 	#define LOGGER_NAME "App"

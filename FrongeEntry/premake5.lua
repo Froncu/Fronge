@@ -12,6 +12,8 @@ project "FrongeEntry"
 
 	dofile "../External/SDL2/premake5.lua"
 
+	defines "FRO_ENGINE"
+
 	links "SDL2main"
 
 project "*"

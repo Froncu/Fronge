@@ -12,7 +12,8 @@ project "Fronge"
 
 	dofile "../External/SDL2/premake5.lua"
 
-	defines "FRO_BUILD_DLL"
+	defines { "FRO_BUILD_DLL", "FRO_ENGINE" }
+
 	postbuildcommands {
 		"mkdir %[../Output/Include]",
 		"xcopy %[Source/*.h] %[../Output/Include] /S /Y",
