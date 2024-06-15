@@ -2,6 +2,8 @@
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
+#include <SDL.h>
+
 namespace fro
 {
 	bool Window::Implementation::sSDLVideoInitialized{};

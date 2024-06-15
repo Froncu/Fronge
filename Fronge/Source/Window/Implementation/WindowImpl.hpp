@@ -1,7 +1,7 @@
 #if not defined WINDOW_IMPL_HPP
 #define WINDOW_IMPL_HPP
 
-#include <SDL.h>
+struct SDL_Window;
 
 namespace fro
 {
