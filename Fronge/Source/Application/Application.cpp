@@ -1,8 +1,13 @@
 #include "Application.hpp"
 
+#include <SDL.h>
+
 #include <iostream>
 
-FRO_API void fro::Application::run()
+namespace fro
 {
-	std::cout << "Running!\n";
+	void Application::run()
+	{
+		while (true);
+	}
 }

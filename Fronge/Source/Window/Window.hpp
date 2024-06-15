@@ -15,8 +15,6 @@ namespace fro
 
 		FRO_API ~Window();
 
-		FRO_API void update();
-
 	private:
 		Window(Window const&) = delete;
 		Window(Window&) noexcept = delete;

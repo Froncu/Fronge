@@ -1,6 +1,9 @@
 #if not defined WINDOW_IMPL_HPP
 #define WINDOW_IMPL_HPP
 
+#include <functional>
+#include <memory>
+
 struct SDL_Window;
 
 namespace fro
@@ -21,7 +24,7 @@ namespace fro
 		Implementation& operator=(Implementation const&) = delete;
 		Implementation& operator=(Implementation&) noexcept = delete;
 
-		SDL_Window* mSDLWindow;
+		std::unique_ptr<SDL_Window, std::function<void(SDL_Window*)>> mSDLWindow;
 	};
 }
 

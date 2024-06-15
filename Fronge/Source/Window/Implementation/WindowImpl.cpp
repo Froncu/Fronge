@@ -22,15 +22,15 @@ namespace fro
 		}
 
 		Logger::info("creating a window...");
-		mSDLWindow = SDL_CreateWindow(windowData.title.c_str(),
+		mSDLWindow = { SDL_CreateWindow(windowData.title.c_str(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			windowData.width, windowData.height,
-			NULL);
+			NULL), SDL_DestroyWindow };
 
 		FRO_ASSERT(mSDLWindow, "failed to create window, {}", SDL_GetError());
 		Logger::info("created a {} window ({} x {})!", windowData.title, windowData.width, windowData.height);
 
-		SDL_SetWindowData(mSDLWindow, windowData.title.c_str(), static_cast<void*>(&windowData));
+		SDL_SetWindowData(mSDLWindow.get(), windowData.title.c_str(), static_cast<void*>(&windowData));
 	}
 
 	Window::Window(std::string title, int const width, int const height)
@@ -46,11 +46,5 @@ namespace fro
 
 	Window::~Window()
 	{
-	}
-
-	void Window::update()
-	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event));
 	}
 }
