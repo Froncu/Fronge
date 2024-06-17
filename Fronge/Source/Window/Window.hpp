@@ -10,20 +10,15 @@ namespace fro
 	class Window final
 	{
 	private:
-		struct Data final
-		{
-			std::string title;
-			int width;
-			int height;
-		};
-
-		Data mData;
+		std::string_view mTitle;
+		int mWidth;
+		int mHeight;
 
 		class Implementation;
 		std::unique_ptr<Implementation> mImplementation;
 
 	public:
-		FRO_API Window(std::string title = "Fronge", int const width = 640, int const height = 480);
+		FRO_API Window(std::string_view const title = "Fronge", int const width = 640, int const height = 480);
 
 		FRO_API ~Window();
 

@@ -10,7 +10,7 @@ namespace fro
 	class Window::Implementation final
 	{
 	public:
-		Implementation(Window::Data& windowData);
+		Implementation(std::string_view const windowTitle, int const width, int const height);
 
 		~Implementation() = default;
 

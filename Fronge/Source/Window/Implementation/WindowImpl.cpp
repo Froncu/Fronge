@@ -10,7 +10,7 @@ namespace fro
 {
 	bool Window::Implementation::sSDLVideoInitialized{};
 
-	Window::Implementation::Implementation(Data& windowData)
+	Window::Implementation::Implementation(std::string_view const windowTitle, int const width, int const height)
 	{
 		if (not sSDLVideoInitialized)
 		{
@@ -24,13 +24,13 @@ namespace fro
 		}
 
 		Logger::info("creating a window...");
-		mSDLWindow = { SDL_CreateWindow(windowData.title.c_str(),
+		mSDLWindow = { SDL_CreateWindow(windowTitle.data(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			windowData.width, windowData.height,
+			width, height,
 			NULL), SDL_DestroyWindow };
 
 		FRO_ASSERT(mSDLWindow.get(), "failed to create window, {}", SDL_GetError());
-		Logger::info("created a {} window ({} x {})!", windowData.title, windowData.width, windowData.height);
+		Logger::info("created a {} window ({} x {})!", windowTitle, width, height);
 	}
 
 	std::uint32_t Window::Implementation::getID() const
@@ -38,14 +38,11 @@ namespace fro
 		return SDL_GetWindowID(mSDLWindow.get());
 	}
 
-	Window::Window(std::string title, int const width, int const height)
-		: mData
-		{
-			.title{ std::move(title) },
-			.width{ width },
-			.height{ height }
-		}
-		, mImplementation{ std::make_unique<Implementation>(mData) }
+	Window::Window(std::string_view const title, int const width, int const height)
+		: mTitle{ title }
+		, mWidth{ width }
+		, mHeight{ height }
+		, mImplementation{ std::make_unique<Implementation>(mTitle, mWidth, mHeight) }
 		, mID{ mImplementation->getID() }
 	{
 	}
