@@ -2,18 +2,17 @@
 #define APPLICATION_HPP
 
 #include "Core.hpp"
-#include "Window/Window.hpp"
 
-#include <memory>
+#include <iostream>
 
 namespace fro
 {
 	class Application
 	{
 	public:
-		FRO_API virtual ~Application() = default;
+		virtual ~Application() = default;
 
-		FRO_API void run();
+		virtual void run() = 0;
 
 	protected:
 		Application() = default;
@@ -21,10 +20,7 @@ namespace fro
 		Application(Application&&) noexcept = default;
 
 		Application& operator=(Application const&) = default;
-		Application& operator=(Application&&) noexcept = default;
-
-	private:
-		Window mWindow{};
+		Application& operator=(Application&&) noexcept = default;;
 	};
 }
 
