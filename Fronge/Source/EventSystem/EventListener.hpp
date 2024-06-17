@@ -1,8 +1,6 @@
 #if not defined EVENT_LISTENER_HPP
 #define EVENT_LISTENER_HPP
 
-#include "Event.hpp"
-
 #include <concepts>
 #include <functional>
 #include <set>

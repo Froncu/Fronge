@@ -3,7 +3,6 @@
 
 #include "Core.hpp"
 #include "EventSystem/EventSystem.hpp"
-#include "EventSystem/Events/WindowCloseEvent.hpp"
 
 namespace fro
 {
@@ -12,7 +11,7 @@ namespace fro
 	public:
 		FRO_API static void pollEvents();
 
-		FRO_API static EventDispatcher<WindowCloseEvent&> mOnWindowClose;
+		FRO_API static EventDispatcher<std::uint32_t> mOnWindowClose;
 
 	private:
 		SystemEventManager() = delete;

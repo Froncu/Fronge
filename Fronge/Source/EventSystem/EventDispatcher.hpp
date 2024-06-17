@@ -1,8 +1,6 @@
 #if not defined EVENT_DISPATCHER_HPP
 #define EVENT_DISPATCHER_HPP
 
-#include "Event.hpp"
-
 #include <concepts>
 #include <functional>
 #include <set>

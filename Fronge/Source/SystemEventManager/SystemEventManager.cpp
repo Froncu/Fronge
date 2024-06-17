@@ -4,7 +4,7 @@
 
 namespace fro
 {
-	EventDispatcher<WindowCloseEvent&> SystemEventManager::mOnWindowClose{}; 
+	EventDispatcher<std::uint32_t> SystemEventManager::mOnWindowClose{};
 
 	void SystemEventManager::pollEvents()
 	{
@@ -12,9 +12,6 @@ namespace fro
 		while (SDL_PollEvent(&event))
 			if (event.type == SDL_WINDOWEVENT)
 				if (event.window.event == SDL_WINDOWEVENT_CLOSE)
-				{
-					WindowCloseEvent windowCloseEvent{ event.window.windowID };
-					mOnWindowClose.notify(windowCloseEvent);
-				}
+					mOnWindowClose.notify(event.window.windowID);
 	}
 }

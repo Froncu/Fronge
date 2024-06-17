@@ -1,7 +1,7 @@
 #if not defined WINDOW_EVENT_HPP
 #define WINDOW_EVENT_HPP
 
-#include "EventSystem/Event.hpp"
+#include "Event.hpp"
 
 namespace fro
 {
