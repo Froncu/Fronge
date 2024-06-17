@@ -34,6 +34,11 @@ namespace fro
 		Logger::info("created a {} window ({} x {})!", windowTitle, width, height);
 	}
 
+	std::string_view Window::Implementation::getTitle() const
+	{
+		return SDL_GetWindowTitle(mSDLWindow.get());
+	}
+
 	std::uint32_t Window::Implementation::getID() const
 	{
 		return SDL_GetWindowID(mSDLWindow.get());
@@ -41,7 +46,7 @@ namespace fro
 
 	Window::Window(std::string_view const title, int const width, int const height)
 		: mImplementation{ std::make_unique<Implementation>(title, width, height) }
-		, mTitle{ title }
+		, mTitle{ mImplementation->getTitle() }
 		, mWidth{ width }
 		, mHeight{ height }
 		, mID{ mImplementation->getID() }

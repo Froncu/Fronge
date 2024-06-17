@@ -14,6 +14,7 @@ namespace fro
 
 		~Implementation() = default;
 
+		std::string_view getTitle() const;
 		std::uint32_t getID() const;
 
 	private:
