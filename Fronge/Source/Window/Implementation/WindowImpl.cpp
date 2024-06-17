@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Logger.hpp"
+#include "SystemEventManager/SystemEventManager.hpp"
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
@@ -39,12 +40,13 @@ namespace fro
 	}
 
 	Window::Window(std::string_view const title, int const width, int const height)
-		: mTitle{ title }
+		: mImplementation{ std::make_unique<Implementation>(title, width, height) }
+		, mTitle{ title }
 		, mWidth{ width }
 		, mHeight{ height }
-		, mImplementation{ std::make_unique<Implementation>(mTitle, mWidth, mHeight) }
 		, mID{ mImplementation->getID() }
 	{
+		SystemEventManager::mWindowClose.addListener(mOnWindowClose);
 	}
 
 	Window::~Window()

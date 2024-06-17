@@ -2,14 +2,14 @@
 #define SYSTEM_EVENT_MANAGER_HPP
 
 #include "Core.hpp"
-#include "EventSystem/EventSystem.hpp"
+#include "Events/Events.hpp"
 
 namespace fro
 {
 	class SystemEventManager final
 	{
 	public:
-		FRO_API static EventDispatcher<std::uint32_t> mOnWindowClose;
+		FRO_API static Event<std::uint32_t> mWindowClose;
 
 		FRO_NODISCARD FRO_API static void pollEvents();
 
