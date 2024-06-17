@@ -1,10 +1,9 @@
 #if not defined WINDOW_HPP
 #define WINDOW_HPP
 
-#include "Core.hpp"
+#include "froch.hpp"
 
-#include <memory>
-#include <string>
+#include "Core.hpp"
 
 namespace fro
 {

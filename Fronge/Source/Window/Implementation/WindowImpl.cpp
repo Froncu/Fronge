@@ -1,3 +1,5 @@
+#include "froch.hpp"
+
 #include "Logger.hpp"
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"

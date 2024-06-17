@@ -1,8 +1,7 @@
 #if not defined WINDOW_IMPL_HPP
 #define WINDOW_IMPL_HPP
 
-#include <functional>
-#include <memory>
+#include "froch.hpp"
 
 struct SDL_Window;
 

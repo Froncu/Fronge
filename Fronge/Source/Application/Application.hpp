@@ -3,8 +3,6 @@
 
 #include "Core.hpp"
 
-#include <iostream>
-
 namespace fro
 {
 	class Application

@@ -1,9 +1,7 @@
 #if not defined EVENT_DISPATCHER_HPP
 #define EVENT_DISPATCHER_HPP
 
-#include <concepts>
-#include <functional>
-#include <set>
+#include "froch.hpp"
 
 // TODO: copy behaviour is disabled; what should happen when an EventDispatcher is copied?
 

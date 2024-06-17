@@ -8,6 +8,9 @@ project "Fronge"
 	targetdir ("../Output/" .. outputdir)
 	objdir ("../Intermediate/" .. outputdir)
 
+	pchheader "froch.hpp"
+	pchsource "Source/froch.cpp"
+
 	includedirs "Source"
 
 	dofile "../External/SDL2/premake5.lua"

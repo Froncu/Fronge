@@ -1,11 +1,9 @@
 #if not defined LOGGER_HPP
 #define LOGGER_HPP
 
-#include "Core.hpp"
+#include "froch.hpp"
 
-#include <chrono>
-#include <format>
-#include <iostream>
+#include "Core.hpp"
 
 #if defined FRO_ENGINE
 	#define LOGGER_NAME "FRONGE"
