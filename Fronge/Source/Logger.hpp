@@ -5,22 +5,24 @@
 
 #include "Core.hpp"
 
-#if defined FRO_ENGINE
-	#define LOGGER_NAME "FRONGE"
-#else
-	#define LOGGER_NAME "APP"
-#endif
-
 namespace fro
 {
 	class Logger final
 	{
 	public:
+#if defined FRO_DISTRIBUTE
+		static std::string_view constexpr LOGGER_NAME{ "" };
+#elif defined FRO_ENGINE
+		static std::string_view constexpr LOGGER_NAME{ "FRONGE" };
+#else
+		static std::string_view constexpr LOGGER_NAME{ "APP" };
+#endif
+
 		template<typename ...Arguments>
 		static void info(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"FRONGE")
+			if constexpr (LOGGER_NAME == "FRONGE")
 				log("1;2;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
@@ -30,7 +32,7 @@ namespace fro
 		static void warn(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"FRONGE")
+			if constexpr (LOGGER_NAME == "FRONGE")
 				log("1;2;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;33;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
@@ -40,7 +42,7 @@ namespace fro
 		static void error(std::format_string<Arguments...> const format,
 			Arguments&&... arguments)
 		{
-			if constexpr (*LOGGER_NAME == *"FRONGE")
+			if constexpr (LOGGER_NAME == "FRONGE")
 				log("1;2;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
 			else
 				log("1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
