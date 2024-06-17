@@ -1,6 +1,10 @@
 #if not defined CORE_HPP
 #define CORE_HPP
 
+#define FRO_NODISCARD [[nodiscard("returned value ignored!")]]
+
+
+
 #if defined FRO_BUILD_DLL
 	#define FRO_API _declspec(dllexport)
 #else

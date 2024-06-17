@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "SystemEventManager/SystemEventManager.hpp"
 
 #include <SDL.h>
 
@@ -8,6 +9,9 @@ namespace fro
 {
 	void Application::run()
 	{
-		while (true);
+		while (true)
+		{
+			SystemEventManager::pollEvents();
+		}
 	}
 }

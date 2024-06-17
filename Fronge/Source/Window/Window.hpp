@@ -10,18 +10,7 @@ namespace fro
 {
 	class Window final
 	{
-	public:
-		FRO_API Window(std::string title = "Fronge", int const width = 640, int const height = 480);
-
-		FRO_API ~Window();
-
 	private:
-		Window(Window const&) = delete;
-		Window(Window&) noexcept = delete;
-
-		Window& operator=(Window const&) = delete;
-		Window& operator=(Window&) noexcept = delete;
-
 		struct Data final
 		{
 			std::string title;
@@ -33,6 +22,20 @@ namespace fro
 
 		class Implementation;
 		std::unique_ptr<Implementation> mImplementation;
+
+	public:
+		FRO_API Window(std::string title = "Fronge", int const width = 640, int const height = 480);
+
+		FRO_API ~Window();
+
+		std::uint32_t const mID;
+
+	private:
+		Window(Window const&) = delete;
+		Window(Window&) noexcept = delete;
+
+		Window& operator=(Window const&) = delete;
+		Window& operator=(Window&) noexcept = delete;
 	};
 }
 

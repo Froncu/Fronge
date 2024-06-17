@@ -15,6 +15,8 @@ namespace fro
 
 		~Implementation() = default;
 
+		std::uint32_t getID() const;
+
 	private:
 		static bool sSDLVideoInitialized;
 

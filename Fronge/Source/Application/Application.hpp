@@ -1,7 +1,7 @@
 #if not defined APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "../Core.hpp"
+#include "Core.hpp"
 #include "Window/Window.hpp"
 
 #include <memory>

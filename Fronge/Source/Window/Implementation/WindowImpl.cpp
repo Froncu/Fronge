@@ -27,10 +27,13 @@ namespace fro
 			windowData.width, windowData.height,
 			NULL), SDL_DestroyWindow };
 
-		FRO_ASSERT(mSDLWindow, "failed to create window, {}", SDL_GetError());
+		FRO_ASSERT(mSDLWindow.get(), "failed to create window, {}", SDL_GetError());
 		Logger::info("created a {} window ({} x {})!", windowData.title, windowData.width, windowData.height);
+	}
 
-		SDL_SetWindowData(mSDLWindow.get(), windowData.title.c_str(), static_cast<void*>(&windowData));
+	std::uint32_t Window::Implementation::getID() const
+	{
+		return SDL_GetWindowID(mSDLWindow.get());
 	}
 
 	Window::Window(std::string title, int const width, int const height)
@@ -41,6 +44,7 @@ namespace fro
 			.height{ height }
 		}
 		, mImplementation{ std::make_unique<Implementation>(mData) }
+		, mID{ mImplementation->getID() }
 	{
 	}
 
