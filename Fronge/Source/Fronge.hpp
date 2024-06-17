@@ -2,6 +2,7 @@
 #define FRONGE_HPP
 
 #include "Application/Application.hpp"
+#include "EventSystem/EventSystem.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"
 #include "Core.hpp"
 #include "Logger.hpp"

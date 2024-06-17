@@ -2,6 +2,8 @@
 #define SYSTEM_EVENT_MANAGER_HPP
 
 #include "Core.hpp"
+#include "EventSystem/EventSystem.hpp"
+#include "EventSystem/Events/WindowCloseEvent.hpp"
 
 namespace fro
 {
@@ -9,6 +11,8 @@ namespace fro
 	{
 	public:
 		FRO_API static void pollEvents();
+
+		FRO_API static EventDispatcher<WindowCloseEvent&> mOnWindowClose;
 
 	private:
 		SystemEventManager() = delete;

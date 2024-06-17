@@ -4,16 +4,17 @@
 
 namespace fro
 {
-	void SDLToFrongeEvent(SDL_Event const)
-	{
-	}
+	EventDispatcher<WindowCloseEvent&> SystemEventManager::mOnWindowClose{}; 
 
 	void SystemEventManager::pollEvents()
 	{
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
-		{
-
-		}
+			if (event.type == SDL_WINDOWEVENT)
+				if (event.window.event == SDL_WINDOWEVENT_CLOSE)
+				{
+					WindowCloseEvent windowCloseEvent{ event.window.windowID };
+					mOnWindowClose.notify(windowCloseEvent);
+				}
 	}
 }

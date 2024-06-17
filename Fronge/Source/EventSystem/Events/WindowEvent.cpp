@@ -1,5 +1,7 @@
 #include "WindowEvent.hpp"
 
+#include <format>
+
 namespace fro
 {
 	WindowEvent::WindowEvent(std::string_view const name, Type const type, std::uint32_t const ID)

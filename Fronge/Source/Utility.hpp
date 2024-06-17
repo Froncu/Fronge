@@ -1,3 +1,6 @@
+#if not defined UTILITY_HPP
+#define UTILITY_HPP
+
 #include <cstdint>
 
 namespace fro
@@ -8,3 +11,5 @@ namespace fro
 		return 1 << bitToSet;
 	}
 }
+
+#endif
