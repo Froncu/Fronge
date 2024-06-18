@@ -12,6 +12,9 @@ end
 workspace "Fronge"
 	include "Premake/globalwks.lua"
 
+	group "External"
+		include "External/imgui"
+
 	group "Engine"
 		include "Fronge"
 	
