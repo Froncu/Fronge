@@ -14,6 +14,9 @@ project "Fronge"
 	includedirs "Source"
 
 	dofile "../External/SDL2/premake5.lua"
+	dofile "../External/SDL2_image/premake5.lua"
+	dofile "../External/SDL2_mixer/premake5.lua"
+	dofile "../External/SDL2_ttf/premake5.lua"
 
 	defines { "FRO_BUILD_DLL", "FRO_ENGINE" }
 
