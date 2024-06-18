@@ -51,7 +51,7 @@ namespace fro
 		, mHeight{ height }
 		, mID{ mImplementation->getID() }
 	{
-		GlobalEventManager::mWindowClose.addListener(mOnWindowClose);
+		GlobalEventManager::mWindowCloseEvent.addListener(mOnWindowCloseEvent);
 	}
 
 	Window::~Window()

@@ -1,11 +1,11 @@
 #if not defined WINDOW_EVENT_HPP
 #define WINDOW_EVENT_HPP
 
-#include "BaseEvent.hpp"
+#include "Event.hpp"
 
 namespace fro
 {
-	class WindowEvent : public BaseEvent
+	class WindowEvent : public Event
 	{
 	public:
 		std::uint32_t const mID;

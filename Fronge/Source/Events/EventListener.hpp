@@ -6,7 +6,7 @@
 namespace fro
 {
 	template<typename...>
-	class Event;
+	class EventDispatcher;
 
 	template<typename... Payload>
 	class EventListener final
@@ -14,7 +14,7 @@ namespace fro
 	public:
 		using CallbackType = std::function<void(Payload...)>;
 
-		friend Event<Payload...>;
+		friend EventDispatcher<Payload...>;
 
 	public:
 		EventListener(CallbackType onNotify)
@@ -25,17 +25,17 @@ namespace fro
 
 		EventListener(EventListener const& other)
 			: mOnNotify{ other.mOnNotify }
-			, mEvents{ other.mEvents }
+			, mDispatchers{ other.mDispatchers }
 		{
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 				dispatcher->mListeners.insert(this);
 		}
 
 		EventListener(EventListener&& other) noexcept
 			: mOnNotify{ std::move(other.mOnNotify) }
-			, mEvents{ std::move(other.mEvents) }
+			, mDispatchers{ std::move(other.mDispatchers) }
 		{
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 			{
 				dispatcher->mListeners.erase(&other);
 				dispatcher->mListeners.insert(this);
@@ -44,7 +44,7 @@ namespace fro
 
 		~EventListener()
 		{
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 				dispatcher->mListeners.erase(this);
 		}
 
@@ -55,12 +55,12 @@ namespace fro
 
 			mOnNotify = other.mOnNotify;
 
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 				dispatcher->mListeners.erase(this);
 
-			mEvents = other.mEvents;
+			mDispatchers = other.mDispatchers;
 
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 				dispatcher->mListeners.insert(this);
 
 			return *this;
@@ -73,12 +73,12 @@ namespace fro
 
 			mOnNotify = std::move(other.mOnNotify);
 
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 				dispatcher->mListeners.erase(this);
 
-			mEvents = std::move(other.mEvents);
+			mDispatchers = std::move(other.mDispatchers);
 
-			for (auto const dispatcher : mEvents)
+			for (auto const dispatcher : mDispatchers)
 			{
 				dispatcher->mListeners.erase(&other);
 				dispatcher->mListeners.insert(this);
@@ -89,7 +89,7 @@ namespace fro
 
 	private:
 		CallbackType mOnNotify;
-		std::set<Event<Payload...>*> mEvents{};
+		std::set<EventDispatcher<Payload...>*> mDispatchers{};
 	};
 }
 

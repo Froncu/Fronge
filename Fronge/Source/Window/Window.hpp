@@ -19,7 +19,7 @@ namespace fro
 
 		FRO_API ~Window();
 
-		Event<> mWindowClose{};
+		EventDispatcher<> mWindowCloseEvent{};
 
 		std::uint32_t const mID;
 
@@ -30,12 +30,12 @@ namespace fro
 		Window& operator=(Window const&) = delete;
 		Window& operator=(Window&) noexcept = delete;
 
-		EventListener<WindowCloseEvent&> mOnWindowClose
+		EventListener<WindowCloseEvent&> mOnWindowCloseEvent
 		{
 			[this](auto&& windowCloseEvent)
 			{
 				if (windowCloseEvent.mID == mID)
-					mWindowClose.notify();
+					mWindowCloseEvent.notify();
 			}
 		};
 

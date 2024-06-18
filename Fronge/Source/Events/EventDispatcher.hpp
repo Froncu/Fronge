@@ -1,9 +1,9 @@
-#if not defined EVENT_HPP
-#define EVENT_HPP
+#if not defined EVENT_DISPATCHER_HPP
+#define EVENT_DISPATCHER_HPP
 
 #include "froch.hpp"
 
-// TODO: copy behaviour is disabled; what should happen when an Event is copied?
+// TODO: copy behaviour is disabled; what should happen when an EventDispatcher is copied?
 
 namespace fro
 {
@@ -11,7 +11,7 @@ namespace fro
 	class EventListener;
 
 	template<typename... Payload>
-	class Event final
+	class EventDispatcher final
 	{
 	public:
 		using EventListenerType = EventListener<Payload...>;
@@ -19,48 +19,48 @@ namespace fro
 		friend EventListenerType;
 
 	public:
-		Event() = default;
-		Event(Event const&) = delete;
-		Event(Event&& other) noexcept
+		EventDispatcher() = default;
+		EventDispatcher(EventDispatcher const&) = delete;
+		EventDispatcher(EventDispatcher&& other) noexcept
 			: mListeners{ std::move(other.mListeners) }
 		{
 			for (auto const listener : mListeners)
 			{
-				listener->mEvents.erase(&other);
-				listener->mEvents.insert(this); 
+				listener->mDispatchers.erase(&other);
+				listener->mDispatchers.insert(this); 
 			}
 		}
 
-		~Event()
+		~EventDispatcher()
 		{
 			for (auto const listener : mListeners)
-				listener->mEvents.erase(this);
+				listener->mDispatchers.erase(this);
 		};
 
-		Event& operator=(Event const&) = delete;
-		Event& operator=(Event&& other) noexcept
+		EventDispatcher& operator=(EventDispatcher const&) = delete;
+		EventDispatcher& operator=(EventDispatcher&& other) noexcept
 		{
 			for (auto const listener : mListeners)
-				listener->mEvents.erase(this);
+				listener->mDispatchers.erase(this);
 
 			mListeners = std::move(other.mListeners);
 
 			for (auto const listener : mListeners)
 			{
-				listener->mEvents.erase(&other);
-				listener->mEvents.insert(this);
+				listener->mDispatchers.erase(&other);
+				listener->mDispatchers.insert(this);
 			}
 		}
 
 		void addListener(EventListenerType& eventListener)
 		{
-			eventListener.mEvents.insert(this);
+			eventListener.mDispatchers.insert(this);
 			mListeners.insert(&eventListener);
 		}
 
 		void removeListener(EventListenerType& eventListener)
 		{
-			eventListener.mEvents.erase(this);
+			eventListener.mDispatchers.erase(this);
 			mListeners.erase(&eventListener);
 		}
 

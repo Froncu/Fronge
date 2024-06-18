@@ -1,15 +1,15 @@
 #include "froch.hpp"
 
-#include "BaseEvent.hpp"
+#include "Event.hpp"
 
 namespace fro
 {
-	std::string BaseEvent::getLogString() const
+	std::string Event::getLogString() const
 	{
 		return mName.data();
 	}
 
-	bool BaseEvent::isInCategory(CategoryType const categoryType) const
+	bool Event::isInCategory(CategoryType const categoryType) const
 	{
 		return mCategoryTypes & static_cast<Bitfield>(categoryType);
 	}

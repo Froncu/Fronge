@@ -10,9 +10,9 @@ namespace fro
 	class GlobalEventManager final
 	{
 	public:
-		FRO_API static Event<BaseEvent&> mSystem;
-		FRO_API static Event<WindowEvent&> mWindow;
-		FRO_API static Event<WindowCloseEvent&> mWindowClose;
+		FRO_API static EventDispatcher<Event&> mSystemEvent;
+		FRO_API static EventDispatcher<WindowEvent&> mWindowEvent;
+		FRO_API static EventDispatcher<WindowCloseEvent&> mWindowCloseEvent;
 
 		FRO_NODISCARD FRO_API static void pollEvents();
 

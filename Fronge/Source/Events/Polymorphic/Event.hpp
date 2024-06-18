@@ -1,5 +1,5 @@
-#if not defined BASE_EVENT_HPP
-#define BASE_EVENT_HPP
+#if not defined EVENT_HPP
+#define EVENT_HPP
 
 #include "froch.hpp"
 
@@ -8,7 +8,7 @@
 
 namespace fro
 {
-	class BaseEvent
+	class Event
 	{
 	public:
 		enum class Type
@@ -32,7 +32,7 @@ namespace fro
 			MOUSE	= bitfield(5),
 		};
 
-		virtual ~BaseEvent() = default;
+		virtual ~Event() = default;
 
 		FRO_NODISCARD FRO_API virtual std::string getLogString() const;
 		FRO_NODISCARD FRO_API bool isInCategory(CategoryType const categoryFlag) const;
@@ -43,7 +43,7 @@ namespace fro
 
 	protected:
 		template<std::same_as<CategoryType> ...Bits>
-		BaseEvent(std::string_view const name, Type const type, Bits const... categoryTypes)
+		Event(std::string_view const name, Type const type, Bits const... categoryTypes)
 			: mName{ name }
 			, mType{ type }
 			, mCategoryTypes{ (static_cast<Bitfield>(categoryTypes) | ...) }
@@ -51,12 +51,12 @@ namespace fro
 			//Logger::info("{}!", getLogString());
 		}
 
-		BaseEvent(BaseEvent const&) = default;
-		BaseEvent(BaseEvent&&) noexcept = default;
+		Event(Event const&) = default;
+		Event(Event&&) noexcept = default;
 
 	private:
-		BaseEvent& operator=(BaseEvent const&) = delete;
-		BaseEvent& operator=(BaseEvent&&) noexcept = delete;
+		Event& operator=(Event const&) = delete;
+		Event& operator=(Event&&) noexcept = delete;
 	};
 }
 

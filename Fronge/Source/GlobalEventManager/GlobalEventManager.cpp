@@ -7,9 +7,9 @@
 
 namespace fro
 {
-	Event<BaseEvent&> GlobalEventManager::mSystem{};
-	Event<WindowEvent&> GlobalEventManager::mWindow{};
-	Event<WindowCloseEvent&> GlobalEventManager::mWindowClose{};
+	EventDispatcher<Event&> GlobalEventManager::mSystemEvent{};
+	EventDispatcher<WindowEvent&> GlobalEventManager::mWindowEvent{};
+	EventDispatcher<WindowCloseEvent&> GlobalEventManager::mWindowCloseEvent{};
 
 	void GlobalEventManager::pollEvents()
 	{
@@ -21,9 +21,9 @@ namespace fro
 					WindowCloseEvent windowCloseEvent{ event.window.windowID };
 					Logger::info("{}!", windowCloseEvent.getLogString());
 
-					mWindowClose.notify(windowCloseEvent);
-					mWindow.notify(windowCloseEvent);
-					mSystem.notify(windowCloseEvent);
+					mWindowCloseEvent.notify(windowCloseEvent);
+					mWindowEvent.notify(windowCloseEvent);
+					mSystemEvent.notify(windowCloseEvent);
 				}
 	}
 }
