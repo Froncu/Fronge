@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Events/Events.hpp"
+#include "Events/Polymorphic/WindowCloseEvent.hpp"
 
 namespace fro
 {
@@ -23,18 +24,17 @@ namespace fro
 		std::uint32_t const mID;
 
 	private:
-
 		Window(Window const&) = delete;
 		Window(Window&) noexcept = delete;
 
 		Window& operator=(Window const&) = delete;
 		Window& operator=(Window&) noexcept = delete;
 
-		EventListener<std::uint32_t> mOnWindowClose
+		EventListener<WindowCloseEvent&> mOnWindowClose
 		{
-			[this](auto&& windowID)
+			[this](auto&& windowCloseEvent)
 			{
-				if (windowID == mID)
+				if (windowCloseEvent.mID == mID)
 					mWindowClose.notify();
 			}
 		};

@@ -5,7 +5,7 @@
 #include "Core.hpp"
 #include "Events/Events.hpp"
 #include "Logger.hpp"
-#include "SystemEventManager/SystemEventManager.hpp"
+#include "GlobalEventManager/GlobalEventManager.hpp"
 #include "Utility.hpp"
 #include "Window/Window.hpp"
 

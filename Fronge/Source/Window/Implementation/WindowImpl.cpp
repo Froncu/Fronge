@@ -1,7 +1,7 @@
 #include "froch.hpp"
 
 #include "Logger.hpp"
-#include "SystemEventManager/SystemEventManager.hpp"
+#include "GlobalEventManager/GlobalEventManager.hpp"
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
@@ -51,7 +51,7 @@ namespace fro
 		, mHeight{ height }
 		, mID{ mImplementation->getID() }
 	{
-		SystemEventManager::mWindowClose.addListener(mOnWindowClose);
+		GlobalEventManager::mWindowClose.addListener(mOnWindowClose);
 	}
 
 	Window::~Window()
