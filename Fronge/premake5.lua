@@ -11,13 +11,12 @@ project "Fronge"
 	pchheader "froch.hpp"
 	pchsource "Source/froch.cpp"
 
-	includedirs { "Source", "../External/ImGui" }
+	includedirs "Source"
 
 	dofile "../External/SDL2/premake5.lua"
 
 	defines { "FRO_BUILD_DLL", "FRO_ENGINE" }
 
-	links "imgui"
 	postbuildcommands {
 		"mkdir %[../Output/Include]",
 		"xcopy %[Source/*.h] %[../Output/Include] /S /Y",
