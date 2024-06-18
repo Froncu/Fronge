@@ -36,6 +36,8 @@ namespace fro
 			{
 				if (windowCloseEvent.mID == mID)
 					mWindowCloseEvent.notify();
+
+				//windowCloseEvent.markHandeled();
 			}
 		};
 

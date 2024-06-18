@@ -22,7 +22,13 @@ namespace fro
 					Logger::info("{}!", windowCloseEvent.getLogString());
 
 					mWindowCloseEvent.notify(windowCloseEvent);
+					if (windowCloseEvent.isHandeled())
+						continue;
+
 					mWindowEvent.notify(windowCloseEvent);
+					if (windowCloseEvent.isHandeled())
+						continue;
+
 					mSystemEvent.notify(windowCloseEvent);
 				}
 	}

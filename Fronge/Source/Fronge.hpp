@@ -4,6 +4,7 @@
 #include "Application/Application.hpp"
 #include "Core.hpp"
 #include "Events/Events.hpp"
+#include "Layering/LayerStack.hpp"
 #include "Logger.hpp"
 #include "GlobalEventManager/GlobalEventManager.hpp"
 #include "Utility.hpp"

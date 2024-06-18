@@ -37,6 +37,9 @@ namespace fro
 		FRO_NODISCARD FRO_API virtual std::string getLogString() const;
 		FRO_NODISCARD FRO_API bool isInCategory(CategoryType const categoryFlag) const;
 
+		FRO_API void markHandeled();
+		FRO_NODISCARD FRO_API bool isHandeled() const;
+
 		std::string_view const mName;
 		Type const mType;
 		Bitfield const mCategoryTypes;
@@ -57,6 +60,8 @@ namespace fro
 	private:
 		Event& operator=(Event const&) = delete;
 		Event& operator=(Event&&) noexcept = delete;
+
+		bool mHandeled{};
 	};
 }
 
