@@ -64,10 +64,20 @@ namespace fro
 			mListeners.erase(&eventListener);
 		}
 
-		void notify(Payload... payload)
+		template<bool RETURN_WHEN_HANDELED = false>
+		bool notify(Payload... payload)
 		{
+			bool didAnyListenerHandle{};
+
 			for (auto const listener : mListeners)
-				listener->mOnNotify(std::forward<Payload>(payload)...);
+				if (listener->mOnNotify(std::forward<Payload>(payload)...))
+				{
+					didAnyListenerHandle = true;
+					if constexpr (RETURN_WHEN_HANDELED)
+						break;
+				}
+
+			return didAnyListenerHandle;
 		}
 
 	private:

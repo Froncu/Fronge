@@ -21,12 +21,10 @@ namespace fro
 					WindowCloseEvent windowCloseEvent{ event.window.windowID };
 					Logger::info("{}!", windowCloseEvent.getLogString());
 
-					mWindowCloseEvent.notify(windowCloseEvent);
-					if (windowCloseEvent.isHandeled())
+					if (mWindowCloseEvent.notify(windowCloseEvent))
 						continue;
 
-					mWindowEvent.notify(windowCloseEvent);
-					if (windowCloseEvent.isHandeled())
+					if (mWindowEvent.notify(windowCloseEvent))
 						continue;
 
 					mSystemEvent.notify(windowCloseEvent);

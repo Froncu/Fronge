@@ -16,7 +16,8 @@ namespace fro
 	{
 	}
 
-	void Layer::onEvent(Event&)
+	bool Layer::onEvent(Event&)
 	{
+		return false;
 	}
 }

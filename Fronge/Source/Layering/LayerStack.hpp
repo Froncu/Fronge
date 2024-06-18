@@ -34,9 +34,21 @@ namespace fro
 		FRO_API Layers::iterator end();
 		FRO_API Layers::const_iterator end() const;
 
-		FRO_API void onEvent(Event& event);
+		EventListener<Event&> mOnEvent
+		{
+			[this](auto&& event)
+			{
+				auto layer{ mLayers.end() };
+				while (layer not_eq mLayers.begin())
+				{
+					--layer;
+					if (layer->get()->onEvent(event))
+						return true;
+				}
 
-		EventListener<Event&> mOnEvent{ std::bind(&LayerStack::onEvent, this, std::placeholders::_1) };
+				return false;
+			}
+		};
 
 	private:
 		Layers mLayers{};

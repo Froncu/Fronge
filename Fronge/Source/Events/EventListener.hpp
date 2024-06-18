@@ -12,7 +12,7 @@ namespace fro
 	class EventListener final
 	{
 	public:
-		using CallbackType = std::function<void(Payload...)>;
+		using CallbackType = std::function<bool(Payload...)>;
 
 		friend EventDispatcher<Payload...>;
 
@@ -85,6 +85,11 @@ namespace fro
 			}
 
 			return *this;
+		}
+
+		bool operator()(Payload... payload) const
+		{
+			return mOnNotify(std::forward<Payload>(payload)...);
 		}
 
 	private:

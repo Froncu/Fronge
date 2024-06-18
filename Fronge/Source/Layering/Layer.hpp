@@ -11,10 +11,10 @@ namespace fro
 	public:
 		virtual ~Layer() = default;
 
-		FRO_API virtual void update();
 		FRO_API virtual void onAttach();
 		FRO_API virtual void onDetach();
-		FRO_API virtual void onEvent(Event& event);
+		FRO_API virtual void update();
+		FRO_API virtual bool onEvent(Event& event);
 
 	protected:
 		Layer() = default;

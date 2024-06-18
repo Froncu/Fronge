@@ -35,9 +35,10 @@ namespace fro
 			[this](auto&& windowCloseEvent)
 			{
 				if (windowCloseEvent.mID == mID)
-					mWindowCloseEvent.notify();
+					if (mWindowCloseEvent.notify())
+						return true;
 
-				//windowCloseEvent.markHandeled();
+				return false;
 			}
 		};
 

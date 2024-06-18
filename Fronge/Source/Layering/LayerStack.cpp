@@ -62,16 +62,4 @@ namespace fro
 	{
 		return mLayers.end();
 	}
-
-	void LayerStack::onEvent(Event& event)
-	{
-		auto layer{ mLayers.end() };
-		while (layer not_eq mLayers.begin())
-		{
-			--layer;
-			layer->get()->onEvent(event);
-			if (event.isHandeled())
-				break;
-		}
-	}
 }

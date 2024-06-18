@@ -13,14 +13,4 @@ namespace fro
 	{
 		return mCategoryTypes & static_cast<Bitfield>(categoryType);
 	}
-
-	void Event::markHandeled()
-	{
-		mHandeled = true;
-	}
-
-	bool Event::isHandeled() const
-	{
-		return mHandeled;
-	}
 }
