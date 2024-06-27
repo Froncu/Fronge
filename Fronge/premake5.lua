@@ -5,6 +5,10 @@ project "Fronge"
 	dofile "../Premake/defines.lua"
 
 	files "Source/**"
+	
+	-- Temporary
+	removefiles "Source/OldFronge/**"
+
 	targetdir ("../Output/" .. outputdir)
 	objdir ("../Intermediate/" .. outputdir)
 
