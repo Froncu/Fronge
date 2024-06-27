@@ -7,6 +7,12 @@
 
 namespace fro
 {
+	template<typename... Types>
+	struct VariantVisitor : public Types...
+	{
+		using Types::operator()...;
+	};
+
 	template<typename ResourceType>
 	using CustomUniquePointer = std::unique_ptr<ResourceType, std::function<void(ResourceType*)>>;
 

@@ -75,7 +75,7 @@ namespace fro
 
 		Logger& operator=(Logger const&) = delete;
 		Logger& operator=(Logger&&) noexcept = delete;
-
+ 
 		template<typename ...Arguments>
 		static void log([[maybe_unused]] std::string_view const escSequence, [[maybe_unused]] std::string_view const loggerName,
 			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
@@ -87,6 +87,7 @@ namespace fro
 					std::chrono::system_clock::now()).get_local_time()
 			};
 
+			std::lock_guard lock{ sOutputMutex };
 			std::cout
 				<< std::format("\033[{}m", escSequence)
 				<< std::format("[{:%H:%M:%S}] {}: ", std::chrono::floor<std::chrono::seconds>(now), loggerName)
@@ -94,9 +95,9 @@ namespace fro
 				<< "\033[0m\n";
 #endif
 		}
+		
+		FRO_API static std::mutex sOutputMutex;
 	};
 }
-
-#undef LOGGER_NAME
 
 #endif

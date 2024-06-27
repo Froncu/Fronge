@@ -4,8 +4,7 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "Events/Events.hpp"
-#include "Events/Polymorphic/WindowCloseEvent.hpp"
+#include "Events/WindowEvent.hpp"
 
 namespace fro
 {
@@ -34,7 +33,7 @@ namespace fro
 		{
 			[this](auto&& windowCloseEvent)
 			{
-				if (windowCloseEvent.mID == mID)
+				if (windowCloseEvent.ID == mID)
 					if (mWindowCloseEvent.notify())
 						return true;
 

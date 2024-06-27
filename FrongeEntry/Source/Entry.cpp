@@ -11,8 +11,15 @@ namespace fro
 
 int main(int, char**)
 {
-	fro::Logger::info("Welcome to Fronge! entering main...\n");
+	using namespace fro;
 
-	fro::createApplication()->run();
+	Logger::info("welcome to Fronge!\n");
+
+	Audio::initialize();
+
+	createApplication()->run();
+
+	Audio::shutDown();
+
 	return 0;
 }

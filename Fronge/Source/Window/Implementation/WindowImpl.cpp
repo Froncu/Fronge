@@ -1,6 +1,6 @@
 #include "froch.hpp"
 
-#include "Logger.hpp"
+#include "Logger/Logger.hpp"
 #include "GlobalEventManager/GlobalEventManager.hpp"
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"
@@ -15,23 +15,22 @@ namespace fro
 	{
 		if (not sSDLVideoInitialized)
 		{
-			Logger::info("initializing SDL_video...");
 			[[maybe_unused]] int const failed{ SDL_InitSubSystem(SDL_INIT_VIDEO) };
 
-			FRO_ASSERT(not failed, "failed to initialize SDL, {}", SDL_GetError());
+			FRO_ASSERT(not failed, "failed to initialize SDL_Video ({})", SDL_GetError());
 			Logger::info("SDL_video initialized!");
 
 			sSDLVideoInitialized = true;
 		}
 
-		Logger::info("creating a window...");
 		mSDLWindow = { SDL_CreateWindow(windowTitle.data(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			width, height,
 			NULL), SDL_DestroyWindow };
 
-		FRO_ASSERT(mSDLWindow.get(), "failed to create window, {}", SDL_GetError());
-		Logger::info("created a {} window ({} x {})!", windowTitle, width, height);
+		FRO_ASSERT(mSDLWindow.get(), "failed to create window ({})", SDL_GetError());
+		Logger::info("a {}x{} \"{}\" window with ID {} created!",
+			width, height, windowTitle, getID());
 	}
 
 	std::string_view Window::Implementation::getTitle() const

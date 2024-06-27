@@ -1,14 +1,12 @@
 #include "froch.hpp"
 
 #include "GlobalEventManager.hpp"
-#include "Logger.hpp"
+#include "Logger/Logger.hpp"
 
 #include <SDL.h>
 
 namespace fro
 {
-	EventDispatcher<Event&> GlobalEventManager::mSystemEvent{};
-	EventDispatcher<WindowEvent&> GlobalEventManager::mWindowEvent{};
 	EventDispatcher<WindowCloseEvent&> GlobalEventManager::mWindowCloseEvent{};
 
 	void GlobalEventManager::pollEvents()
@@ -21,13 +19,7 @@ namespace fro
 					WindowCloseEvent windowCloseEvent{ event.window.windowID };
 					Logger::info("{}!", windowCloseEvent.getLogString());
 
-					if (mWindowCloseEvent.notify(windowCloseEvent))
-						continue;
-
-					if (mWindowEvent.notify(windowCloseEvent))
-						continue;
-
-					mSystemEvent.notify(windowCloseEvent);
+					mWindowCloseEvent.notify(windowCloseEvent);
 				}
 	}
 }

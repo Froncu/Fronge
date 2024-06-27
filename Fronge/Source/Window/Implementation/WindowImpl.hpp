@@ -3,6 +3,8 @@
 
 #include "froch.hpp"
 
+#include "Utility.hpp"
+
 struct SDL_Window;
 
 namespace fro
@@ -26,7 +28,7 @@ namespace fro
 		Implementation& operator=(Implementation const&) = delete;
 		Implementation& operator=(Implementation&) noexcept = delete;
 
-		std::unique_ptr<SDL_Window, std::function<void(SDL_Window*)>> mSDLWindow;
+		CustomUniquePointer<SDL_Window> mSDLWindow;
 	};
 }
 
