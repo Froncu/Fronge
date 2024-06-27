@@ -81,16 +81,17 @@ namespace fro
 			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
 		{
 #if not defined FRO_DISTRIBUTE
-			auto const now
-			{
-				std::chrono::zoned_time(std::chrono::current_zone(),
-					std::chrono::system_clock::now()).get_local_time()
-			};
+			auto const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
+			std::tm localTime;
+			localtime_s(&localTime, &now);
+
+			std::ostringstream timeStream;
+			timeStream << std::put_time(&localTime, "%H:%M:%S");
 
 			std::lock_guard lock{ sOutputMutex };
 			std::cout
 				<< std::format("\033[{}m", escSequence)
-				<< std::format("[{:%H:%M:%S}] {}: ", std::chrono::floor<std::chrono::seconds>(now), loggerName)
+				<< std::format("[{}] {}: ", timeStream.str(), loggerName)
 				<< std::format(format, std::forward<Arguments>(arguments)...)
 				<< "\033[0m\n";
 #endif

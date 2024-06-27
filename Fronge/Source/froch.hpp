@@ -7,6 +7,7 @@
 #include <condition_variable>
 #include <concepts>
 #include <cstdint>
+#include <time.h>
 #include <deque>
 #include <format>
 #include <functional>
