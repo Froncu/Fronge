@@ -88,7 +88,7 @@ namespace fro
 			std::ostringstream timeStream;
 			timeStream << std::put_time(&localTime, "%H:%M:%S");
 
-			std::lock_guard lock{ sOutputMutex };
+			std::lock_guard const lock{ sOutputMutex };
 			std::cout
 				<< std::format("\033[{}m", escSequence)
 				<< std::format("[{}] {}: ", timeStream.str(), loggerName)
