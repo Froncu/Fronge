@@ -4,7 +4,7 @@ project "FrongeEntry"
 	dofile "../Premake/globalprj.lua"
 	dofile "../Premake/defines.lua"
 
-	defines "FRO_ENGINE"
+	--defines "FRO_ENGINE"
 
 	files "Source/**"
 	includedirs "../Fronge/Source"
