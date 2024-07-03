@@ -1,4 +1,6 @@
-includedirs "include"
+local relativepath = os.getcwd()
+
 libdirs "lib/%{cfg.platform}"
 links "SDL2_ttf"
-postbuildcommands ("xcopy %[../External/SDL2_ttf/lib/%{cfg.platform}/*.dll] %[%{cfg.buildtarget.directory}] /S /Y")
+includedirs "include"
+postbuildcommands ("xcopy %[" .. relativepath .. "/lib/%{cfg.platform}/*.dll] %[%{cfg.buildtarget.directory}] /S /Y")
