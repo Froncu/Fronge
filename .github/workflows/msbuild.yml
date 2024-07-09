@@ -5,7 +5,7 @@ on:
 - pull_request
 
 env:
-  solution-path: .
+  solution: Fronge.sln
 
 permissions:
   contents: read
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release, Distribute]
+        configuration: [Debug, Release Console, Release]
         platform: [x64, Win32]
 
     steps:
@@ -29,6 +29,10 @@ jobs:
     - name: Build solution with Premake
       run: ${{ github.workspace }}\build.bat
 
+    - name: Restore NuGet packages
+      working-directory: ${{ github.workspace }}
+      run: nuget restore ${{ env.solution }}
+
     - name: Build program
       working-directory: ${{ github.workspace }}
-      run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{ env.solution-path }}
+      run: msbuild /m /p:Configuration="${{ matrix.configuration }}" /p:Platform="${{ matrix.platform }}" ${{ env.solution }}
