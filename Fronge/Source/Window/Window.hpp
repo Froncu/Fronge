@@ -5,11 +5,14 @@
 
 #include "Core.hpp"
 #include "Events/WindowEvent.hpp"
+#include "Reference/Referencable.hpp"
 
 namespace fro
 {
-	class Window final
+	class Window final : public Referencable
 	{
+		friend class Renderer;
+
 		class Implementation;
 		std::unique_ptr<Implementation> mImplementation;
 
@@ -19,6 +22,7 @@ namespace fro
 		FRO_API ~Window();
 
 		EventDispatcher<> mWindowCloseEvent{};
+		EventDispatcher<> mWindowResizeEvent{};
 
 		std::uint32_t const mID;
 
@@ -36,6 +40,23 @@ namespace fro
 				if (windowCloseEvent.ID == mID)
 					if (mWindowCloseEvent.notify())
 						return true;
+
+				return false;
+			}
+		};
+
+		EventListener<WindowResizeEvent&> mOnWindowResizeEvent
+		{
+			[this](auto&& windowResizeEvent)
+			{
+				if (windowResizeEvent.ID == mID)
+				{
+					mWidth = windowResizeEvent.width;
+					mHeight = windowResizeEvent.height;
+
+					if (mWindowResizeEvent.notify())
+						return true;
+				}
 
 				return false;
 			}

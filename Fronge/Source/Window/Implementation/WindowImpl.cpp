@@ -26,11 +26,16 @@ namespace fro
 		mSDLWindow = { SDL_CreateWindow(windowTitle.data(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			width, height,
-			NULL), SDL_DestroyWindow };
+			SDL_WINDOW_RESIZABLE), SDL_DestroyWindow };
 
 		FRO_ASSERT(mSDLWindow.get(), "failed to create window ({})", SDL_GetError());
 		Logger::info("a {}x{} \"{}\" window with ID {} created!",
 			width, height, windowTitle, getID());
+	}
+
+	SDL_Window* Window::Implementation::get() const
+	{
+		return mSDLWindow.get();
 	}
 
 	std::string_view Window::Implementation::getTitle() const
@@ -51,6 +56,7 @@ namespace fro
 		, mID{ mImplementation->getID() }
 	{
 		GlobalEventManager::mWindowCloseEvent.addListener(mOnWindowCloseEvent);
+		GlobalEventManager::mWindowResizeEvent.addListener(mOnWindowResizeEvent);
 	}
 
 	Window::~Window()

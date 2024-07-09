@@ -16,6 +16,8 @@ namespace fro
 
 		~Implementation() = default;
 
+		SDL_Window* get() const;
+
 		std::string_view getTitle() const;
 		std::uint32_t getID() const;
 

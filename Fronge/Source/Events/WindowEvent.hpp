@@ -16,6 +16,16 @@ namespace fro
 		std::uint32_t const ID;
 	};
 
+	struct WindowResizeEvent final
+	{
+	public:
+		FRO_API FRO_NODISCARD std::string getLogString() const;
+
+		std::uint32_t const ID;
+		int const width;
+		int const height;
+	};
+
 	using WindowEvent = EventVariant<WindowCloseEvent>;
 }
 

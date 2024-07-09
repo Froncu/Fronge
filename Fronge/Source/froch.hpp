@@ -2,7 +2,9 @@
 #define FROCH_HPP
 
 #include <algorithm>
+#include <array>
 #include <chrono>
+#include <cmath>
 #include <compare>
 #include <condition_variable>
 #include <concepts>
@@ -14,10 +16,12 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <numbers>
 #include <set>
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
