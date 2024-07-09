@@ -29,10 +29,6 @@ jobs:
     - name: Build solution with Premake
       run: ${{ github.workspace }}\build.bat
 
-    - name: Restore NuGet packages
-      working-directory: ${{ github.workspace }}
-      run: nuget restore ${{ env.solution }}
-
     - name: Build program
       working-directory: ${{ github.workspace }}
       run: msbuild /m /p:Configuration="${{ matrix.configuration }}" /p:Platform="${{ matrix.platform }}" ${{ env.solution }}

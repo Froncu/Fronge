@@ -82,10 +82,10 @@ namespace fro
 			auto const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
 			std::tm localTime;
 			localtime_s(&localTime, &now);
-
+			
 			std::ostringstream timeStream;
 			timeStream << std::put_time(&localTime, "%H:%M:%S");
-
+			
 			std::lock_guard const lock{ sOutputMutex };
 			std::cout
 				<< std::format("\033[{}m", escSequence)

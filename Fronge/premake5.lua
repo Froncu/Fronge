@@ -29,5 +29,6 @@ project "Fronge"
 	dofile "../External/SDL2_image/premake5.lua"
 	dofile "../External/SDL2_mixer/premake5.lua"
 	dofile "../External/SDL2_ttf/premake5.lua"
+	dofile "../External/vld/premake5.lua"
 
 project "*"
