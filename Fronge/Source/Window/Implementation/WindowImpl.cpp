@@ -9,20 +9,8 @@
 
 namespace fro
 {
-	bool Window::Implementation::sSDLVideoInitialized{};
-
 	Window::Implementation::Implementation(std::string_view const windowTitle, int const width, int const height)
 	{
-		if (not sSDLVideoInitialized)
-		{
-			[[maybe_unused]] int const failed{ SDL_InitSubSystem(SDL_INIT_VIDEO) };
-
-			FRO_ASSERT(not failed, "failed to initialize SDL_Video ({})", SDL_GetError());
-			Logger::info("SDL_video initialized!");
-
-			sSDLVideoInitialized = true;
-		}
-
 		mSDLWindow = { SDL_CreateWindow(windowTitle.data(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			width, height,
@@ -33,7 +21,7 @@ namespace fro
 			width, height, windowTitle, getID());
 	}
 
-	SDL_Window* Window::Implementation::get() const
+	SDL_Window* Window::Implementation::getSDLWindow() const
 	{
 		return mSDLWindow.get();
 	}
@@ -61,5 +49,20 @@ namespace fro
 
 	Window::~Window()
 	{
+	}
+
+	Window::Implementation& Window::getImplementation() const
+	{
+		return *mImplementation;
+	}
+
+	int Window::getWidth() const
+	{
+		return mWidth;
+	}
+
+	int Window::getHeight() const
+	{
+		return mHeight;
 	}
 }

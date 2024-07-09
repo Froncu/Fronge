@@ -11,6 +11,7 @@
 #include "Reference/Reference.hpp"
 #include "Renderer/Renderer.hpp"
 #include "ResourceManager/ResourceManager.hpp"
+#include "Resources/Texture.hpp"
 #include "Utility.hpp"
 #include "Window/Window.hpp"
 

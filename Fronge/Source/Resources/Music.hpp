@@ -12,8 +12,6 @@ namespace fro
 	{
 		class Implementation;
 
-		friend class Audio;
-
 	public:
 		struct Descriptor final
 		{
@@ -28,6 +26,8 @@ namespace fro
 
 		FRO_API Music& operator=(Music const& other);
 		FRO_API Music& operator=(Music&& other) noexcept;
+
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
 		std::string_view getFilePath() const;
 

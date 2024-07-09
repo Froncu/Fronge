@@ -10,15 +10,15 @@ namespace fro
 	class Renderer::Implementation final
 	{
 	public:
-		Implementation(Window const& window,
+		FRO_API Implementation(Window const& window,
 			Vector2<int> const viewPortSize,
 			ScalingMode const scalingMode);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_Renderer* get() const;
+		FRO_API FRO_NODISCARD SDL_Renderer* getSDLRenderer() const;
 
-		void updateViewPort(Window const& window,
+		FRO_API void updateViewPort(Window const& window,
 			Vector2<int> const viewPortSize,
 			ScalingMode const scalingMode) const;
 

@@ -46,12 +46,12 @@ namespace fro
 		}
 
 		Reference(Type* const pReferencable)
-		: BaseReference(pReferencable)
+			: BaseReference(pReferencable)
 		{
 		}
 
 		Reference(Type& referencable)
-		: BaseReference(referencable)
+			: BaseReference(referencable)
 		{
 		}
 
@@ -68,12 +68,12 @@ namespace fro
 		}
 
 		Reference(Reference const& other)
-		: BaseReference(other)
+			: BaseReference(other)
 		{
 		}
 
 		Reference(Reference&& other) noexcept
-		: BaseReference(std::move(other))
+			: BaseReference(std::move(other))
 		{
 		}
 

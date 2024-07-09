@@ -1,11 +1,12 @@
 filter "configurations:Debug"
 	defines "FRO_DEBUG"
+	defines "FRO_CONSOLE"
 
-filter "configurations:Release"
+filter "configurations:Release Console or configurations:Release"
 	defines "FRO_RELEASE"
 
-filter "configurations:Distribute"
-	defines "FRO_DISTRIBUTE"
+filter "configurations:Release Console" 
+	defines "FRO_CONSOLE"
 
 filter "platforms:x64"
 	defines "FRO_X64"

@@ -19,67 +19,10 @@ namespace fro
 
 	bool Audio::Implementation::sRunThread{ true };
 
-	void Audio::Implementation::initialize()
+	void Audio::Implementation::stopThread()
 	{
-		[[maybe_unused]] int const result{ Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) };
-		FRO_ASSERT(result == 0, "failed to open audio device ({})", Mix_GetError());
-	}
-
-	void Audio::Implementation::shutDown()
-	{
-		Mix_CloseAudio();
 		sRunThread = false;
 		sConditionVariable.notify_one();
-	}
-
-	void Audio::Implementation::playMusic(Music::Descriptor music)
-	{
-		pushEvent<LoadPlayMusicEvent>(std::move(music));
-	}
-
-	void Audio::Implementation::playMusic(Reference<Music> const music)
-	{
-		pushEvent<PlayMusicEvent>(music);
-	}
-
-	void Audio::Implementation::pauseMusic()
-	{
-		pushEvent<PauseMusicEvent>();
-	}
-
-	void Audio::Implementation::resumeMusic()
-	{
-		pushEvent<ResumeMusicEvent>();
-	}
-
-	void Audio::Implementation::stopMusic()
-	{
-		pushEvent<StopMusicEvent>();
-	}
-
-	void Audio::Implementation::playSoundEffect(SoundEffect::Descriptor soundEffect, int const channel)
-	{
-		pushEvent<LoadPlaySoundEffectEvent>(std::move(soundEffect), channel);
-	}
-
-	void Audio::Implementation::playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel)
-	{
-		pushEvent<PlaySoundEffectEvent>(soundEffect, channel);
-	}
-
-	void Audio::Implementation::pauseSoundEffect(int const channel)
-	{
-		pushEvent<PauseSoundEffectEvent>(channel);
-	}
-
-	void Audio::Implementation::resumeSoundEffect(int const channel)
-	{
-		pushEvent<ResumeSoundEffectEvent>(channel);
-	}
-
-	void Audio::Implementation::stopSoundEffect(int const channel)
-	{
-		pushEvent<StopSoundEffectEvent>(channel);
 	}
 
 	void Audio::Implementation::startPollingEvents()
@@ -112,7 +55,7 @@ namespace fro
 
 					sLoadedMusic = std::make_unique<Music>(std::move(event.descriptor));
 
-					if (Mix_PlayMusic(sLoadedMusic->mImplementation->get(), -1) == 0)
+					if (Mix_PlayMusic(sLoadedMusic->getImplementation().getSDLMusic(), -1) == 0)
 					{
 						sMusic = sLoadedMusic.get();
 						Logger::info("{} processed!", eventLogString);
@@ -134,7 +77,7 @@ namespace fro
 						return;
 					}
 
-					if (Mix_PlayMusic(event.music->mImplementation->get(), -1) == 0)
+					if (Mix_PlayMusic(event.music->getImplementation().getSDLMusic(), -1) == 0)
 					{
 						sMusic = event.music;
 						sLoadedMusic.reset();
@@ -170,7 +113,7 @@ namespace fro
 					int channel{ event.channel };
 					auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.descriptor)) };
 
-					channel = Mix_PlayChannel(channel, loadedSoundEffect->mImplementation->get(), 1);
+					channel = Mix_PlayChannel(channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 1);
 					if (channel not_eq -1)
 					{
 						sSoundEffects[channel] = loadedSoundEffect.get();
@@ -197,7 +140,7 @@ namespace fro
 					}
 
 					int& channel{ soundEffect->mChannel };
-					channel = Mix_PlayChannel(event.channel, soundEffect->mImplementation->get(), 1);
+					channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 1);
 					if (channel not_eq -1)
 					{
 						sSoundEffects[channel] = soundEffect;
@@ -239,39 +182,43 @@ namespace fro
 
 	void Audio::initialize()
 	{
-		Implementation::initialize();
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
+			FRO_EXCEPTION("failed to open audio device ({})", Mix_GetError());
+
 		fro::Logger::info("Audio initialized!");
 	}
 
 	void Audio::shutDown()
 	{
-		Implementation::shutDown();
+		Mix_CloseAudio();
+		Implementation::stopThread();
+
 		fro::Logger::info("Audio shut down!");
 	}
 
 	void Audio::playMusic(Music::Descriptor music)
 	{
-		Implementation::playMusic(music);
+		Implementation::pushEvent<LoadPlayMusicEvent>(std::move(music));
 	}
 
 	void Audio::playMusic(Reference<Music> const music)
 	{
-		Implementation::playMusic(music);
+		Implementation::pushEvent<PlayMusicEvent>(music);;
 	}
 
 	void Audio::pauseMusic()
 	{
-		Implementation::pauseMusic();
+		Implementation::pushEvent<PauseMusicEvent>();
 	}
 
 	void Audio::resumeMusic()
 	{
-		Implementation::resumeMusic();
+		Implementation::pushEvent<ResumeMusicEvent>();
 	}
 
 	void Audio::stopMusic()
 	{
-		Implementation::stopMusic();
+		Implementation::pushEvent<StopMusicEvent>();
 	}
 
 	void Audio::playSoundEffect(SoundEffect::Descriptor soundEffect, int const channel)
@@ -279,7 +226,7 @@ namespace fro
 		FRO_ASSERT(channel >= -1 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		Implementation::playSoundEffect(soundEffect, channel);
+		Implementation::pushEvent<LoadPlaySoundEffectEvent>(std::move(soundEffect), channel);
 	}
 
 	void Audio::playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel)
@@ -287,7 +234,7 @@ namespace fro
 		FRO_ASSERT(channel >= -1 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		Implementation::playSoundEffect(soundEffect, channel);
+		Implementation::pushEvent<PlaySoundEffectEvent>(soundEffect, channel);
 	}
 
 	void Audio::pauseSoundEffect(int const channel)
@@ -295,7 +242,7 @@ namespace fro
 		FRO_ASSERT(channel >= -1 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		Implementation::pauseSoundEffect(channel);
+		Implementation::pushEvent<PauseSoundEffectEvent>(channel);
 	}
 
 	void Audio::resumeSoundEffect(int const channel)
@@ -303,7 +250,7 @@ namespace fro
 		FRO_ASSERT(channel >= -1 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		Implementation::resumeSoundEffect(channel);
+		Implementation::pushEvent<ResumeSoundEffectEvent>(channel);
 	}
 
 	void Audio::stopSoundEffect(int const channel)
@@ -311,7 +258,7 @@ namespace fro
 		FRO_ASSERT(channel >= -1 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		Implementation::stopSoundEffect(channel);
+		Implementation::pushEvent<StopSoundEffectEvent>(channel);
 	}
 
 	Reference<Music> Audio::getMixedMusic()

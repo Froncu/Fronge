@@ -1,4 +1,4 @@
-configurations { "Debug", "Release", "Distribute" }
+configurations { "Debug", "Release Console",  "Release" }
 platforms { "x64", "x86" }
 
 filter "platforms:x64"

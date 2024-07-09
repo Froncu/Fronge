@@ -12,18 +12,16 @@ namespace fro
 	class Window::Implementation final
 	{
 	public:
-		Implementation(std::string_view const windowTitle, int const width, int const height);
+		FRO_API Implementation(std::string_view const windowTitle, int const width, int const height);
 
 		~Implementation() = default;
 
-		SDL_Window* get() const;
+		FRO_API FRO_NODISCARD SDL_Window* getSDLWindow() const;
 
-		std::string_view getTitle() const;
-		std::uint32_t getID() const;
+		FRO_API FRO_NODISCARD std::string_view getTitle() const;
+		FRO_API FRO_NODISCARD std::uint32_t getID() const;
 
 	private:
-		static bool sSDLVideoInitialized;
-
 		Implementation(Implementation const&) = delete;
 		Implementation(Implementation&) noexcept = delete;
 

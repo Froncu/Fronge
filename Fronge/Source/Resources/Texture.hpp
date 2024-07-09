@@ -8,9 +8,10 @@
 
 namespace fro
 {
+	class Renderer;
+
 	class Texture final : public Referencable
 	{
-		friend class Renderer;
 		class Implementation;
 
 	public:
@@ -28,6 +29,8 @@ namespace fro
 
 		FRO_API Texture& operator=(Texture const& other);
 		FRO_API Texture& operator=(Texture&& other) noexcept;
+
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
 		FRO_API FRO_NODISCARD std::string_view getFilePath() const;
 		FRO_API FRO_NODISCARD int getWidth() const;

@@ -8,15 +8,12 @@ outputdir = "%{cfg.buildcfg} (%{cfg.platform})"
 
 filter "configurations:Debug"
 	symbols "full"
+	optimize "off"
 	runtime "debug"
 
-filter "configurations:Release"
-	optimize "full"
-	runtime "release"
-
-filter "configurations:Distribute"
-	optimize "full"
+filter "configurations:Release Console or configurations:Release"
 	symbols "off"
+	optimize "full"
 	runtime "release"
 
 filter {}

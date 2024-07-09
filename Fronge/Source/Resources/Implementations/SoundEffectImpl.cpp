@@ -9,17 +9,17 @@
 namespace fro
 {
 	SoundEffect::Implementation::Implementation(std::string_view const filePath)
-		: mData{ Mix_LoadWAV(filePath.data()), Mix_FreeChunk }
+		: mSDLSoundEffect{ Mix_LoadWAV(filePath.data()), Mix_FreeChunk }
 	{
-		if (not mData.get())
+		if (not mSDLSoundEffect.get())
 			FRO_EXCEPTION("failed to load sound effect ({})", Mix_GetError());
 
 		Logger::info("{} loaded as sound effect!", filePath);
 	}
 
-	Mix_Chunk* SoundEffect::Implementation::get() const
+	Mix_Chunk* SoundEffect::Implementation::getSDLSoundEffect() const
 	{
-		return mData.get();
+		return mSDLSoundEffect.get();
 	}
 
 	SoundEffect::SoundEffect(Descriptor descriptor)
@@ -72,6 +72,11 @@ namespace fro
 		mImplementation = std::move(other.mImplementation);
 
 		return *this;
+	}
+
+	SoundEffect::Implementation& SoundEffect::getImplementation() const
+	{
+		return *mImplementation;
 	}
 
 	int SoundEffect::getChannel() const

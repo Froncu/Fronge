@@ -13,7 +13,7 @@ namespace fro
 	Renderer::Implementation::Implementation(Window const& window,
 		Vector2<int> const viewPortSize,
 		ScalingMode const scalingMode)
-		: mSDLRenderer{ SDL_CreateRenderer(window.mImplementation->get(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer }
+		: mSDLRenderer{ SDL_CreateRenderer(window.getImplementation().getSDLWindow(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer }
 	{
 		if (not mSDLRenderer.get())
 			FRO_EXCEPTION("failed to create SDL_Renderer ({})", SDL_GetError());
@@ -21,17 +21,86 @@ namespace fro
 		updateViewPort(window, viewPortSize, scalingMode);
 	}
 
-	SDL_Renderer* Renderer::Implementation::get() const
+	SDL_Renderer* Renderer::Implementation::getSDLRenderer() const
 	{
 		return mSDLRenderer.get();
 	}
 
-	void Renderer::clear(float const red, float const green, float const blue) const
+	void Renderer::Implementation::updateViewPort(Window const& window,
+		Vector2<int> const viewPortSize,
+		ScalingMode const scalingMode) const
 	{
-		SDL_Renderer* const SDLRenderer{ mImplementation->get() };
+		int const& windowWidth{ window.getWidth() };
+		int const& windowHeight{ window.getHeight() };
+
+		if (scalingMode not_eq ScalingMode::aspectRatio)
+		{
+			SDL_Rect viewPort;
+			viewPort.w = viewPortSize.x;
+			viewPort.h = viewPortSize.y;
+
+			switch (scalingMode)
+			{
+			case ScalingMode::none:
+				viewPort.x = windowWidth / 2 - viewPortSize.x / 2;
+				viewPort.y = windowHeight / 2 - viewPortSize.y / 2;
+				SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
+				break;
+
+			case ScalingMode::fill:
+				viewPort.x = 0;
+				viewPort.y = 0;
+				SDL_RenderSetScale(mSDLRenderer.get(),
+					static_cast<float>(windowWidth) / viewPortSize.x,
+					static_cast<float>(windowHeight) / viewPortSize.y);
+				break;
+			}
+
+			SDL_RenderSetViewport(mSDLRenderer.get(), &viewPort);
+		}
+		else
+			SDL_RenderSetLogicalSize(mSDLRenderer.get(), viewPortSize.x, viewPortSize.y);
+	}
+
+	Renderer::Renderer(Reference<Window> const window,
+		Vector2<int> const viewPortSize,
+		ScalingMode const scalingMode)
+		: mOnWindowResizeEvent
+		{
+			[this]()
+			{
+				mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
+				return false;
+			}
+		}
+		, mWindow{ window }
+		, mViewportSize{ viewPortSize.x ? viewPortSize.x : mWindow->getWidth(), viewPortSize.y ? viewPortSize.y : mWindow->getHeight() }
+		, mScalingMode{ scalingMode }
+		, mImplementation{ std::make_unique<Implementation>(*mWindow, mViewportSize, mScalingMode) }
+	{
+		window->mWindowResizeEvent.addListener(mOnWindowResizeEvent);
+		Logger::info("a {}x{} renderer for window with ID {} created!", mViewportSize.x, mViewportSize.y, mWindow->mID);
+	}
+
+	Renderer::~Renderer()
+	{
+	}
+
+	Renderer::Implementation& Renderer::getImplementation() const
+	{
+		return *mImplementation;
+	}
+
+	void Renderer::clear(float red, float green, float blue) const
+	{
+		SDL_Renderer* const SDLRenderer{ mImplementation->getSDLRenderer() };
 
 		SDL_Color previousColor;
 		SDL_GetRenderDrawColor(SDLRenderer, &previousColor.r, &previousColor.g, &previousColor.b, &previousColor.a);
+
+		red = std::clamp(red, 0.0f, 1.0f);
+		green = std::clamp(green, 0.0f, 1.0f);
+		blue = std::clamp(blue, 0.0f, 1.0f);
 
 		Uint8 constexpr maxColorValue{ 255 };
 		SDL_SetRenderDrawColor(SDLRenderer,
@@ -47,7 +116,7 @@ namespace fro
 
 	void Renderer::present() const
 	{
-		SDL_RenderPresent(mImplementation->get());
+		SDL_RenderPresent(mImplementation->getSDLRenderer());
 	}
 
 	void Renderer::renderTexture(Texture const& texture,
@@ -118,7 +187,7 @@ namespace fro
 			2, 3, 0
 		};
 
-		SDL_RenderGeometry(mImplementation->get(), texture.mImplementation->get(),
+		SDL_RenderGeometry(mImplementation->getSDLRenderer(), texture.getImplementation().getSDLTexture(),
 			vVertices.data(), static_cast<int>(vVertices.size()),
 			vIndices.data(), static_cast<int>(vIndices.size()));
 	}
@@ -141,66 +210,5 @@ namespace fro
 		mScalingMode = scalingMode;
 
 		mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
-	}
-
-	void Renderer::Implementation::updateViewPort(Window const& window,
-		Vector2<int> const viewPortSize,
-		ScalingMode const scalingMode) const
-	{
-		int const& windowWidth{ window.mWidth };
-		int const& windowHeight{ window.mHeight };
-
-		if (scalingMode not_eq ScalingMode::aspectRatio)
-		{
-			SDL_Rect viewPort;
-			viewPort.w = viewPortSize.x;
-			viewPort.h = viewPortSize.y;
-
-			switch (scalingMode)
-			{
-			case ScalingMode::none:
-				viewPort.x = windowWidth / 2 - viewPortSize.x / 2;
-				viewPort.y = windowHeight / 2 - viewPortSize.y / 2;
-				SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
-				break;
-
-			case ScalingMode::fill:
-				viewPort.x = 0;
-				viewPort.y = 0;
-				SDL_RenderSetScale(mSDLRenderer.get(),
-					static_cast<float>(windowWidth) / viewPortSize.x,
-					static_cast<float>(windowHeight) / viewPortSize.y);
-				break;
-			}
-
-			SDL_RenderSetViewport(mSDLRenderer.get(), &viewPort);
-		}
-		else
-			SDL_RenderSetLogicalSize(mSDLRenderer.get(), viewPortSize.x, viewPortSize.y);
-	}
-
-	Renderer::Renderer(Reference<Window> const window,
-		Vector2<int> const viewPortSize,
-		ScalingMode const scalingMode)
-		: mOnWindowResizeEvent
-		{
-			[this]()
-			{
-				mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
-				return false;
-			}
-		}
-		, mWindow{ window }
-		, mViewportSize{ viewPortSize.x ? viewPortSize.x : mWindow->mWidth, viewPortSize.y ? viewPortSize.y : mWindow->mHeight }
-		, mScalingMode{ scalingMode }
-		, mImplementation{ std::make_unique<Implementation>(*mWindow, mViewportSize, mScalingMode) }
-	{
-
-		window->mWindowResizeEvent.addListener(mOnWindowResizeEvent);
-		Logger::info("a {}x{} renderer for window with ID {} created!", mViewportSize.x, mViewportSize.y, mWindow->mID);
-	}
-
-	Renderer::~Renderer()
-	{
 	}
 }

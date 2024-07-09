@@ -19,8 +19,11 @@ project "Fronge"
 
 	postbuildcommands {
 		"mkdir %[../Output/Include]",
+		"mkdir %[../Output/Include/External]",
 		"xcopy %[Source/*.h] %[../Output/Include] /S /Y",
-		"xcopy %[Source/*.hpp] %[../Output/Include] /S /Y" }
+		"xcopy %[Source/*.hpp] %[../Output/Include] /S /Y",
+		"xcopy %[../External/*.h] %[../Output/Include/External] /S /Y",
+		"xcopy %[../External/*.hpp] %[../Output/Include/External] /S /Y" }
 
 	dofile "../External/SDL2/premake5.lua"
 	dofile "../External/SDL2_image/premake5.lua"

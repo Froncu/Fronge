@@ -13,12 +13,11 @@ namespace fro
 	class Texture::Implementation final
 	{
 	public:
-		Implementation() = default;
 		FRO_API Implementation(Descriptor const& descriptor);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_Texture* get() const;
+		FRO_API FRO_NODISCARD SDL_Texture* getSDLTexture() const;
 
 	private:
 		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(Descriptor const& descritptor);
@@ -29,7 +28,7 @@ namespace fro
 		Implementation& operator=(Implementation const&) = delete;
 		Implementation& operator=(Implementation&&) noexcept = delete;
 
-		CustomUniquePointer<SDL_Texture> mData;
+		CustomUniquePointer<SDL_Texture> mSDLTexture;
 	};
 }
 

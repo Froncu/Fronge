@@ -13,11 +13,11 @@ namespace fro
 	class Music::Implementation final
 	{
 	public:
-		Implementation(std::string_view const filePath);
+		FRO_API Implementation(std::string_view const filePath);
 
 		~Implementation() = default;
 
-		Mix_Music* get() const;
+		FRO_API FRO_NODISCARD Mix_Music* getSDLMusic() const;
 
 	private:
 		Implementation(Implementation const&) = delete;
@@ -26,7 +26,7 @@ namespace fro
 		Implementation& operator=(Implementation const&) = delete;
 		Implementation& operator=(Implementation&&) noexcept = delete;
 
-		CustomUniquePointer<Mix_Music> mData;
+		CustomUniquePointer<Mix_Music> mSDLMusic;
 	};
 }
 

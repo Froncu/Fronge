@@ -9,13 +9,13 @@
 namespace fro
 {
 	Texture::Implementation::Implementation(Descriptor const& descriptor)
-		: mData{ createTexture(descriptor) }
+		: mSDLTexture{ createTexture(descriptor) }
 	{
 	}
 
-	SDL_Texture* Texture::Implementation::get() const
+	SDL_Texture* Texture::Implementation::getSDLTexture() const
 	{
-		return mData.get();
+		return mSDLTexture.get();
 	}
 
 	CustomUniquePointer<SDL_Texture> Texture::Implementation::createTexture(Descriptor const& descritptor)
@@ -27,7 +27,7 @@ namespace fro
 			FRO_EXCEPTION("failed to load {} as SDL_Surface ({})", descritptor.filePath, IMG_GetError());
 
 		CustomUniquePointer<SDL_Texture> texture{
-			SDL_CreateTextureFromSurface(descritptor.renderer->mImplementation->get(), surface.get()), SDL_DestroyTexture };
+			SDL_CreateTextureFromSurface(descritptor.renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
 
 		if (not texture.get())
 			FRO_EXCEPTION("failed to load {} as SDL_Texture from SDL_Surface ({})", descritptor.filePath, SDL_GetError());
@@ -39,7 +39,7 @@ namespace fro
 		: mDescriptor{ std::move(descriptor) }
 		, mImplementation{ std::make_unique<Implementation>(mDescriptor) }
 	{
-		SDL_QueryTexture(mImplementation->get(), nullptr, nullptr, &mWidth, &mHeight);
+		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
 
 		Logger::info("loaded {} as texture!", mDescriptor.filePath);
 	}
@@ -104,6 +104,11 @@ namespace fro
 		other.mHeight = 0;
 
 		return *this;
+	}
+
+	Texture::Implementation& Texture::getImplementation() const
+	{
+		return *mImplementation;
 	}
 
 	std::string_view Texture::getFilePath() const

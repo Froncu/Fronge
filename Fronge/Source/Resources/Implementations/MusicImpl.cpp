@@ -10,17 +10,17 @@
 namespace fro
 {
 	Music::Implementation::Implementation(std::string_view const filePath)
-		: mData{ Mix_LoadMUS(filePath.data()), Mix_FreeMusic }
+		: mSDLMusic{ Mix_LoadMUS(filePath.data()), Mix_FreeMusic }
 	{
-		if (not mData.get())
+		if (not mSDLMusic.get())
 			FRO_EXCEPTION("failed to load music ({})", Mix_GetError());
 
 		Logger::info("{} loaded as music!", filePath);
 	}
 
-	Mix_Music* Music::Implementation::get() const
+	Mix_Music* Music::Implementation::getSDLMusic() const
 	{
-		return mData.get();
+		return mSDLMusic.get();
 	}
 
 	Music::Music(Descriptor descriptor)
@@ -73,6 +73,11 @@ namespace fro
 		mImplementation = std::move(other.mImplementation);
 
 		return *this;
+	}
+
+	Music::Implementation& Music::getImplementation() const
+	{
+		return *mImplementation;
 	}
 
 	std::string_view Music::getFilePath() const

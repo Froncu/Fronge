@@ -10,9 +10,8 @@ namespace fro
 {
 	class SoundEffect final : public Referencable
 	{
-		class Implementation;
-
 		friend class Audio;
+		class Implementation;
 
 	public:
 		struct Descriptor final
@@ -28,6 +27,8 @@ namespace fro
 
 		FRO_API SoundEffect& operator=(SoundEffect const& other);
 		FRO_API SoundEffect& operator=(SoundEffect&& other) noexcept;
+
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
 		FRO_API FRO_NODISCARD int getChannel() const;
 		FRO_API FRO_NODISCARD std::string_view getFilePath() const;

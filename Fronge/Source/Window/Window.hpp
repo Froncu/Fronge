@@ -11,15 +11,18 @@ namespace fro
 {
 	class Window final : public Referencable
 	{
-		friend class Renderer;
-
 		class Implementation;
 		std::unique_ptr<Implementation> mImplementation;
 
 	public:
-		FRO_API Window(std::string_view const title = "Fronge", int const width = 640, int const height = 480);
+		FRO_API Window(std::string_view const title = "Fronge Window", int const width = 640, int const height = 480);
 
 		FRO_API ~Window();
+
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
+
+		FRO_API FRO_NODISCARD int getWidth() const;
+		FRO_API FRO_NODISCARD int getHeight() const;
 
 		EventDispatcher<> mWindowCloseEvent{};
 		EventDispatcher<> mWindowResizeEvent{};

@@ -10,9 +10,7 @@ namespace fro
 	class Logger final
 	{
 	public:
-#if defined FRO_DISTRIBUTE
-		static std::string_view constexpr LOGGER_NAME{ "" };
-#elif defined FRO_ENGINE
+#if defined FRO_ENGINE
 		static std::string_view constexpr LOGGER_NAME{ "FRONGE" };
 #else
 		static std::string_view constexpr LOGGER_NAME{ "APP" };
@@ -80,7 +78,7 @@ namespace fro
 		static void log([[maybe_unused]] std::string_view const escSequence, [[maybe_unused]] std::string_view const loggerName,
 			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
 		{
-#if not defined FRO_DISTRIBUTE
+#if defined FRO_CONSOLE
 			auto const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
 			std::tm localTime;
 			localtime_s(&localTime, &now);
