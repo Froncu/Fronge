@@ -64,6 +64,8 @@ namespace fro
 			error("{}", std::forward<Type>(value));
 		}
 
+		FRO_API static void separator();
+
 	private:
 		Logger() = delete;
 		Logger(Logger const&) = delete;

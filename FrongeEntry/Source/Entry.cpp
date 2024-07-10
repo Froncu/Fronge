@@ -13,6 +13,10 @@ int main(int, char**)
 {
 	using namespace fro;
 
+#if defined FRO_DEBUG
+	Logger::separator();
+#endif
+
 	Logger::info("welcome to Fronge!\n");
 
 	Audio::initialize();
@@ -20,6 +24,8 @@ int main(int, char**)
 	createApplication()->run();
 
 	Audio::shutDown();
+
+	Logger::separator();
 
 	return 0;
 }
