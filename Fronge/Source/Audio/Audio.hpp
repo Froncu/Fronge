@@ -18,13 +18,13 @@ namespace fro
 		FRO_API static void initialize();
 		FRO_API static void shutDown();
 
-		FRO_API static void playMusic(Music::Descriptor music);
+		FRO_API static void playMusic(std::string filePath);
 		FRO_API static void playMusic(Reference<Music> const music);
 		FRO_API static void pauseMusic();
 		FRO_API static void resumeMusic();
 		FRO_API static void stopMusic();
 
-		FRO_API static void playSoundEffect(SoundEffect::Descriptor soundEffect, int const channel = -1);
+		FRO_API static void playSoundEffect(std::string filePath, int const channel = -1);
 		FRO_API static void playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel = -1);
 		FRO_API static void pauseSoundEffect(int const channel = -1);
 		FRO_API static void resumeSoundEffect(int const channel = -1);

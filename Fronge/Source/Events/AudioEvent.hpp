@@ -14,7 +14,7 @@ namespace fro
 	{
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		Music::Descriptor descriptor;
+		std::string filePath;
 	};
 
 	struct PlayMusicEvent final
@@ -43,7 +43,7 @@ namespace fro
 	{
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		SoundEffect::Descriptor descriptor;
+		std::string filePath;
 		int channel;
 	};
 

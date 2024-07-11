@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Reference/Reference.hpp"
+#include "Idenitifer/IDGenerator.hpp"
 
 namespace fro
 {
@@ -15,29 +16,29 @@ namespace fro
 		class Implementation;
 
 	public:
-		struct Descriptor final
-		{
-			Reference<Renderer> renderer;
-			std::string filePath;
-		};
-
-		FRO_API Texture(Descriptor descriptor);
-		FRO_API Texture(Texture const& other);
+		FRO_API Texture(Reference<Renderer> const renderer, std::string_view const imagePath);
 		FRO_API Texture(Texture&& other) noexcept;
 
 		FRO_API ~Texture();
 
-		FRO_API Texture& operator=(Texture const& other);
 		FRO_API Texture& operator=(Texture&& other) noexcept;
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
-		FRO_API FRO_NODISCARD std::string_view getFilePath() const;
+		FRO_API FRO_NODISCARD std::size_t getID() const;
 		FRO_API FRO_NODISCARD int getWidth() const;
 		FRO_API FRO_NODISCARD int getHeight() const;
 
 	private:
-		Descriptor mDescriptor;
+		static IDGenerator sIDGenerator;
+
+		Texture(Texture const&) = delete;
+
+		Texture& operator=(Texture const&) = delete;
+
+		ID mID{ sIDGenerator.get() };
+
+		Reference<Renderer> mRenderer;
 
 		std::unique_ptr<Implementation> mImplementation;
 		int mWidth;

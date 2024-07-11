@@ -7,13 +7,13 @@ namespace fro
 	std::string LoadPlayMusicEvent::getLogString() const
 	{
 		return std::format("load {} as music and play event",
-			descriptor.filePath);
+			filePath);
 	}
 
 	std::string PlayMusicEvent::getLogString() const
 	{
-		return std::format("play {} music event",
-			music->getFilePath());
+		return std::format("play music with ID{} event",
+			music->getID());
 	}
 
 	std::string PauseMusicEvent::getLogString() const
@@ -34,13 +34,13 @@ namespace fro
 	std::string LoadPlaySoundEffectEvent::getLogString() const
 	{
 		return std::format("load {} as sound effect and play on channel {} event",
-			descriptor.filePath, channel);
+			filePath, channel);
 	}
 
 	std::string PlaySoundEffectEvent::getLogString() const
 	{
-		return std::format("play {} sound effect on channel {} event",
-			soundEffect->getFilePath(), soundEffect->getChannel());
+		return std::format("play sound effect with ID{} on channel {} event",
+			soundEffect->getID(), soundEffect->getChannel());
 	}
 
 	std::string PauseSoundEffectEvent::getLogString() const

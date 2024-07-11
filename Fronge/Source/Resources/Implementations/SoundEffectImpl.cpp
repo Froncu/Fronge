@@ -12,9 +12,8 @@ namespace fro
 		: mSDLSoundEffect{ Mix_LoadWAV(filePath.data()), Mix_FreeChunk }
 	{
 		if (not mSDLSoundEffect.get())
-			FRO_EXCEPTION("failed to load sound effect ({})", Mix_GetError());
-
-		Logger::info("{} loaded as sound effect!", filePath);
+			FRO_EXCEPTION("failed to load {} as Mix_Chunk ({})",
+				filePath, Mix_GetError());
 	}
 
 	Mix_Chunk* SoundEffect::Implementation::getSDLSoundEffect() const
@@ -22,43 +21,29 @@ namespace fro
 		return mSDLSoundEffect.get();
 	}
 
-	SoundEffect::SoundEffect(Descriptor descriptor)
-		: mDescriptor{ std::move(descriptor) }
-		, mImplementation{ std::make_unique<Implementation>(mDescriptor.filePath) }
-	{
-	}
+	IDGenerator SoundEffect::sIDGenerator{};
 
-	SoundEffect::SoundEffect(SoundEffect const& other)
-		: Referencable(other)
-
-		, mDescriptor{ other.mDescriptor }
-		, mImplementation{ std::make_unique<Implementation>(mDescriptor.filePath) }
+	SoundEffect::SoundEffect(std::string_view const filePath)
+		: mImplementation{ std::make_unique<Implementation>(filePath) }
 	{
+		Logger::info("{} loaded as sound effect with ID {}!",
+			filePath, mID);
 	}
 
 	SoundEffect::SoundEffect(SoundEffect&& other) noexcept
 		: Referencable(std::move(other))
 
-		, mDescriptor{ std::move(other.mDescriptor) }
+		, mID{ std::move(other.mID) }
 		, mImplementation{ std::move(other.mImplementation) }
+		, mChannel{ other.getChannel() }
 	{
+		other.mChannel = -1;
 	}
 
 	SoundEffect::~SoundEffect()
 	{
-	}
-
-	SoundEffect& SoundEffect::operator=(SoundEffect const& other)
-	{
-		if (this == &other)
-			return *this;
-
-		Referencable::operator=(other);
-
-		mDescriptor = other.mDescriptor;
-		mImplementation = std::make_unique<Implementation>(mDescriptor.filePath);
-
-		return *this;
+		Logger::info("sound effect with ID {} destroyed!",
+			mID);
 	}
 
 	SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
@@ -68,8 +53,11 @@ namespace fro
 
 		Referencable::operator=(std::move(other));
 
-		mDescriptor = std::move(other.mDescriptor);
+		mID = std::move(other.mID);
 		mImplementation = std::move(other.mImplementation);
+		mChannel = other.getChannel();
+
+		other.mChannel = -1;
 
 		return *this;
 	}
@@ -79,13 +67,13 @@ namespace fro
 		return *mImplementation;
 	}
 
+	std::size_t SoundEffect::getID() const
+	{
+		return mID;
+	}
+
 	int SoundEffect::getChannel() const
 	{
 		return mChannel;
-	}
-
-	std::string_view SoundEffect::getFilePath() const
-	{
-		return mDescriptor.filePath;
 	}
 }

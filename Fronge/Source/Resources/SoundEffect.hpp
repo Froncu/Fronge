@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Reference/Referencable.hpp"
+#include "Idenitifer/IDGenerator.hpp"
 
 namespace fro
 {
@@ -14,30 +15,29 @@ namespace fro
 		class Implementation;
 
 	public:
-		struct Descriptor final
-		{
-			std::string filePath;
-		};
-
-		FRO_API SoundEffect(Descriptor descriptor);
-		FRO_API SoundEffect(SoundEffect const& other);
+		FRO_API SoundEffect(std::string_view const filePath);
 		FRO_API SoundEffect(SoundEffect&& other) noexcept;
 
 		FRO_API ~SoundEffect();
 
-		FRO_API SoundEffect& operator=(SoundEffect const& other);
 		FRO_API SoundEffect& operator=(SoundEffect&& other) noexcept;
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
+		FRO_API FRO_NODISCARD std::size_t getID() const;
 		FRO_API FRO_NODISCARD int getChannel() const;
-		FRO_API FRO_NODISCARD std::string_view getFilePath() const;
 
 	private:
-		Descriptor mDescriptor;
-		int mChannel{ -1 };
+		static IDGenerator sIDGenerator;
+
+		SoundEffect(SoundEffect const&) = delete;
+
+		SoundEffect& operator=(SoundEffect const&) = delete;
+
+		ID mID{ sIDGenerator.get() };
 
 		std::unique_ptr<Implementation> mImplementation;
+		int mChannel{ -1 };
 	};
 }
 

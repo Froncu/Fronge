@@ -13,9 +13,8 @@ namespace fro
 		: mSDLMusic{ Mix_LoadMUS(filePath.data()), Mix_FreeMusic }
 	{
 		if (not mSDLMusic.get())
-			FRO_EXCEPTION("failed to load music ({})", Mix_GetError());
-
-		Logger::info("{} loaded as music!", filePath);
+			FRO_EXCEPTION("failed to load {} as Mix_Music ({})",
+				filePath, Mix_GetError());
 	}
 
 	Mix_Music* Music::Implementation::getSDLMusic() const
@@ -23,43 +22,27 @@ namespace fro
 		return mSDLMusic.get();
 	}
 
-	Music::Music(Descriptor descriptor)
-		: mDescriptor{ std::move(descriptor) }
-		, mImplementation{ std::make_unique<Implementation>(mDescriptor.filePath) }
-	{
-	}
+	IDGenerator Music::sIDGenerator{};
 
-	Music::Music(Music const& other)
-		: Referencable(other)
-
-		, mDescriptor{ other.mDescriptor }
-		, mImplementation{ std::make_unique<Implementation>(mDescriptor.filePath) }
+	Music::Music(std::string_view const filePath)
+		: mImplementation{ std::make_unique<Implementation>(filePath) }
 	{
+		Logger::info("{} loaded as music with ID {}!",
+			filePath, mID);
 	}
 
 	Music::Music(Music&& other) noexcept
 		: Referencable(std::move(other))
 
-		, mDescriptor{ std::move(other.mDescriptor) }
+		, mID{ std::move(other.mID) }
 		, mImplementation{ std::move(other.mImplementation) }
 	{
 	}
 
 	Music::~Music()
 	{
-	}
-
-	Music& Music::operator=(Music const& other)
-	{
-		if (this == &other)
-			return *this;
-
-		Referencable::operator=(other);
-
-		mDescriptor = other.mDescriptor;
-		mImplementation = std::make_unique<Implementation>(mDescriptor.filePath);
-
-		return *this;
+		Logger::info("music with ID {} destroyed!",
+			mID);
 	}
 
 	Music& Music::operator=(Music&& other) noexcept
@@ -69,7 +52,7 @@ namespace fro
 
 		Referencable::operator=(std::move(other));
 
-		mDescriptor = std::move(other.mDescriptor);
+		mID = std::move(other.mID);
 		mImplementation = std::move(other.mImplementation);
 
 		return *this;
@@ -80,8 +63,8 @@ namespace fro
 		return *mImplementation;
 	}
 
-	std::string_view Music::getFilePath() const
+	std::size_t Music::getID() const
 	{
-		return mDescriptor.filePath;
+		return mID;
 	}
 }

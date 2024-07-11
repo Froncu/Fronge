@@ -13,14 +13,15 @@ namespace fro
 	class Texture::Implementation final
 	{
 	public:
-		FRO_API Implementation(Descriptor const& descriptor);
+		FRO_API Implementation(Reference<Renderer> const renderer, std::string_view const imagePath);
 
 		~Implementation() = default;
 
 		FRO_API FRO_NODISCARD SDL_Texture* getSDLTexture() const;
 
 	private:
-		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(Descriptor const& descritptor);
+		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(
+			Reference<Renderer> const renderer, std::string_view const imagePath);
 
 		Implementation(Implementation const&) = delete;
 		Implementation(Implementation&&) noexcept = delete;

@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Reference/Referencable.hpp"
+#include "Idenitifer/IDGenerator.hpp"
 
 namespace fro
 {
@@ -13,26 +14,25 @@ namespace fro
 		class Implementation;
 
 	public:
-		struct Descriptor final
-		{
-			std::string filePath;
-		};
-
-		FRO_API Music(Descriptor descriptor);
-		FRO_API Music(Music const& other);
+		FRO_API Music(std::string_view const filePath);
 		FRO_API Music(Music&& other) noexcept;
 
 		FRO_API ~Music();
-
-		FRO_API Music& operator=(Music const& other);
 		FRO_API Music& operator=(Music&& other) noexcept;
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
-		std::string_view getFilePath() const;
+		FRO_API FRO_NODISCARD std::size_t getID() const;
 
 	private:
-		Descriptor mDescriptor;
+		static IDGenerator sIDGenerator;
+
+		Music(Music const&) = delete;
+
+		Music& operator=(Music const&) = delete;
+
+		ID mID{ sIDGenerator.get() };
+
 		std::unique_ptr<Implementation> mImplementation;
 	};
 }
