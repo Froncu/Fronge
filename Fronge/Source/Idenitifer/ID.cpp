@@ -23,25 +23,28 @@ namespace fro
 		if (not mGenerator.valid())
 			return;
 
-		std::size_t& counter{ mGenerator->mCounter };
+		std::size_t& highestTakenID{ mGenerator->mHighestTakenID };
 		auto& freeIDs{ mGenerator->mFreeIDs };
 
-		if (mID not_eq counter)
+		if (mID not_eq highestTakenID)
 			freeIDs.insert(mID);
 		else
 		{
-			auto highestFreeIDIterator{ freeIDs.end() };
-			while (highestFreeIDIterator not_eq freeIDs.begin())
+			--highestTakenID;
+
+			auto endIterator{ freeIDs.end() };
+			while (endIterator not_eq freeIDs.begin())
 			{
-				if (--mID not_eq *--highestFreeIDIterator)
+				auto const highestFreeIDIterator{ --freeIDs.end() };
+				if (highestTakenID not_eq *highestFreeIDIterator)
 					break;
 
 				freeIDs.erase(highestFreeIDIterator);
-				--counter;
+
+				--highestTakenID;
+				endIterator = freeIDs.end();
 			}
 		}
-
-		--counter;
 	}
 
 	ID& ID::operator=(ID&& other) noexcept

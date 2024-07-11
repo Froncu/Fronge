@@ -28,7 +28,7 @@ namespace fro
 
 		IDGenerator& operator=(IDGenerator const&) = delete;
 
-		std::size_t mCounter{};
+		std::size_t mHighestTakenID{};
 		std::set<std::size_t> mFreeIDs{};
 	};
 }

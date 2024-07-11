@@ -5,10 +5,10 @@
 namespace fro
 {
 	IDGenerator::IDGenerator(IDGenerator&& other) noexcept
-		: mCounter{ other.mCounter }
+		: mHighestTakenID{ other.mHighestTakenID }
 		, mFreeIDs{ std::move(other.mFreeIDs) }
 	{
-		other.mCounter = 0;
+		other.mHighestTakenID = 0;
 	}
 
 	IDGenerator& IDGenerator::operator=(IDGenerator&& other) noexcept
@@ -16,10 +16,10 @@ namespace fro
 		if (this == &other)
 			return *this;
 
-		mCounter = other.mCounter;
+		mHighestTakenID = other.mHighestTakenID;
 		mFreeIDs = std::move(other.mFreeIDs);
 
-		other.mCounter = 0;
+		other.mHighestTakenID = 0;
 
 		return *this;
 	}
@@ -28,10 +28,8 @@ namespace fro
 	{
 		std::size_t ID;
 
-		++mCounter;
-
 		if (mFreeIDs.empty())
-			ID = mCounter;
+			ID = ++mHighestTakenID;
 		else
 		{
 			ID = *mFreeIDs.begin();
