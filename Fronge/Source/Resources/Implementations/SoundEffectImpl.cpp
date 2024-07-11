@@ -26,7 +26,7 @@ namespace fro
 	SoundEffect::SoundEffect(std::string_view const filePath)
 		: mImplementation{ std::make_unique<Implementation>(filePath) }
 	{
-		Logger::info("{} loaded as sound effect with ID {}!",
+		Logger::info("loaded {} as SoundEffect with ID {}!",
 			filePath, mID);
 	}
 
@@ -42,7 +42,7 @@ namespace fro
 
 	SoundEffect::~SoundEffect()
 	{
-		Logger::info("sound effect with ID {} destroyed!",
+		Logger::info("destroyed SoundEffect with ID {}!",
 			mID);
 	}
 

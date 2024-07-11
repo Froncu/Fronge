@@ -9,11 +9,11 @@ namespace fro
 	CustomUniquePointer<TTF_Font> Font::Implementation::createFont(std::string_view const filePath, int const size)
 	{
 		if (TTF_Init() == -1)
-			FRO_EXCEPTION("failed to initalized SDL_ttf ({})",
+			FRO_EXCEPTION("failed to initalize SDL_ttf ({})",
 				TTF_GetError());
 
 		if (TTF_WasInit() == 1)
-			Logger::info("initialized font library!");
+			Logger::info("initialized SDL_ttf!");
 
 		return { TTF_OpenFont(filePath.data(), size),
 			[](TTF_Font* const font)
@@ -22,7 +22,7 @@ namespace fro
 				TTF_Quit();
 
 				if (not TTF_WasInit())
-					Logger::info("quit font library!");
+					Logger::info("quit SDL_ttf!");
 			} };
 	}
 
@@ -44,7 +44,7 @@ namespace fro
 	Font::Font(std::string_view const filePath, int const size)
 		: mImplementation{ std::make_unique<Implementation>(filePath, size) }
 	{
-		Logger::info("{} loaded as font with ID {}!",
+		Logger::info("loaded {} as Font with ID {}!",
 			filePath, mID);
 	}
 
@@ -55,7 +55,7 @@ namespace fro
 
 	Font::~Font()
 	{
-		Logger::info("font with ID {} destroyed!",
+		Logger::info("destroyed Font with ID {}!",
 			mID);
 	}
 

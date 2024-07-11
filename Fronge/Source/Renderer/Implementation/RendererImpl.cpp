@@ -79,12 +79,14 @@ namespace fro
 		, mImplementation{ std::make_unique<Implementation>(*mWindow, mViewportSize, mScalingMode) }
 	{
 		window->mWindowResizeEvent.addListener(mOnWindowResizeEvent);
-		Logger::info("a {}x{} renderer for window with ID {} created!",
+		Logger::info("created a {}x{} Renderer for Window with ID {}!",
 			mViewportSize.x, mViewportSize.y, mWindow->getID());
 	}
 
 	Renderer::~Renderer()
 	{
+		Logger::info("destroyed Renderer for Window with ID {}!",
+			mWindow->getID());
 	}
 
 	Renderer::Implementation& Renderer::getImplementation() const

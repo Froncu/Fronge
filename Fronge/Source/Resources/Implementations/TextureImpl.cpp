@@ -59,7 +59,7 @@ namespace fro
 			SDL_CreateTextureFromSurface(renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
 
 		if (not texture.get())
-			FRO_EXCEPTION("failed to \"{}\" as SDL_Texture from SDL_Surface({})",
+			FRO_EXCEPTION("failed to load \"{}\" as SDL_Texture from SDL_Surface({})",
 				text, SDL_GetError());
 
 		return texture;
@@ -73,7 +73,7 @@ namespace fro
 	{
 		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
 
-		Logger::info("{} loaded as texture with ID {}!",
+		Logger::info("loaded {} as texture with ID {}!",
 			imagePath, mID);
 	}
 
@@ -83,7 +83,7 @@ namespace fro
 	{
 		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
 
-		Logger::info("\"{}\" loaded as texture with ID {}!",
+		Logger::info("loaded \"{}\" as Texture with ID {}!",
 			text, mID);
 	}
 
@@ -102,7 +102,7 @@ namespace fro
 
 	Texture::~Texture()
 	{
-		Logger::info("texture with ID {} destroyed!",
+		Logger::info("destroyed texture with ID {}!",
 			mID);
 	}
 

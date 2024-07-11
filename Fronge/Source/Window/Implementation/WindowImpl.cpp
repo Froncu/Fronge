@@ -16,8 +16,8 @@ namespace fro
 			width, height,
 			SDL_WINDOW_RESIZABLE), SDL_DestroyWindow };
 
-		FRO_ASSERT(mSDLWindow.get(), "failed to create window ({})", SDL_GetError());
-		Logger::info("a {}x{} \"{}\" window with ID {} created!",
+		FRO_ASSERT(mSDLWindow.get(), "failed to create Window ({})", SDL_GetError());
+		Logger::info("created a {}x{} Window titled \"{}\" with ID {}!",
 			width, height, windowTitle, getID());
 	}
 
@@ -44,6 +44,8 @@ namespace fro
 
 	Window::~Window()
 	{
+		Logger::info("destroyed Window with ID {}!",
+			mID);
 	}
 
 	Window::Implementation& Window::getImplementation() const

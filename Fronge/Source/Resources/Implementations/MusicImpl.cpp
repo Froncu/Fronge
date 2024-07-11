@@ -27,7 +27,7 @@ namespace fro
 	Music::Music(std::string_view const filePath)
 		: mImplementation{ std::make_unique<Implementation>(filePath) }
 	{
-		Logger::info("{} loaded as music with ID {}!",
+		Logger::info("loaded {} as Music with ID {}!",
 			filePath, mID);
 	}
 
@@ -41,7 +41,7 @@ namespace fro
 
 	Music::~Music()
 	{
-		Logger::info("music with ID {} destroyed!",
+		Logger::info("destroyed Music with ID {}!",
 			mID);
 	}
 

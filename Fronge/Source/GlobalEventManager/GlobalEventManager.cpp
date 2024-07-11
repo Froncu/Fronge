@@ -17,7 +17,7 @@ namespace fro
 				case SDL_WINDOWEVENT_CLOSE:
 				{
 					WindowCloseEvent windowCloseEvent{ event.window.windowID };
-					Logger::info("{}!", windowCloseEvent.getLogString());
+					Logger::info("dispatched {}!", windowCloseEvent.getLogString());
 
 					mWindowCloseEvent.notify(windowCloseEvent);
 					break;
@@ -25,7 +25,7 @@ namespace fro
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
 				{
 					WindowResizeEvent windowResizeEvent{ event.window.windowID, event.window.data1, event.window.data2 };
-					Logger::info("{}!", windowResizeEvent.getLogString());
+					Logger::info("dispatched {}!", windowResizeEvent.getLogString());
 
 					mWindowResizeEvent.notify(windowResizeEvent);
 					break;
