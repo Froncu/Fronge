@@ -12,7 +12,7 @@ namespace fro
 
 	std::string PlayMusicEvent::getLogString() const
 	{
-		return std::format("play music with ID{} event",
+		return std::format("play music with ID {} event",
 			music->getID());
 	}
 
@@ -33,14 +33,22 @@ namespace fro
 
 	std::string LoadPlaySoundEffectEvent::getLogString() const
 	{
-		return std::format("load {} as sound effect and play on channel {} event",
-			filePath, channel);
+		if (channel == -1)
+			return std::format("load {} as sound effect and play on first free channel event",
+				filePath);
+		else
+			return std::format("load {} as sound effect and play on channel {} event",
+				filePath, channel);
 	}
 
 	std::string PlaySoundEffectEvent::getLogString() const
 	{
-		return std::format("play sound effect with ID{} on channel {} event",
-			soundEffect->getID(), soundEffect->getChannel());
+		if (channel == -1)
+			return std::format("play sound effect with ID {} on first free channel event",
+				soundEffect->getID());
+		else
+			return std::format("play sound effect with ID {} on channel {} event",
+				soundEffect->getID(), channel);
 	}
 
 	std::string PauseSoundEffectEvent::getLogString() const

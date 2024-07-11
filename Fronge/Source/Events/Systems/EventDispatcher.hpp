@@ -15,7 +15,6 @@ namespace fro
 	{
 	public:
 		using EventListenerType = EventListener<Payload...>;
-
 		friend EventListenerType;
 
 	public:

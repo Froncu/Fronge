@@ -20,7 +20,8 @@ namespace fro
 		EventListener(CallbackType onNotify)
 			: mOnNotify{ std::move(onNotify) }
 		{
-			FRO_ASSERT(mOnNotify not_eq nullptr, "the onNotify callback cannot be a nullptr!");
+			if (mOnNotify == nullptr)
+				FRO_EXCEPTION("the onNotify callback cannot be a nullptr!");
 		}
 
 		EventListener(EventListener const& other)

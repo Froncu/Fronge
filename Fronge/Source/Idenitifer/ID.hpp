@@ -22,8 +22,9 @@ namespace fro
 		~ID();
 
 		FRO_API ID& operator=(ID&& other) noexcept;
-
 		FRO_API FRO_NODISCARD operator std::size_t() const;
+
+		FRO_API FRO_NODISCARD Reference<IDGenerator> getGenerator() const;
 
 	private:
 		ID(Reference<IDGenerator> const generator, std::size_t const ID);

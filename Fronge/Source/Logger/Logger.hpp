@@ -64,16 +64,7 @@ namespace fro
 			error("{}", std::forward<Type>(value));
 		}
 
-	private:
-		Logger() = delete;
-		Logger(Logger const&) = delete;
-		Logger(Logger&&) noexcept = delete;
-
-		~Logger() = delete;
-
-		Logger& operator=(Logger const&) = delete;
-		Logger& operator=(Logger&&) noexcept = delete;
- 
+	private: 
 		template<typename ...Arguments>
 		static void log([[maybe_unused]] std::string_view const escSequence, [[maybe_unused]] std::string_view const loggerName,
 			[[maybe_unused]] std::format_string<Arguments...> const format, [[maybe_unused]] Arguments&&... arguments)
@@ -96,6 +87,15 @@ namespace fro
 		}
 		
 		FRO_API static std::mutex sOutputMutex;
+
+		Logger() = delete;
+		Logger(Logger const&) = delete;
+		Logger(Logger&&) noexcept = delete;
+
+		~Logger() = delete;
+
+		Logger& operator=(Logger const&) = delete;
+		Logger& operator=(Logger&&) noexcept = delete;
 	};
 }
 

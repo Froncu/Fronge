@@ -32,7 +32,6 @@ namespace fro
 		Music& operator=(Music const&) = delete;
 
 		ID mID{ sIDGenerator.get() };
-
 		std::unique_ptr<Implementation> mImplementation;
 	};
 }

@@ -37,9 +37,7 @@ namespace fro
 		Texture& operator=(Texture const&) = delete;
 
 		ID mID{ sIDGenerator.get() };
-
 		Reference<Renderer> mRenderer;
-
 		std::unique_ptr<Implementation> mImplementation;
 		int mWidth;
 		int mHeight;

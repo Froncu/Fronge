@@ -7,9 +7,6 @@
 
 namespace fro
 {
-	EventDispatcher<WindowCloseEvent&> GlobalEventManager::mWindowCloseEvent{};
-	EventDispatcher<WindowResizeEvent&> GlobalEventManager::mWindowResizeEvent{};
-
 	void GlobalEventManager::pollEvents()
 	{
 		SDL_Event event;
@@ -35,4 +32,7 @@ namespace fro
 				}
 				}
 	}
+
+	EventDispatcher<WindowCloseEvent&> GlobalEventManager::mWindowCloseEvent{};
+	EventDispatcher<WindowResizeEvent&> GlobalEventManager::mWindowResizeEvent{};
 }

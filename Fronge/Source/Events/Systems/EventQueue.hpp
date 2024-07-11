@@ -14,8 +14,8 @@ namespace fro
 		EventQueue(ProcessorType eventProcessor)
 			: mEventProcessor{ std::move(eventProcessor) }
 		{
-			FRO_ASSERT(mEventProcessor not_eq nullptr,
-				"the event processor cannot be empty!");
+			if (mEventProcessor == nullptr)
+				FRO_EXCEPTION("the event processor cannot be a nullptr!");
 		}
 
 		EventQueue(EventQueue const&) = default;
@@ -76,10 +76,9 @@ namespace fro
 		}
 
 	private:
+		EventType mNextEvent{};
 		ProcessorType mEventProcessor;
 		std::deque<EventType> mQueue{};
-
-		EventType mNextEvent{};
 		bool mIsNextEventFetched{};
 	};
 }

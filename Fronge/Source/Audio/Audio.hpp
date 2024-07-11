@@ -23,23 +23,21 @@ namespace fro
 		FRO_API static void pauseMusic();
 		FRO_API static void resumeMusic();
 		FRO_API static void stopMusic();
+		FRO_API FRO_NODISCARD static Reference<Music> getActiveMusic();
 
 		FRO_API static void playSoundEffect(std::string filePath, int const channel = -1);
 		FRO_API static void playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel = -1);
 		FRO_API static void pauseSoundEffect(int const channel = -1);
 		FRO_API static void resumeSoundEffect(int const channel = -1);
 		FRO_API static void stopSoundEffect(int const channel = -1);
-
-		FRO_API FRO_NODISCARD static Reference<Music> getMixedMusic();
-		FRO_API FRO_NODISCARD static Reference<SoundEffect> getSoundEffect(int const channel);
+		FRO_API FRO_NODISCARD static Reference<SoundEffect> getActiveSoundEffect(int const channel);
 		FRO_API FRO_NODISCARD static int getAmountOfChannels();
 
 	private:
-		static Reference<Music> sMusic;
-		static std::vector<Reference<SoundEffect>> sSoundEffects;
-
-		static std::unique_ptr<Music> sLoadedMusic;
+		static std::vector<Reference<SoundEffect>> sActiveSoundEffects;
 		static std::vector<std::unique_ptr<SoundEffect>> sLoadedSoundEffects;
+		static Reference<Music> sActiveMusic;
+		static std::unique_ptr<Music> sLoadedMusic;
 
 		Audio() = delete;
 		Audio(Audio const&) = delete;

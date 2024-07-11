@@ -26,21 +26,16 @@ namespace fro
 		return mSDLWindow.get();
 	}
 
-	std::string_view Window::Implementation::getTitle() const
-	{
-		return SDL_GetWindowTitle(mSDLWindow.get());
-	}
-
 	std::uint32_t Window::Implementation::getID() const
 	{
 		return SDL_GetWindowID(mSDLWindow.get());
 	}
 
 	Window::Window(std::string_view const title, int const width, int const height)
-		: mImplementation{ std::make_unique<Implementation>(title, width, height) }
-		, mTitle{ mImplementation->getTitle() }
+		: mTitle{ title }
 		, mWidth{ width }
 		, mHeight{ height }
+		, mImplementation{ std::make_unique<Implementation>(mTitle, mWidth, mHeight) }
 		, mID{ mImplementation->getID() }
 	{
 		GlobalEventManager::mWindowCloseEvent.addListener(mOnWindowCloseEvent);
@@ -54,6 +49,11 @@ namespace fro
 	Window::Implementation& Window::getImplementation() const
 	{
 		return *mImplementation;
+	}
+
+	std::uint32_t Window::getID() const
+	{
+		return mID;
 	}
 
 	int Window::getWidth() const

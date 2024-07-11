@@ -35,11 +35,9 @@ namespace fro
 		static void stopSoundEffect(int const channel);
 
 		static EventQueue<AudioEvent, decltype(&processEvent)> sEventQueue;
-
 		static std::mutex sMutex;
 		static std::condition_variable sConditionVariable;
 		static std::jthread sEventProcessingThread;
-
 		static bool sRunThread;
 
 		Implementation() = delete;

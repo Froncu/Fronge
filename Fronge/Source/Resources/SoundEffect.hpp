@@ -35,7 +35,6 @@ namespace fro
 		SoundEffect& operator=(SoundEffect const&) = delete;
 
 		ID mID{ sIDGenerator.get() };
-
 		std::unique_ptr<Implementation> mImplementation;
 		int mChannel{ -1 };
 	};

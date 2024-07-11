@@ -12,11 +12,9 @@ namespace fro
 {
 	EventQueue<AudioEvent, decltype(&Audio::Implementation::processEvent)>
 		Audio::Implementation::sEventQueue{ processEvent };
-
 	std::mutex Audio::Implementation::sMutex{};
 	std::condition_variable Audio::Implementation::sConditionVariable{};
 	std::jthread Audio::Implementation::sEventProcessingThread{ startPollingEvents };
-
 	bool Audio::Implementation::sRunThread{ true };
 
 	void Audio::Implementation::stopThread()
@@ -58,7 +56,7 @@ namespace fro
 						Logger::info("loaded and playing music with ID {}!",
 							loadedMusic->getID());
 
-						sMusic = loadedMusic.get();
+						sActiveMusic = loadedMusic.get();
 						sLoadedMusic = std::move(loadedMusic);
 					}
 					else
@@ -77,7 +75,7 @@ namespace fro
 						Logger::info("playing music with ID {}!",
 							music->getID());
 
-						sMusic = music;
+						sActiveMusic = music;
 						sLoadedMusic.reset();
 					}
 					else
@@ -87,41 +85,41 @@ namespace fro
 
 				[](PauseMusicEvent const&)
 				{
-					if (not sMusic.valid())
+					if (not sActiveMusic.valid())
 						Logger::warn("failed to pause music (no active music)");
 					else if (Mix_PausedMusic())
 						Logger::warn("failed to pause music (music is not playing)");
 					else
 						Logger::info("pausing music with ID {}!",
-							sMusic->getID());
+							sActiveMusic->getID());
 
 					Mix_PauseMusic();
 				},
 
 				[](ResumeMusicEvent const&)
 				{
-					if (not sMusic.valid())
+					if (not sActiveMusic.valid())
 						Logger::warn("failed to resume music (no active music)");
 					else if (not Mix_PausedMusic())
 						Logger::warn("failed to resume music with ID {} (music is already playing)",
-							sMusic->getID());
+							sActiveMusic->getID());
 					else
 						Logger::info("resuming music with ID {}!",
-							sMusic->getID());
+							sActiveMusic->getID());
 
 					Mix_ResumeMusic();
 				},
 
 				[](StopMusicEvent const&)
 				{
-					if (not sMusic.valid())
+					if (not sActiveMusic.valid())
 						Logger::warn("failed to stop music (no active music)");
 					else
 						Logger::info("stopping music with ID {}!",
-							sMusic->getID());
+							sActiveMusic->getID());
 
 					Mix_HaltMusic();
-					sMusic.reset();
+					sActiveMusic.reset();
 					sLoadedMusic.reset();
 				},
 
@@ -135,7 +133,7 @@ namespace fro
 						Logger::info("loaded and playing sound effect with ID {} on channel {}!",
 							loadedSoundEffect->getID(), channel);
 
-						sSoundEffects[channel] = loadedSoundEffect.get();
+						sActiveSoundEffects[channel] = loadedSoundEffect.get();
 						sLoadedSoundEffects[channel] = std::move(loadedSoundEffect);
 					}
 					else
@@ -166,7 +164,7 @@ namespace fro
 							Logger::info("playing sound effect with ID {} on channel {}!",
 								soundEffect->getID(), channel);
 
-							sSoundEffects[channel] = soundEffect;
+							sActiveSoundEffects[channel] = soundEffect;
 							sLoadedSoundEffects[channel].reset();
 						}
 						else if (event.channel == -1)
@@ -218,58 +216,57 @@ namespace fro
 
 	void Audio::Implementation::pauseSoundEffect(int const channel)
 	{
-		Reference<SoundEffect> const& soundEffect{ sSoundEffects[channel] };
+		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
 
-		if (not soundEffect.valid())
+		if (not activeSoundEffect.valid())
 			Logger::warn("failed to pause sound effect on channel {} (no active sound effect in channel)",
 				channel);
 		else if (Mix_Paused(channel))
 			Logger::warn("failed to pause sound effect with ID {} on channel {} (channel is not playing)",
-				soundEffect->getID(), channel);
+				activeSoundEffect->getID(), channel);
 		else
 			Logger::info("pausing sound effect with ID {} on channel {}!",
-				soundEffect->getID(), channel);
+				activeSoundEffect->getID(), channel);
 
 		Mix_Pause(channel);
 	}
 
 	void Audio::Implementation::resumeSoundEffect(int const channel)
 	{
-		Reference<SoundEffect> const& soundEffect{ sSoundEffects[channel] };
+		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
 
-		if (not soundEffect.valid())
+		if (not activeSoundEffect.valid())
 			Logger::warn("failed to resume sound effect on channel {} (no active sound effect in channel)",
 				channel);
 		else if (not Mix_Paused(channel))
 			Logger::warn("failed to resume sound effect with ID {} on channel {} (channel is already playing)",
-				soundEffect->getID(), channel);
+				activeSoundEffect->getID(), channel);
 		else
 			Logger::info("pausing sound effect with ID {} on channel {}!",
-				soundEffect->getID(), channel);
+				activeSoundEffect->getID(), channel);
 
 		Mix_Resume(channel);
 	}
 
 	void Audio::Implementation::stopSoundEffect(int const channel)
 	{
-		Reference<SoundEffect> const& soundEffect{ sSoundEffects[channel] };
+		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
 
-		if (not soundEffect.valid())
+		if (not activeSoundEffect.valid())
 			Logger::warn("failed to stop sound effect on channel {} (no active sound effect)",
 				channel);
 		else
 			Logger::info("stopping sound effect with ID {} on channel {}!",
-				soundEffect->getID(), channel);
+				activeSoundEffect->getID(), channel);
 
 		Mix_HaltChannel(channel);
 		sLoadedSoundEffects[channel].reset();
 	}
 
-	Reference<Music> Audio::sMusic{};
-	std::vector<Reference<SoundEffect>> Audio::sSoundEffects(MIX_CHANNELS);
-
-	std::unique_ptr<Music> Audio::sLoadedMusic{};
+	std::vector<Reference<SoundEffect>> Audio::sActiveSoundEffects(MIX_CHANNELS);
 	std::vector<std::unique_ptr<SoundEffect>> Audio::sLoadedSoundEffects(MIX_CHANNELS);
+	Reference<Music> Audio::sActiveMusic{};
+	std::unique_ptr<Music> Audio::sLoadedMusic{};
 
 	void Audio::initialize()
 	{
@@ -294,7 +291,7 @@ namespace fro
 
 	void Audio::playMusic(Reference<Music> const music)
 	{
-		Implementation::pushEvent<PlayMusicEvent>(music);;
+		Implementation::pushEvent<PlayMusicEvent>(music);
 	}
 
 	void Audio::pauseMusic()
@@ -310,6 +307,11 @@ namespace fro
 	void Audio::stopMusic()
 	{
 		Implementation::pushEvent<StopMusicEvent>();
+	}
+
+	Reference<Music> Audio::getActiveMusic()
+	{
+		return sActiveMusic;
 	}
 
 	void Audio::playSoundEffect(std::string filePath, int const channel)
@@ -352,17 +354,12 @@ namespace fro
 		Implementation::pushEvent<StopSoundEffectEvent>(channel);
 	}
 
-	Reference<Music> Audio::getMixedMusic()
-	{
-		return sMusic;
-	}
-
-	Reference<SoundEffect> Audio::getSoundEffect(int const channel)
+	Reference<SoundEffect> Audio::getActiveSoundEffect(int const channel)
 	{
 		FRO_ASSERT(channel >= 0 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
-		return sSoundEffects[channel];
+		return sActiveSoundEffects[channel];
 	}
 
 	int Audio::getAmountOfChannels()

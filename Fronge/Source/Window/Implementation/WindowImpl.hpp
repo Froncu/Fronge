@@ -18,7 +18,6 @@ namespace fro
 
 		FRO_API FRO_NODISCARD SDL_Window* getSDLWindow() const;
 
-		FRO_API FRO_NODISCARD std::string_view getTitle() const;
 		FRO_API FRO_NODISCARD std::uint32_t getID() const;
 
 	private:

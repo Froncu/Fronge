@@ -64,4 +64,9 @@ namespace fro
 	{
 		return mID;
 	}
+
+	Reference<IDGenerator> ID::getGenerator() const
+	{
+		return mGenerator;
+	}
 }
