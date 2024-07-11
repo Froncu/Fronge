@@ -14,6 +14,7 @@ namespace fro
 	{
 	public:
 		FRO_API Implementation(Reference<Renderer> const renderer, std::string_view const imagePath);
+		FRO_API Implementation(Reference<Renderer> const renderer, Font const& font, std::string_view const text);
 
 		~Implementation() = default;
 
@@ -22,6 +23,9 @@ namespace fro
 	private:
 		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(
 			Reference<Renderer> const renderer, std::string_view const imagePath);
+
+		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(
+			Reference<Renderer> const renderer, Font const& font, std::string_view const text);
 
 		Implementation(Implementation const&) = delete;
 		Implementation(Implementation&&) noexcept = delete;

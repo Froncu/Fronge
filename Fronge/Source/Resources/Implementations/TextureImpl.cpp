@@ -2,14 +2,20 @@
 
 #include "TextureImpl.hpp"
 #include "Renderer/Implementation/RendererImpl.hpp"
+#include "Resources/Implementations/FontImpl.hpp"
 
-#include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 namespace fro
 {
 	Texture::Implementation::Implementation(Reference<Renderer> const renderer, std::string_view const imagePath)
 		: mSDLTexture{ createTexture(renderer, imagePath) }
+	{
+	}
+
+	Texture::Implementation::Implementation(Reference<Renderer> const renderer, Font const& font, std::string_view const text)
+		: mSDLTexture{ createTexture(renderer, font, text) }
 	{
 	}
 
@@ -25,13 +31,36 @@ namespace fro
 			IMG_Load(imagePath.data()), SDL_FreeSurface };
 
 		if (not surface.get())
-			FRO_EXCEPTION("failed to load {} as SDL_Surface ({})", imagePath, IMG_GetError());
+			FRO_EXCEPTION("failed to load {} as SDL_Surface ({})",
+				imagePath, IMG_GetError());
 
 		CustomUniquePointer<SDL_Texture> texture{
 			SDL_CreateTextureFromSurface(renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
 
 		if (not texture.get())
-			FRO_EXCEPTION("failed to load {} as SDL_Texture from SDL_Surface ({})", imagePath, SDL_GetError());
+			FRO_EXCEPTION("failed to load {} as SDL_Texture from SDL_Surface ({})",
+				imagePath, SDL_GetError());
+
+		return texture;
+	}
+
+	CustomUniquePointer<SDL_Texture> Texture::Implementation::createTexture(
+		Reference<Renderer> const renderer, Font const& font, std::string_view const text)
+	{
+		CustomUniquePointer<SDL_Surface> surface{
+			TTF_RenderText_Blended(font.getImplementation().getSDLFont(), text.data(), SDL_Color(255, 255, 255, 255)),
+			SDL_FreeSurface };
+
+		if (not surface.get())
+			FRO_EXCEPTION("failed to load \"{}\" as SDL_Surface({})",
+				text, TTF_GetError());
+
+		CustomUniquePointer<SDL_Texture> texture{
+			SDL_CreateTextureFromSurface(renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
+
+		if (not texture.get())
+			FRO_EXCEPTION("failed to \"{}\" as SDL_Texture from SDL_Surface({})",
+				text, SDL_GetError());
 
 		return texture;
 	}
@@ -46,6 +75,16 @@ namespace fro
 
 		Logger::info("{} loaded as texture with ID {}!",
 			imagePath, mID);
+	}
+
+	Texture::Texture(Reference<Renderer> const renderer, Font const& font, std::string_view const text)
+		: mRenderer{ renderer }
+		, mImplementation{ std::make_unique<Implementation>(renderer, font, text) }
+	{
+		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
+
+		Logger::info("\"{}\" loaded as texture with ID {}!",
+			text, mID);
 	}
 
 	Texture::Texture(Texture&& other) noexcept

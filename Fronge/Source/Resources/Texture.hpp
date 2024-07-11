@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Reference/Reference.hpp"
+#include "Resources/Font.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 
 namespace fro
@@ -17,6 +18,7 @@ namespace fro
 
 	public:
 		FRO_API Texture(Reference<Renderer> const renderer, std::string_view const imagePath);
+		FRO_API Texture(Reference<Renderer> const renderer, Font const& font, std::string_view const text);
 		FRO_API Texture(Texture&& other) noexcept;
 
 		FRO_API ~Texture();
