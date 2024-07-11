@@ -17,8 +17,6 @@
 
 #if defined FRO_DEBUG
 	#define FRO_ASSERT(condition, ...) { if (not (condition)) { fro::Logger::error(__VA_ARGS__); __debugbreak(); } }
-#elif defined FRO_CONSOLE
-	#define FRO_ASSERT(condition, ...) { if (not (condition)) { fro::Logger::error(__VA_ARGS__); } }
 #else
 	#define FRO_ASSERT(condition, ...)
 #endif
