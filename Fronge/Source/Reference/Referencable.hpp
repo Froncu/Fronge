@@ -16,13 +16,15 @@ namespace fro
 
 	protected:
 		Referencable() = default;
-		Referencable(Referencable const&);
 		Referencable(Referencable&& other) noexcept;
 
-		Referencable& operator=(Referencable const&);
 		Referencable& operator=(Referencable&& other) noexcept;
 
 	private:
+		Referencable(Referencable const&) = delete;
+
+		Referencable& operator=(Referencable const&) = delete;
+
 		std::set<BaseReference*> mReferences{};
 	};
 }
