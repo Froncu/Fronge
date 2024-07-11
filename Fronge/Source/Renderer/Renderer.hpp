@@ -37,7 +37,7 @@ namespace fro
 		FRO_API void clear(float red, float green, float blue) const;
 		FRO_API void present() const;
 		FRO_API void renderTexture(Texture const& texture,
-			Matrix3x3<double> const& transform,
+			Matrix3x3<double> const& transform = true,
 			Rectangle<int> sourceRectangle = {}) const;
 
 		FRO_NODISCARD Vector2<int> getViewportSize() const;
