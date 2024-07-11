@@ -80,7 +80,7 @@ namespace fro
 			std::lock_guard const lock{ sOutputMutex };
 			std::cout
 				<< std::format("\033[{}m", escSequence)
-				<< std::format("[{}] {}: ", timeStream.str(), loggerName)
+				<< std::format("[{}] {:6}: ", timeStream.str(), loggerName)
 				<< std::format(format, std::forward<Arguments>(arguments)...)
 				<< "\033[0m\n";
 #endif
