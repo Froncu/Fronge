@@ -12,13 +12,13 @@ namespace fro
 	class Window::Implementation final
 	{
 	public:
-		FRO_API Implementation(std::string_view const windowTitle, int const width, int const height);
+		Implementation(std::string_view const windowTitle, int const width, int const height);
 
 		~Implementation() = default;
 
-		FRO_API FRO_NODISCARD SDL_Window* getSDLWindow() const;
+		FRO_NODISCARD SDL_Window* getSDLWindow() const;
 
-		FRO_API FRO_NODISCARD std::uint32_t getID() const;
+		FRO_NODISCARD std::uint32_t getID() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

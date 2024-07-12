@@ -13,11 +13,11 @@ namespace fro
 	class Music::Implementation final
 	{
 	public:
-		FRO_API Implementation(std::string_view const filePath);
+		Implementation(std::string_view const filePath);
 
 		~Implementation() = default;
 
-		FRO_API FRO_NODISCARD Mix_Music* getSDLMusic() const;
+		FRO_NODISCARD Mix_Music* getSDLMusic() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

@@ -11,11 +11,11 @@ namespace fro
 	class Font::Implementation final
 	{
 	public:
-		FRO_API Implementation(std::string_view const filePath, int const size);
+		Implementation(std::string_view const filePath, int const size);
 
 		~Implementation() = default;
 
-		FRO_API FRO_NODISCARD TTF_Font* getSDLFont() const;
+		FRO_NODISCARD TTF_Font* getSDLFont() const;
 
 	private:
 		FRO_NODISCARD static CustomUniquePointer<TTF_Font> createFont(std::string_view const filePath, int const size);

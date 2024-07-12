@@ -13,7 +13,7 @@ namespace fro
 	class Audio::Implementation final
 	{
 	public:
-		FRO_API static void stopThread();
+		static void stopThread();
 
 		template<typename EventType, typename... Arguments>
 			requires std::constructible_from<AudioEvent, EventType> and std::constructible_from<EventType, Arguments...>
