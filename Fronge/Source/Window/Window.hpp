@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Events/WindowEvent.hpp"
+#include "Maths/MathStructs.hpp"
 #include "Reference/Referencable.hpp"
 
 namespace fro
@@ -14,18 +15,17 @@ namespace fro
 		class Implementation;
 
 	public:
-		FRO_API Window(std::string_view const title = "Fronge Window", int const width = 640, int const height = 480);
+		FRO_API Window(std::string_view const title = "Fronge Window", Vector2<int> const size = { 640, 480 });
 
 		FRO_API ~Window();
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
 		FRO_API FRO_NODISCARD std::uint32_t getID() const;
-		FRO_API FRO_NODISCARD int getWidth() const;
-		FRO_API FRO_NODISCARD int getHeight() const;
+		FRO_API FRO_NODISCARD Vector2<int> getSize() const;
 
-		EventDispatcher<> mWindowCloseEvent{};
-		EventDispatcher<> mWindowResizeEvent{};
+		EventDispatcher<> mCloseEvent{};
+		EventDispatcher<Vector2<int>> mResizeEvent{};
 
 	private:
 		Window(Window const&) = delete;
@@ -39,7 +39,7 @@ namespace fro
 			[this](auto&& windowCloseEvent)
 			{
 				if (windowCloseEvent.ID == mID)
-					if (mWindowCloseEvent.notify())
+					if (mCloseEvent.notify())
 						return true;
 
 				return false;
@@ -52,11 +52,9 @@ namespace fro
 			{
 				if (windowResizeEvent.ID == mID)
 				{
-					mWidth = windowResizeEvent.width;
-					mHeight = windowResizeEvent.height;
+					mSize = windowResizeEvent.size;
 
-					if (mWindowResizeEvent.notify())
-						return true;
+					return mResizeEvent.notify(mSize);
 				}
 
 				return false;
@@ -64,8 +62,7 @@ namespace fro
 		};
 
 		std::string_view mTitle;
-		int mWidth;
-		int mHeight;
+		Vector2<int> mSize;
 		std::unique_ptr<Implementation> mImplementation;
 		std::uint32_t mID;
 	};

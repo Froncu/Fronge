@@ -9,16 +9,15 @@
 
 namespace fro
 {
-	Window::Implementation::Implementation(std::string_view const windowTitle, int const width, int const height)
-	{
-		mSDLWindow = { SDL_CreateWindow(windowTitle.data(),
+	Window::Implementation::Implementation(std::string_view const windowTitle, Vector2<int> const size)
+		: mSDLWindow{ SDL_CreateWindow(windowTitle.data(),
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			width, height,
-			SDL_WINDOW_RESIZABLE), SDL_DestroyWindow };
-
+			size.x, size.y,
+			SDL_WINDOW_RESIZABLE), SDL_DestroyWindow }
+	{
 		FRO_ASSERT(mSDLWindow.get(), "failed to create Window ({})", SDL_GetError());
 		Logger::info("created a {}x{} Window titled \"{}\" with ID {}!",
-			width, height, windowTitle, getID());
+			size.x, size.y, windowTitle, getID());
 	}
 
 	SDL_Window* Window::Implementation::getSDLWindow() const
@@ -31,11 +30,10 @@ namespace fro
 		return SDL_GetWindowID(mSDLWindow.get());
 	}
 
-	Window::Window(std::string_view const title, int const width, int const height)
+	Window::Window(std::string_view const title, Vector2<int> const size)
 		: mTitle{ title }
-		, mWidth{ width }
-		, mHeight{ height }
-		, mImplementation{ std::make_unique<Implementation>(mTitle, mWidth, mHeight) }
+		, mSize{ size }
+		, mImplementation{ std::make_unique<Implementation>(mTitle, getSize()) }
 		, mID{ mImplementation->getID() }
 	{
 		GlobalEventManager::mWindowCloseEvent.addListener(mOnWindowCloseEvent);
@@ -58,13 +56,8 @@ namespace fro
 		return mID;
 	}
 
-	int Window::getWidth() const
+	Vector2<int> Window::getSize() const
 	{
-		return mWidth;
-	}
-
-	int Window::getHeight() const
-	{
-		return mHeight;
+		return mSize;
 	}
 }

@@ -12,7 +12,7 @@ namespace fro
 	class Window::Implementation final
 	{
 	public:
-		Implementation(std::string_view const windowTitle, int const width, int const height);
+		Implementation(std::string_view const windowTitle, Vector2<int> const size);
 
 		~Implementation() = default;
 
