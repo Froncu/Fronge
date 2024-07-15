@@ -14,6 +14,7 @@
 #include "Resources/Font.hpp"
 #include "Resources/Music.hpp"
 #include "Resources/SoundEffect.hpp"
+#include "Resources/Surface.hpp"
 #include "Resources/Texture.hpp"
 #include "Utility.hpp"
 #include "Window/Window.hpp"

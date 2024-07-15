@@ -73,4 +73,9 @@ namespace fro
 	{
 		return *mImplementation;
 	}
+
+	std::size_t Font::getID() const
+	{
+		return mID;
+	}
 }

@@ -22,6 +22,8 @@ namespace fro
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
+		FRO_API FRO_NODISCARD std::size_t getID() const;
+
 	private:
 		static IDGenerator sIDGenerator;
 
