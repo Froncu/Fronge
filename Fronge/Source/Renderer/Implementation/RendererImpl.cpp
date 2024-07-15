@@ -92,11 +92,6 @@ namespace fro
 		return *mImplementation;
 	}
 
-	Reference<Texture> Renderer::upload(Surface const& surface)
-	{
-		return mTextures.emplace_back(*this, surface);
-	}
-
 	void Renderer::clear(float red, float green, float blue) const
 	{
 		SDL_Renderer* const SDLRenderer{ mImplementation->getSDLRenderer() };

@@ -36,8 +36,6 @@ namespace fro
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
-		FRO_API FRO_NODISCARD Reference<Texture> upload(Surface const& surface);
-
 		FRO_API void clear(float red, float green, float blue) const;
 		FRO_API void present() const;
 		FRO_API void renderTexture(Texture const& texture,
