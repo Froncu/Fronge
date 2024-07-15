@@ -192,9 +192,11 @@ namespace fro
 			2, 3, 0
 		};
 
-		SDL_RenderGeometry(mImplementation->getSDLRenderer(), texture.getImplementation().getSDLTexture(),
+		if (SDL_RenderGeometry(mImplementation->getSDLRenderer(), texture.getImplementation().getSDLTexture(),
 			vVertices.data(), static_cast<int>(vVertices.size()),
-			vIndices.data(), static_cast<int>(vIndices.size()));
+			vIndices.data(), static_cast<int>(vIndices.size())) == -1)
+			Logger::warn("failed to render Texture with ID {} with Renderer with ID {} ({})",
+				texture.getID(), getID(), SDL_GetError());
 	}
 
 	std::size_t Renderer::getID() const
