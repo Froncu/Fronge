@@ -11,6 +11,6 @@ namespace fro
 
 	FRO_API FRO_NODISCARD std::string WindowResizeEvent::getLogString() const
 	{
-		return std::format("resize Window with ID {} to {}x{} event", ID, width, height);
+		return std::format("resize Window with ID {} to {}x{} event", ID, size.x, size.y);
 	}
 }

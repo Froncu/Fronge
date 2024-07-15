@@ -24,7 +24,12 @@ namespace fro
 				}
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
 				{
-					WindowResizeEvent windowResizeEvent{ event.window.windowID, event.window.data1, event.window.data2 };
+					WindowResizeEvent windowResizeEvent
+					{
+						.ID{ event.window.windowID },
+						.size{ event.window.data1, event.window.data2 }
+					};
+
 					Logger::info("dispatched {}!", windowResizeEvent.getLogString());
 
 					mWindowResizeEvent.notify(windowResizeEvent);

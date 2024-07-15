@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Events/Systems/Event.hpp"
+#include "Maths/MathStructs.hpp"
 
 namespace fro
 {
@@ -22,8 +23,7 @@ namespace fro
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
 		std::uint32_t const ID;
-		int const width;
-		int const height;
+		Vector2<int> const size;
 	};
 
 	using WindowEvent = EventVariant<WindowCloseEvent>;
