@@ -7,13 +7,13 @@
 #include "Events/Systems/EventListener.hpp"
 #include "Maths/MathStructs.hpp"
 #include "Reference/Reference.hpp"
-#include "Resources/Texture.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Utility.hpp"
 
 namespace fro
 {
 	class Surface;
+	class Texture;
 	class Window;
 
 	class Renderer final : public Referencable
@@ -64,7 +64,6 @@ namespace fro
 		Vector2<int> mViewportSize;
 		ScalingMode mScalingMode;
 		CustomUniquePointer<Implementation> mImplementation;
-		std::vector<Texture> mTextures{};
 	};
 }
 
