@@ -18,7 +18,7 @@ namespace fro
 		if (not mSDLRenderer.get())
 			FRO_EXCEPTION("failed to create SDL_Renderer ({})", SDL_GetError());
 
-		updateViewPort(window, viewPortSize, scalingMode);
+		updateViewPort(window.getSize(), viewPortSize, scalingMode);
 	}
 
 	SDL_Renderer* Renderer::Implementation::getSDLRenderer() const
@@ -26,13 +26,10 @@ namespace fro
 		return mSDLRenderer.get();
 	}
 
-	void Renderer::Implementation::updateViewPort(Window const& window,
+	void Renderer::Implementation::updateViewPort(Vector2<int> const windowSize,
 		Vector2<int> const viewPortSize,
 		ScalingMode const scalingMode) const
 	{
-		int const& windowWidth{ window.getWidth() };
-		int const& windowHeight{ window.getHeight() };
-
 		if (scalingMode not_eq ScalingMode::aspectRatio)
 		{
 			SDL_Rect viewPort;
@@ -42,8 +39,8 @@ namespace fro
 			switch (scalingMode)
 			{
 			case ScalingMode::none:
-				viewPort.x = windowWidth / 2 - viewPortSize.x / 2;
-				viewPort.y = windowHeight / 2 - viewPortSize.y / 2;
+				viewPort.x = windowSize.x / 2 - viewPortSize.x / 2;
+				viewPort.y = windowSize.y / 2 - viewPortSize.y / 2;
 				SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
 				break;
 
@@ -51,8 +48,8 @@ namespace fro
 				viewPort.x = 0;
 				viewPort.y = 0;
 				SDL_RenderSetScale(mSDLRenderer.get(),
-					static_cast<float>(windowWidth) / viewPortSize.x,
-					static_cast<float>(windowHeight) / viewPortSize.y);
+					static_cast<float>(windowSize.x) / viewPortSize.x,
+					static_cast<float>(windowSize.y) / viewPortSize.y);
 				break;
 			}
 
@@ -62,36 +59,42 @@ namespace fro
 			SDL_RenderSetLogicalSize(mSDLRenderer.get(), viewPortSize.x, viewPortSize.y);
 	}
 
-	Renderer::Renderer(Reference<Window> const window,
+	IDGenerator Renderer::sIDGenerator{};
+
+	Renderer::Renderer(Window& window,
 		Vector2<int> const viewPortSize,
 		ScalingMode const scalingMode)
 		: mOnWindowResizeEvent
 		{
-			[this]()
+			[this](Vector2<int> const size)
 			{
-				mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
+				mImplementation->updateViewPort(size, mViewportSize, mScalingMode);
 				return false;
 			}
 		}
 		, mWindow{ window }
-		, mViewportSize{ viewPortSize.x ? viewPortSize.x : mWindow->getWidth(), viewPortSize.y ? viewPortSize.y : mWindow->getHeight() }
+		, mViewportSize{ viewPortSize.x and viewPortSize.y ? viewPortSize : mWindow->getSize() }
 		, mScalingMode{ scalingMode }
-		, mImplementation{ std::make_unique<Implementation>(*mWindow, mViewportSize, mScalingMode) }
+		, mImplementation{ std::make_unique<Implementation>(window, mViewportSize, mScalingMode) }
 	{
-		window->mWindowResizeEvent.addListener(mOnWindowResizeEvent);
-		Logger::info("created a {}x{} Renderer for Window with ID {}!",
-			mViewportSize.x, mViewportSize.y, mWindow->getID());
+		Logger::info("created a {}x{} Renderer with ID {} for Window with ID {}!",
+			mViewportSize.x, mViewportSize.y, mID, window.getID());
 	}
 
 	Renderer::~Renderer()
 	{
-		Logger::info("destroyed Renderer for Window with ID {}!",
-			mWindow->getID());
+		Logger::info("destroyed Renderer with ID {}!",
+			mID);
 	}
 
 	Renderer::Implementation& Renderer::getImplementation() const
 	{
 		return *mImplementation;
+	}
+
+	Reference<Texture> Renderer::upload(Surface const& surface)
+	{
+		return mTextures.emplace_back(*this, surface);
 	}
 
 	void Renderer::clear(float red, float green, float blue) const
@@ -126,15 +129,14 @@ namespace fro
 		Matrix3x3<double> const& transform,
 		Rectangle<int> sourceRectangle) const
 	{
-		int const& textureWidth{ texture.getWidth() };
-		int const& textureHeight{ texture.getHeight() };
+		Vector2<int> const textureSize{ texture.getSize() };
 
 		if (not sourceRectangle.width or not sourceRectangle.height)
 		{
 			sourceRectangle.x = 0;
 			sourceRectangle.y = 0;
-			sourceRectangle.width = textureWidth;
-			sourceRectangle.height = textureHeight;
+			sourceRectangle.width = textureSize.x;
+			sourceRectangle.height = textureSize.y;
 		}
 
 		float const halfSourceWidth{ sourceRectangle.width / 2.0f };
@@ -150,14 +152,14 @@ namespace fro
 
 		Vector2<float> const topLeftTexture
 		{
-			static_cast<float>(sourceRectangle.x) / textureWidth,
-			static_cast<float>(sourceRectangle.y) / textureHeight
+			static_cast<float>(sourceRectangle.x) / textureSize.x,
+			static_cast<float>(sourceRectangle.y) / textureSize.y
 		};
 
 		Vector2<float> const bottomRightTexture
 		{
-			static_cast<float>(sourceRectangle.x + sourceRectangle.width) / textureWidth,
-			static_cast<float>(sourceRectangle.y + sourceRectangle.height) / textureHeight,
+			static_cast<float>(sourceRectangle.x + sourceRectangle.width) / textureSize.x,
+			static_cast<float>(sourceRectangle.y + sourceRectangle.height) / textureSize.y,
 		};
 
 		std::array<SDL_Vertex, 4> vVertices
@@ -195,23 +197,32 @@ namespace fro
 			vIndices.data(), static_cast<int>(vIndices.size()));
 	}
 
+	std::size_t Renderer::getID() const
+	{
+		return mID;
+	}
+
 	Vector2<int> Renderer::getViewportSize() const
 	{
 		return mViewportSize;
 	}
 
-	void Renderer::setResolution(int const width, int const height)
+	Reference<Window> Renderer::getWindow() const
 	{
-		mViewportSize.x = width;
-		mViewportSize.y = height;
+		return mWindow;
+	}
 
-		mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
+	void Renderer::setResolution(Vector2<int> const resolution)
+	{
+		mViewportSize = resolution.x and resolution.y ? resolution : mWindow->getSize();
+
+		mImplementation->updateViewPort(mWindow->getSize(), mViewportSize, mScalingMode);
 	}
 
 	void Renderer::setScalingMode(ScalingMode const scalingMode)
 	{
 		mScalingMode = scalingMode;
 
-		mImplementation->updateViewPort(*mWindow, mViewportSize, mScalingMode);
+		mImplementation->updateViewPort(mWindow->getSize(), mViewportSize, mScalingMode);
 	}
 }

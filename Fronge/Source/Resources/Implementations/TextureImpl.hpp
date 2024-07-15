@@ -1,8 +1,6 @@
 #if not defined TEXTURE_IMPL_HPP
 #define TEXTURE_IMPL_HPP
 
-#include "froch.hpp"
-
 #include "Resources/Texture.hpp"
 #include "Utility.hpp"
 
@@ -13,20 +11,13 @@ namespace fro
 	class Texture::Implementation final
 	{
 	public:
-		Implementation(Reference<Renderer> const renderer, std::string_view const imagePath);
-		Implementation(Reference<Renderer> const renderer, Font const& font, std::string_view const text);
+		Implementation(Renderer& renderer, Surface const& surface);
 
 		~Implementation() = default;
 
 		FRO_NODISCARD SDL_Texture* getSDLTexture() const;
 
 	private:
-		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(
-			Reference<Renderer> const renderer, std::string_view const imagePath);
-
-		FRO_NODISCARD static CustomUniquePointer<SDL_Texture> createTexture(
-			Reference<Renderer> const renderer, Font const& font, std::string_view const text);
-
 		Implementation(Implementation const&) = delete;
 		Implementation(Implementation&&) noexcept = delete;
 

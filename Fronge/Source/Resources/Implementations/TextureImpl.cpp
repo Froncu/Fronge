@@ -2,21 +2,22 @@
 
 #include "TextureImpl.hpp"
 #include "Renderer/Implementation/RendererImpl.hpp"
-#include "Resources/Implementations/FontImpl.hpp"
+#include "Renderer/Renderer.hpp"
+#include "Resources/Implementations/SurfaceImpl.hpp"
+#include "Resources/Surface.hpp"
 
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL.h>
 
 namespace fro
 {
-	Texture::Implementation::Implementation(Reference<Renderer> const renderer, std::string_view const imagePath)
-		: mSDLTexture{ createTexture(renderer, imagePath) }
+	Texture::Implementation::Implementation(Renderer& renderer, Surface const& surface)
+		: mSDLTexture{ SDL_CreateTextureFromSurface(
+			renderer.getImplementation().getSDLRenderer(), surface.getImplementation().getSDLSurface()),
+			SDL_DestroyTexture }
 	{
-	}
-
-	Texture::Implementation::Implementation(Reference<Renderer> const renderer, Font const& font, std::string_view const text)
-		: mSDLTexture{ createTexture(renderer, font, text) }
-	{
+		if (not mSDLTexture.get())
+			FRO_EXCEPTION("failed to upload Surface with ID {} as SDL_Texture to Renderer with ID {}!",
+				surface.getID(), renderer.getID());
 	}
 
 	SDL_Texture* Texture::Implementation::getSDLTexture() const
@@ -24,67 +25,15 @@ namespace fro
 		return mSDLTexture.get();
 	}
 
-	CustomUniquePointer<SDL_Texture> Texture::Implementation::createTexture(
-		Reference<Renderer> const renderer, std::string_view const imagePath)
-	{
-		CustomUniquePointer<SDL_Surface> const surface{
-			IMG_Load(imagePath.data()), SDL_FreeSurface };
-
-		if (not surface.get())
-			FRO_EXCEPTION("failed to load {} as SDL_Surface ({})",
-				imagePath, IMG_GetError());
-
-		CustomUniquePointer<SDL_Texture> texture{
-			SDL_CreateTextureFromSurface(renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
-
-		if (not texture.get())
-			FRO_EXCEPTION("failed to load {} as SDL_Texture from SDL_Surface ({})",
-				imagePath, SDL_GetError());
-
-		return texture;
-	}
-
-	CustomUniquePointer<SDL_Texture> Texture::Implementation::createTexture(
-		Reference<Renderer> const renderer, Font const& font, std::string_view const text)
-	{
-		CustomUniquePointer<SDL_Surface> surface{
-			TTF_RenderText_Blended(font.getImplementation().getSDLFont(), text.data(), SDL_Color(255, 255, 255, 255)),
-			SDL_FreeSurface };
-
-		if (not surface.get())
-			FRO_EXCEPTION("failed to load \"{}\" as SDL_Surface({})",
-				text, TTF_GetError());
-
-		CustomUniquePointer<SDL_Texture> texture{
-			SDL_CreateTextureFromSurface(renderer->getImplementation().getSDLRenderer(), surface.get()), SDL_DestroyTexture };
-
-		if (not texture.get())
-			FRO_EXCEPTION("failed to load \"{}\" as SDL_Texture from SDL_Surface({})",
-				text, SDL_GetError());
-
-		return texture;
-	}
-
 	IDGenerator Texture::sIDGenerator{};
 
-	Texture::Texture(Reference<Renderer> const renderer, std::string_view const imagePath)
+	Texture::Texture(Renderer& renderer, Surface const& surface)
 		: mRenderer{ renderer }
-		, mImplementation{ std::make_unique<Implementation>(renderer, imagePath) }
+		, mSize{ surface.getSize() }
+		, mImplementation{ std::make_unique<Implementation>(*mRenderer, surface) }
 	{
-		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
-
-		Logger::info("loaded {} as texture with ID {}!",
-			imagePath, mID);
-	}
-
-	Texture::Texture(Reference<Renderer> const renderer, Font const& font, std::string_view const text)
-		: mRenderer{ renderer }
-		, mImplementation{ std::make_unique<Implementation>(renderer, font, text) }
-	{
-		SDL_QueryTexture(mImplementation->getSDLTexture(), nullptr, nullptr, &mWidth, &mHeight);
-
-		Logger::info("loaded \"{}\" as Texture with ID {}!",
-			text, mID);
+		Logger::info("uploaded Surface with ID {} as Texture with ID {} to Renderer with ID {}!",
+			surface.getID(), mID, renderer.getID());
 	}
 
 	Texture::Texture(Texture&& other) noexcept
@@ -92,17 +41,15 @@ namespace fro
 
 		, mID{ std::move(other.mID) }
 		, mRenderer{ std::move(other.mRenderer) }
-		, mImplementation{ std::move(other.mImplementation) }
-		, mWidth{ other.getWidth() }
-		, mHeight{ other.getHeight() }
+		, mSize{ other.getSize() }
+		, mImplementation{ std::move(other.mImplementation)}
 	{
-		other.mWidth = 0;
-		other.mHeight = 0;
+		other.mSize = {};
 	}
 
 	Texture::~Texture()
 	{
-		Logger::info("destroyed texture with ID {}!",
+		Logger::info("destroyed Texture with ID {}!",
 			mID);
 	}
 
@@ -115,19 +62,12 @@ namespace fro
 
 		mID = std::move(other.mID);
 		mRenderer = std::move(other.mRenderer);
+		mSize = other.getSize();
 		mImplementation = std::move(other.mImplementation);
-		mWidth = other.getWidth();
-		mHeight = other.getHeight();
 
-		other.mWidth = 0;
-		other.mHeight = 0;
+		other.mSize = {};
 
 		return *this;
-	}
-
-	Texture::Implementation& Texture::getImplementation() const
-	{
-		return *mImplementation;
 	}
 
 	std::size_t Texture::getID() const
@@ -135,13 +75,18 @@ namespace fro
 		return mID;
 	}
 
-	int Texture::getWidth() const
+	Reference<Renderer> Texture::getRenderer() const
 	{
-		return mWidth;
+		return mRenderer;
 	}
 
-	int Texture::getHeight() const
+	Texture::Implementation & Texture::getImplementation() const
 	{
-		return mHeight;
+		return *mImplementation;
+	}
+
+	Vector2<int> Texture::getSize() const
+	{
+		return mSize;
 	}
 }

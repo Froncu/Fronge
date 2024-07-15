@@ -3,46 +3,43 @@
 
 #include "froch.hpp"
 
-#include "Core.hpp"
-#include "Reference/Reference.hpp"
-#include "Resources/Font.hpp"
 #include "Idenitifer/IDGenerator.hpp"
+#include "Maths/MathStructs.hpp"
+#include "Reference/Reference.hpp"
 
 namespace fro
 {
 	class Renderer;
+	class Surface;
 
 	class Texture final : public Referencable
 	{
 		class Implementation;
 
 	public:
-		FRO_API Texture(Reference<Renderer> const renderer, std::string_view const imagePath);
-		FRO_API Texture(Reference<Renderer> const renderer, Font const& font, std::string_view const text);
+		FRO_API Texture(Renderer& renderer, Surface const& surface);
 		FRO_API Texture(Texture&& other) noexcept;
 
 		FRO_API ~Texture();
 
 		FRO_API Texture& operator=(Texture&& other) noexcept;
 
-		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
-
 		FRO_API FRO_NODISCARD std::size_t getID() const;
-		FRO_API FRO_NODISCARD int getWidth() const;
-		FRO_API FRO_NODISCARD int getHeight() const;
+		FRO_API FRO_NODISCARD Reference<Renderer> getRenderer() const;
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
+		FRO_API FRO_NODISCARD Vector2<int> getSize() const;
 
 	private:
 		static IDGenerator sIDGenerator;
-
+		
 		Texture(Texture const&) = delete;
 
-		Texture& operator=(Texture const&) = delete;
+		Texture& operator=(Texture const&) noexcept = delete;
 
 		ID mID{ sIDGenerator.get() };
 		Reference<Renderer> mRenderer;
+		Vector2<int> mSize;
 		std::unique_ptr<Implementation> mImplementation;
-		int mWidth;
-		int mHeight;
 	};
 }
 

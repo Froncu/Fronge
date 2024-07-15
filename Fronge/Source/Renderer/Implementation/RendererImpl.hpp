@@ -18,7 +18,7 @@ namespace fro
 
 		FRO_NODISCARD SDL_Renderer* getSDLRenderer() const;
 
-		void updateViewPort(Window const& window,
+		void updateViewPort(Vector2<int> const windowSize,
 			Vector2<int> const viewPortSize,
 			ScalingMode const scalingMode) const;
 
