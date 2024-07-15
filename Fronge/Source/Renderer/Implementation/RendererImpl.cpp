@@ -77,6 +77,8 @@ namespace fro
 		, mScalingMode{ scalingMode }
 		, mImplementation{ std::make_unique<Implementation>(window, mViewportSize, mScalingMode) }
 	{
+		mWindow->mResizeEvent.addListener(mOnWindowResizeEvent);
+
 		Logger::info("created a {}x{} Renderer with ID {} for Window with ID {}!",
 			mViewportSize.x, mViewportSize.y, mID, window.getID());
 	}
