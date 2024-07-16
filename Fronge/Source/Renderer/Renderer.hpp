@@ -8,7 +8,7 @@
 #include "Maths/MathStructs.hpp"
 #include "Reference/Reference.hpp"
 #include "Idenitifer/IDGenerator.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 namespace fro
 {
@@ -58,7 +58,7 @@ namespace fro
 		Renderer& operator=(Renderer const&) = delete;
 		Renderer& operator=(Renderer&&) noexcept = delete;
 
-		EventListener<Vector2<int>> mOnWindowResizeEvent;
+		EventListener<Vector2<int> const> mOnWindowResizeEvent;
 		ID mID{ sIDGenerator.get() };
 		Reference<Window> mWindow;
 		Vector2<int> mViewportSize;

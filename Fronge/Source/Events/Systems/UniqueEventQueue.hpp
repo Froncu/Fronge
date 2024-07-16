@@ -5,13 +5,13 @@
 
 namespace fro
 {
-	template<std::movable EventType, std::invocable<EventType&&> ProcessorType,
-		std::invocable<EventType const&, EventType const&> ComparerType = std::equal_to<EventType>>
-		requires std::same_as<std::invoke_result_t<ComparerType, EventType, EventType>, bool>
+	template<std::regular EventType>
 	class UniqueEventQueue final
 	{
 	public:
-		UniqueEventQueue(ProcessorType eventProcessor, ComparerType comparer = std::equal_to<EventType>{})
+		using ComparerType = std::function<bool(EventType const&, EventType const&)>;
+
+		UniqueEventQueue(EventQueue<EventType>::ProcessorType eventProcessor, ComparerType comparer = std::equal_to<EventType>{})
 			: mEventQueue{ std::move(eventProcessor) }
 			, mComparer{ std::move(comparer) }
 		{
@@ -68,7 +68,7 @@ namespace fro
 				});
 		}
 
-		EventQueue<EventType, ProcessorType> mEventQueue;
+		EventQueue<EventType> mEventQueue;
 		ComparerType mComparer;
 	};
 }

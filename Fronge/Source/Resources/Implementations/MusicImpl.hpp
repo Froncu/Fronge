@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Resources/Music.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 typedef struct _Mix_Music Mix_Music;
 

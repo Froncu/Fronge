@@ -19,7 +19,7 @@ namespace fro
 					WindowCloseEvent windowCloseEvent{ event.window.windowID };
 					Logger::info("dispatched {}!", windowCloseEvent.getLogString());
 
-					mWindowCloseEvent.notify(windowCloseEvent);
+					mWindowEvent.notify(std::move(windowCloseEvent));
 					break;
 				}
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
@@ -32,12 +32,11 @@ namespace fro
 
 					Logger::info("dispatched {}!", windowResizeEvent.getLogString());
 
-					mWindowResizeEvent.notify(windowResizeEvent);
+					mWindowEvent.notify(std::move(windowResizeEvent));
 					break;
 				}
 				}
 	}
 
-	EventDispatcher<WindowCloseEvent&> GlobalEventManager::mWindowCloseEvent{};
-	EventDispatcher<WindowResizeEvent&> GlobalEventManager::mWindowResizeEvent{};
+	EventDispatcher<WindowEvent const> GlobalEventManager::mWindowEvent{};
 }

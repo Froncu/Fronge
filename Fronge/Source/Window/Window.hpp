@@ -4,9 +4,11 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
+#include "Events/Systems/EventListener.hpp"
 #include "Events/WindowEvent.hpp"
 #include "Maths/MathStructs.hpp"
 #include "Reference/Referencable.hpp"
+#include "Utility/VariantVisitor.hpp"
 
 namespace fro
 {
@@ -25,7 +27,7 @@ namespace fro
 		FRO_API FRO_NODISCARD Vector2<int> getSize() const;
 
 		EventDispatcher<> mCloseEvent{};
-		EventDispatcher<Vector2<int>> mResizeEvent{};
+		EventDispatcher<Vector2<int> const> mResizeEvent{};
 
 	private:
 		Window(Window const&) = delete;
@@ -34,30 +36,27 @@ namespace fro
 		Window& operator=(Window const&) = delete;
 		Window& operator=(Window&&) noexcept = delete;
 
-		EventListener<WindowCloseEvent&> mOnWindowCloseEvent
+		EventListener<WindowEvent const> mOnWindowEvent
 		{
-			[this](auto&& windowCloseEvent)
+			VariantVisitor
 			{
-				if (windowCloseEvent.ID == mID)
-					if (mCloseEvent.notify())
-						return true;
-
-				return false;
-			}
-		};
-
-		EventListener<WindowResizeEvent&> mOnWindowResizeEvent
-		{
-			[this](auto&& windowResizeEvent)
-			{
-				if (windowResizeEvent.ID == mID)
+				[this](WindowCloseEvent const& windowCloseEvent)
 				{
+					if (windowCloseEvent.ID not_eq mID)
+						return false;
+
+					return mCloseEvent.notify();
+				},
+
+				[this](WindowResizeEvent const& windowResizeEvent)
+				{
+					if (windowResizeEvent.ID not_eq mID)
+						return false;
+
 					mSize = windowResizeEvent.size;
-
-					return mResizeEvent.notify(mSize);
+					mResizeEvent.notify(mSize);
+					return true;
 				}
-
-				return false;
 			}
 		};
 

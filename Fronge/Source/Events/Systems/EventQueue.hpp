@@ -7,10 +7,12 @@
 
 namespace fro
 {
-	template<std::movable EventType, std::invocable<EventType&&> ProcessorType>
+	template<std::semiregular EventType>
 	class EventQueue final
 	{
 	public:
+		using ProcessorType = std::function<void(EventType&&)>;
+
 		EventQueue(ProcessorType eventProcessor)
 			: mEventProcessor{ std::move(eventProcessor) }
 		{
@@ -34,7 +36,7 @@ namespace fro
 		}
 
 		template<typename... Arguments>
-			requires std::constructible_from<EventType, Arguments...>
+			requires std::equality_comparable<EventType> and std::constructible_from<EventType, Arguments...>
 		void overridePushIf(std::function<bool(EventType const&)> unaryPredicate, Arguments&&... arguments)
 		{
 			auto const newEnd{ std::remove_if(mQueue.begin(), mQueue.end(), unaryPredicate) };

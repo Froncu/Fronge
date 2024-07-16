@@ -5,13 +5,183 @@
 #include "Logger/Logger.hpp"
 #include "Resources/Implementations/MusicImpl.hpp"
 #include "Resources/Implementations/SoundEffectImpl.hpp"
+#include "Utility/VariantVisitor.hpp"
 
 #include <SDL_mixer.h>
 
 namespace fro
 {
-	EventQueue<AudioEvent, decltype(&Audio::Implementation::processEvent)>
-		Audio::Implementation::sEventQueue{ processEvent };
+	EventQueue<AudioEvent>Audio::Implementation::sEventQueue
+	{
+		VariantVisitor
+		{
+			[](LoadPlayMusicEvent&& event)
+			{
+				auto loadedMusic{ std::make_unique<Music>(std::move(event.filePath)) };
+
+				if (Mix_PlayMusic(loadedMusic->getImplementation().getSDLMusic(), -1) == 0)
+				{
+					Logger::info("loaded and played Music with ID {}!",
+						loadedMusic->getID());
+
+					sActiveMusic = loadedMusic.get();
+					sLoadedMusic = std::move(loadedMusic);
+				}
+				else
+					Logger::warn("failed to play Music with ID {} ({})",
+						loadedMusic->getID(), Mix_GetError());
+			},
+
+			[](PlayMusicEvent&& event)
+			{
+				Reference<Music> const& music{ event.music };
+
+				if (not music.valid())
+					Logger::warn("failed to play Music (passed Reference to Music is not valid)");
+				else if (Mix_PlayMusic(music->getImplementation().getSDLMusic(), -1) == 0)
+				{
+					Logger::info("played Music with ID {}!",
+						music->getID());
+
+					sActiveMusic = music;
+					sLoadedMusic.reset();
+				}
+				else
+					Logger::warn("failed to play Music with ID {} ({})",
+						music->getID(), Mix_GetError());
+			},
+
+			[](PauseMusicEvent&&)
+			{
+				if (not sActiveMusic.valid())
+					Logger::warn("failed to pause Music (no active Music)");
+				else if (Mix_PausedMusic())
+					Logger::warn("failed to pause Music (Music is not playing)");
+				else
+					Logger::info("paused music with ID {}!",
+						sActiveMusic->getID());
+
+				Mix_PauseMusic();
+			},
+
+			[](ResumeMusicEvent&&)
+			{
+				if (not sActiveMusic.valid())
+					Logger::warn("failed to resume Music (no active Music)");
+				else if (not Mix_PausedMusic())
+					Logger::warn("failed to resume Music with ID {} (music is already playing)",
+						sActiveMusic->getID());
+				else
+					Logger::info("resumed Music with ID {}!",
+						sActiveMusic->getID());
+
+				Mix_ResumeMusic();
+			},
+
+			[](StopMusicEvent&&)
+			{
+				if (not sActiveMusic.valid())
+					Logger::warn("failed to stop music (no active Music)");
+				else
+					Logger::info("stopped Music with ID {}!",
+						sActiveMusic->getID());
+
+				Mix_HaltMusic();
+				sActiveMusic.reset();
+				sLoadedMusic.reset();
+			},
+
+			[](LoadPlaySoundEffectEvent&& event)
+			{
+				auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.filePath)) };
+
+				int const channel{ Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 1) };
+				if (channel not_eq -1)
+				{
+					Logger::info("loaded and played SoundEffect with ID {} on channel {}!",
+						loadedSoundEffect->getID(), channel);
+
+					sActiveSoundEffects[channel] = loadedSoundEffect.get();
+					sLoadedSoundEffects[channel] = std::move(loadedSoundEffect);
+				}
+				else
+				{
+					if (event.channel == -1)
+						Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
+							loadedSoundEffect->getID(), Mix_GetError());
+					else
+						Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
+							loadedSoundEffect->getID(), event.channel, Mix_GetError());
+
+					loadedSoundEffect.reset();
+				}
+			},
+
+			[](PlaySoundEffectEvent&& event)
+			{
+				Reference<SoundEffect> const& soundEffect{ event.soundEffect };
+
+				if (not soundEffect.valid())
+					Logger::warn("failed to play sound effect (passed Reference to SoundEffect is not valid)");
+				else
+				{
+					int& channel{ soundEffect->mChannel };
+					channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 1);
+					if (channel not_eq -1)
+					{
+						Logger::info("played SoundEffect with ID {} on channel {}!",
+							soundEffect->getID(), channel);
+
+						sActiveSoundEffects[channel] = soundEffect;
+						sLoadedSoundEffects[channel].reset();
+					}
+					else if (event.channel == -1)
+						Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
+							soundEffect->getID(), Mix_GetError());
+					else
+						Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
+							soundEffect->getID(), event.channel, Mix_GetError());
+				}
+			},
+
+			[](PauseSoundEffectEvent&& event)
+			{
+				if (event.channel not_eq -1)
+					pauseSoundEffect(event.channel);
+				else
+				{
+					Logger::info("pausing all sound effect channels...");
+					for (int channel{}; channel < getAmountOfChannels(); ++channel)
+						pauseSoundEffect(channel);
+				}
+			},
+
+			[](ResumeSoundEffectEvent&& event)
+			{
+				if (event.channel not_eq -1)
+					resumeSoundEffect(event.channel);
+				else
+				{
+					Logger::info("resuming all sound effect channels...");
+					for (int channel{}; channel < getAmountOfChannels(); ++channel)
+						resumeSoundEffect(channel);
+				}
+			},
+
+			[](StopSoundEffectEvent&& event)
+			{
+				if (event.channel not_eq -1)
+					stopSoundEffect(event.channel);
+				else
+				{
+					Logger::info("stopping all sound effect channels...");
+					for (int channel{}; channel < getAmountOfChannels(); ++channel)
+						stopSoundEffect(channel);
+				}
+			}
+		}
+	};
+
 	std::mutex Audio::Implementation::sMutex{};
 	std::condition_variable Audio::Implementation::sConditionVariable{};
 	std::jthread Audio::Implementation::sEventProcessingThread{ startPollingEvents };
@@ -41,177 +211,6 @@ namespace fro
 			uniqueLock.unlock();
 			sEventQueue.processEvent();
 		}
-	}
-
-	void Audio::Implementation::processEvent(AudioEvent&& event)
-	{
-		std::visit(VariantVisitor
-			{
-				[](LoadPlayMusicEvent& event)
-				{
-					auto loadedMusic{ std::make_unique<Music>(std::move(event.filePath)) };
-
-					if (Mix_PlayMusic(loadedMusic->getImplementation().getSDLMusic(), -1) == 0)
-					{
-						Logger::info("loaded and played Music with ID {}!",
-							loadedMusic->getID());
-
-						sActiveMusic = loadedMusic.get();
-						sLoadedMusic = std::move(loadedMusic);
-					}
-					else
-						Logger::warn("failed to play Music with ID {} ({})",
-							loadedMusic->getID(), Mix_GetError());
-				},
-
-				[](PlayMusicEvent const& event)
-				{
-					Reference<Music> const& music{ event.music };
-
-					if (not music.valid())
-						Logger::warn("failed to play Music (passed Reference to Music is not valid)");
-					else if (Mix_PlayMusic(music->getImplementation().getSDLMusic(), -1) == 0)
-					{
-						Logger::info("played Music with ID {}!",
-							music->getID());
-
-						sActiveMusic = music;
-						sLoadedMusic.reset();
-					}
-					else
-						Logger::warn("failed to play Music with ID {} ({})",
-							music->getID(), Mix_GetError());
-				},
-
-				[](PauseMusicEvent const&)
-				{
-					if (not sActiveMusic.valid())
-						Logger::warn("failed to pause Music (no active Music)");
-					else if (Mix_PausedMusic())
-						Logger::warn("failed to pause Music (Music is not playing)");
-					else
-						Logger::info("paused music with ID {}!",
-							sActiveMusic->getID());
-
-					Mix_PauseMusic();
-				},
-
-				[](ResumeMusicEvent const&)
-				{
-					if (not sActiveMusic.valid())
-						Logger::warn("failed to resume Music (no active Music)");
-					else if (not Mix_PausedMusic())
-						Logger::warn("failed to resume Music with ID {} (music is already playing)",
-							sActiveMusic->getID());
-					else
-						Logger::info("resumed Music with ID {}!",
-							sActiveMusic->getID());
-
-					Mix_ResumeMusic();
-				},
-
-				[](StopMusicEvent const&)
-				{
-					if (not sActiveMusic.valid())
-						Logger::warn("failed to stop music (no active Music)");
-					else
-						Logger::info("stopped Music with ID {}!",
-							sActiveMusic->getID());
-
-					Mix_HaltMusic();
-					sActiveMusic.reset();
-					sLoadedMusic.reset();
-				},
-
-				[](LoadPlaySoundEffectEvent& event)
-				{
-					auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.filePath)) };
-
-					int const channel{ Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 1) };
-					if (channel not_eq -1)
-					{
-						Logger::info("loaded and played SoundEffect with ID {} on channel {}!",
-							loadedSoundEffect->getID(), channel);
-
-						sActiveSoundEffects[channel] = loadedSoundEffect.get();
-						sLoadedSoundEffects[channel] = std::move(loadedSoundEffect);
-					}
-					else
-					{
-						if (event.channel == -1)
-							Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
-								loadedSoundEffect->getID(), Mix_GetError());
-						else
-							Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
-								loadedSoundEffect->getID(), event.channel, Mix_GetError());
-
-						loadedSoundEffect.reset();
-					}
-				},
-
-				[](PlaySoundEffectEvent const& event)
-				{
-					Reference<SoundEffect> const& soundEffect{ event.soundEffect };
-
-					if (not soundEffect.valid())
-						Logger::warn("failed to play sound effect (passed Reference to SoundEffect is not valid)");
-					else
-					{
-						int& channel{ soundEffect->mChannel };
-						channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 1);
-						if (channel not_eq -1)
-						{
-							Logger::info("played SoundEffect with ID {} on channel {}!",
-								soundEffect->getID(), channel);
-
-							sActiveSoundEffects[channel] = soundEffect;
-							sLoadedSoundEffects[channel].reset();
-						}
-						else if (event.channel == -1)
-							Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
-								soundEffect->getID(), Mix_GetError());
-						else
-							Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
-								soundEffect->getID(), event.channel, Mix_GetError());
-					}
-				},
-
-				[](PauseSoundEffectEvent const& event)
-				{
-					if (event.channel not_eq -1)
-						pauseSoundEffect(event.channel);
-					else
-					{
-						Logger::info("pausing all sound effect channels...");
-						for (int channel{}; channel < getAmountOfChannels(); ++channel)
-							pauseSoundEffect(channel);
-					}
-				},
-
-				[](ResumeSoundEffectEvent const& event)
-				{
-					if (event.channel not_eq -1)
-						resumeSoundEffect(event.channel);
-					else
-					{
-						Logger::info("resuming all sound effect channels...");
-						for (int channel{}; channel < getAmountOfChannels(); ++channel)
-							resumeSoundEffect(channel);
-					}
-				},
-
-				[](StopSoundEffectEvent const& event)
-				{
-					if (event.channel not_eq -1)
-						stopSoundEffect(event.channel);
-					else
-					{
-						Logger::info("stopping all sound effect channels...");
-						for (int channel{}; channel < getAmountOfChannels(); ++channel)
-							stopSoundEffect(channel);
-					}
-				}
-			}, event);
 	}
 
 	void Audio::Implementation::pauseSoundEffect(int const channel)

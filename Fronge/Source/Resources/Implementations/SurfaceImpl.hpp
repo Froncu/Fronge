@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Resources/Surface.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Surface;
 

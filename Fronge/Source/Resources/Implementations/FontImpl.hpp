@@ -2,7 +2,7 @@
 #define FONT_IMPL_HPP
 
 #include "Resources/Font.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 typedef struct _TTF_Font TTF_Font;
 

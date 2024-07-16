@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Renderer;
 struct SDL_Texture;

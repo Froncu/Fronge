@@ -3,18 +3,18 @@
 
 #include "froch.hpp"
 
+#include "EventDispatcher.hpp"
+
 namespace fro
 {
-	template<typename...>
+	template<Dispatchable...>
 	class EventDispatcher;
 
-	template<typename... Payload>
+	template<Dispatchable... Payload>
 	class EventListener final
 	{
-	public:
-		using CallbackType = std::function<bool(Payload...)>;
-
-		friend EventDispatcher<Payload...>;
+		friend EventDispatcher;
+		using CallbackType = std::function<bool(Payload&...)>;
 
 	public:
 		EventListener(CallbackType onNotify)
@@ -86,11 +86,6 @@ namespace fro
 			}
 
 			return *this;
-		}
-
-		bool operator()(Payload... payload) const
-		{
-			return mOnNotify(std::forward<Payload>(payload)...);
 		}
 
 	private:

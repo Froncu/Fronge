@@ -26,7 +26,9 @@ namespace fro
 		Vector2<int> const size;
 	};
 
-	using WindowEvent = EventVariant<WindowCloseEvent>;
+	using WindowEvent = EventVariant<
+		WindowCloseEvent,
+		WindowResizeEvent>;
 }
 
 #endif

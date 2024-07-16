@@ -5,6 +5,8 @@
 #include "Audio/Audio.hpp"
 #include "Core.hpp"
 #include "Events/Systems/Event.hpp"
+#include "Events/Systems/EventListener.hpp"
+#include "Events/Systems/UniqueEventQueue.hpp"
 #include "Logger/Logger.hpp"
 #include "GlobalEventManager/GlobalEventManager.hpp"
 #include "Maths/MathFunctions.hpp"
@@ -16,7 +18,8 @@
 #include "Resources/SoundEffect.hpp"
 #include "Resources/Surface.hpp"
 #include "Resources/Texture.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
+#include "Utility/VariantVisitor.hpp"
 #include "Window/Window.hpp"
 
 #endif

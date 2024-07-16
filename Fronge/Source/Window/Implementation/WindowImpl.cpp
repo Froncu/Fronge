@@ -36,8 +36,7 @@ namespace fro
 		, mImplementation{ std::make_unique<Implementation>(mTitle, getSize()) }
 		, mID{ mImplementation->getID() }
 	{
-		GlobalEventManager::mWindowCloseEvent.addListener(mOnWindowCloseEvent);
-		GlobalEventManager::mWindowResizeEvent.addListener(mOnWindowResizeEvent);
+		GlobalEventManager::mWindowEvent.addListener(mOnWindowEvent);
 	}
 
 	Window::~Window()

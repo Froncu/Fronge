@@ -2,7 +2,7 @@
 #define TEXTURE_IMPL_HPP
 
 #include "Resources/Texture.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Texture;
 

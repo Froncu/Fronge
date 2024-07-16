@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Resources/SoundEffect.hpp"
-#include "Utility.hpp"
+#include "Utility/CustomUniquePointer.hpp"
 
 struct Mix_Chunk;
 

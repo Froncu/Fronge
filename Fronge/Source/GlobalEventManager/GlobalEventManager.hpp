@@ -3,6 +3,7 @@
 
 #include "Core.hpp"
 #include "Events/WindowEvent.hpp"
+#include "Events/Systems/EventListener.hpp"
 
 namespace fro
 {
@@ -11,8 +12,7 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD static void pollEvents();
 
-		FRO_API static EventDispatcher<WindowCloseEvent&> mWindowCloseEvent;
-		FRO_API static EventDispatcher<WindowResizeEvent&> mWindowResizeEvent;
+		FRO_API static EventDispatcher<WindowEvent const> mWindowEvent;
 
 	private:
 		GlobalEventManager() = delete;

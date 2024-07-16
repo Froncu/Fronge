@@ -5,8 +5,8 @@
 
 #include "Audio/Audio.hpp"
 #include "Events/AudioEvent.hpp"
+#include "Events/Systems/EventQueue.hpp"
 #include "Logger/Logger.hpp"
-#include "Utility.hpp"
 
 namespace fro
 {
@@ -29,12 +29,11 @@ namespace fro
 
 	private:
 		static void startPollingEvents();
-		static void processEvent(AudioEvent&& event);
 		static void pauseSoundEffect(int const channel);
 		static void resumeSoundEffect(int const channel);
 		static void stopSoundEffect(int const channel);
 
-		static EventQueue<AudioEvent, decltype(&processEvent)> sEventQueue;
+		static EventQueue<AudioEvent> sEventQueue;
 		static std::mutex sMutex;
 		static std::condition_variable sConditionVariable;
 		static std::jthread sEventProcessingThread;

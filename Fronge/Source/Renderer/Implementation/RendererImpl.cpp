@@ -66,10 +66,10 @@ namespace fro
 		ScalingMode const scalingMode)
 		: mOnWindowResizeEvent
 		{
-			[this](Vector2<int> const size)
+			[this](Vector2<int> const& size)
 			{
 				mImplementation->updateViewPort(size, mViewportSize, mScalingMode);
-				return false;
+				return true;
 			}
 		}
 		, mWindow{ window }

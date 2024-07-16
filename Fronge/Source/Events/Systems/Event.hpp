@@ -4,9 +4,6 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "EventDispatcher.hpp"
-#include "EventListener.hpp"
-#include "UniqueEventQueue.hpp"
 
 namespace fro
 {

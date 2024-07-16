@@ -7,15 +7,19 @@
 
 namespace fro
 {
-	template<typename...>
+	template<typename Type>
+	concept Dispatchable =
+		not std::is_reference_v<Type>;
+
+	template<Dispatchable...>
 	class EventListener;
 
-	template<typename... Payload>
+	template<Dispatchable... Payload>
 	class EventDispatcher final
 	{
-	public:
+	private:
+		friend EventListener;
 		using EventListenerType = EventListener<Payload...>;
-		friend EventListenerType;
 
 	public:
 		EventDispatcher() = default;
@@ -63,18 +67,13 @@ namespace fro
 			mListeners.erase(&eventListener);
 		}
 
-		template<bool RETURN_WHEN_HANDELED = false>
-		bool notify(Payload... payload)
+		bool notify(Payload&... payload)
 		{
 			bool didAnyListenerHandle{};
 
 			for (auto const listener : mListeners)
-				if (listener->mOnNotify(std::forward<Payload>(payload)...))
-				{
+				if (listener->mOnNotify(payload...))
 					didAnyListenerHandle = true;
-					if constexpr (RETURN_WHEN_HANDELED)
-						break;
-				}
 
 			return didAnyListenerHandle;
 		}
