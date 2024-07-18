@@ -39,9 +39,18 @@ namespace fro
 			switch (scalingMode)
 			{
 			case ScalingMode::none:
-				viewPort.x = windowSize.x / 2 - viewPortSize.x / 2;
-				viewPort.y = windowSize.y / 2 - viewPortSize.y / 2;
-				SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
+				viewPort.x = (windowSize.x - viewPortSize.x) / 2;
+				viewPort.y = (windowSize.y - viewPortSize.y) / 2;
+
+				// SDL stops rendering when the viewports' x or y value is below 0, 
+				// so we switch to aspect ratio mode when that happens
+				if (viewPort.x > 0 and viewPort.y > 0)
+					SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
+				else
+				{
+					SDL_RenderSetLogicalSize(mSDLRenderer.get(), viewPortSize.x, viewPortSize.y);
+					return;
+				}
 				break;
 
 			case ScalingMode::fill:
