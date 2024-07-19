@@ -103,23 +103,18 @@ namespace fro
 		return *mImplementation;
 	}
 
-	void Renderer::clear(float red, float green, float blue) const
+	void Renderer::clear() const
 	{
 		SDL_Renderer* const SDLRenderer{ mImplementation->getSDLRenderer() };
 
 		SDL_Color previousColor;
 		SDL_GetRenderDrawColor(SDLRenderer, &previousColor.r, &previousColor.g, &previousColor.b, &previousColor.a);
 
-		red = std::clamp(red, 0.0f, 1.0f);
-		green = std::clamp(green, 0.0f, 1.0f);
-		blue = std::clamp(blue, 0.0f, 1.0f);
-
-		Uint8 constexpr maxColorValue{ 255 };
 		SDL_SetRenderDrawColor(SDLRenderer,
-			static_cast<Uint8>(red * maxColorValue),
-			static_cast<Uint8>(green * maxColorValue),
-			static_cast<Uint8>(blue * maxColorValue),
-			maxColorValue);
+			static_cast<Uint8>(0),
+			static_cast<Uint8>(0),
+			static_cast<Uint8>(0),
+			std::numeric_limits<Uint8>::max());
 
 		SDL_RenderClear(SDLRenderer);
 

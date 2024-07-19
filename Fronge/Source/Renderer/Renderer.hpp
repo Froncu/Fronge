@@ -30,13 +30,13 @@ namespace fro
 
 		FRO_API Renderer(Window& window,
 			Vector2<int> const resolution = {},
-			ScalingMode const scalingMode = ScalingMode::FILL);
+			ScalingMode const scalingMode = ScalingMode::ASPECT_RATIO);
 
 		FRO_API ~Renderer();
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
-		FRO_API void clear(float red, float green, float blue) const;
+		FRO_API void clear() const;
 		FRO_API void present() const;
 		FRO_API void renderTexture(Texture const& texture,
 			Matrix3x3<double> const& transform = true,
