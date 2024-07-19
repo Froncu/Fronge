@@ -16,6 +16,7 @@ int main(int, char**)
 	Logger::info("welcome to Fronge!\n");
 
 	Audio::initialize();
+	InputManager::initialize();
 
 	createApplication()->run();
 

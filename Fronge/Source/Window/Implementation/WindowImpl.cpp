@@ -1,7 +1,7 @@
 #include "froch.hpp"
 
 #include "Logger/Logger.hpp"
-#include "GlobalEventManager/GlobalEventManager.hpp"
+#include "SystemEventManager/SystemEventManager.hpp"
 #include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
@@ -36,7 +36,7 @@ namespace fro
 		, mImplementation{ std::make_unique<Implementation>(mTitle, getSize()) }
 		, mID{ mImplementation->getID() }
 	{
-		GlobalEventManager::mWindowEvent.addListener(mOnWindowEvent);
+		SystemEventManager::mWindowEvent.addListener(mOnWindowEvent);
 	}
 
 	Window::~Window()

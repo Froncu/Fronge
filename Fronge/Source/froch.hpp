@@ -17,6 +17,7 @@
 #include <map>
 #include <memory>
 #include <numbers>
+#include <numeric>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -26,6 +27,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
+#include <vector>
 #include <utility>
 #include <xutility>
 #include <xstring>
