@@ -11,7 +11,7 @@ namespace fro
 	{
 	public:
 		Implementation(Window const& window,
-			Vector2<int> const viewPortSize,
+			Vector2<int> const resolution,
 			ScalingMode const scalingMode);
 
 		~Implementation() = default;
@@ -19,7 +19,7 @@ namespace fro
 		FRO_NODISCARD SDL_Renderer* getSDLRenderer() const;
 
 		void updateViewPort(Vector2<int> const windowSize,
-			Vector2<int> const viewPortSize,
+			Vector2<int> const resolution,
 			ScalingMode const scalingMode) const;
 
 	private:

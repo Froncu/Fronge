@@ -23,14 +23,14 @@ namespace fro
 	public:
 		enum class ScalingMode
 		{
-			none,
-			aspectRatio,
-			fill
+			NONE,
+			ASPECT_RATIO,
+			FILL
 		};
 
 		FRO_API Renderer(Window& window,
-			Vector2<int> const viewPortSize = {},
-			ScalingMode const scalingMode = ScalingMode::fill);
+			Vector2<int> const resolution = {},
+			ScalingMode const scalingMode = ScalingMode::FILL);
 
 		FRO_API ~Renderer();
 
@@ -43,7 +43,7 @@ namespace fro
 			Rectangle<int> sourceRectangle = {}) const;
 
 		FRO_API FRO_NODISCARD std::size_t getID() const;
-		FRO_API FRO_NODISCARD Vector2<int> getViewportSize() const;
+		FRO_API FRO_NODISCARD Vector2<int> getResolution() const;
 		FRO_API FRO_NODISCARD Reference<Window> getWindow() const;
 
 		FRO_API void setResolution(Vector2<int> const resolution);
@@ -61,7 +61,7 @@ namespace fro
 		EventListener<Vector2<int> const> mOnWindowResizeEvent;
 		ID mID{ sIDGenerator.get() };
 		Reference<Window> mWindow;
-		Vector2<int> mViewportSize;
+		Vector2<int> mResolution;
 		ScalingMode mScalingMode;
 		CustomUniquePointer<Implementation> mImplementation;
 	};

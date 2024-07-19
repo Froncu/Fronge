@@ -17,12 +17,21 @@ namespace fro
 		class Implementation;
 
 	public:
+		enum class Mode
+		{
+			WINDOWED,
+			BORDERLESS,
+			FULLSCREEN
+		};
+
 		FRO_API Window(std::string_view const title = "Fronge Window", Vector2<int> const size = { 640, 480 });
 
 		FRO_API ~Window();
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
+		FRO_API bool setMode(Mode const mode);
+		
 		FRO_API FRO_NODISCARD std::uint32_t getID() const;
 		FRO_API FRO_NODISCARD Vector2<int> getSize() const;
 

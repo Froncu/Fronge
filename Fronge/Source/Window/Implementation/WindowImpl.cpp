@@ -50,6 +50,53 @@ namespace fro
 		return *mImplementation;
 	}
 
+	bool Window::setMode(Mode const mode)
+	{
+		int result;
+
+		switch (mode)
+		{
+		case Mode::WINDOWED:
+			result = SDL_SetWindowFullscreen(mImplementation->getSDLWindow(), 0);
+
+			if (result == 0)
+				Logger::info("set Window with ID {} to windowed!",
+					mID);
+			else
+				Logger::warn("failed to set Window with ID {} to windowed ({})",
+					mID, SDL_GetError());
+			break;
+
+		case Mode::BORDERLESS:
+			result = SDL_SetWindowFullscreen(mImplementation->getSDLWindow(), SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+			if (result == 0)
+				Logger::info("set Window with ID {} to borderless!",
+					mID);
+			else
+				Logger::warn("failed to set Window with ID {} to borderless ({})",
+					mID, SDL_GetError());
+			break;
+
+		case Mode::FULLSCREEN:
+			result = SDL_SetWindowFullscreen(mImplementation->getSDLWindow(), SDL_WINDOW_FULLSCREEN);
+
+			if (result == 0)
+				Logger::info("set Window with ID {} to fullscreen!",
+					mID);
+			else
+				Logger::warn("failed to set Window with ID {} to fullscreen ({})",
+					mID, SDL_GetError());
+			break;
+
+		default:
+			result = {};
+			break;
+		}
+
+		return result;
+	}
+
 	std::uint32_t Window::getID() const
 	{
 		return mID;
