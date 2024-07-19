@@ -279,10 +279,10 @@ namespace fro
 		LEFT_STICK,
 		RIGHT_SHOULDER,
 		LEFT_SHOULDER,
-		DPAD_RIGHT,
-		DPAD_LEFT,
-		DPAD_UP,
-		DPAD_DOWN,
+		RIGHT,
+		LEFT,
+		UP,
+		DOWN,
 		MISCELLANEOUS,
 		PADDLE_1,
 		PADDLE_2,
@@ -307,11 +307,14 @@ namespace fro
 		LEFT_TRIGGER
 	};
 
+	using GamepadButtonInput = std::pair<std::int32_t, GamepadButton>;
+	using GamepadAxisInput = std::pair<std::int32_t, GamepadAxis>;
+
 	using Input = std::variant<
 		MouseButton,
 		Key,
-		GamepadButton,
-		GamepadAxis>;
+		GamepadButtonInput,
+		GamepadAxisInput>;
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "froch.hpp"
 
+#include "Window/Window.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Window;

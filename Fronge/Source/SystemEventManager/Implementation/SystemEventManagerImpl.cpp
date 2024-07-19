@@ -1,6 +1,6 @@
 #include "froch.hpp"
 
-#include "InputManager/Input/Implementation/InputImpl.hpp"
+#include "Input/Implementation/InputImpl.hpp"
 #include "SystemEventManagerImpl.hpp"
 #include "Logger/Logger.hpp"
 
@@ -8,53 +8,141 @@
 
 namespace fro
 {
-	void SystemEventManager::Implementation::dispatchSDLWindowEvent(SDL_WindowEvent const& SDLWindowEvent)
+	void SystemEventManager::Implementation::dispatchSDLWindowEvent(SDL_WindowEvent const& SDLEvent)
 	{
-		switch (SDLWindowEvent.event)
+		switch (SDLEvent.event)
 		{
 		case SDL_WINDOWEVENT_CLOSE:
 		{
-			WindowCloseEvent windowCloseEvent{ SDLWindowEvent.windowID };
-			Logger::info("dispatched {}!", windowCloseEvent.getLogString());
+			WindowCloseEvent event{ SDLEvent.windowID };
+			Logger::info("dispatched {}!", event.getLogString());
 
-			mWindowEvent.notify(std::move(windowCloseEvent));
+			mWindowEvent.notify(std::move(event));
 			break;
 		}
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
 		{
-			WindowResizeEvent windowResizeEvent
+			WindowResizeEvent event
 			{
-				.ID{ SDLWindowEvent.windowID },
-				.size{ SDLWindowEvent.data1, SDLWindowEvent.data2 }
+				.ID{ SDLEvent.windowID },
+				.size{ SDLEvent.data1, SDLEvent.data2 }
 			};
 
-			Logger::info("dispatched {}!", windowResizeEvent.getLogString());
+			Logger::info("dispatched {}!", event.getLogString());
 
-			mWindowEvent.notify(std::move(windowResizeEvent));
+			mWindowEvent.notify(std::move(event));
 			break;
 		}
 		}
 	}
 
-	void SystemEventManager::Implementation::dispatchSDLKeyboardEvent(SDL_KeyboardEvent const& SDLKeyboardEvent)
+	void SystemEventManager::Implementation::dispatchSDLKeyboardEvent(SDL_KeyboardEvent const& SDLEvent)
 	{
-		switch (SDLKeyboardEvent.type)
+		switch (SDLEvent.type)
 		{
 		case SDL_KEYDOWN:
 		{
-			KeyDownEvent keyDownEvent{ convertSDLKeyCode(SDLKeyboardEvent.keysym.sym) };
+			KeyDownEvent event{ convertSDLKeyCode(SDLEvent.keysym.sym) };
 
-			mInputEvent.notify(std::move(keyDownEvent));
+			mInputEvent.notify(std::move(event));
 			break;
 		}
 		case SDL_KEYUP:
 		{
-			KeyUpEvent keyUpEvent{ convertSDLKeyCode(SDLKeyboardEvent.keysym.sym) };
+			KeyUpEvent event{ convertSDLKeyCode(SDLEvent.keysym.sym) };
 
-			mInputEvent.notify(std::move(keyUpEvent));
+			mInputEvent.notify(std::move(event));
 			break;
 		}
 		}
+	}
+
+	void SystemEventManager::Implementation::dispatchSDLControllerDeviceEvent(SDL_ControllerDeviceEvent const& SDLEvent)
+	{
+		switch (SDLEvent.type)
+		{
+		case SDL_CONTROLLERDEVICEADDED:
+		{
+			GamepadConnectedEvent event{ SDLEvent.which };
+			Logger::info("dispatched {}!", event.getLogString());
+
+			mInputEvent.notify(std::move(event));
+			break;
+		}
+		case SDL_CONTROLLERDEVICEREMOVED:
+		{
+			GamepadDisconnectedEvent event{ SDLEvent.which };
+			Logger::info("dispatched {}!", event.getLogString());
+
+			mInputEvent.notify(std::move(event));
+			break;
+		}
+		}
+	}
+
+	void SystemEventManager::Implementation::dispatchSDLControllerButtonEvent(SDL_ControllerButtonEvent const& SDLEvent)
+	{
+		switch (SDLEvent.type)
+		{
+		case SDL_CONTROLLERBUTTONDOWN:
+		{
+			GamepadButtonDownEvent event{ { SDLEvent.which, convertSDLControllerButton(SDLEvent.button) } };
+
+			mInputEvent.notify(std::move(event));
+			break;
+		}
+		case SDL_CONTROLLERBUTTONUP:
+		{
+			GamepadButtonUpEvent event{ { SDLEvent.which, convertSDLControllerButton(SDLEvent.button) } };
+
+			mInputEvent.notify(std::move(event));
+			break;
+		}
+		}
+	}
+
+	void SystemEventManager::Implementation::dispatchSDLControllerAxisEvent(SDL_ControllerAxisEvent const& SDLEvent)
+	{
+		// SDL treats horizontal and veritcal gamepad sticks as one value,
+		// Fronge does not. This means that if a stick goes from e.g. 128 to -128,
+		// Fronge is not notified that the opposite axis now should be 0. This fixes that.
+
+		if (SDLEvent.value not_eq 0)
+		{
+			auto&& [input, _] { convertSDLControllerAxis(SDLEvent.axis, SDLEvent.value < 0 ? 1 : -1) };
+
+			GamepadAxisEvent event
+			{
+				.input{ SDLEvent.which, input },
+				.value{}
+			};
+
+			mInputEvent.notify(std::move(event));
+		}
+
+		auto&& [input, value] { convertSDLControllerAxis(SDLEvent.axis, SDLEvent.value) };
+
+		GamepadAxisEvent event
+		{
+			.input{ SDLEvent.which, input },
+			.value{ value }
+		};
+
+		mInputEvent.notify(std::move(event));
+	}
+
+	void SystemEventManager::initialize()
+	{
+		SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+
+		Logger::info("initialized SystemEventManager!");
+	}
+
+	void SystemEventManager::shutDown()
+	{
+		SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+
+		Logger::info("shut down SystemEventManager!");
 	}
 
 	void SystemEventManager::pollEvents()
@@ -72,6 +160,21 @@ namespace fro
 				// TODO: no support for repeated key down events
 				if (event.key.repeat == 0)
 					Implementation::dispatchSDLKeyboardEvent(event.key);
+				break;
+
+			case SDL_CONTROLLERDEVICEADDED:
+			case SDL_CONTROLLERDEVICEREMOVED:
+				Implementation::dispatchSDLControllerDeviceEvent(event.cdevice);
+				break;
+
+			case SDL_CONTROLLERBUTTONDOWN:
+			case SDL_CONTROLLERBUTTONUP:
+				Implementation::dispatchSDLControllerButtonEvent(event.cbutton);
+				break;
+
+			case SDL_CONTROLLERAXISMOTION:
+				Implementation::dispatchSDLControllerAxisEvent(event.caxis);
+				break;
 			}
 	}
 

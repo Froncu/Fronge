@@ -4,38 +4,53 @@
 
 namespace fro
 {
-    std::string fro::MouseButtonDownEvent::getLogString() const
-    {
-        return "mouse button down event";
-    }
+	std::string fro::MouseButtonDownEvent::getLogString() const
+	{
+		return "mouse button down event";
+	}
 
-    std::string MouseButtonUpEvent::getLogString() const
-    {
-        return "mouse button up event";
-    }
+	std::string MouseButtonUpEvent::getLogString() const
+	{
+		return "mouse button up event";
+	}
 
-    std::string KeyDownEvent::getLogString() const
-    {
-        return "key down event";
-    }
+	std::string KeyDownEvent::getLogString() const
+	{
+		return "key down event";
+	}
 
-    std::string KeyUpEvent::getLogString() const
-    {
-        return "key up event";
-    }
+	std::string KeyUpEvent::getLogString() const
+	{
+		return "key up event";
+	}
 
-    std::string GamepadButtonDownEvent::getLogString() const
-    {
-        return "gamepad button down event";
-    }
+	std::string GamepadConnectedEvent::getLogString() const
+	{
+		return std::format("gamepad with device ID {} connected event",
+			deviceID);
+	}
 
-    std::string GamepadButtonUpEvent::getLogString() const
-    {
-        return "gamepad button up event";
-    }
+	std::string GamepadDisconnectedEvent::getLogString() const
+	{
+		return std::format("gamepad with instance ID {} disconnected event",
+			instanceID);
+	}
 
-    std::string GamepadAxisEvent::getLogString() const
-    {
-        return "gamepad axis event";
-    }
+	std::string GamepadButtonDownEvent::getLogString() const
+	{
+		return std::format("gamepad with instance ID {} button down event",
+			input.first);
+	}
+
+	std::string GamepadButtonUpEvent::getLogString() const
+	{
+		return std::format("gamepad with instance ID {} button up event",
+			input.first);
+	}
+
+	std::string GamepadAxisEvent::getLogString() const
+	{
+		return std::format("gamepad with instance ID {} axis event",
+			input.first);
+	}
 }

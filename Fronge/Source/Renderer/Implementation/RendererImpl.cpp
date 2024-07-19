@@ -221,7 +221,7 @@ namespace fro
 
 		mImplementation->updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
 
-		Logger::info("set Renderer's with ID {} resolution to {}x{}!",
+		Logger::info("set Renderer with ID {} resolution to {}x{}!",
 			mID, mResolution.x, mResolution.y);
 	}
 
@@ -234,17 +234,17 @@ namespace fro
 		switch (mScalingMode)
 		{
 		case fro::Renderer::ScalingMode::NONE:
-			Logger::info("set Renderer's with ID {} scaling mode to none!",
+			Logger::info("set Renderer with ID {} to scaling mode none!",
 				mID);
 			break;
 
 		case fro::Renderer::ScalingMode::ASPECT_RATIO:
-			Logger::info("set Renderer's with ID {} scaling mode to aspect ratio!",
+			Logger::info("set Renderer with ID {} to scaling mode aspect ratio!",
 				mID);
 			break;
 
 		case fro::Renderer::ScalingMode::FILL:
-			Logger::info("set Renderer's with ID {} scaling mode to fill!",
+			Logger::info("set Renderer with ID {} to scaling mode fill!",
 				mID);
 			break;
 		}

@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "InputManager/Input/Input.hpp"
+#include "Input/Input.hpp"
 #include "Events/Systems/Event.hpp"
 
 namespace fro
@@ -38,7 +38,23 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		Key key;
+		Key const key;
+	};
+
+	struct GamepadConnectedEvent final
+	{
+	public:
+		FRO_API FRO_NODISCARD std::string getLogString() const;
+
+		std::int32_t const deviceID;
+	};
+
+	struct GamepadDisconnectedEvent final
+	{
+	public:
+		FRO_API FRO_NODISCARD std::string getLogString() const;
+
+		std::int32_t const instanceID;
 	};
 
 	struct GamepadButtonDownEvent final
@@ -46,7 +62,7 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		GamepadButton const button;
+		GamepadButtonInput const input;
 	};
 
 	struct GamepadButtonUpEvent final
@@ -54,7 +70,7 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		GamepadButton const button;
+		GamepadButtonInput const input;
 	};
 
 	struct GamepadAxisEvent final
@@ -62,8 +78,8 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		GamepadAxis const axis;
-		float const value;
+		GamepadAxisInput const input;
+		double const value;
 	};
 
 	using InputEvent = EventVariant<
@@ -71,6 +87,8 @@ namespace fro
 		MouseButtonUpEvent,
 		KeyDownEvent,
 		KeyUpEvent,
+		GamepadConnectedEvent,
+		GamepadDisconnectedEvent,
 		GamepadButtonDownEvent,
 		GamepadButtonUpEvent,
 		GamepadAxisEvent>;

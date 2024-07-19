@@ -15,12 +15,15 @@ int main(int, char**)
 
 	Logger::info("welcome to Fronge!\n");
 
-	Audio::initialize();
+	SystemEventManager::initialize();
 	InputManager::initialize();
+	Audio::initialize();
 
 	createApplication()->run();
 
 	Audio::shutDown();
+	InputManager::shutDown();
+	SystemEventManager::shutDown();
 
 	return 0;
 }

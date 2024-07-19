@@ -7,6 +7,7 @@
 #include "Events/Systems/Event.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Events/Systems/UniqueEventQueue.hpp"
+#include "Gamepad/Gamepad.hpp"
 #include "InputManager/InputManager.hpp"
 #include "Logger/Logger.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"

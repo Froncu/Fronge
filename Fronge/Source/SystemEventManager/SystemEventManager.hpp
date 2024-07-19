@@ -13,6 +13,9 @@ namespace fro
 		class Implementation;
 
 	public:
+		FRO_API static void initialize();
+		FRO_API static void shutDown();
+
 		FRO_API FRO_NODISCARD static void pollEvents();
 
 		FRO_API static EventDispatcher<WindowEvent const> mWindowEvent;

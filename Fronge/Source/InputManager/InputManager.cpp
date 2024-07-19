@@ -5,6 +5,8 @@
 #include "Utility/VariantVisitor.hpp"
 #include "Maths/MathFunctions.hpp"
 
+#include <SDL.h>
+
 namespace fro
 {
 	bool InputManager::SimulateActionStrengthEvent::operator==(SimulateActionStrengthEvent const& other) const
@@ -19,6 +21,13 @@ namespace fro
 		SystemEventManager::mInputEvent.addListener(sOnInputEvent);
 
 		Logger::info("initialized InputManager!");
+	}
+
+	void InputManager::shutDown()
+	{
+		SystemEventManager::mInputEvent.removeListener(sOnInputEvent);
+
+		Logger::info("shut down InputManager!");
 	}
 
 	void InputManager::processInputContinous()
@@ -287,6 +296,24 @@ namespace fro
 			[](KeyUpEvent const& event)
 			{
 				setInputStrength(event.key, 0.0);
+				return true;
+			},
+
+			[](GamepadButtonDownEvent const& event)
+			{
+				setInputStrength(event.input, 1.0);
+				return true;
+			},
+
+			[](GamepadButtonUpEvent const& event)
+			{
+				setInputStrength(event.input, 0.0);
+				return true;
+			},
+
+			[](GamepadAxisEvent const& event)
+			{
+				setInputStrength(event.input, event.value);
 				return true;
 			},
 

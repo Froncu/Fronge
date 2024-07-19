@@ -44,6 +44,7 @@ namespace fro
 
 	public:
 		FRO_API static void initialize();
+		FRO_API static void shutDown();
 
 		FRO_API static void processInputContinous();
 

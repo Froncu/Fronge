@@ -2,7 +2,6 @@
 
 #include "Logger/Logger.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"
-#include "Window/Window.hpp"
 #include "WindowImpl.hpp"
 
 #include <SDL.h>
