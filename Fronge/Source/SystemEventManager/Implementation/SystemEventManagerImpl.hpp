@@ -19,8 +19,14 @@ namespace fro
 		static void dispatchSDLControllerDeviceEvent(SDL_ControllerDeviceEvent const& SDLEvent);
 		static void dispatchSDLControllerButtonEvent(SDL_ControllerButtonEvent const& SDLEvent);
 		static void dispatchSDLControllerAxisEvent(SDL_ControllerAxisEvent const& SDLEvent);
+		static void resetOppositeAxis(SDL_ControllerAxisEvent const& SDLEvent);
 
 	private:
+		static Sint16 sPreviousRightStickX;
+		static Sint16 sPreviousRightStickY;
+		static Sint16 sPreviousLeftStickX;
+		static Sint16 sPreviousLeftStickY;
+
 		Implementation() = delete;
 		Implementation(Implementation const&) = delete;
 		Implementation(Implementation&&) noexcept = delete;

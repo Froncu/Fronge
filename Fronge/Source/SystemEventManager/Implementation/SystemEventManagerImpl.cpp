@@ -103,22 +103,7 @@ namespace fro
 
 	void SystemEventManager::Implementation::dispatchSDLControllerAxisEvent(SDL_ControllerAxisEvent const& SDLEvent)
 	{
-		// SDL treats horizontal and veritcal gamepad sticks as one value,
-		// Fronge does not. This means that if a stick goes from e.g. 128 to -128,
-		// Fronge is not notified that the opposite axis now should be 0. This fixes that.
-
-		if (SDLEvent.value not_eq 0)
-		{
-			auto&& [input, _] { convertSDLControllerAxis(SDLEvent.axis, SDLEvent.value < 0 ? 1 : -1) };
-
-			GamepadAxisEvent event
-			{
-				.input{ SDLEvent.which, input },
-				.value{}
-			};
-
-			mInputEvent.notify(std::move(event));
-		}
+		resetOppositeAxis(SDLEvent);
 
 		auto&& [input, value] { convertSDLControllerAxis(SDLEvent.axis, SDLEvent.value) };
 
@@ -130,6 +115,56 @@ namespace fro
 
 		mInputEvent.notify(std::move(event));
 	}
+
+	// SDL treats horizontal and veritcal gamepad sticks as one value,
+	// Fronge does not. This means that if a stick goes from e.g. 128 to -128,
+	// Fronge is not notified that the opposite axis now should be 0. This fixes that.
+	void SystemEventManager::Implementation::resetOppositeAxis(SDL_ControllerAxisEvent const& SDLEvent)
+	{
+		Sint16* previousValue;
+		switch (SDLEvent.axis)
+		{
+		case SDL_CONTROLLER_AXIS_RIGHTX:
+			previousValue = &sPreviousRightStickX;
+			break;
+
+		case SDL_CONTROLLER_AXIS_RIGHTY:
+			previousValue = &sPreviousRightStickY;
+			break;
+
+		case SDL_CONTROLLER_AXIS_LEFTX:
+			previousValue = &sPreviousLeftStickX;
+			break;
+
+		case SDL_CONTROLLER_AXIS_LEFTY:
+			previousValue = &sPreviousLeftStickY;
+			break;
+
+		default:
+			return;
+		}
+
+		if (*previousValue < 0 and SDLEvent.value > 0 or
+			*previousValue > 0 and SDLEvent.value < 0)
+		{
+			auto&& [oppositeInput, _] { convertSDLControllerAxis(SDLEvent.axis, SDLEvent.value < 0 ? 1 : -1) };
+
+			GamepadAxisEvent event
+			{
+				.input{ SDLEvent.which, oppositeInput },
+				.value{}
+			};
+
+			mInputEvent.notify(std::move(event));
+		};
+
+		*previousValue = SDLEvent.value;
+	}
+
+	Sint16 SystemEventManager::Implementation::sPreviousRightStickX{};
+	Sint16 SystemEventManager::Implementation::sPreviousRightStickY{};
+	Sint16 SystemEventManager::Implementation::sPreviousLeftStickX{};
+	Sint16 SystemEventManager::Implementation::sPreviousLeftStickY{};
 
 	void SystemEventManager::initialize()
 	{
