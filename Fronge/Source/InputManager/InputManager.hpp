@@ -26,20 +26,7 @@ namespace fro
 		{
 		public:
 			std::set<InputInfo const*> boundInputInfos{};
-
-			double simulatedAbsoluteStrength{};
-			double simulatedRelativeStrength{};
-
 			double deadzone{ 0.25 };
-		};
-
-		struct SimulateActionStrengthEvent final
-		{
-		public:
-			FRO_NODISCARD bool operator==(SimulateActionStrengthEvent const& other) const;
-
-			ActionInfo* actionInfo{};
-			double simulatedStrength{};
 		};
 
 	public:
@@ -50,7 +37,6 @@ namespace fro
 
 		FRO_API static void bindActionToInput(std::string const& actionName, Input const input);
 		FRO_API void static setActionDeadzone(std::string const& actionName, double const deadzone);
-		FRO_API void static simulateActionStrength(std::string const& actionName, double const strength);
 
 		FRO_API FRO_NODISCARD static double getInputStrength(Input const input);
 		FRO_API FRO_NODISCARD static double getActionStrength(std::string const& actionName);
@@ -85,7 +71,6 @@ namespace fro
 		FRO_NODISCARD static double getActionStrength(std::string const& actionName, double const deadzone);
 
 		static EventListener<InputEvent const> sOnInputEvent;
-		static UniqueEventQueue<SimulateActionStrengthEvent> sSimulateActionStrengthEvents;
 		static std::map<Input, InputInfo> sInputs;
 		static std::map<std::string, ActionInfo> sActions;
 

@@ -9,13 +9,6 @@
 
 namespace fro
 {
-	bool InputManager::SimulateActionStrengthEvent::operator==(SimulateActionStrengthEvent const& other) const
-	{
-		return
-			actionInfo == other.actionInfo and
-			simulatedStrength == other.simulatedStrength;
-	}
-
 	void InputManager::initialize()
 	{
 		SystemEventManager::mInputEvent.addListener(sOnInputEvent);
@@ -34,16 +27,6 @@ namespace fro
 	{
 		for (auto& [input, info] : sInputs)
 			info.relativeStrength = 0.0;
-
-		sSimulateActionStrengthEvents.processAllEvents();
-
-		for (auto& [name, info] : sActions)
-			if (info.simulatedAbsoluteStrength or info.simulatedRelativeStrength)
-				sSimulateActionStrengthEvents.pushEvent(SimulateActionStrengthEvent
-					{
-						.actionInfo{ &info },
-						.simulatedStrength{ 0.0 }
-					});
 	}
 
 	void InputManager::bindActionToInput(std::string const& actionName, Input const input)
@@ -54,25 +37,6 @@ namespace fro
 	void InputManager::setActionDeadzone(std::string const& actionName, double const deadzone)
 	{
 		sActions[actionName].deadzone = deadzone;
-	}
-
-	void InputManager::simulateActionStrength(std::string const& actionName, double const strength)
-	{
-		ActionInfo& actionInfo{ sActions[actionName] };
-
-		SimulateActionStrengthEvent event
-		{
-			.actionInfo{ &actionInfo },
-			.simulatedStrength{ strength }
-		};
-
-		sSimulateActionStrengthEvents.overridePushIf(
-			[&actionInfo](SimulateActionStrengthEvent const& queuedEvent)
-			{
-				return
-					queuedEvent.actionInfo == &actionInfo and
-					queuedEvent.simulatedStrength == 0.0;
-			}, std::move(event));
 	}
 
 	double InputManager::getInputStrength(Input const input)
@@ -257,10 +221,6 @@ namespace fro
 		double largestStrength{};
 		ActionInfo const& actionInfo{ sActions[actionName] };
 
-		largestStrength = getLargestStrength(actionInfo.simulatedAbsoluteStrength, largestStrength, deadzone);
-		if (largestStrength == 1.0)
-			return largestStrength;
-
 		for (InputInfo const* const boundInputInfo : sActions[actionName].boundInputInfos)
 		{
 			largestStrength = getLargestStrength(boundInputInfo->absoluteStrength, largestStrength, deadzone);
@@ -321,17 +281,6 @@ namespace fro
 			{
 				return false;
 			}
-		}
-	};
-
-	UniqueEventQueue<InputManager::SimulateActionStrengthEvent> InputManager::sSimulateActionStrengthEvents
-	{
-		[](SimulateActionStrengthEvent&& event)
-		{
-			auto const [actionInfo, simulatedStrength] { event };
-
-			actionInfo->simulatedRelativeStrength = simulatedStrength - actionInfo->simulatedAbsoluteStrength;
-			actionInfo->simulatedAbsoluteStrength = simulatedStrength;
 		}
 	};
 
