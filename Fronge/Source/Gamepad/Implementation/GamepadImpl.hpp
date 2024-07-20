@@ -18,7 +18,7 @@ namespace fro
 
 		FRO_NODISCARD SDL_GameController* getSDLGameController() const;
 
-		FRO_NODISCARD std::int32_t getInstanceID() const;
+		FRO_NODISCARD std::int32_t getID() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

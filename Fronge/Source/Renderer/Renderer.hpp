@@ -58,6 +58,10 @@ namespace fro
 		Renderer& operator=(Renderer const&) = delete;
 		Renderer& operator=(Renderer&&) noexcept = delete;
 
+		void updateViewPort(Vector2<int> const windowSize,
+			Vector2<int> const resolution,
+			ScalingMode const scalingMode) const;
+
 		EventListener<Vector2<int> const> mOnWindowResizeEvent;
 		ID mID{ sIDGenerator.get() };
 		Reference<Window> mWindow;

@@ -10,62 +10,16 @@
 
 namespace fro
 {
-	Renderer::Implementation::Implementation(Window const& window,
-		Vector2<int> const resolution,
-		ScalingMode const scalingMode)
+	Renderer::Implementation::Implementation(Window const& window)
 		: mSDLRenderer{ SDL_CreateRenderer(window.getImplementation().getSDLWindow(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer }
 	{
 		if (not mSDLRenderer.get())
 			FRO_EXCEPTION("failed to create SDL_Renderer ({})", SDL_GetError());
-
-		updateViewPort(window.getSize(), resolution, scalingMode);
 	}
 
 	SDL_Renderer* Renderer::Implementation::getSDLRenderer() const
 	{
 		return mSDLRenderer.get();
-	}
-
-	void Renderer::Implementation::updateViewPort(Vector2<int> const windowSize,
-		Vector2<int> const resolution,
-		ScalingMode const scalingMode) const
-	{
-		if (scalingMode not_eq ScalingMode::ASPECT_RATIO)
-		{
-			SDL_Rect viewPort;
-			viewPort.w = resolution.x;
-			viewPort.h = resolution.y;
-
-			switch (scalingMode)
-			{
-			case ScalingMode::NONE:
-				viewPort.x = (windowSize.x - resolution.x) / 2;
-				viewPort.y = (windowSize.y - resolution.y) / 2;
-
-				// SDL stops rendering when the viewports' x or y value is below 0, 
-				// so we switch to aspect ratio mode when that happens
-				if (viewPort.x > 0 and viewPort.y > 0)
-					SDL_RenderSetScale(mSDLRenderer.get(), 1.0f, 1.0f);
-				else
-				{
-					SDL_RenderSetLogicalSize(mSDLRenderer.get(), resolution.x, resolution.y);
-					return;
-				}
-				break;
-
-			case ScalingMode::FILL:
-				viewPort.x = 0;
-				viewPort.y = 0;
-				SDL_RenderSetScale(mSDLRenderer.get(),
-					static_cast<float>(windowSize.x) / resolution.x,
-					static_cast<float>(windowSize.y) / resolution.y);
-				break;
-			}
-
-			SDL_RenderSetViewport(mSDLRenderer.get(), &viewPort);
-		}
-		else
-			SDL_RenderSetLogicalSize(mSDLRenderer.get(), resolution.x, resolution.y);
 	}
 
 	IDGenerator Renderer::sIDGenerator{};
@@ -77,15 +31,17 @@ namespace fro
 		{
 			[this](Vector2<int> const& size)
 			{
-				mImplementation->updateViewPort(size, mResolution, mScalingMode);
+				updateViewPort(size, mResolution, mScalingMode);
 				return true;
 			}
 		}
 		, mWindow{ window }
-		, mResolution{ resolution.x and resolution.y ? resolution : mWindow->getSize() }
+		, mResolution{ resolution.x > 0 and resolution.y > 0 ? resolution : mWindow->getSize() }
 		, mScalingMode{ scalingMode }
-		, mImplementation{ std::make_unique<Implementation>(window, mResolution, mScalingMode) }
+		, mImplementation{ std::make_unique<Implementation>(*mWindow) }
 	{
+		updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
+
 		mWindow->mResizeEvent.addListener(mOnWindowResizeEvent);
 
 		Logger::info("created a {}x{} Renderer with ID {} for Window with ID {}!",
@@ -219,7 +175,7 @@ namespace fro
 	{
 		mResolution = resolution.x > 0 and resolution.y > 0 ? resolution : mWindow->getSize();
 
-		mImplementation->updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
+		updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
 
 		Logger::info("set Renderer with ID {} resolution to {}x{}!",
 			mID, mResolution.x, mResolution.y);
@@ -229,7 +185,7 @@ namespace fro
 	{
 		mScalingMode = scalingMode;
 
-		mImplementation->updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
+		updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
 
 		switch (mScalingMode)
 		{
@@ -248,5 +204,50 @@ namespace fro
 				mID);
 			break;
 		}
+	}
+
+	void Renderer::updateViewPort(Vector2<int> const windowSize,
+		Vector2<int> const resolution,
+		ScalingMode const scalingMode) const
+	{
+		if (scalingMode not_eq ScalingMode::ASPECT_RATIO)
+		{
+			SDL_Rect viewPort;
+			viewPort.w = resolution.x;
+			viewPort.h = resolution.y;
+
+			switch (scalingMode)
+			{
+			case ScalingMode::NONE:
+				viewPort.x = (windowSize.x - resolution.x) / 2;
+				viewPort.y = (windowSize.y - resolution.y) / 2;
+
+				// SDL stops rendering when the viewports' x or y value is below 0, 
+				// so we switch to aspect ratio mode when that happens
+				if (viewPort.x > 0 and viewPort.y > 0)
+					SDL_RenderSetScale(mImplementation->getSDLRenderer(), 1.0f, 1.0f);
+				else
+				{
+					SDL_RenderSetLogicalSize(mImplementation->getSDLRenderer(), resolution.x, resolution.y);
+					return;
+				}
+				break;
+
+			case ScalingMode::FILL:
+				viewPort.x = 0;
+				viewPort.y = 0;
+				SDL_RenderSetScale(mImplementation->getSDLRenderer(),
+					static_cast<float>(windowSize.x) / resolution.x,
+					static_cast<float>(windowSize.y) / resolution.y);
+				break;
+			}
+
+			SDL_RenderSetViewport(mImplementation->getSDLRenderer(), &viewPort);
+		}
+		else
+			SDL_RenderSetLogicalSize(mImplementation->getSDLRenderer(), resolution.x, resolution.y);
+
+		Logger::info("updated Renderer with ID {} viewport!",
+			mID);
 	}
 }

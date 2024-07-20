@@ -54,7 +54,7 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD std::string getLogString() const;
 
-		std::int32_t const instanceID;
+		std::int32_t const ID;
 	};
 
 	struct GamepadButtonDownEvent final

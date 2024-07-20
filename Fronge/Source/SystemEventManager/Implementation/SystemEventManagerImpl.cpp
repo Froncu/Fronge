@@ -72,7 +72,7 @@ namespace fro
 		case SDL_CONTROLLERDEVICEREMOVED:
 		{
 			GamepadDisconnectedEvent event{ SDLEvent.which };
-			Logger::info("dispatched {}!", event.getLogString());
+			Logger::warn("dispatched {}!", event.getLogString());
 
 			mInputEvent.notify(std::move(event));
 			break;

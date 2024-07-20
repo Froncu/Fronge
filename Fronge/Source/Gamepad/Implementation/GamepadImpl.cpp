@@ -20,7 +20,7 @@ namespace fro
 		return mSDLGameController.get();
 	}
 
-	std::int32_t Gamepad::Implementation::getInstanceID() const
+	std::int32_t Gamepad::Implementation::getID() const
 	{
 		return SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(mSDLGameController.get()));
 	}
@@ -32,7 +32,7 @@ namespace fro
 			{
 				[this](GamepadDisconnectedEvent const& event)
 				{
-					if (event.instanceID not_eq mID)
+					if (event.ID not_eq mID)
 						return false;
 
 					mDeviceID = -1;
@@ -48,7 +48,7 @@ namespace fro
 		}
 		, mDeviceID{ deviceID }
 		, mImplementation{ std::make_unique<Implementation>(mDeviceID) }
-		, mID{ mImplementation->getInstanceID() }
+		, mID{ mImplementation->getID() }
 	{
 		SystemEventManager::mInputEvent.addListener(mOnInputEvent);
 
@@ -60,7 +60,7 @@ namespace fro
 		: mOnInputEvent{ other.mOnInputEvent }
 		, mDeviceID{ other.mDeviceID }
 		, mImplementation{ std::make_unique<Implementation>(mDeviceID) }
-		, mID{ mImplementation->getInstanceID() }
+		, mID{ mImplementation->getID() }
 	{
 		Logger::info("opened Gamepad with ID {} from device with ID {}!",
 			mID, mDeviceID);
@@ -70,7 +70,7 @@ namespace fro
 		: mOnInputEvent{ std::move(other.mOnInputEvent) }
 		, mDeviceID{ other.mDeviceID }
 		, mImplementation{ std::move(other.mImplementation) }
-		, mID{ mImplementation->getInstanceID() }
+		, mID{ mImplementation->getID() }
 	{
 		other.mDeviceID = -1;
 	}
@@ -89,7 +89,7 @@ namespace fro
 		mOnInputEvent = other.mOnInputEvent;
 		mDeviceID = other.mDeviceID;
 		mImplementation = std::make_unique<Implementation>(mDeviceID);
-		mID = mImplementation->getInstanceID();
+		mID = mImplementation->getID();
 
 		return *this;
 	}
@@ -102,7 +102,7 @@ namespace fro
 		mOnInputEvent = std::move(other.mOnInputEvent);
 		mDeviceID = other.mDeviceID;
 		mImplementation = std::move(other.mImplementation);
-		mID = mImplementation->getInstanceID();
+		mID = mImplementation->getID();
 
 		other.mDeviceID = -1;
 

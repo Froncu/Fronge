@@ -32,25 +32,25 @@ namespace fro
 
 	std::string GamepadDisconnectedEvent::getLogString() const
 	{
-		return std::format("gamepad with instance ID {} disconnected event",
-			instanceID);
+		return std::format("Gamepad with ID {} disconnected event",
+			ID);
 	}
 
 	std::string GamepadButtonDownEvent::getLogString() const
 	{
-		return std::format("gamepad with instance ID {} button down event",
+		return std::format("Gamepad with ID {}  button down event",
 			input.first);
 	}
 
 	std::string GamepadButtonUpEvent::getLogString() const
 	{
-		return std::format("gamepad with instance ID {} button up event",
+		return std::format("Gamepad with ID {} button up event",
 			input.first);
 	}
 
 	std::string GamepadAxisEvent::getLogString() const
 	{
-		return std::format("gamepad with instance ID {} axis event",
+		return std::format("Gamepad with ID {} axis event",
 			input.first);
 	}
 }
