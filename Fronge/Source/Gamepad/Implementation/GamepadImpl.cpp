@@ -37,7 +37,6 @@ namespace fro
 
 					mDeviceID = -1;
 					mImplementation.reset();
-					mID = -1;
 					return true;
 				},
 
@@ -74,7 +73,6 @@ namespace fro
 		, mID{ mImplementation->getInstanceID() }
 	{
 		other.mDeviceID = -1;
-		other.mID = -1;
 	}
 
 	Gamepad::~Gamepad()
@@ -107,7 +105,6 @@ namespace fro
 		mID = mImplementation->getInstanceID();
 
 		other.mDeviceID = -1;
-		other.mID = -1;
 
 		return *this;
 	}
