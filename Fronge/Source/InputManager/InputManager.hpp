@@ -25,8 +25,19 @@ namespace fro
 		struct ActionInfo final
 		{
 		public:
-			std::set<InputInfo const*> boundInputInfos{};
+			std::set<Input> boundInputs{};
+
+			double rawStrength{};
+			double absoluteStrength{};
+			double relativeStrength{};
 			double deadzone{ 0.25 };
+		};
+
+		struct DeadzoneInfo final
+		{
+		public:
+			bool isOverDeadzone;
+			bool didJustCrossDeadzone;
 		};
 
 	public:
@@ -58,17 +69,9 @@ namespace fro
 	private:
 		static void setInputStrength(Input const input, double const newStrength);
 
-		FRO_NODISCARD static std::pair<bool, bool> getStrengthInfo(
-			double const absoluteStrength,
-			double const relativeStrength,
-			double const deadzone);
-
-		FRO_NODISCARD static double getLargestStrength(
-			double const strength,
-			double const largestStrength,
-			double const deadzone);
-
-		FRO_NODISCARD static double getActionStrength(std::string const& actionName, double const deadzone);
+		FRO_NODISCARD static double deadzoneStrength(double const strength, double const deadzone);
+		FRO_NODISCARD static DeadzoneInfo getDeadzoneInfo(double const absoluteStrength,
+			double const relativeStrength, double const deadzone);
 
 		static EventListener<InputEvent const> sOnInputEvent;
 		static std::map<Input, InputInfo> sInputs;

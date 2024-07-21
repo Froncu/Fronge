@@ -27,11 +27,14 @@ namespace fro
 	{
 		for (auto& [input, info] : sInputs)
 			info.relativeStrength = 0.0;
+
+		for (auto& [input, info] : sActions)
+			info.relativeStrength = 0.0;
 	}
 
 	void InputManager::bindActionToInput(std::string const& actionName, Input const input)
 	{
-		sActions[actionName].boundInputInfos.insert(&sInputs[input]);
+		sActions[actionName].boundInputs.insert(input);
 	}
 
 	void InputManager::setActionDeadzone(std::string const& actionName, double const deadzone)
@@ -46,7 +49,7 @@ namespace fro
 
 	double InputManager::getActionStrength(std::string const& actionName)
 	{
-		return getActionStrength(actionName, sActions[actionName].deadzone);
+		return sActions[actionName].absoluteStrength;
 	}
 
 	double InputManager::getActionStrengthAxis1D(std::string const& positiveActionName, std::string const& negativeActionName)
@@ -62,8 +65,8 @@ namespace fro
 	{
 		Vector2<double> const actionAxis2D
 		{
-			getActionStrength(positiveActionNameX, 0.0) - getActionStrength(negativeActionNameX, 0.0),
-			getActionStrength(positiveActionNameY, 0.0) - getActionStrength(negativeActionNameY, 0.0)
+			sActions[positiveActionNameX].rawStrength - sActions[negativeActionNameX].rawStrength,
+			sActions[positiveActionNameY].rawStrength - sActions[negativeActionNameY].rawStrength
 		};
 
 		std::array<double, 4> const actionDeadzones
@@ -95,88 +98,32 @@ namespace fro
 	{
 		auto const& [absoluteStrength, relativeStrength] { sInputs[input] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getStrengthInfo(absoluteStrength, relativeStrength, 0.0) };
+		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, 0.0) };
 		return isOverDeadzone and didJustCrossDeadzone;
 	}
 
 	bool InputManager::isActionJustPressed(std::string const& actionName)
 	{
-		auto const& [boundInputInfos, simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone]
-			{
-				sActions[actionName]
-			};
+		auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone] { sActions[actionName] };
 
-		bool justCrossedDeadzoneInputPresent{};
-		for (InputInfo const* const boundInputInfo : boundInputInfos)
-		{
-			auto const [isOverDeadzone, didJustCrossDeadzone]
-				{
-					getStrengthInfo(boundInputInfo->absoluteStrength, boundInputInfo->relativeStrength, deadzone)
-				};
-
-			if (isOverDeadzone)
-				if (didJustCrossDeadzone)
-					justCrossedDeadzoneInputPresent = true;
-				else
-					return false;
-		}
-
-		auto const [isOverDeadzone, didJustCrossDeadzone]
-			{
-				getStrengthInfo(simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone)
-			};
-
-		if (isOverDeadzone)
-			if (didJustCrossDeadzone)
-				justCrossedDeadzoneInputPresent = true;
-			else
-				return false;
-
-		return justCrossedDeadzoneInputPresent;
+		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, deadzone) };
+		return isOverDeadzone and didJustCrossDeadzone;
 	}
 
 	bool InputManager::isInputJustReleased(Input const input)
 	{
 		auto const& [absoluteStrength, relativeStrength] { sInputs[input] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getStrengthInfo(absoluteStrength, relativeStrength, 0.0) };
+		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, 0.0) };
 		return not isOverDeadzone and didJustCrossDeadzone;
 	}
 
 	bool InputManager::isActionJustReleased(std::string const& actionName)
 	{
-		auto const& [boundInputInfos, simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone]
-			{
-				sActions[actionName]
-			};
+		auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone] { sActions[actionName] };
 
-		bool justCrossedDeadzoneInputPresent{};
-		for (InputInfo const* const boundInputInfo : boundInputInfos)
-		{
-			auto const [isOverDeadzone, didJustCrossDeadzone]
-				{
-					getStrengthInfo(boundInputInfo->absoluteStrength, boundInputInfo->relativeStrength, deadzone)
-				};
-
-			if (isOverDeadzone)
-				return false;
-
-			if (didJustCrossDeadzone)
-				justCrossedDeadzoneInputPresent = true;
-		}
-
-		auto const [isOverDeadzone, didJustCrossDeadzone]
-			{
-				getStrengthInfo(simulatedAbsoluteStrength, simulatedRelativeStrength, deadzone)
-			};
-
-		if (isOverDeadzone)
-			return false;
-
-		if (didJustCrossDeadzone)
-			justCrossedDeadzoneInputPresent = true;
-
-		return justCrossedDeadzoneInputPresent;
+		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, deadzone) };
+		return not isOverDeadzone and didJustCrossDeadzone;
 	}
 
 	void InputManager::setInputStrength(Input const input, double const newStrength)
@@ -185,10 +132,41 @@ namespace fro
 
 		relativeStrength = newStrength - absoluteStrength;
 		absoluteStrength = newStrength;
+
+		for (auto&& [actionName, actionInfo] : sActions)
+			if (actionInfo.boundInputs.contains(input))
+			{
+				double largestBoundStrength{};
+
+				if (absoluteStrength > actionInfo.rawStrength)
+					largestBoundStrength = absoluteStrength;
+				else
+					for (Input const boundInput : actionInfo.boundInputs)
+					{
+						largestBoundStrength = std::max(getInputStrength(boundInput), largestBoundStrength);
+						if (largestBoundStrength == 1.0)
+							break;
+					};
+
+				actionInfo.rawStrength = largestBoundStrength;
+
+				double const deadzonedStrength{ deadzoneStrength(largestBoundStrength, actionInfo.deadzone) };
+				actionInfo.relativeStrength = deadzonedStrength - actionInfo.absoluteStrength;
+				actionInfo.absoluteStrength = deadzonedStrength;
+			}
 	}
 
-	std::pair<bool, bool> InputManager::getStrengthInfo(
-		double const absoluteStrength,
+	double InputManager::deadzoneStrength(double const strength, double const deadzone)
+	{
+		return
+		{
+			strength <= deadzone ?
+			0.0 :
+			(strength - deadzone) / (1.0 - deadzone)
+		};
+	}
+
+	InputManager::DeadzoneInfo InputManager::getDeadzoneInfo(double const absoluteStrength,
 		double const relativeStrength,
 		double const deadzone)
 	{
@@ -202,33 +180,6 @@ namespace fro
 			previousAbsoluteStrength <= deadzone :
 			previousAbsoluteStrength > deadzone
 		};
-	}
-
-	double InputManager::getLargestStrength(double const strength, double const largestStrength, double const deadzone)
-	{
-		double const deadzonedStrength
-		{
-			strength <= deadzone ?
-			0.0 :
-			(strength - deadzone) / (1.0 - deadzone)
-		};
-
-		return std::max(deadzonedStrength, largestStrength);
-	}
-
-	double InputManager::getActionStrength(std::string const& actionName, double const deadzone)
-	{
-		double largestStrength{};
-		ActionInfo const& actionInfo{ sActions[actionName] };
-
-		for (InputInfo const* const boundInputInfo : sActions[actionName].boundInputInfos)
-		{
-			largestStrength = getLargestStrength(boundInputInfo->absoluteStrength, largestStrength, deadzone);
-			if (largestStrength == 1.0)
-				return largestStrength;
-		}
-
-		return largestStrength;
 	}
 
 	EventListener<InputEvent const> InputManager::sOnInputEvent
