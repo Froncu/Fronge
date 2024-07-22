@@ -33,11 +33,11 @@ namespace fro
 			double deadzone{ 0.25 };
 		};
 
-		struct DeadzoneInfo final
+		struct StrengthInfo final
 		{
 		public:
-			bool isOverDeadzone;
-			bool didJustCrossDeadzone;
+			bool isActive;
+			bool didJustChange;
 		};
 
 	public:
@@ -66,12 +66,19 @@ namespace fro
 		FRO_API FRO_NODISCARD static bool isInputJustReleased(Input const input);
 		FRO_API FRO_NODISCARD static bool isActionJustReleased(std::string const& actionName);
 
+		FRO_API static EventDispatcher<Input const, double const> mInputPressedEvent;
+		FRO_API static EventDispatcher<Input const, double const> mInputReleasedEvent;
+		FRO_API static EventDispatcher<std::string const, double const> mActionPressedEvent;
+		FRO_API static EventDispatcher<std::string const, double const> mActionReleasedEvent;
+
 	private:
 		static void setInputStrength(Input const input, double const newStrength);
 
 		FRO_NODISCARD static double deadzoneStrength(double const strength, double const deadzone);
-		FRO_NODISCARD static DeadzoneInfo getDeadzoneInfo(double const absoluteStrength,
-			double const relativeStrength, double const deadzone);
+
+		FRO_NODISCARD static bool isJustPressed(double const absoluteStrength, double const relativeStrength);
+		FRO_NODISCARD static bool isJustReleased(double const absoluteStrength, double const relativeStrength);
+		FRO_NODISCARD static StrengthInfo getStrengthInfo(double const absoluteStrength, double const relativeStrength);
 
 		static EventListener<InputEvent const> sOnInputEvent;
 		static std::map<Input, InputInfo> sInputs;

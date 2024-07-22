@@ -98,32 +98,28 @@ namespace fro
 	{
 		auto const& [absoluteStrength, relativeStrength] { sInputs[input] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, 0.0) };
-		return isOverDeadzone and didJustCrossDeadzone;
+		return isJustPressed(absoluteStrength, relativeStrength);
 	}
 
 	bool InputManager::isActionJustPressed(std::string const& actionName)
 	{
 		auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone] { sActions[actionName] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, deadzone) };
-		return isOverDeadzone and didJustCrossDeadzone;
+		return isJustPressed(absoluteStrength, relativeStrength);
 	}
 
 	bool InputManager::isInputJustReleased(Input const input)
 	{
 		auto const& [absoluteStrength, relativeStrength] { sInputs[input] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, 0.0) };
-		return not isOverDeadzone and didJustCrossDeadzone;
+		return isJustReleased(absoluteStrength, relativeStrength);
 	}
 
 	bool InputManager::isActionJustReleased(std::string const& actionName)
 	{
 		auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone] { sActions[actionName] };
 
-		auto const [isOverDeadzone, didJustCrossDeadzone] { getDeadzoneInfo(absoluteStrength, relativeStrength, deadzone) };
-		return not isOverDeadzone and didJustCrossDeadzone;
+		return isJustReleased(absoluteStrength, relativeStrength);
 	}
 
 	void InputManager::setInputStrength(Input const input, double const newStrength)
@@ -132,6 +128,15 @@ namespace fro
 
 		relativeStrength = newStrength - absoluteStrength;
 		absoluteStrength = newStrength;
+
+		if (auto const [isActive, didJustChange] { getStrengthInfo(absoluteStrength, relativeStrength) };
+			didJustChange)
+		{
+			if (isActive)
+				mInputPressedEvent.notify(input, absoluteStrength);
+			else
+				mInputReleasedEvent.notify(input, absoluteStrength);
+		}
 
 		for (auto&& [actionName, actionInfo] : sActions)
 			if (actionInfo.boundInputs.contains(input))
@@ -150,9 +155,18 @@ namespace fro
 
 				actionInfo.rawStrength = largestBoundStrength;
 
-				double const deadzonedStrength{ deadzoneStrength(largestBoundStrength, actionInfo.deadzone) };
+				double const deadzonedStrength{ deadzoneStrength(actionInfo.rawStrength, actionInfo.deadzone) };
 				actionInfo.relativeStrength = deadzonedStrength - actionInfo.absoluteStrength;
 				actionInfo.absoluteStrength = deadzonedStrength;
+
+				if (auto const [isActive, didJustChange] { getStrengthInfo(actionInfo.absoluteStrength, actionInfo.relativeStrength) };
+					didJustChange)
+				{
+					if (isActive)
+						mActionPressedEvent.notify(actionName, absoluteStrength);
+					else
+						mActionReleasedEvent.notify(actionName, absoluteStrength);
+				}
 			}
 	}
 
@@ -166,21 +180,36 @@ namespace fro
 		};
 	}
 
-	InputManager::DeadzoneInfo InputManager::getDeadzoneInfo(double const absoluteStrength,
-		double const relativeStrength,
-		double const deadzone)
+	bool InputManager::isJustPressed(double const absoluteStrength, double const relativeStrength)
 	{
-		bool const isOverDeadzone{ absoluteStrength > deadzone };
+		auto const [isActive, didJustChange] { getStrengthInfo(absoluteStrength, relativeStrength) };
+		return isActive and didJustChange;
+	}
+
+	bool InputManager::isJustReleased(double const absoluteStrength, double const relativeStrength)
+	{
+		auto const [isActive, didJustChange] { getStrengthInfo(absoluteStrength, relativeStrength) };
+		return not isActive and didJustChange;
+	}
+
+	InputManager::StrengthInfo InputManager::getStrengthInfo(double const absoluteStrength, double const relativeStrength)
+	{
+		bool const isActive{ absoluteStrength > 0.0 };
 		double const previousAbsoluteStrength{ absoluteStrength - relativeStrength };
 
 		return
 		{
-			isOverDeadzone,
-			isOverDeadzone ?
-			previousAbsoluteStrength <= deadzone :
-			previousAbsoluteStrength > deadzone
+			isActive,
+			isActive ?
+			previousAbsoluteStrength == 0.0 :
+			previousAbsoluteStrength > 0.0
 		};
 	}
+
+	EventDispatcher<Input const, double const> InputManager::mInputPressedEvent{};
+	EventDispatcher<Input const, double const> InputManager::mInputReleasedEvent{};
+	EventDispatcher<std::string const, double const> InputManager::mActionPressedEvent{};
+	EventDispatcher<std::string const, double const> InputManager::mActionReleasedEvent{};
 
 	EventListener<InputEvent const> InputManager::sOnInputEvent
 	{

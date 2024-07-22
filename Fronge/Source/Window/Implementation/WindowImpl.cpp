@@ -49,7 +49,7 @@ namespace fro
 		return *mImplementation;
 	}
 
-	FRO_API bool Window::setFullscreen(bool const fullscreen)
+	bool Window::setFullscreen(bool const fullscreen)
 	{
 		int result;
 		if (fullscreen)
