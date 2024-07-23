@@ -70,7 +70,7 @@ namespace fro
 		return *this;
 	}
 
-	std::size_t Texture::getID() const
+	ID const& Texture::getID() const
 	{
 		return mID;
 	}

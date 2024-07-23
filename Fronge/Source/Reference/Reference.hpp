@@ -23,6 +23,19 @@ namespace fro
 	concept EitherDerivedType =
 		std::derived_from<Type1, Type2> or
 		std::derived_from<Type2, Type1>;
+	
+	template<typename FromType, typename ToType>
+	concept ConstantPromotableType =
+		(std::is_const_v<FromType> and std::is_const_v<ToType>) or
+		(not std::is_const_v<FromType> and std::is_const_v<ToType>) or
+		(not std::is_const_v<FromType> and not std::is_const_v<ToType>);
+
+	// TODO: shitty name, *very* shitty
+	template<typename FromType, typename ToType>
+	concept ReferenceConstructorType =
+		ReferencableType<FromType> and
+		ConstantPromotableType<FromType, ToType> and
+		std::derived_from<FromType, ToType>;
 
 	template<typename Type>
 	class Reference final : public BaseReference
@@ -33,13 +46,13 @@ namespace fro
 	public:
 		Reference() = default;
 
-		template<std::derived_from<Type> OtherType>
+		template<ReferenceConstructorType<Type> OtherType>
 		Reference(OtherType* const pReferencable)
 			: BaseReference(pReferencable)
 		{
 		}
 
-		template<std::derived_from<Type> OtherType>
+		template<ReferenceConstructorType<Type> OtherType>
 		Reference(OtherType& referencable)
 			: BaseReference(referencable)
 		{
@@ -55,13 +68,13 @@ namespace fro
 		{
 		}
 
-		template<std::derived_from<Type> OtherType>
+		template<ReferenceConstructorType<Type> OtherType>
 		Reference(Reference<OtherType> const* const pReferencable)
 			: BaseReference(pReferencable)
 		{
 		}
 
-		template<std::derived_from<Type> OtherType>
+		template<ReferenceConstructorType<Type> OtherType>
 		Reference(Reference<OtherType> const& referencable)
 			: BaseReference(referencable)
 		{
@@ -101,15 +114,15 @@ namespace fro
 			return get();
 		}
 
-		template<typename OtherType>
-			requires PolymorphicType<Type, OtherType>
+		template<ReferencableType OtherType>
+			requires PolymorphicType<Type, OtherType> and ConstantPromotableType<Type, OtherType>
 		Reference<OtherType> dynamicCast() const
 		{
 			return dynamic_cast<OtherType* const>(mReferencable);
 		}
 
-		template<typename OtherType>
-			requires EitherDerivedType<Type, OtherType>
+		template<ReferencableType OtherType>
+			requires EitherDerivedType<Type, OtherType> and ConstantPromotableType<Type, OtherType>
 		Reference<OtherType> staticCast() const
 		{
 			return static_cast<OtherType* const>(mReferencable);

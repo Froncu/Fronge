@@ -23,6 +23,8 @@ namespace fro
 
 		FRO_API ID& operator=(ID&& other) noexcept;
 		FRO_API FRO_NODISCARD operator std::size_t() const;
+		FRO_API FRO_NODISCARD bool operator==(ID const& other) const;
+		FRO_API FRO_NODISCARD std::strong_ordering operator<=>(ID const& other) const;
 
 		FRO_API FRO_NODISCARD Reference<IDGenerator> getGenerator() const;
 

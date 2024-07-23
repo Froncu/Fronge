@@ -156,7 +156,7 @@ namespace fro
 				texture.getID(), getID(), SDL_GetError());
 	}
 
-	std::size_t Renderer::getID() const
+	ID const& Renderer::getID() const
 	{
 		return mID;
 	}

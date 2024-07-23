@@ -65,6 +65,21 @@ namespace fro
 		return mID;
 	}
 
+	bool ID::operator==(ID const& other) const
+	{
+		return
+			mGenerator == other.mGenerator and
+			mID == other.mID;
+	}
+
+	std::strong_ordering ID::operator<=>(ID const& other) const
+	{
+		if (mGenerator == other.mGenerator)
+			return mID <=> other.mID;
+		
+		return mGenerator <=> other.mGenerator;
+	}
+
 	Reference<IDGenerator> ID::getGenerator() const
 	{
 		return mGenerator;

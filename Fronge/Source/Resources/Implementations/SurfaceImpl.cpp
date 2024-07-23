@@ -103,7 +103,7 @@ namespace fro
 		return *mImplementation;
 	}
 
-	std::size_t Surface::getID() const
+	ID const& Surface::getID() const
 	{
 		return mID;
 	}

@@ -8,7 +8,7 @@
 
 namespace fro
 {
-	class Font final
+	class Font final : public Referencable
 	{
 		class Implementation;
 
@@ -22,7 +22,7 @@ namespace fro
 
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
-		FRO_API FRO_NODISCARD std::size_t getID() const;
+		FRO_API FRO_NODISCARD ID const& getID() const;
 
 	private:
 		static IDGenerator sIDGenerator;

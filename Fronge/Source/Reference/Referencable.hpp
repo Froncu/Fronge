@@ -16,9 +16,9 @@ namespace fro
 
 	protected:
 		Referencable() = default;
-		Referencable(Referencable&& other) noexcept;
+		FRO_API Referencable(Referencable&& other) noexcept;
 
-		Referencable& operator=(Referencable&& other) noexcept;
+		FRO_API Referencable& operator=(Referencable&& other) noexcept;
 
 	private:
 		Referencable(Referencable const&) = delete;

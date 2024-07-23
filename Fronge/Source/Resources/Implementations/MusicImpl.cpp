@@ -63,7 +63,7 @@ namespace fro
 		return *mImplementation;
 	}
 
-	std::size_t Music::getID() const
+	ID const& Music::getID() const
 	{
 		return mID;
 	}

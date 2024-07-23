@@ -67,7 +67,7 @@ namespace fro
 		return *mImplementation;
 	}
 
-	std::size_t SoundEffect::getID() const
+	ID const& SoundEffect::getID() const
 	{
 		return mID;
 	}

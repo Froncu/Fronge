@@ -3,108 +3,56 @@
 #include "Logger/Logger.hpp"
 #include "ResourceManager.hpp"
 
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
 namespace fro
 {
-	std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>> ResourceManager::mImageTextures{};
-	std::unordered_map<std::string, CustomUniquePointer<Mix_Music>> ResourceManager::mAudioMusics{};
-	std::unordered_map<std::string, CustomUniquePointer<Mix_Chunk>> ResourceManager::mAudioEffects{};
-
-	std::string ResourceManager::mResourcesDirectory{ "Resources/" };
-
-	std::map<ResourceManager::FontInfo, CustomUniquePointer<TTF_Font>> ResourceManager::mFonts{};
-
-	void ResourceManager::initialize()
+	Reference<Font> ResourceManager::findFont(std::string name)
 	{
-		if (int constexpr imageFlags{ NULL }; IMG_Init(imageFlags) not_eq imageFlags)
-			throw std::runtime_error(std::format("IMG_Init() failed: {}", IMG_GetError()));
+		auto const& pair{ sFonts.find(name) };
+		if (pair == sFonts.end())
+			return nullptr;
 
-		if (TTF_Init() == -1)
-			throw std::runtime_error(std::format("TTF_Init() failed: {}", TTF_GetError()));
-
-		fro::Logger::info("ResourceManager intialized!");
+		return pair->second;
 	}
 
-	void ResourceManager::shutDown()
+	Reference<Music> ResourceManager::findMusic(std::string name)
 	{
-		clearCaches(); // TODO: the caches need to be cleared before quiting the subsystems, I would prefer this to not be necessary
+		auto const& pair{ sMusics.find(name) };
+		if (pair == sMusics.end())
+			return nullptr;
 
-		TTF_Quit();
-		IMG_Quit();
-
-		fro::Logger::info("ResourceManager shut down!");
+		return pair->second;
 	}
 
-	void fro::ResourceManager::clearCaches()
+	Reference<SoundEffect> ResourceManager::findSoundEffect(std::string name)
 	{
-		mFonts.clear();
-		mImageTextures.clear();
-		mAudioMusics.clear();
-		mAudioEffects.clear();
+		auto const& pair{ sSoundEffect.find(name) };
+		if (pair == sSoundEffect.end())
+			return nullptr;
+
+		return pair->second;
 	}
 
-	void fro::ResourceManager::setResourcesDirectory(std::string resourcesDirectory)
+	Reference<Surface> ResourceManager::findSurface(std::string name)
 	{
-		mResourcesDirectory = std::move(resourcesDirectory);
+		auto const& pair{ sSurfaces.find(name) };
+		if (pair == sSurfaces.end())
+			return nullptr;
+
+		return pair->second;
 	}
 
-	fro::CustomUniquePointer<SDL_Texture> fro::ResourceManager::getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text)
+	Reference<Texture> ResourceManager::findTexture(std::string name)
 	{
-		TTF_Font* const pFont{ getFont(fileName, size) };
+		auto const& pair{ sTextures.find(name) };
+		if (pair == sTextures.end())
+			return nullptr;
 
-		CustomUniquePointer<SDL_Surface> pTextSurface
-		{
-			TTF_RenderText_Blended(pFont, text.data(),
-				SDL_Color(255, 255, 255, 255)), SDL_FreeSurface
-		};
-
-		return
-		{
-			SDL_CreateTextureFromSurface(pRenderer, pTextSurface.get()),
-			SDL_DestroyTexture
-		};
+		return pair->second;
 	}
 
-	SDL_Texture* fro::ResourceManager::getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName)
-	{
-		auto& pTexture{ mImageTextures[imageFileName] };
-
-		if (not pTexture.get())
-			pTexture = CustomUniquePointer<SDL_Texture>(IMG_LoadTexture(pRenderer, std::format("{}{}", mResourcesDirectory, imageFileName).c_str()), SDL_DestroyTexture);
-
-		return pTexture.get();
-	}
-
-	Mix_Music* fro::ResourceManager::getMusic(std::string const& audioFileName)
-	{
-		auto& pMusic{ mAudioMusics[audioFileName] };
-
-		if (not pMusic.get())
-			pMusic = CustomUniquePointer<Mix_Music>(Mix_LoadMUS(std::format("{}{}", mResourcesDirectory, audioFileName).c_str()), Mix_FreeMusic);
-
-		return pMusic.get();
-	}
-
-	Mix_Chunk* fro::ResourceManager::getEffect(std::string const& audioFileName)
-	{
-		auto& pEffect{ mAudioEffects[audioFileName] };
-
-		if (not pEffect.get())
-			pEffect = CustomUniquePointer<Mix_Chunk>(Mix_LoadWAV(std::format("{}{}", mResourcesDirectory, audioFileName).c_str()), Mix_FreeChunk);
-
-		return pEffect.get();
-	}
-
-	TTF_Font* fro::ResourceManager::getFont(std::string const& fileName, int const size)
-	{
-		auto& pFont{ mFonts[{ fileName, size }] };
-
-		if (not pFont.get())
-			pFont = CustomUniquePointer<TTF_Font>(TTF_OpenFont(std::format("{}{}", mResourcesDirectory, fileName).c_str(), size), TTF_CloseFont);
-
-		return pFont.get();
-	}
+	std::unordered_map<std::string, Font> ResourceManager::sFonts{};
+	std::unordered_map<std::string, Music> ResourceManager::sMusics{};
+	std::unordered_map<std::string, SoundEffect> ResourceManager::sSoundEffect{};
+	std::unordered_map<std::string, Surface> ResourceManager::sSurfaces{};
+	std::unordered_map<std::string, Texture> ResourceManager::sTextures{};
 }

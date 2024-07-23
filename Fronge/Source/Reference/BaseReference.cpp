@@ -6,14 +6,14 @@
 
 namespace fro
 {
-	BaseReference::BaseReference(Referencable* const pReferencable)
-		: mReferencable{ pReferencable }
+	BaseReference::BaseReference(Referencable const* const pReferencable)
+		: mReferencable{ const_cast<Referencable*>(pReferencable) }
 	{
 		if (valid())
 			mReferencable->mReferences.insert(this);
 	}
 
-	BaseReference::BaseReference(Referencable& referencable)
+	BaseReference::BaseReference(Referencable const& referencable)
 		: BaseReference(&referencable)
 	{
 	}

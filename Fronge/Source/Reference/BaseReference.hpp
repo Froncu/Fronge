@@ -29,8 +29,8 @@ namespace fro
 
 	private:
 		BaseReference() = default;
-		FRO_API BaseReference(Referencable* const pReferencable);
-		FRO_API BaseReference(Referencable& referencable);
+		FRO_API BaseReference(Referencable const* const pReferencable);
+		FRO_API BaseReference(Referencable const& referencable);
 		FRO_API BaseReference(BaseReference const& other);
 		FRO_API BaseReference(BaseReference&& other) noexcept;
 

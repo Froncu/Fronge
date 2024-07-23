@@ -49,7 +49,8 @@ namespace fro
 	}
 
 	Font::Font(Font&& other) noexcept
-		: mImplementation{ std::move(other.mImplementation) }
+		: Referencable(std::move(other))
+		, mImplementation{ std::move(other.mImplementation) }
 	{
 	}
 
@@ -64,6 +65,8 @@ namespace fro
 		if (this == &other)
 			return *this;
 
+		Referencable::operator=(std::move(other));
+
 		mImplementation = std::move(other.mImplementation);
 
 		return *this;
@@ -74,7 +77,7 @@ namespace fro
 		return *mImplementation;
 	}
 
-	std::size_t Font::getID() const
+	ID const& Font::getID() const
 	{
 		return mID;
 	}

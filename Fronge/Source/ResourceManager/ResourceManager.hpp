@@ -1,47 +1,123 @@
-#if not defined fro_RESOURCE_MANAGER_HPP
-#define fro_RESOURCE_MANAGER_HPP
+#if not defined RESOURCE_MANAGER_HPP
+#define RESOURCE_MANAGER_HPP
 
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "Utility/CustomUniquePointer.hpp"
-
-struct SDL_Renderer;
-struct SDL_Texture;
-typedef struct _Mix_Music Mix_Music;
-struct Mix_Chunk;
-typedef struct _TTF_Font TTF_Font;
+#include "Logger/Logger.hpp"
+#include "Resources/Font.hpp"
+#include "Resources/Music.hpp"
+#include "Resources/SoundEffect.hpp"
+#include "Resources/Surface.hpp"
+#include "Resources/Texture.hpp"
 
 namespace fro
 {
 	class ResourceManager final
 	{
-		using FontInfo = std::pair<std::string, int>;
-
 	public:
-		FRO_API static void initialize();
-		FRO_API static void shutDown();
+		FRO_API FRO_NODISCARD static Reference<Font> findFont(std::string name);
+		FRO_API FRO_NODISCARD static Reference<Music> findMusic(std::string name);
+		FRO_API FRO_NODISCARD static Reference<SoundEffect> findSoundEffect(std::string name);
+		FRO_API FRO_NODISCARD static Reference<Surface> findSurface(std::string name);
+		FRO_API FRO_NODISCARD static Reference<Texture> findTexture(std::string name);
 
-		FRO_API static void clearCaches();
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<Font, ArgumentTypes...>
+		static Reference<Font> storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		{
+			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Font{ std::forward<ArgumentTypes>(arguments)... } }) };
+			if (didInsert)
+			{
+				Logger::info("stored Font with ID {} in the ResourceManager!",
+					resource->second.getID());
+			}
+			else
+			{
+				Logger::warn("failed to store Font with ID {} in the ResourceManager (it's already stored)",
+					resource->second.getID());
+			}
 
-		FRO_API static void setResourcesDirectory(std::string resourcesDirectory);
+			return resource->second;
+		}
 
-		FRO_API FRO_NODISCARD static CustomUniquePointer<SDL_Texture> getTextTexture(SDL_Renderer* const pRenderer, std::string const& fileName, int const size, std::string const& text);
-		FRO_API FRO_NODISCARD static SDL_Texture* getImageTexture(SDL_Renderer* const pRenderer, std::string const& imageFileName);
-		FRO_API FRO_NODISCARD static Mix_Music* getMusic(std::string const& audioFileName);
-		FRO_API FRO_NODISCARD static Mix_Chunk* getEffect(std::string const& audioFileName);
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<Music, ArgumentTypes...>
+		static Reference<Music> storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		{
+			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Music{ std::forward<ArgumentTypes>(arguments)... } }) };
+			if (didInsert)
+			{
+				Logger::info("stored Music with ID {} in the ResourceManager!",
+					resource->second.getID());
+			}
+			else
+			{
+				Logger::warn("failed to store Music with ID {} in the ResourceManager (it's already stored)",
+					resource->second.getID());
+			}
+
+			return resource->second;
+		}
+
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<SoundEffect, ArgumentTypes...>
+		static Reference<SoundEffect> storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		{
+			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), SoundEffect{ std::forward<ArgumentTypes>(arguments)... } }) };
+			if (didInsert)
+			{
+				Logger::info("stored SoundEffect with ID {} in the ResourceManager!",
+					resource->second.getID());
+			}
+			else
+			{
+				Logger::warn("failed to store SoundEffect with ID {} in the ResourceManager (it's already stored)",
+					resource->second.getID());
+			}
+
+			return resource->second;
+		}
+
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<Surface, ArgumentTypes...>
+		static Reference<Surface> storeSurface(std::string name, ArgumentTypes&&... arguments)
+		{
+			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Texture{ std::forward<ArgumentTypes>(arguments)... } }) };
+			if (didInsert)
+			{
+				Logger::info("stored Surface with ID {} in the ResourceManager!",
+					resource->second.getID());
+			}
+			else
+			{
+				Logger::warn("failed to store Surface with ID {} in the ResourceManager (it's already stored)",
+					resource->second.getID());
+			}
+
+			return resource->second;
+		}
+
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<Texture, ArgumentTypes...>
+		static Reference<Texture> storeTexture(std::string name, ArgumentTypes&&... arguments)
+		{
+			auto&& [resource, didInsert] { sTextures.insert({ std::move(name), Texture{ std::forward<ArgumentTypes>(arguments)... } }) };
+			if (didInsert)
+			{
+				Logger::info("stored Texture with ID {} in the ResourceManager!",
+					resource->second.getID());
+			}
+			else
+			{
+				Logger::warn("failed to store Texture with ID {} in the ResourceManager (it's already stored)",
+					resource->second.getID());
+			}
+
+			return resource->second;
+		}
 
 	private:
-		FRO_NODISCARD static TTF_Font* getFont(std::string const& fileName, int const size);
-
-		static std::unordered_map<std::string, CustomUniquePointer<SDL_Texture>> mImageTextures;
-		static std::unordered_map<std::string, CustomUniquePointer<Mix_Music>> mAudioMusics;
-		static std::unordered_map<std::string, CustomUniquePointer<Mix_Chunk>> mAudioEffects;
-
-		static std::string mResourcesDirectory;
-
-		static std::map<FontInfo, CustomUniquePointer<TTF_Font>> mFonts;
-
 		ResourceManager() = delete;
 		ResourceManager(ResourceManager const&) = delete;
 		ResourceManager(ResourceManager&&) noexcept = delete;
@@ -50,6 +126,12 @@ namespace fro
 
 		ResourceManager& operator=(ResourceManager const&) = delete;
 		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
+
+		FRO_API static std::unordered_map<std::string, Font> sFonts;
+		FRO_API static std::unordered_map<std::string, Music> sMusics;
+		FRO_API static std::unordered_map<std::string, SoundEffect> sSoundEffect;
+		FRO_API static std::unordered_map<std::string, Surface> sSurfaces;
+		FRO_API static std::unordered_map<std::string, Texture> sTextures;
 	};
 }
 

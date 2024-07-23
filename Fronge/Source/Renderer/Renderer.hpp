@@ -42,7 +42,7 @@ namespace fro
 			Matrix3x3<double> const& transform = true,
 			Rectangle<int> sourceRectangle = {}) const;
 
-		FRO_API FRO_NODISCARD std::size_t getID() const;
+		FRO_API FRO_NODISCARD ID const& getID() const;
 		FRO_API FRO_NODISCARD Vector2<int> getResolution() const;
 		FRO_API FRO_NODISCARD Reference<Window> getWindow() const;
 
