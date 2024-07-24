@@ -21,6 +21,7 @@
 #include "Resources/Surface.hpp"
 #include "Resources/Texture.hpp"
 #include "Utility/CustomUniquePointer.hpp"
+#include "Utility/SparseSet.hpp"
 #include "Utility/VariantVisitor.hpp"
 #include "Window/Window.hpp"
 
