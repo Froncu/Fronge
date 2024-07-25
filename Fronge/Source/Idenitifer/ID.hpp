@@ -15,7 +15,7 @@ namespace fro
 		friend IDGenerator;
 
 	public:
-		static std::size_t constexpr INVALID_ID{ 0 };
+		static std::size_t constexpr INVALID_ID{ std::numeric_limits<std::size_t>::max() };
 
 		FRO_API ID(ID&& other) noexcept;
 
@@ -49,6 +49,9 @@ struct std::formatter<fro::ID>
 
 	auto format(fro::ID const& ID, std::format_context& ctx) const
 	{
+		if (ID == fro::ID::INVALID_ID)
+			return std::format_to(ctx.out(), "{}", "INVALID");
+
 		return std::format_to(ctx.out(), "{}", static_cast<std::size_t>(ID));
 	}
 };

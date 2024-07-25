@@ -26,7 +26,8 @@ namespace fro
 
 	std::uint32_t Window::Implementation::getID() const
 	{
-		return SDL_GetWindowID(mSDLWindow.get());
+		// SDL's ID's for windows start from 1, Fronge's start from 0, so we subtract 1
+		return SDL_GetWindowID(mSDLWindow.get()) - 1;
 	}
 
 	Window::Window(std::string_view const title, Vector2<int> const size)

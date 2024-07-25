@@ -10,11 +10,12 @@ namespace fro
 {
 	void SystemEventManager::Implementation::dispatchSDLWindowEvent(SDL_WindowEvent const& SDLEvent)
 	{
+		// SDL's ID's for windows start from 1, Fronge's start from 0, so we subtract 1
 		switch (SDLEvent.event)
 		{
 		case SDL_WINDOWEVENT_CLOSE:
 		{
-			WindowCloseEvent event{ SDLEvent.windowID };
+			WindowCloseEvent event{ SDLEvent.windowID - 1 };
 			Logger::info("dispatched {}!", event.getLogString());
 
 			mWindowEvent.notify(std::move(event));
@@ -24,7 +25,7 @@ namespace fro
 		{
 			WindowResizeEvent event
 			{
-				.ID{ SDLEvent.windowID },
+				.ID{ SDLEvent.windowID - 1 },
 				.size{ SDLEvent.data1, SDLEvent.data2 }
 			};
 

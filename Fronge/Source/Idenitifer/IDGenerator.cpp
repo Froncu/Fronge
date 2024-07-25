@@ -8,7 +8,7 @@ namespace fro
 		: mHighestTakenID{ other.mHighestTakenID }
 		, mFreeIDs{ std::move(other.mFreeIDs) }
 	{
-		other.mHighestTakenID = 0;
+		other.mHighestTakenID = ID::INVALID_ID;
 	}
 
 	IDGenerator& IDGenerator::operator=(IDGenerator&& other) noexcept
@@ -19,7 +19,7 @@ namespace fro
 		mHighestTakenID = other.mHighestTakenID;
 		mFreeIDs = std::move(other.mFreeIDs);
 
-		other.mHighestTakenID = 0;
+		other.mHighestTakenID = ID::INVALID_ID;
 
 		return *this;
 	}
