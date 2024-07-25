@@ -7,12 +7,11 @@
 
 namespace fro
 {
+	class Referencable;
+
 	class BaseReference
 	{
-		friend class Referencable;
-
-		template<typename>
-		friend class Reference;
+		friend Referencable;
 
 	public:
 		FRO_API virtual ~BaseReference();
@@ -27,7 +26,7 @@ namespace fro
 		FRO_API void reset();
 		FRO_API bool valid() const;
 
-	private:
+	protected:
 		BaseReference() = default;
 		FRO_API BaseReference(Referencable const* const pReferencable);
 		FRO_API BaseReference(Referencable const& referencable);
