@@ -7,6 +7,8 @@
 
 #include "froch.hpp"
 
+#include "Core.hpp"
+
 namespace fro
 {
 	template<std::swappable DataType>
@@ -27,7 +29,7 @@ namespace fro
 
 		SparseSet& operator=(SparseSet const&) = default;
 		SparseSet& operator=(SparseSet&&) noexcept = default;
-		DataType& operator[](Key const key)
+		FRO_NODISCARD DataType& operator[](Key const key)
 			requires std::default_initializable<DataType>
 		{
 			if (not inSparseRange(key))
@@ -56,12 +58,12 @@ namespace fro
 			return &naiveInsert(key, std::move(data)).second;
 		}
 
-		bool contains(Key const key) const
+		FRO_NODISCARD bool contains(Key const key) const
 		{
 			return inSparseRange(key) and naiveContains(key);
 		}
 
-		DataType* find(Key const key)
+		FRO_NODISCARD DataType* find(Key const key)
 		{
 			if (not contains(key))
 				return nullptr;
@@ -116,43 +118,43 @@ namespace fro
 			shrinkDense();
 		}
 
-		std::size_t sparseSize() const
+		FRO_NODISCARD std::size_t sparseSize() const
 		{
 			return mSparse.size();
 		}
 
-		std::size_t sparseCapacity() const
+		FRO_NODISCARD std::size_t sparseCapacity() const
 		{
 			return mSparse.capacity();
 		}
 
-		std::size_t denseSize() const
+		FRO_NODISCARD std::size_t denseSize() const
 		{
 			return mDense.size();
 		}
 
-		std::size_t denseCapacity() const
+		FRO_NODISCARD std::size_t denseCapacity() const
 		{
 			return mDense.capacity();
 		}
 
 	private:
-		bool inSparseRange(Key const key) const
+		FRO_NODISCARD bool inSparseRange(Key const key) const
 		{
 			return key < mSparse.size();
 		}
 
-		bool inDenseRange(DataIndex const dataIndex) const
+		FRO_NODISCARD bool inDenseRange(DataIndex const dataIndex) const
 		{
 			return dataIndex < mDense.size();
 		}
 
-		bool naiveContains(Key const key) const
+		FRO_NODISCARD bool naiveContains(Key const key) const
 		{
 			return mSparse[key] not_eq UNUSED_DATA_INDEX;
 		}
 
-		DenseType& naiveFind(Key const key)
+		FRO_NODISCARD DenseType& naiveFind(Key const key)
 		{
 			return mDense[mSparse[key]];
 		}
