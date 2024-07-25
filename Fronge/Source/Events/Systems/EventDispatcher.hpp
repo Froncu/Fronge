@@ -79,7 +79,7 @@ namespace fro
 		}
 
 	private:
-		std::set<EventListenerType*> mListeners;
+		std::unordered_set<EventListenerType*> mListeners;
 	};
 }
 

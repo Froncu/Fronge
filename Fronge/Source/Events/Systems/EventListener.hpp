@@ -90,7 +90,7 @@ namespace fro
 
 	private:
 		CallbackType mOnNotify;
-		std::set<EventDispatcher<Payload...>*> mDispatchers{};
+		std::unordered_set<EventDispatcher<Payload...>*> mDispatchers{};
 	};
 }
 

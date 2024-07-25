@@ -25,7 +25,7 @@ namespace fro
 
 		Referencable& operator=(Referencable const&) = delete;
 
-		std::set<BaseReference*> mReferences{};
+		std::unordered_set<BaseReference*> mReferences{};
 	};
 }
 

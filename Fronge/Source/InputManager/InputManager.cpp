@@ -264,6 +264,6 @@ namespace fro
 		}
 	};
 
-	std::map<Input, InputManager::InputInfo> InputManager::sInputs{};
-	std::map<std::string, InputManager::ActionInfo> InputManager::sActions{};
+	std::unordered_map<Input, InputManager::InputInfo> InputManager::sInputs{};
+	std::unordered_map<std::string, InputManager::ActionInfo> InputManager::sActions{};
 }

@@ -25,7 +25,7 @@ namespace fro
 		struct ActionInfo final
 		{
 		public:
-			std::set<Input> boundInputs{};
+			std::unordered_set<Input> boundInputs{};
 
 			double rawStrength{};
 			double absoluteStrength{};
@@ -81,8 +81,8 @@ namespace fro
 		FRO_NODISCARD static StrengthInfo getStrengthInfo(double const absoluteStrength, double const relativeStrength);
 
 		static EventListener<InputEvent const> sOnInputEvent;
-		static std::map<Input, InputInfo> sInputs;
-		static std::map<std::string, ActionInfo> sActions;
+		static std::unordered_map<Input, InputInfo> sInputs;
+		static std::unordered_map<std::string, ActionInfo> sActions;
 
 		InputManager() = delete;
 		InputManager(InputManager const&) = delete;
