@@ -3,6 +3,8 @@
 
 #include "froch.hpp"
 
+#include "Utility/LazyHasher.hpp"
+
 namespace fro
 {
 	enum class MouseButton
@@ -322,9 +324,7 @@ struct std::hash<fro::GamepadButtonInput>
 {
 	std::size_t operator()(fro::GamepadButtonInput const& input) const noexcept
 	{
-		std::size_t const hash1{ std::hash<std::int32_t>{}(input.first) };
-		std::size_t const hash2{ std::hash<fro::GamepadButton>{}(input.second) };
-		return hash1 ^ (hash2 << 1);
+		return fro::LazyHasher{}(input.first, input.second);
 	}
 };
 
@@ -333,9 +333,7 @@ struct std::hash<fro::GamepadAxisInput>
 {
 	std::size_t operator()(fro::GamepadAxisInput const& input) const noexcept
 	{
-		std::size_t const hash1{ std::hash<std::int32_t>{}(input.first) };
-		std::size_t const hash2{ std::hash<fro::GamepadAxis>{}(input.second) };
-		return hash1 ^ (hash2 << 1);
+		return fro::LazyHasher{}(input.first, input.second);
 	}
 };
 
