@@ -3,22 +3,24 @@
 
 #include "froch.hpp"
 
+#include "Core.hpp"
+
 namespace fro
 {
 	template<typename Type1, typename Type2>
-	auto& runtimeGet(std::pair<Type1, Type2>& pair, std::size_t const runtimeIndex)
+	FRO_NODISCARD auto& runtimeGet(std::pair<Type1, Type2>& pair, std::size_t const runtimeIndex)
 	{
 		return runtimeGet(pair, runtimeIndex, std::make_index_sequence<2>{});
 	}
 
 	template<typename... Types>
-	auto& runtimeGet(std::tuple<Types...>& tuple, std::size_t const runtimeIndex)
+	FRO_NODISCARD auto& runtimeGet(std::tuple<Types...>& tuple, std::size_t const runtimeIndex)
 	{
 		return runtimeGet(tuple, runtimeIndex, std::make_index_sequence<std::tuple_size_v<std::tuple<Types...>>>{});
 	}
 
 	template<typename... Types>
-	auto& runtimeGet(std::variant<Types...>& variant, std::size_t const runtimeIndex)
+	FRO_NODISCARD auto& runtimeGet(std::variant<Types...>& variant, std::size_t const runtimeIndex)
 	{
 		return runtimeGet(variant, runtimeIndex, std::make_index_sequence<std::variant_size_v<std::variant<Types...>>>{});
 	}
@@ -30,7 +32,7 @@ namespace fro
 	};
 
 	template<RuntimeGettable Type, std::size_t CURRENT_INDEX, std::size_t... NEXT_INDICES>
-	auto& runtimeGet(Type& type, std::size_t const runtimeIndex,
+	FRO_NODISCARD auto& runtimeGet(Type& type, std::size_t const runtimeIndex,
 		std::index_sequence<CURRENT_INDEX, NEXT_INDICES...> const)
 	{
 		if (CURRENT_INDEX == runtimeIndex)
@@ -43,7 +45,7 @@ namespace fro
 	}
 
 	template<typename... Types>
-	std::size_t getArgumentPackIndex(std::type_index const typeIndex)
+	FRO_NODISCARD std::size_t getParameterPackIndex(std::type_index const typeIndex)
 	{
 		static std::array<std::type_index, sizeof...(Types)> const typeIndices{ typeid(Types)... };
 
