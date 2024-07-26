@@ -41,6 +41,19 @@ namespace fro
 		else
 			FRO_EXCEPTION("runtime index is out of bound!");
 	}
+
+	template<typename... Types>
+	std::size_t getArgumentPackIndex(std::type_index const typeIndex)
+	{
+		static std::array<std::type_index, sizeof...(Types)> const typeIndices{ typeid(Types)... };
+
+		std::size_t index{};
+		for (; index < typeIndices.size(); ++index)
+			if (typeIndices[index] == typeIndex)
+				break;
+
+		return index;
+	}
 }
 
 #endif
