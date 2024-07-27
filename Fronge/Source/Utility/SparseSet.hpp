@@ -29,16 +29,16 @@ namespace fro
 
 		SparseSet& operator=(SparseSet const&) = default;
 		SparseSet& operator=(SparseSet&&) noexcept = default;
-		FRO_NODISCARD DataType& operator[](Key const key)
+		FRO_NODISCARD std::pair<DataType&, bool> operator[](Key const key)
 			requires std::default_initializable<DataType>
 		{
 			if (not inSparseRange(key))
 				mSparse.resize(key + 1, UNUSED_DATA_INDEX);
 
 			else if (naiveContains(key))
-				return naiveFind(key).second;
+				return { naiveFind(key).second, false };
 
-			return naiveInsert(key, {}).second;
+			return { naiveInsert(key, {}).second, true };
 		}
 
 		void clear()
