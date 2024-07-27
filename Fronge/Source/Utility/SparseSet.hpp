@@ -41,12 +41,6 @@ namespace fro
 			return { naiveInsert(key, {}).second, true };
 		}
 
-		void clear()
-		{
-			mSparse.clear();
-			mDense.clear();
-		}
-
 		DataType* insert(Key const key, DataType data)
 		{
 			if (not inSparseRange(key))
@@ -56,19 +50,6 @@ namespace fro
 				return nullptr;
 
 			return &naiveInsert(key, std::move(data)).second;
-		}
-
-		FRO_NODISCARD bool contains(Key const key) const
-		{
-			return inSparseRange(key) and naiveContains(key);
-		}
-
-		FRO_NODISCARD DataType* find(Key const key)
-		{
-			if (not contains(key))
-				return nullptr;
-
-			return &naiveFind(key).second;
 		}
 
 		bool erase(Key const key)
@@ -83,13 +64,18 @@ namespace fro
 			return true;
 		}
 
-		bool move(Key const key, DataIndex const where)
+		FRO_NODISCARD DataType* find(Key const key)
 		{
-			if (not inDenseRange(where) or not contains(key))
-				return false;
+			if (not contains(key))
+				return nullptr;
 
-			naiveMove(key, where);
-			return true;
+			return &naiveFind(key).second;
+		}
+
+		void clear()
+		{
+			mSparse.clear();
+			mDense.clear();
 		}
 
 		void shrinkSparse()
@@ -116,6 +102,20 @@ namespace fro
 		{
 			shrinkSparse();
 			shrinkDense();
+		}
+
+		bool move(Key const key, DataIndex const where)
+		{
+			if (not inDenseRange(where) or not contains(key))
+				return false;
+
+			naiveMove(key, where);
+			return true;
+		}
+
+		FRO_NODISCARD bool contains(Key const key) const
+		{
+			return inSparseRange(key) and naiveContains(key);
 		}
 
 		FRO_NODISCARD std::size_t sparseSize() const
