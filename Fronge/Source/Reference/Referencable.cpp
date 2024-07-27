@@ -5,6 +5,10 @@
 
 namespace fro
 {
+	Referencable::Referencable(Referencable const&)
+	{
+	}
+
 	Referencable::Referencable(Referencable&& other) noexcept
 		: mReferences{ std::move(other.mReferences) }
 	{
@@ -16,6 +20,11 @@ namespace fro
 	{
 		for (BaseReference* const reference : mReferences)
 			reference->mReferencable = nullptr;
+	}
+
+	Referencable& Referencable::operator=(Referencable const&)
+	{
+		return *this;
 	}
 
 	Referencable& Referencable::operator=(Referencable&& other) noexcept

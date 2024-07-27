@@ -11,7 +11,12 @@
 
 namespace fro
 {
-	template<std::swappable DataType>
+	template<typename Type>
+	concept SparseSetStorable =
+		std::swappable<Type> and
+		std::movable<Type>;
+
+	template<SparseSetStorable DataType>
 	class SparseSet final
 	{
 	public:
@@ -52,16 +57,17 @@ namespace fro
 			return &naiveInsert(key, std::move(data)).second;
 		}
 
-		bool erase(Key const key)
+		std::optional<DataType> erase(Key const key)
 		{
 			if (not contains(key))
-				return false;
+				return std::nullopt;
 
 			naiveMove(key, mDense.size() - 1);
 			mSparse[key] = UNUSED_DATA_INDEX;
-			mDense.pop_back();
 
-			return true;
+			std::optional data{ std::move(mDense.back().second) };
+			mDense.pop_back();
+			return data;
 		}
 
 		FRO_NODISCARD DataType* find(Key const key)

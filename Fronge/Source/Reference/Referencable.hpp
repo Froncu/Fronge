@@ -16,15 +16,13 @@ namespace fro
 
 	protected:
 		Referencable() = default;
+		FRO_API Referencable(Referencable const&);
 		FRO_API Referencable(Referencable&& other) noexcept;
 
+		FRO_API Referencable& operator=(Referencable const&);
 		FRO_API Referencable& operator=(Referencable&& other) noexcept;
 
 	private:
-		Referencable(Referencable const&) = delete;
-
-		Referencable& operator=(Referencable const&) = delete;
-
 		std::unordered_set<BaseReference*> mReferences{};
 	};
 }
