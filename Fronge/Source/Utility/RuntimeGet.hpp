@@ -7,39 +7,42 @@
 
 namespace fro
 {
-	template<typename Type1, typename Type2>
-	FRO_NODISCARD auto& runtimeGet(std::pair<Type1, Type2>& pair, std::size_t const runtimeIndex)
-	{
-		return runtimeGet(pair, runtimeIndex, std::make_index_sequence<2>{});
-	}
-
-	template<typename... Types>
-	FRO_NODISCARD auto& runtimeGet(std::tuple<Types...>& tuple, std::size_t const runtimeIndex)
-	{
-		return runtimeGet(tuple, runtimeIndex, std::make_index_sequence<std::tuple_size_v<std::tuple<Types...>>>{});
-	}
-
-	template<typename... Types>
-	FRO_NODISCARD auto& runtimeGet(std::variant<Types...>& variant, std::size_t const runtimeIndex)
-	{
-		return runtimeGet(variant, runtimeIndex, std::make_index_sequence<std::variant_size_v<std::variant<Types...>>>{});
-	}
-
 	template<typename Type>
-	concept RuntimeGettable = requires (Type type)
+	concept RuntimeGettable = requires (Type&& type)
 	{
-		{ std::get<0>(type) };
+		{ std::get<0>(std::forward<Type>(type)) };
 	};
 
+	template<template<typename...> typename RuntimeGettableType, typename... Types>
+		requires RuntimeGettable<RuntimeGettableType<Types...>>
+	FRO_NODISCARD auto const& runtimeGet(RuntimeGettableType<Types...> const& runtimeGettable, std::size_t const runtimeIndex)
+	{
+		return runtimeGet(runtimeGettable, runtimeIndex, std::make_index_sequence<sizeof...(Types)>{});
+	}
+
+	template<template<typename...> typename RuntimeGettableType, typename... Types>
+		requires RuntimeGettable<RuntimeGettableType<Types...>>
+	FRO_NODISCARD auto& runtimeGet(RuntimeGettableType<Types...>& runtimeGettable, std::size_t const runtimeIndex)
+	{
+		return runtimeGet(runtimeGettable, runtimeIndex, std::make_index_sequence<sizeof...(Types)>{});
+	}
+
+	template<template<typename...> typename RuntimeGettableType, typename... Types>
+		requires RuntimeGettable<RuntimeGettableType<Types...>>
+	FRO_NODISCARD auto&& runtimeGet(RuntimeGettableType<Types...>&& runtimeGettable, std::size_t const runtimeIndex)
+	{
+		return runtimeGet(runtimeGettable, runtimeIndex, std::make_index_sequence<sizeof...(Types)>{});
+	}
+
 	template<RuntimeGettable Type, std::size_t CURRENT_INDEX, std::size_t... NEXT_INDICES>
-	FRO_NODISCARD auto& runtimeGet(Type& type, std::size_t const runtimeIndex,
+	FRO_NODISCARD auto&& runtimeGet(Type&& type, std::size_t const runtimeIndex,
 		std::index_sequence<CURRENT_INDEX, NEXT_INDICES...> const)
 	{
 		if (CURRENT_INDEX == runtimeIndex)
-			return std::get<CURRENT_INDEX>(type);
+			return std::get<CURRENT_INDEX>(std::forward<Type>(type));
 
 		if constexpr (sizeof...(NEXT_INDICES) not_eq 0)
-			return runtimeGet(type, runtimeIndex, std::index_sequence<NEXT_INDICES...>{});
+			return runtimeGet(std::forward<Type>(type), runtimeIndex, std::index_sequence<NEXT_INDICES...>{});
 		else
 			FRO_EXCEPTION("runtime index is out of bound!");
 	}
