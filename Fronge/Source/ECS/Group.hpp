@@ -40,12 +40,12 @@ namespace fro
 	public:
 		virtual ~Group() override = default;
 
-		auto begin()
+		auto begin() const
 		{
 			return mGroupedComponents.cbegin();
 		}
 
-		auto end()
+		auto end() const
 		{
 			return mGroupedComponents.cend();
 		}

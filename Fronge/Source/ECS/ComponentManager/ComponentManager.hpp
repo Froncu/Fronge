@@ -31,8 +31,8 @@ namespace fro
 			requires std::constructible_from<ComponentType, ArgumentTypes...>
 		static ComponentType* attach(Entity const& entity, ArgumentTypes&&... arguments)
 		{
-			ComponentType* const attachedComponent {
-				getSparseSet<ComponentType>().insert(entity.getID(), std::forward<ArgumentTypes>(arguments)...)};
+			ComponentType* const attachedComponent{
+				getSparseSet<ComponentType>().insert(entity.getID(), std::forward<ArgumentTypes>(arguments)...) };
 
 			if (not attachedComponent)
 				return attachedComponent;
@@ -74,15 +74,15 @@ namespace fro
 
 		template<ComponentSparseSetStorable... ObservedComponentTypes>
 			requires isUnique<ObservedComponentTypes...>
-		FRO_NODISCARD static Group<ObservedComponentTypes...>& getGroup()
+		FRO_NODISCARD static Group<ObservedComponentTypes...> const& getGroup()
 		{
 			using GroupType = Group<ObservedComponentTypes...>;
 
-			auto& baseGroup{ sGroups.emplace(typeid(GroupType), std::unique_ptr<GroupType>()).first->second };
+			auto& baseGroup{ sGroups.emplace(typeid(GroupType), std::unique_ptr<GroupType>{}).first->second };
 			if (not baseGroup.get())
 				baseGroup.reset(new GroupType());
 
-			return *static_cast<GroupType* const>(baseGroup.get());
+			return static_cast<GroupType const&>(*baseGroup);
 		}
 
 	private:
