@@ -22,6 +22,7 @@ namespace fro
 		FRO_API IDGenerator& operator=(IDGenerator&& other) noexcept;
 
 		FRO_API FRO_NODISCARD ID get();
+		FRO_API FRO_NODISCARD std::size_t highestTakenID() const;
 
 	private:
 		IDGenerator(IDGenerator const&) = delete;

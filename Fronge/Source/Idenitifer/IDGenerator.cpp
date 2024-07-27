@@ -38,4 +38,9 @@ namespace fro
 
 		return { this, ID };
 	}
+
+	std::size_t IDGenerator::highestTakenID() const
+	{
+		return mHighestTakenID;
+	}
 }
