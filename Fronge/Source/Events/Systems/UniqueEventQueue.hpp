@@ -5,7 +5,12 @@
 
 namespace fro
 {
-	template<std::regular EventType>
+	template<typename Type>
+	concept UniqueEventQueueable =
+		EventQueueable<Type> and
+		std::equality_comparable<Type>;
+
+	template<UniqueEventQueueable EventType>
 	class UniqueEventQueue final
 	{
 	public:

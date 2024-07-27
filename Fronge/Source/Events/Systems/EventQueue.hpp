@@ -7,7 +7,12 @@
 
 namespace fro
 {
-	template<std::semiregular EventType>
+	template<typename Type>
+	concept EventQueueable =
+		std::movable<Type> and
+		std::default_initializable<Type>;
+
+	template<EventQueueable EventType>
 	class EventQueue final
 	{
 	public:
