@@ -15,8 +15,8 @@ namespace fro
 	public:
 		virtual ~BaseGroup() = default;
 
-		virtual void onComponentAttach(std::size_t const entityID, std::type_index const componentTypeIndex) = 0;
-		virtual void onComponentDetach(std::size_t const entityID, std::type_index const componentTypeIndex) = 0;
+		virtual void onComponentAttach(Entity const& entity, std::type_index const componentTypeIndex) = 0;
+		virtual void onComponentDetach(Entity const& entity, std::type_index const componentTypeIndex) = 0;
 
 	protected:
 		BaseGroup() = default;
@@ -52,11 +52,9 @@ namespace fro
 
 	private:
 		Group()
-		{
-			std::size_t const highestTakenID{ Entity::getHighestTakenID() };
-
-			for (std::size_t entityID{}; entityID <= highestTakenID; ++entityID)
-				tryGroup(entityID);
+		{	
+			for (auto const& entity : Entity::getAllEntities())
+				tryGroup(*entity);
 		}
 
 		Group(Group const&) = delete;
@@ -65,13 +63,13 @@ namespace fro
 		Group& operator=(Group const&) = delete;
 		Group& operator=(Group&&) noexcept = delete;
 
-		virtual void onComponentAttach(std::size_t const entityID, std::type_index const componentTypeIndex) override
+		virtual void onComponentAttach(Entity const& entity, std::type_index const componentTypeIndex) override
 		{
 			if (isObserved(componentTypeIndex))
-				tryGroup(entityID);
+				tryGroup(entity);
 		}
 
-		virtual void onComponentDetach(std::size_t const entityID, std::type_index const componentTypeIndex) override
+		virtual void onComponentDetach(Entity const& entity, std::type_index const componentTypeIndex) override
 		{
 			if (not isObserved(componentTypeIndex))
 				return;
@@ -79,9 +77,9 @@ namespace fro
 			auto const invalidGroup
 			{
 				std::find_if(mGroupedComponents.begin(), mGroupedComponents.end(),
-				[entityID](GroupTuple const& groupTuple)
+				[&entity](GroupTuple const& groupTuple)
 				{
-					return entityID == std::get<std::size_t>(groupTuple);
+					return entity.getID() == std::get<std::size_t>(groupTuple);
 				})
 			};
 
@@ -103,9 +101,9 @@ namespace fro
 				});
 		}
 
-		void tryGroup(std::size_t const entityID)
+		void tryGroup(Entity const& entity)
 		{
-			GroupTuple groupTuple{ entityID, ComponentManager::find<ObservedComponentTypes>(entityID)... };
+			GroupTuple groupTuple{ entity.getID(), ComponentManager::find<ObservedComponentTypes>(entity)...};
 
 			if (not (std::get<Reference<ObservedComponentTypes>>(groupTuple).valid() and ...))
 				return;

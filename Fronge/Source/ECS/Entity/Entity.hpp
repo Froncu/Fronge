@@ -9,7 +9,7 @@ namespace fro
 	class Entity final : public Referencable
 	{
 	public:
-		FRO_API FRO_NODISCARD static std::size_t getHighestTakenID();
+		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>> const& getAllEntities();
 
 		FRO_API Entity();
 		Entity(Entity const&) = default;
@@ -24,6 +24,7 @@ namespace fro
 		FRO_API FRO_NODISCARD ID const& getID() const;
 
 	private:
+		static std::unordered_set<Reference<Entity>> sEntities;
 		static IDGenerator sIDGenerator;
 
 		ID mID{ sIDGenerator.get() };

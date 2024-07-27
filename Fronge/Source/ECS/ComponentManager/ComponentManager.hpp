@@ -14,14 +14,14 @@ namespace fro
 	public:
 		template<ComponentSparseSetStorable ComponentType>
 			requires std::default_initializable<ComponentType>
-		FRO_NODISCARD static ComponentType& get(std::size_t const entityID)
+		FRO_NODISCARD static ComponentType& get(Entity const& entity)
 		{
-			auto&& [component, inserted] { getComponentSparseSet<ComponentType>()[entityID] };
+			auto&& [component, inserted] { getComponentSparseSet<ComponentType>()[entity.getID()] };
 			if (inserted)
 			{
 				std::type_index const componentTypeIndex{ typeid(ComponentType) };
 				for (auto const& [groupTypeIndex, group] : sGroups)
-					group->onComponentAttach(entityID, componentTypeIndex);
+					group->onComponentAttach(entity, componentTypeIndex);
 			}
 
 			return component;
@@ -29,47 +29,47 @@ namespace fro
 
 		template<ComponentSparseSetStorable ComponentType, typename... ArgumentTypes>
 			requires std::constructible_from<ComponentType, ArgumentTypes...>
-		static ComponentType* attach(std::size_t const entityID, ArgumentTypes&&... arguments)
+		static ComponentType* attach(Entity const& entity, ArgumentTypes&&... arguments)
 		{
 			ComponentType* const attachedComponent {
-				getSparseSet<ComponentType>().insert(entityID, std::forward<ArgumentTypes>(arguments)...) };
+				getSparseSet<ComponentType>().insert(entity.getID(), std::forward<ArgumentTypes>(arguments)...)};
 
 			if (not attachedComponent)
 				return attachedComponent;
 
 			std::type_index const componentTypeIndex{ typeid(ComponentType) };
 			for (auto const& [groupTypeIndex, group] : sGroups)
-				group->onComponentAttach(entityID, componentTypeIndex);
+				group->onComponentAttach(entity, componentTypeIndex);
 
 			return attachedComponent;
 		}
 
 		template<ComponentSparseSetStorable ComponentType>
-		static std::optional<ComponentType> detach(std::size_t const entityID)
+		static std::optional<ComponentType> detach(Entity const& entity)
 		{
 			std::optional detachedComponent{
-				getSparseSet<ComponentType>().erase(entityID) };
+				getSparseSet<ComponentType>().erase(entity.getID()) };
 
 			if (not detachedComponent.has_value())
 				return detachedComponent;
 
 			std::type_index const componentTypeIndex{ typeid(ComponentType) };
 			for (auto const& [groupTypeIndex, group] : sGroups)
-				group->onComponentDetach(entityID, componentTypeIndex);
+				group->onComponentDetach(entity, componentTypeIndex);
 
 			return detachedComponent;
 		}
 
 		template<ComponentSparseSetStorable ComponentType>
-		FRO_NODISCARD static ComponentType* find(std::size_t const entityID)
+		FRO_NODISCARD static ComponentType* find(Entity const& entity)
 		{
-			return getSparseSet<ComponentType>().find(entityID);
+			return getSparseSet<ComponentType>().find(entity.getID());
 		}
 
 		template<ComponentSparseSetStorable ComponentType>
-		FRO_NODISCARD static bool hasAttached(std::size_t const entityID)
+		FRO_NODISCARD static bool hasAttached(Entity const& entity)
 		{
-			return getSparseSet<ComponentType>().contains(entityID);
+			return getSparseSet<ComponentType>().contains(entity.getID());
 		}
 
 		template<ComponentSparseSetStorable... ObservedComponentTypes>

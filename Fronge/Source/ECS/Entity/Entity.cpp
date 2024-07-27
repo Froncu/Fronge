@@ -5,21 +5,26 @@
 
 namespace fro
 {
-	std::size_t Entity::getHighestTakenID()
+	std::unordered_set<Reference<Entity>> const& Entity::getAllEntities()
 	{
-		return sIDGenerator.highestTakenID();
+		return sEntities;
 	}
 
+	std::unordered_set<Reference<Entity>> Entity::sEntities{};
 	IDGenerator Entity::sIDGenerator{};
 
 	Entity::Entity()
 	{
+		sEntities.insert(this);
+
 		Logger::info("created Entity with ID {}!",
 			mID);
 	}
 
 	Entity::~Entity()
 	{
+		sEntities.erase(this);
+
 		Logger::info("destroyed Entity with ID {}!",
 			mID);
 	}
