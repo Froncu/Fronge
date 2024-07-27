@@ -135,4 +135,13 @@ namespace fro
 	};
 }
 
+template<typename Type>
+struct std::hash<fro::Reference<Type>>
+{
+	std::size_t operator()(fro::Reference<Type> const& reference) const noexcept
+	{
+		return std::hash<fro::BaseReference>{}(static_cast<fro::BaseReference const&>(reference));
+	}
+};
+
 #endif
