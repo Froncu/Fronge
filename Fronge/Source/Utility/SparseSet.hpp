@@ -22,7 +22,6 @@ namespace fro
 	public:
 		using Key = std::size_t;
 		using DataIndex = std::size_t;
-		using DenseType = std::pair<Key, DataType>;
 
 		static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 
@@ -41,12 +40,14 @@ namespace fro
 				mSparse.resize(key + 1, UNUSED_DATA_INDEX);
 
 			else if (naiveContains(key))
-				return { naiveFind(key).second, false };
+				return { naiveFind(key), false };
 
-			return { naiveInsert(key, {}).second, true };
+			return { naiveInsert(key), true };
 		}
 
-		DataType* insert(Key const key, DataType data)
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<DataType, ArgumentTypes...>
+		DataType* insert(Key const key, ArgumentTypes&&... arguments)
 		{
 			if (not inSparseRange(key))
 				mSparse.resize(key + 1, UNUSED_DATA_INDEX);
@@ -54,7 +55,7 @@ namespace fro
 			else if (naiveContains(key))
 				return nullptr;
 
-			return &naiveInsert(key, std::move(data)).second;
+			return &naiveInsert(key, std::forward<ArgumentTypes>(arguments)...);
 		}
 
 		std::optional<DataType> erase(Key const key)
@@ -64,9 +65,11 @@ namespace fro
 
 			naiveMove(key, mDense.size() - 1);
 			mSparse[key] = UNUSED_DATA_INDEX;
-
-			std::optional data{ std::move(mDense.back().second) };
 			mDense.pop_back();
+
+			std::optional data{ std::move(mDenseData.back()) };
+			mDenseData.pop_back();
+
 			return data;
 		}
 
@@ -75,13 +78,14 @@ namespace fro
 			if (not contains(key))
 				return nullptr;
 
-			return &naiveFind(key).second;
+			return &naiveFind(key);
 		}
 
 		void clear()
 		{
 			mSparse.clear();
 			mDense.clear();
+			mDenseData.clear();
 		}
 
 		void shrinkSparse()
@@ -102,6 +106,7 @@ namespace fro
 		void shrinkDense()
 		{
 			mDense.shrink_to_fit();
+			mDenseData.shrink_to_fit();
 		}
 
 		void shrink()
@@ -136,12 +141,12 @@ namespace fro
 
 		FRO_NODISCARD std::size_t denseSize() const
 		{
-			return mDense.size();
+			return mDenseData.size();
 		}
 
 		FRO_NODISCARD std::size_t denseCapacity() const
 		{
-			return mDense.capacity();
+			return mDenseData.capacity();
 		}
 
 	private:
@@ -160,26 +165,34 @@ namespace fro
 			return mSparse[key] not_eq UNUSED_DATA_INDEX;
 		}
 
-		FRO_NODISCARD DenseType& naiveFind(Key const key)
+		FRO_NODISCARD DataType& naiveFind(Key const key)
 		{
-			return mDense[mSparse[key]];
+			return mDenseData[mSparse[key]];
 		}
 
-		DenseType& naiveInsert(Key const key, DataType&& data)
+		template<typename... ArgumentTypes>
+			requires std::constructible_from<DataType, ArgumentTypes...>
+		DataType& naiveInsert(Key const key, ArgumentTypes&&... arguments)
 		{
 			mSparse[key] = mDense.size();
-			return mDense.emplace_back(key, std::move(data));
+			mDense.emplace_back(key);
+
+			return mDenseData.emplace_back(std::forward<ArgumentTypes>(arguments)...);
 		}
 
 		void naiveMove(Key const key, DataIndex const where)
 		{
-			Key const otherKey{ mDense[where].first };
-			std::swap(naiveFind(key), mDense[where]);
+			Key const otherKey{ mDense[where] };
+
+			std::swap(mDense[mSparse[key]], mDense[where]);
+			std::swap(mDenseData[mSparse[key]], mDenseData[where]);
+
 			std::swap(mSparse[key], mSparse[otherKey]);
 		}
 
 		std::vector<DataIndex> mSparse{};
-		std::vector<DenseType> mDense{};
+		std::vector<Key> mDense{};
+		std::vector<DataType> mDenseData{};
 	};
 }
 
