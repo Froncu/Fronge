@@ -18,12 +18,14 @@
 #include <memory>
 #include <numbers>
 #include <numeric>
+#include <optional>
 #include <set>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <tuple>
 #include <type_traits>
+#include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
