@@ -5,6 +5,7 @@
 
 #include "ECS/Component/Component.hpp"
 #include "ECS/Entity/Entity.hpp"
+#include "Events/Systems/EventListener.hpp"
 #include "Reference/Reference.hpp"
 #include "Utility/UniqueParameterPack.hpp"
 
@@ -14,9 +15,6 @@ namespace fro
 	{
 	public:
 		virtual ~BaseGroup() = default;
-
-		virtual void onComponentAttach(Entity const& entity, std::type_index const componentTypeIndex) = 0;
-		virtual void onComponentDetach(Entity const& entity, std::type_index const componentTypeIndex) = 0;
 
 	protected:
 		BaseGroup() = default;
@@ -52,9 +50,12 @@ namespace fro
 
 	private:
 		Group()
-		{	
+		{
 			for (auto const& entity : Entity::getAllEntities())
 				tryGroup(*entity);
+
+			ComponentManager::sComponentAttachEvent.addListener(mOnComponentAttachEvent);
+			ComponentManager::sComponentDetachEvent.addListener(mOnComponentDetachEvent);
 		}
 
 		Group(Group const&) = delete;
@@ -62,30 +63,6 @@ namespace fro
 
 		Group& operator=(Group const&) = delete;
 		Group& operator=(Group&&) noexcept = delete;
-
-		virtual void onComponentAttach(Entity const& entity, std::type_index const componentTypeIndex) override
-		{
-			if (isObserved(componentTypeIndex))
-				tryGroup(entity);
-		}
-
-		virtual void onComponentDetach(Entity const& entity, std::type_index const componentTypeIndex) override
-		{
-			if (not isObserved(componentTypeIndex))
-				return;
-
-			auto const invalidGroup
-			{
-				std::find_if(mGroupedComponents.begin(), mGroupedComponents.end(),
-				[&entity](GroupTuple const& groupTuple)
-				{
-					return entity.getID() == std::get<std::size_t>(groupTuple);
-				})
-			};
-
-			if (invalidGroup not_eq mGroupedComponents.end())
-				mGroupedComponents.erase(invalidGroup);
-		}
 
 		FRO_NODISCARD bool isObserved(std::type_index const componentTypeIndex)
 		{
@@ -101,15 +78,50 @@ namespace fro
 				});
 		}
 
-		void tryGroup(Entity const& entity)
+		bool tryGroup(Entity const& entity)
 		{
 			GroupTuple groupTuple{ entity.getID(), ComponentManager::find<ObservedComponentTypes>(entity)...};
 
 			if (not (std::get<Reference<ObservedComponentTypes>>(groupTuple).valid() and ...))
-				return;
+				return false;
 
 			mGroupedComponents.emplace_back(std::move(groupTuple));
+			return true;
 		}
+
+		EventListener<Entity const, Component const, std::type_index const> mOnComponentAttachEvent
+		{
+			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
+			{
+				if (isObserved(componentTypeIndex))
+					return tryGroup(entity);
+
+				return false;
+			}
+		};
+
+		EventListener<Entity const, Component const, std::type_index const> mOnComponentDetachEvent
+		{
+			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
+			{
+				if (not isObserved(componentTypeIndex))
+					return false;
+
+				auto const invalidGroup
+				{
+					std::find_if(mGroupedComponents.begin(), mGroupedComponents.end(),
+					[&entity](GroupTuple const& groupTuple)
+					{
+						return entity.getID() == std::get<std::size_t>(groupTuple);
+					})
+				};
+
+				if (invalidGroup not_eq mGroupedComponents.end())
+					mGroupedComponents.erase(invalidGroup);
+
+				return true;
+			}
+		};
 
 		std::vector<GroupTuple> mGroupedComponents{};
 	};

@@ -5,6 +5,7 @@
 
 #include "ComponentSparseSet.hpp"
 #include "ECS/Group.hpp"
+#include "Events/Systems/EventDispatcher.hpp"
 #include "Utility/SparseSet.hpp"
 
 namespace fro
@@ -37,9 +38,7 @@ namespace fro
 			if (not attachedComponent)
 				return attachedComponent;
 
-			std::type_index const componentTypeIndex{ typeid(ComponentType) };
-			for (auto const& [groupTypeIndex, group] : sGroups)
-				group->onComponentAttach(entity, componentTypeIndex);
+			sComponentAttachEvent.notify(entity, *attachedComponent, typeid(ComponentType));
 
 			return attachedComponent;
 		}
@@ -53,9 +52,7 @@ namespace fro
 			if (not detachedComponent.has_value())
 				return detachedComponent;
 
-			std::type_index const componentTypeIndex{ typeid(ComponentType) };
-			for (auto const& [groupTypeIndex, group] : sGroups)
-				group->onComponentDetach(entity, componentTypeIndex);
+			sComponentDetachEvent.notify(entity, *detachedComponent, typeid(ComponentType));
 
 			return detachedComponent;
 		}
@@ -84,6 +81,9 @@ namespace fro
 
 			return static_cast<GroupType const&>(*baseGroup);
 		}
+
+		FRO_API static EventDispatcher<Entity const, Component const, std::type_index const> sComponentAttachEvent;
+		FRO_API static EventDispatcher<Entity const, Component const, std::type_index const> sComponentDetachEvent;
 
 	private:
 		template<ComponentSparseSetStorable ComponentType>
