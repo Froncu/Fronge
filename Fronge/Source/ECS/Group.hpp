@@ -4,6 +4,7 @@
 #include "froch.hpp"
 
 #include "ECS/Component/Component.hpp"
+#include "ECS/ComponentManager/ComponentManager.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Reference/Reference.hpp"
@@ -11,32 +12,20 @@
 
 namespace fro
 {
-	class BaseGroup
-	{
-	public:
-		virtual ~BaseGroup() = default;
-
-	protected:
-		BaseGroup() = default;
-		BaseGroup(BaseGroup const&) = delete;
-		BaseGroup(BaseGroup&&) noexcept = delete;
-
-		BaseGroup& operator=(BaseGroup const&) = delete;
-		BaseGroup& operator=(BaseGroup&&) noexcept = delete;
-	};
-
-	class ComponentManager;
-
 	template<std::derived_from<Component>... ObservedComponentTypes>
 		requires isUnique<ObservedComponentTypes...>
-	class Group final : public BaseGroup
+	class Group final
 	{
-		friend ComponentManager;
-
-		using GroupTuple = std::tuple<std::size_t, Reference<ObservedComponentTypes>...>;
+		using GroupTuple = std::tuple<Reference<Entity const>, Reference<ObservedComponentTypes>...>;
 
 	public:
-		virtual ~Group() override = default;
+		Group()
+		{
+			for (auto const& entity : Entity::getAllEntities())
+				tryGroup(*entity);
+		}
+
+		~Group() = default;
 
 		auto begin() const
 		{
@@ -49,15 +38,6 @@ namespace fro
 		}
 
 	private:
-		Group()
-		{
-			for (auto const& entity : Entity::getAllEntities())
-				tryGroup(*entity);
-
-			ComponentManager::sComponentAttachEvent.addListener(mOnComponentAttachEvent);
-			ComponentManager::sComponentDetachEvent.addListener(mOnComponentDetachEvent);
-		}
-
 		Group(Group const&) = delete;
 		Group(Group&&) noexcept = delete;
 
@@ -80,7 +60,7 @@ namespace fro
 
 		bool tryGroup(Entity const& entity)
 		{
-			GroupTuple groupTuple{ entity.getID(), ComponentManager::find<ObservedComponentTypes>(entity)...};
+			GroupTuple groupTuple{ entity, ComponentManager::find<ObservedComponentTypes>(entity)...};
 
 			if (not (std::get<Reference<ObservedComponentTypes>>(groupTuple).valid() and ...))
 				return false;
@@ -89,7 +69,7 @@ namespace fro
 			return true;
 		}
 
-		EventListener<Entity const, Component const, std::type_index const> mOnComponentAttachEvent
+		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent
 		{
 			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
 			{
@@ -97,10 +77,10 @@ namespace fro
 					return tryGroup(entity);
 
 				return false;
-			}
+			}, ComponentManager::sComponentAttachEvent
 		};
 
-		EventListener<Entity const, Component const, std::type_index const> mOnComponentDetachEvent
+		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
 		{
 			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
 			{
@@ -112,7 +92,7 @@ namespace fro
 					std::find_if(mGroupedComponents.begin(), mGroupedComponents.end(),
 					[&entity](GroupTuple const& groupTuple)
 					{
-						return entity.getID() == std::get<std::size_t>(groupTuple);
+						return entity.getID() == std::get<0>(groupTuple)->getID();
 					})
 				};
 
@@ -120,7 +100,7 @@ namespace fro
 					mGroupedComponents.erase(invalidGroup);
 
 				return true;
-			}
+			}, ComponentManager::sComponentDetachEvent
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};
