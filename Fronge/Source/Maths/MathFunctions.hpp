@@ -4,7 +4,9 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "MathStructs.hpp"
+#include "Maths/Structs/Matrix3x3.hpp"
+#include "Maths/Structs/Vector2.hpp"
+#include "Maths/Structs/Vector3.hpp"
 
 namespace fro
 {

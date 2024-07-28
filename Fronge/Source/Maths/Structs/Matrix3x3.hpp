@@ -1,112 +1,14 @@
-#if not defined MATH_STRUCTS_HPP
-#define MATH_STRUCTS_HPP
+#if not defined MATRIX3X3_HPP
+#define MATRIX3X3_HPP
 
 #include "froch.hpp"
 
+#include "Core.hpp"
+#include "Vector3.hpp"
+#include "Utility/Concepts.hpp"
+
 namespace fro
 {
-	template<typename Type>
-	concept Arithmetic =
-		std::is_arithmetic_v<Type>;
-
-	template<Arithmetic Type>
-	struct Vector2 final
-	{
-		Type& operator[](std::size_t const index)
-		{
-			switch (index)
-			{
-			case 0:
-				return x;
-
-			case 1:
-				return y;
-
-			default:
-				FRO_EXCEPTION("index {} outside [0, 1] range!", index);
-			}
-		}
-
-		Type operator[](std::size_t const index) const
-		{
-			switch (index)
-			{
-			case 0:
-				return x;
-
-			case 1:
-				return y;
-
-			default:
-				FRO_EXCEPTION("index {} outside [0, 1] range!", index);
-			}
-		}
-
-		template<Arithmetic OtherType>
-		auto operator*(Vector2<OtherType> const& vector) const
-		{
-			return
-				x * vector.x +
-				y * vector.y;
-		}
-
-		Type x;
-		Type y;
-	};
-
-	template<Arithmetic Type>
-	struct Vector3 final
-	{
-		Type& operator[](std::size_t const index)
-		{
-			switch (index)
-			{
-			case 0:
-				return x;
-
-			case 1:
-				return y;
-
-			case 2:
-				return z;
-
-			default:
-				FRO_EXCEPTION("index {} outside [0, 2] range!", index);
-			}
-		}
-
-		Type operator[](std::size_t const index) const
-		{
-			switch (index)
-			{
-			case 0:
-				return x;
-
-			case 1:
-				return y;
-
-			case 2:
-				return z;
-
-			default:
-				FRO_EXCEPTION("index {} outside [0, 2] range!", index);
-			}
-		}
-
-		template<Arithmetic OtherType>
-		auto operator*(Vector3<OtherType> const& vector) const
-		{
-			return
-				x * vector.x +
-				y * vector.y +
-				z * vector.z;
-		}
-
-		Type x;
-		Type y;
-		Type z;
-	};
-
 	template<Arithmetic Type>
 	class Matrix3x3 final
 	{
@@ -153,7 +55,7 @@ namespace fro
 		template<Arithmetic OtherType>
 		FRO_NODISCARD auto operator*(Matrix3x3<OtherType> const& matrix) const
 		{
-			using ResultType = decltype(std::declval<Type>()* std::declval<OtherType>());
+			using ResultType = decltype(std::declval<Type>() * std::declval<OtherType>());
 
 			Matrix3x3<ResultType> result{};
 
@@ -173,15 +75,6 @@ namespace fro
 
 	private:
 		RowType mData[3];
-	};
-
-	template<Arithmetic Type>
-	struct Rectangle final
-	{
-		Type x;
-		Type y;
-		Type width;
-		Type height;
 	};
 }
 
