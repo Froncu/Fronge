@@ -92,11 +92,11 @@ namespace fro
 			auto const cosine{ std::cos(rotation) };
 			auto const sine{ std::sin(rotation) };
 
-			decltype(cosine) const zero{};
+			decltype(cosine) constexpr zero{};
 			return Matrix3x3
 			{
-				cosine, sine, zero,
-				-sine, cosine, zero,
+				cosine, -sine, zero,
+				sine, cosine, zero,
 				zero, zero, static_cast<decltype(cosine)>(1)
 			};
 		}
