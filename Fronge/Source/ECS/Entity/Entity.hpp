@@ -13,13 +13,12 @@ namespace fro
 
 		FRO_API Entity();
 		Entity(Entity const&) = default;
-		Entity(Entity&&) = default;
+		FRO_API Entity(Entity&& other) noexcept;
 
 		FRO_API ~Entity();
 
 		Entity& operator=(Entity const&) = default;
-		Entity& operator=(Entity&&) = default;
-		FRO_API FRO_NODISCARD operator std::size_t() const;
+		FRO_API Entity& operator=(Entity&& other) noexcept;
 
 		FRO_API FRO_NODISCARD ID const& getID() const;
 

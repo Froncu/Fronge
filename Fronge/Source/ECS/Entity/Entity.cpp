@@ -21,6 +21,11 @@ namespace fro
 			mID);
 	}
 
+	Entity::Entity(Entity&& other) noexcept
+		: Referencable(std::move(other))
+	{
+	}
+
 	Entity::~Entity()
 	{
 		sEntities.erase(this);
@@ -30,9 +35,14 @@ namespace fro
 	}
 
 
-	Entity::operator std::size_t() const
+	Entity& Entity::operator=(Entity&& other) noexcept
 	{
-		return getID();
+		if (this == &other)
+			return *this;
+
+		Referencable::operator=(std::move(other));
+
+		return *this;
 	}
 
 	ID const& Entity::getID() const
