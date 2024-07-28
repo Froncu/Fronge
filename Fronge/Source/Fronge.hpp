@@ -3,8 +3,8 @@
 
 #include "Application.hpp"
 #include "Audio/Audio.hpp"
+#include "ECS/Components/Component.hpp"
 #include "Core.hpp"
-#include "ECS/ComponentManager/ComponentManager.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "ECS/Group.hpp"
 #include "Events/Systems/Event.hpp"

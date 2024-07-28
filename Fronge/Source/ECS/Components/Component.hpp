@@ -14,10 +14,10 @@ namespace fro
 	protected:
 		Component() = default;
 		Component(Component const&) = default;
-		FRO_API Component(Component&& other) noexcept;
+		Component(Component&&) noexcept = default;
 
 		Component& operator=(Component const&) = default;
-		FRO_API Component& operator=(Component&& other) noexcept;
+		Component& operator=(Component&&) noexcept = default;
 	};
 }
 

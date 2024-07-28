@@ -3,8 +3,7 @@
 
 #include "froch.hpp"
 
-#include "ECS/Component/Component.hpp"
-#include "ECS/ComponentManager/ComponentManager.hpp"
+#include "ECS/Components/Component.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Reference/Reference.hpp"
@@ -62,7 +61,7 @@ namespace fro
 
 		bool tryGroup(Entity const& entity)
 		{
-			GroupTuple groupTuple{ entity, ComponentManager::find<ObservedComponentTypes>(entity)...};
+			GroupTuple groupTuple{ entity, entity.findComponent<ObservedComponentTypes>()... };
 
 			if (not (std::get<Reference<ObservedComponentTypes>>(groupTuple).valid() and ...))
 				return false;
@@ -79,7 +78,7 @@ namespace fro
 					return tryGroup(entity);
 
 				return false;
-			}, ComponentManager::sComponentAttachEvent
+			}, Entity::sComponentAttachEvent
 		};
 
 		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
@@ -103,7 +102,7 @@ namespace fro
 
 				mGroupedComponents.erase(invalidGroup);
 				return true;
-			}, ComponentManager::sComponentDetachEvent
+			}, Entity::sComponentDetachEvent
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};
