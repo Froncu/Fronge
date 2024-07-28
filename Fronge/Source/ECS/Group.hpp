@@ -98,9 +98,10 @@ namespace fro
 					})
 				};
 
-				if (invalidGroup not_eq mGroupedComponents.end())
-					mGroupedComponents.erase(invalidGroup);
+				if (invalidGroup == mGroupedComponents.end())
+					return false;
 
+				mGroupedComponents.erase(invalidGroup);
 				return true;
 			}, ComponentManager::sComponentDetachEvent
 		};
