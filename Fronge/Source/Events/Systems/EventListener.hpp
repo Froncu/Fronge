@@ -17,11 +17,14 @@ namespace fro
 		using CallbackType = std::function<bool(Payload&...)>;
 
 	public:
-		EventListener(CallbackType onNotify)
+		template<std::same_as<EventDispatcher<Payload...>>... EventDispatcherTypes>
+		EventListener(CallbackType onNotify, EventDispatcherTypes&... eventDispatchers)
 			: mOnNotify{ std::move(onNotify) }
 		{
 			if (mOnNotify == nullptr)
 				FRO_EXCEPTION("the onNotify callback cannot be a nullptr!");
+
+			(eventDispatchers.addListener(*this), ...);
 		}
 
 		EventListener(EventListener const& other)
