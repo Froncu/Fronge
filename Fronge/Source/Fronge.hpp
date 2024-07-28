@@ -15,6 +15,7 @@
 #include "Logger/Logger.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"
 #include "Maths/MathFunctions.hpp"
+#include "Maths/Structs/TransformMatrix/TransformMatrix3x3.hpp"
 #include "Reference/Reference.hpp"
 #include "Renderer/Renderer.hpp"
 #include "ResourceManager/ResourceManager.hpp"
