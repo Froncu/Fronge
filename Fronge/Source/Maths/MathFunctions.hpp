@@ -133,13 +133,13 @@ namespace fro
 		FRO_NODISCARD constexpr auto getMagnitude(Vector2<Type> const& vector)
 		{
 			return std::sqrt(vector.x * vector.x + vector.y * vector.y);
-		};
+		}
 
 		template<Arithmetic Type>
 		FRO_NODISCARD constexpr auto getMagnitude(Vector3<Type> const& vector)
 		{
 			return std::sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-		};
+		}
 	}
 }
 

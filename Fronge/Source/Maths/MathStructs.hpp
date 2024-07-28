@@ -110,11 +110,11 @@ namespace fro
 	template<Arithmetic Type>
 	class Matrix3x3 final
 	{
-		using ColumnType = Vector3<Type>;
+		using RowType = Vector3<Type>;
 
 	public:
 		constexpr Matrix3x3() = default;
-		constexpr Matrix3x3(ColumnType const& row0, ColumnType const& row1, ColumnType const& row2)
+		constexpr Matrix3x3(RowType const& row0, RowType const& row1, RowType const& row2)
 			: mData{ row0, row1, row2 }
 		{
 		}
@@ -140,12 +140,12 @@ namespace fro
 
 		constexpr Matrix3x3& operator=(Matrix3x3 const&) = default;
 		constexpr Matrix3x3& operator=(Matrix3x3&&) noexcept = default;
-		constexpr ColumnType& operator[](std::size_t const index)
+		constexpr RowType& operator[](std::size_t const index)
 		{
 			return mData[index];
 		}
 
-		constexpr ColumnType const& operator[](std::size_t const index) const
+		constexpr RowType const& operator[](std::size_t const index) const
 		{
 			return mData[index];
 		}
@@ -165,8 +165,14 @@ namespace fro
 			return result;
 		}
 
+		template<Arithmetic OtherType>
+		auto operator*=(Matrix3x3<OtherType> const& matrix)
+		{
+			return *this = *this * matrix;
+		}
+
 	private:
-		ColumnType mData[3];
+		RowType mData[3];
 	};
 
 	template<Arithmetic Type>
