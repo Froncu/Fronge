@@ -47,13 +47,4 @@ namespace fro
 		not std::derived_from<Type, BaseReference> and not std::is_reference_v<Type>;
 }
 
-template<>
-struct std::hash<fro::BaseReference>
-{
-	std::size_t operator()(fro::BaseReference const& baseReference) const noexcept
-	{
-		return std::hash<std::uintptr_t>{}(reinterpret_cast<std::uintptr_t>(baseReference.mReferencable));
-	}
-};
-
 #endif
