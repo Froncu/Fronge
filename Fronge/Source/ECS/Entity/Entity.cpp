@@ -23,6 +23,8 @@ namespace fro
 
 	Entity::Entity(Entity&& other) noexcept
 		: Referencable(std::move(other))
+
+		, mID{ std::move(other.mID) }
 	{
 	}
 
@@ -41,6 +43,8 @@ namespace fro
 			return *this;
 
 		Referencable::operator=(std::move(other));
+
+		mID = std::move(other.mID);
 
 		return *this;
 	}
