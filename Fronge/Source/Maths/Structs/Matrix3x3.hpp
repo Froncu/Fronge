@@ -73,6 +73,22 @@ namespace fro
 			return *this = *this * matrix;
 		}
 
+		FRO_NODISCARD Matrix3x3<Type> getTransposed() const
+		{
+			Matrix3x3<Type> result;
+
+			for (std::size_t rowIndex{}; rowIndex < 3; ++rowIndex)
+				for (std::size_t columnIndex{}; columnIndex < 3; ++columnIndex)
+					result[rowIndex][columnIndex] = mData[columnIndex][rowIndex];
+
+			return result;
+		}
+
+		FRO_NODISCARD Matrix3x3<Type>& transpose()
+		{
+			return *this = getTransposed();
+		}
+
 	private:
 		RowType mData[3];
 	};

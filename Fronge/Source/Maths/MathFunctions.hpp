@@ -119,19 +119,6 @@ namespace fro
 		}
 
 		template<Arithmetic Type>
-		FRO_NODISCARD constexpr Matrix3x3<Type>& transpose(Matrix3x3<Type>& matrix)
-		{
-			Matrix3x3<Type> result;
-
-			for (std::size_t rowIndex{}; rowIndex < 3; ++rowIndex)
-				for (std::size_t columnIndex{}; columnIndex < 3; ++columnIndex)
-					result[rowIndex][columnIndex] = matrix[columnIndex][rowIndex];
-
-			matrix = result;
-			return matrix;
-		}
-
-		template<Arithmetic Type>
 		FRO_NODISCARD constexpr auto getMagnitude(Vector2<Type> const& vector)
 		{
 			return std::sqrt(vector.x * vector.x + vector.y * vector.y);
