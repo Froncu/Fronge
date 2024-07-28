@@ -5,7 +5,7 @@
 
 #include "Core.hpp"
 #include "Events/Systems/Event.hpp"
-#include "Maths/MathStructs.hpp"
+#include "Maths/Structs/Vector2.hpp"
 
 namespace fro
 {

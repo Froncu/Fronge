@@ -5,7 +5,8 @@
 
 #include "Core.hpp"
 #include "Events/Systems/EventListener.hpp"
-#include "Maths/MathStructs.hpp"
+#include "Maths/Structs/Matrix3x3.hpp"
+#include "Maths/Structs/Rectangle.hpp"
 #include "Reference/Reference.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Utility/CustomUniquePointer.hpp"

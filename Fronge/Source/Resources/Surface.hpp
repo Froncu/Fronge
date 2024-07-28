@@ -5,7 +5,7 @@
 
 #include "Core.hpp"
 #include "Idenitifer/IDGenerator.hpp"
-#include "Maths/MathStructs.hpp"
+#include "Maths/Structs/Vector2.hpp"
 #include "Reference/Reference.hpp"
 #include "Resources/Font.hpp"
 

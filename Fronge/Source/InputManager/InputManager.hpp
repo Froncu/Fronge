@@ -8,7 +8,7 @@
 #include "Events/Systems/UniqueEventQueue.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Input/Input.hpp"
-#include "Maths/MathStructs.hpp"
+#include "Maths/Structs/Vector2.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
 namespace fro

@@ -6,7 +6,7 @@
 #include "Core.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Events/WindowEvent.hpp"
-#include "Maths/MathStructs.hpp"
+#include "Maths/Structs/Vector2.hpp"
 #include "Reference/Referencable.hpp"
 #include "Utility/VariantVisitor.hpp"
 
