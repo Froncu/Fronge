@@ -1,5 +1,5 @@
-#if not defined CONCEPTS_HPP
-#define CONCEPTS_HPP
+#if not defined ARITHMETIC_HPP
+#define ARITHMETIC_HPP
 
 #include "froch.hpp"
 

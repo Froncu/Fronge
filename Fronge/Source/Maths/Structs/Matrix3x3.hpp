@@ -5,7 +5,7 @@
 
 #include "Core.hpp"
 #include "Vector3.hpp"
-#include "Utility/Concepts.hpp"
+#include "Maths/Arithmetic.hpp"
 
 namespace fro
 {

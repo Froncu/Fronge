@@ -4,7 +4,7 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
-#include "Utility/Concepts.hpp"
+#include "Maths/Arithmetic.hpp"
 
 namespace fro
 {
