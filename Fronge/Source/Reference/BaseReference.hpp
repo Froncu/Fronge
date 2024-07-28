@@ -7,13 +7,10 @@
 
 namespace fro
 {
-	template<typename>
-	struct std::hash;
 	class Referencable;
 
 	class BaseReference
 	{
-		friend std::hash<fro::BaseReference>;
 		friend Referencable;
 
 	public:
@@ -44,7 +41,8 @@ namespace fro
 
 	template<typename Type>
 	concept ReferencableType =
-		not std::derived_from<Type, BaseReference> and not std::is_reference_v<Type>;
+		not std::derived_from<Type, BaseReference> and
+		not std::is_reference_v<Type>;
 }
 
 #endif
