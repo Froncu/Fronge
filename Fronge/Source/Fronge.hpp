@@ -4,6 +4,7 @@
 #include "Application.hpp"
 #include "Audio/Audio.hpp"
 #include "ECS/Components/Component.hpp"
+#include "ECS/Components/Transform/Transform.hpp"
 #include "Core.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "ECS/Group.hpp"
