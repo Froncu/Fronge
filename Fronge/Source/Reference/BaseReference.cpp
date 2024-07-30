@@ -66,24 +66,33 @@ namespace fro
 	bool BaseReference::operator==(Referencable const& referencable) const
 	{
 		if (not valid())
-			return false;
+			return {};
 
 		return *mReferencable == referencable;
 	}
 
 	bool BaseReference::operator==(BaseReference const& other) const
 	{
-		return BaseReference::operator==(other.mReferencable);
+		if (not other.valid())
+			return {};
+
+		return BaseReference::operator==(*other.mReferencable);
 	}
 
 	std::strong_ordering BaseReference::operator<=>(Referencable const& referencable) const
 	{
+		if (not valid())
+			return {};
+
 		return *mReferencable <=> referencable;
 	}
 
 	std::strong_ordering BaseReference::operator<=>(BaseReference const& other) const
 	{
-		return BaseReference::operator<=>(other.mReferencable);
+		if (not other.valid())
+			return {};
+
+		return BaseReference::operator<=>(*other.mReferencable);
 	}
 
 	void BaseReference::reset()
