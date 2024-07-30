@@ -11,7 +11,7 @@ namespace fro
 	template<Arithmetic Type>
 	struct Vector2 final
 	{
-		Type& operator[](std::size_t const index)
+		FRO_NODISCARD Type& operator[](std::size_t const index)
 		{
 			switch (index)
 			{
@@ -26,7 +26,7 @@ namespace fro
 			}
 		}
 
-		Type operator[](std::size_t const index) const
+		FRO_NODISCARD Type operator[](std::size_t const index) const
 		{
 			switch (index)
 			{
@@ -42,11 +42,19 @@ namespace fro
 		}
 
 		template<Arithmetic OtherType>
-		auto operator*(Vector2<OtherType> const& vector) const
+		FRO_NODISCARD auto operator*(Vector2<OtherType> const& vector) const
 		{
 			return
 				x * vector.x +
 				y * vector.y;
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD bool operator==(Vector2<OtherType> const& vector) const
+		{
+			return
+				x == vector.x and
+				y == vector.y;
 		}
 
 		Type x;
