@@ -88,19 +88,16 @@ namespace fro
 				if (not isObserved(componentTypeIndex))
 					return false;
 
-				auto const invalidGroup
+				auto const newEnd
 				{
-					std::find_if(mGroupedComponents.begin(), mGroupedComponents.end(),
+					std::remove_if(mGroupedComponents.begin(), mGroupedComponents.end(),
 					[&entity](GroupTuple const& groupTuple)
 					{
 						return entity.getID() == std::get<0>(groupTuple)->getID();
 					})
 				};
 
-				if (invalidGroup == mGroupedComponents.end())
-					return false;
-
-				mGroupedComponents.erase(invalidGroup);
+				mGroupedComponents.erase(newEnd, mGroupedComponents.end());
 				return true;
 			}, Entity::sComponentDetachEvent
 		};
