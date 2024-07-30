@@ -24,7 +24,7 @@ namespace fro
 
 		template<typename... ArgumentTypes>
 			requires std::constructible_from<Font, ArgumentTypes...>
-		static Reference<Font> storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		static Reference<Font> storeFont(std::string name, ArgumentTypes&&... arguments)
 		{
 			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Font{ std::forward<ArgumentTypes>(arguments)... } }) };
 			if (didInsert)
@@ -43,7 +43,7 @@ namespace fro
 
 		template<typename... ArgumentTypes>
 			requires std::constructible_from<Music, ArgumentTypes...>
-		static Reference<Music> storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		static Reference<Music> storeMusic(std::string name, ArgumentTypes&&... arguments)
 		{
 			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Music{ std::forward<ArgumentTypes>(arguments)... } }) };
 			if (didInsert)
@@ -83,7 +83,7 @@ namespace fro
 			requires std::constructible_from<Surface, ArgumentTypes...>
 		static Reference<Surface> storeSurface(std::string name, ArgumentTypes&&... arguments)
 		{
-			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Texture{ std::forward<ArgumentTypes>(arguments)... } }) };
+			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Surface{ std::forward<ArgumentTypes>(arguments)... } }) };
 			if (didInsert)
 			{
 				Logger::info("stored Surface with ID {} in the ResourceManager!",
