@@ -113,7 +113,7 @@ namespace fro
 
 	TransformMatrix3x3 TransformMatrix3x3::getInverse() const
 	{
-		return mTransformation.getInverse();
+		return getTransformation().getInverse();
 	}
 
 	TransformMatrix3x3& TransformMatrix3x3::inverse()
