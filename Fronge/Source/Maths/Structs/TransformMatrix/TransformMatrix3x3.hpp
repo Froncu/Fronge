@@ -18,8 +18,9 @@ namespace fro
 
 		TransformMatrix3x3& operator=(TransformMatrix3x3 const&) = default;
 		TransformMatrix3x3& operator=(TransformMatrix3x3&&) noexcept = default;
-		FRO_API FRO_NODISCARD TransformMatrix3x3 operator*(TransformMatrix3x3 const& other);
+		FRO_API FRO_NODISCARD TransformMatrix3x3 operator*(TransformMatrix3x3 const& other) const;
 		FRO_API TransformMatrix3x3& operator*=(TransformMatrix3x3 const& other);
+		FRO_API FRO_NODISCARD bool operator==(TransformMatrix3x3 const& other) const;
 		FRO_API FRO_NODISCARD operator Matrix3x3<double> const& () const;
 
 		FRO_API void translate(Vector2<double> const translation);
@@ -33,6 +34,9 @@ namespace fro
 		FRO_API FRO_NODISCARD Vector2<double> getTranslation() const;
 		FRO_API FRO_NODISCARD double getRotation() const;
 		FRO_API FRO_NODISCARD Vector2<double> getScale() const;
+
+		FRO_API FRO_NODISCARD TransformMatrix3x3 getInverse() const;
+		FRO_API TransformMatrix3x3& inverse();
 
 	private:
 		FRO_NODISCARD Matrix3x3<double> const& getTransformation() const;

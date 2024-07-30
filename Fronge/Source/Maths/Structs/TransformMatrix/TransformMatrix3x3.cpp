@@ -12,14 +12,19 @@ namespace fro
 	{
 	}
 
-	TransformMatrix3x3 TransformMatrix3x3::operator*(TransformMatrix3x3 const& other)
+	TransformMatrix3x3 TransformMatrix3x3::operator*(TransformMatrix3x3 const& other) const
 	{
 		return getTransformation() * other.getTransformation();
 	}
 
 	TransformMatrix3x3& TransformMatrix3x3::operator*=(TransformMatrix3x3 const& other)
 	{
-		return *this = *this * other;
+		return *this = other * *this;
+	}
+
+	bool TransformMatrix3x3::operator==(TransformMatrix3x3 const& other) const
+	{
+		return getTransformation() == other.getTransformation();
 	}
 
 	TransformMatrix3x3::operator Matrix3x3<double>const& () const
@@ -104,6 +109,16 @@ namespace fro
 		}
 
 		return mScale;
+	}
+
+	TransformMatrix3x3 TransformMatrix3x3::getInverse() const
+	{
+		return mTransformation.getInverse();
+	}
+
+	TransformMatrix3x3& TransformMatrix3x3::inverse()
+	{
+		return *this = getInverse();
 	}
 
 	Matrix3x3<double> const& TransformMatrix3x3::getTransformation() const

@@ -53,6 +53,17 @@ namespace fro
 		}
 
 		template<Arithmetic OtherType>
+		FRO_NODISCARD bool operator==(Matrix3x3<OtherType> const& matrix) const
+		{
+			for (std::size_t rowIndex{}; rowIndex < 3; ++rowIndex)
+				for (std::size_t columnIndex{}; columnIndex < 3; ++columnIndex)
+					if (mData[rowIndex][columnIndex] not_eq matrix[rowIndex][columnIndex])
+						return false;
+
+			return true;
+		}
+
+		template<Arithmetic OtherType>
 		FRO_NODISCARD auto operator*(Matrix3x3<OtherType> const& matrix) const
 		{
 			using ResultType = decltype(std::declval<Type>() * std::declval<OtherType>());
@@ -70,7 +81,7 @@ namespace fro
 		template<Arithmetic OtherType>
 		auto operator*=(Matrix3x3<OtherType> const& matrix)
 		{
-			return *this = *this * matrix;
+			return *this = matrix * *this;
 		}
 
 		FRO_NODISCARD Matrix3x3<Type> getTransposed() const
@@ -84,9 +95,50 @@ namespace fro
 			return result;
 		}
 
-		FRO_NODISCARD Matrix3x3<Type>& transpose()
+		Matrix3x3<Type>& transpose()
 		{
 			return *this = getTransposed();
+		}
+
+		FRO_NODISCARD Matrix3x3<double> getInverse() const
+		{
+			Type const determinant{ getDeterminant() };
+
+			if (determinant == 0)
+				return true;
+
+			double const inverseDeterminant{ 1.0 / determinant };
+			Matrix3x3<double> inverse;
+
+			inverse[0][0] = inverseDeterminant * (mData[1][1] * mData[2][2] - mData[1][2] * mData[2][1]);
+			inverse[0][1] = inverseDeterminant * (mData[0][2] * mData[2][1] - mData[0][1] * mData[2][2]);
+			inverse[0][2] = inverseDeterminant * (mData[0][1] * mData[1][2] - mData[0][2] * mData[1][1]);
+
+			inverse[1][0] = inverseDeterminant * (mData[1][2] * mData[2][0] - mData[1][0] * mData[2][2]);
+			inverse[1][1] = inverseDeterminant * (mData[0][0] * mData[2][2] - mData[0][2] * mData[2][0]);
+			inverse[1][2] = inverseDeterminant * (mData[0][2] * mData[1][0] - mData[0][0] * mData[1][2]);
+
+			inverse[2][0] = inverseDeterminant * (mData[1][0] * mData[2][1] - mData[1][1] * mData[2][0]);
+			inverse[2][1] = inverseDeterminant * (mData[0][1] * mData[2][0] - mData[0][0] * mData[2][1]);
+			inverse[2][2] = inverseDeterminant * (mData[0][0] * mData[1][1] - mData[0][1] * mData[1][0]);
+
+			return inverse;
+		}
+
+		Matrix3x3<double>& inverse()
+		{
+			if (Matrix3x3<double> inverse{ getInverse() }; inverse == Matrix3x3<double>{ true })
+				*this = std::move(*inverse);
+
+			return *this;
+		}
+
+		FRO_NODISCARD Type getDeterminant() const
+		{
+			return
+				mData[0][0] * (mData[1][1] * mData[2][2] - mData[1][2] * mData[2][1]) -
+				mData[0][1] * (mData[1][0] * mData[2][2] - mData[1][2] * mData[2][0]) +
+				mData[0][2] * (mData[1][0] * mData[2][1] - mData[1][1] * mData[2][0]);
 		}
 
 	private:
