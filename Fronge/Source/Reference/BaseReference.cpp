@@ -63,14 +63,12 @@ namespace fro
 		return *this;
 	}
 
-	bool BaseReference::operator==(Referencable const* const pReferencable) const
-	{
-		return mReferencable == pReferencable;
-	}
-
 	bool BaseReference::operator==(Referencable const& referencable) const
 	{
-		return BaseReference::operator==(&referencable);
+		if (not valid())
+			return false;
+
+		return *mReferencable == referencable;
 	}
 
 	bool BaseReference::operator==(BaseReference const& other) const
@@ -78,14 +76,9 @@ namespace fro
 		return BaseReference::operator==(other.mReferencable);
 	}
 
-	std::strong_ordering BaseReference::operator<=>(Referencable const* const pReferencable) const
-	{
-		return mReferencable <=> pReferencable;
-	}
-
 	std::strong_ordering BaseReference::operator<=>(Referencable const& referencable) const
 	{
-		return BaseReference::operator<=>(&referencable);
+		return *mReferencable <=> referencable;
 	}
 
 	std::strong_ordering BaseReference::operator<=>(BaseReference const& other) const

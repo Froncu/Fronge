@@ -67,14 +67,20 @@ namespace fro
 
 	bool ID::operator==(ID const& other) const
 	{
+		if (not mGenerator.valid() or not other.mGenerator.valid())
+			return {};
+
 		return
-			mGenerator == other.mGenerator and
+			&*mGenerator == &*other.mGenerator and
 			mID == other.mID;
 	}
 
 	std::strong_ordering ID::operator<=>(ID const& other) const
 	{
-		if (mGenerator == other.mGenerator)
+		if (not mGenerator.valid() or not other.mGenerator.valid())
+			return {};
+
+		if (&*mGenerator == &*other.mGenerator)
 			return mID <=> other.mID;
 		
 		return mGenerator <=> other.mGenerator;

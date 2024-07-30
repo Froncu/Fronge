@@ -16,12 +16,10 @@ namespace fro
 	public:
 		FRO_API virtual ~BaseReference();
 
-		FRO_API bool operator==(Referencable const* const pReferencable) const;
-		FRO_API bool operator==(Referencable const& referencable) const;
-		FRO_API bool operator==(BaseReference const& other) const;
-		FRO_API std::strong_ordering operator<=>(Referencable const* const pReferencable) const;
-		FRO_API std::strong_ordering operator<=>(Referencable const& referencable) const;
-		FRO_API std::strong_ordering operator<=>(BaseReference const& other) const;
+		FRO_API FRO_NODISCARD bool operator==(Referencable const& referencable) const;
+		FRO_API FRO_NODISCARD bool operator==(BaseReference const& other) const;
+		FRO_API FRO_NODISCARD std::strong_ordering operator<=>(Referencable const& referencable) const;
+		FRO_API FRO_NODISCARD std::strong_ordering operator<=>(BaseReference const& other) const;
 
 		FRO_API void reset();
 		FRO_API bool valid() const;

@@ -36,4 +36,14 @@ namespace fro
 
 		return *this;
 	}
+
+	bool Referencable::operator==(Referencable const&) const
+	{
+		return {};
+	}
+
+	std::strong_ordering Referencable::operator<=>(Referencable const&) const
+	{
+		return {};
+	}
 }
