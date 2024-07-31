@@ -4,6 +4,8 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
+#include "Events/AudioEvent.hpp"
+#include "Events/Systems/EventQueue.hpp"
 #include "Resources/Music.hpp"
 #include "Resources/SoundEffect.hpp"
 #include "Reference/Reference.hpp"
@@ -12,8 +14,6 @@ namespace fro
 {
 	class Audio final
 	{
-		class Implementation;
-
 	public:
 		FRO_API static void initialize();
 		FRO_API static void shutDown();
@@ -34,10 +34,31 @@ namespace fro
 		FRO_API FRO_NODISCARD static int getAmountOfChannels();
 
 	private:
+		static void internalPauseSoundEffect(int const channel);
+		static void internalResumeSoundEffect(int const channel);
+		static void internalStopSoundEffect(int const channel);
+
+		template<typename EventType, typename... Arguments>
+			requires std::constructible_from<AudioEvent, EventType> and std::constructible_from<EventType, Arguments...>
+		static void pushEvent(Arguments&&... arguments)
+		{
+			{
+				std::lock_guard const lockGuard{ sMutex };
+				sEventQueue.pushEvent(EventType(std::forward<Arguments>(arguments)...));
+			}
+
+			sConditionVariable.notify_one();
+		}
+
+		static EventQueue<AudioEvent> sEventQueue;
+		static std::jthread sEventProcessingThread;
+		static std::mutex sMutex;
+		static std::condition_variable sConditionVariable;
 		static std::vector<Reference<SoundEffect>> sActiveSoundEffects;
 		static std::vector<std::unique_ptr<SoundEffect>> sLoadedSoundEffects;
 		static Reference<Music> sActiveMusic;
 		static std::unique_ptr<Music> sLoadedMusic;
+		static bool sRunThread;
 
 		Audio() = delete;
 		Audio(Audio const&) = delete;
