@@ -1,0 +1,30 @@
+#if not defined SPRITE_ANIMATOR_SYSTEM_HPP
+#define SPRITE_ANIMATOR_SYSTEM_HPP
+
+#include "Core.hpp"
+#include "ECS/Group.hpp"
+#include "ECS/Components/Sprite.hpp"
+#include "ECS/Components/SpriteAnimation.hpp"
+
+namespace fro
+{
+	class SpriteAnimatorSystem final
+	{
+	public:
+		FRO_API static void onUpdate(double const deltaSeconds);
+
+	private:
+		static Group<Sprite, SpriteAnimation> sGroup;
+
+		SpriteAnimatorSystem() = delete;
+		SpriteAnimatorSystem(SpriteAnimatorSystem const&) = delete;
+		SpriteAnimatorSystem(SpriteAnimatorSystem&&) noexcept = delete;
+
+		~SpriteAnimatorSystem() = delete;
+
+		SpriteAnimatorSystem& operator=(SpriteAnimatorSystem const&) = delete;
+		SpriteAnimatorSystem& operator=(SpriteAnimatorSystem&&) noexcept = delete;
+	};
+}
+
+#endif
