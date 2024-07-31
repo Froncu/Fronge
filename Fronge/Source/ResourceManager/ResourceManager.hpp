@@ -5,124 +5,82 @@
 
 #include "Core.hpp"
 #include "Logger/Logger.hpp"
-#include "Resources/Font/Font.hpp"
-#include "Resources/Music/Music.hpp"
-#include "Resources/SoundEffect/SoundEffect.hpp"
-#include "Resources/Surface/Surface.hpp"
-#include "Resources/Texture/Texture.hpp"
 
 namespace fro
 {
 	class ResourceManager final
 	{
 	public:
-		FRO_API FRO_NODISCARD static Font* findFont(std::string name);
-		FRO_API FRO_NODISCARD static Music* findMusic(std::string name);
-		FRO_API FRO_NODISCARD static SoundEffect* findSoundEffect(std::string name);
-		FRO_API FRO_NODISCARD static Surface* findSurface(std::string name);
-		FRO_API FRO_NODISCARD static Texture* findTexture(std::string name);
-
-		template<typename... ArgumentTypes>
-			requires std::constructible_from<Font, ArgumentTypes...>
-		static Font& storeFont(std::string name, ArgumentTypes&&... arguments)
+		template<typename ResourceType, typename NameType, typename... ArgumentTypes>
+			requires std::constructible_from<ResourceType, ArgumentTypes...> and std::constructible_from<std::string, NameType>
+		static ResourceType& store(NameType&& name, ArgumentTypes&&... arguments)
 		{
-			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Font{ std::forward<ArgumentTypes>(arguments)... } }) };
-			if (didInsert)
-			{
-				Logger::info("stored Font with ID {} in the ResourceManager!",
-					resource->second.getID());
-			}
-			else
-			{
-				Logger::warn("failed to store Font with ID {} in the ResourceManager (it's already stored)",
-					resource->second.getID());
-			}
+			auto& resourceMap{ getResourceMap<ResourceType>() };
+			auto&& [element, didInsert] { resourceMap.try_emplace(
+				std::forward<NameType>(name), 
+				std::forward<ArgumentTypes>(arguments)...) };
 
-			return resource->second;
+			if (didInsert)
+				Logger::info("stored a {} named \"{}\" in the ResourceManager!",
+					typeid(ResourceType).name(), element->first);
+			else
+				Logger::warn("failed to store a {} named \"{}\" in the ResourceManager (name is already taken for this type)",
+					typeid(ResourceType).name(), element->first);
+
+			return element->second;
 		}
 
-		template<typename... ArgumentTypes>
-			requires std::constructible_from<Music, ArgumentTypes...>
-		static Music& storeMusic(std::string name, ArgumentTypes&&... arguments)
+		template<std::movable ResourceType>
+		static std::optional<ResourceType> free(std::string_view const name)
 		{
-			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Music{ std::forward<ArgumentTypes>(arguments)... } }) };
-			if (didInsert)
+			auto& resourceMap{ getResourceMap<ResourceType>() };
+
+			auto node{ resourceMap.extract(name.data()) };
+			if (node.empty())
 			{
-				Logger::info("stored Music with ID {} in the ResourceManager!",
-					resource->second.getID());
-			}
-			else
-			{
-				Logger::warn("failed to store Music with ID {} in the ResourceManager (it's already stored)",
-					resource->second.getID());
+				Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
+					typeid(ResourceType).name(), name);
+
+				return std::nullopt;
 			}
 
-			return resource->second;
+			Logger::info("freed a {} named \"{}\" from the ResourceManager!",
+				typeid(ResourceType).name(), name);
+
+			return std::move(node.mapped());
 		}
 
-		template<typename... ArgumentTypes>
-			requires std::constructible_from<SoundEffect, ArgumentTypes...>
-		static SoundEffect& storeSoundEffect(std::string name, ArgumentTypes&&... arguments)
+		template<typename ResourceType>
+		static bool free(std::string_view const name)
 		{
-			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), SoundEffect{ std::forward<ArgumentTypes>(arguments)... } }) };
-			if (didInsert)
-			{
-				Logger::info("stored SoundEffect with ID {} in the ResourceManager!",
-					resource->second.getID());
-			}
+			bool const didFree{ getResourceMap<ResourceType>().erase(name.data()) };
+			if (didFree)
+				Logger::info("freed a {} named \"{}\" from the ResourceManager!",
+					typeid(ResourceType).name(), name);
 			else
-			{
-				Logger::warn("failed to store SoundEffect with ID {} in the ResourceManager (it's already stored)",
-					resource->second.getID());
-			}
-
-			return resource->second;
+				Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
+					typeid(ResourceType).name(), name);;
 		}
 
-		template<typename... ArgumentTypes>
-			requires std::constructible_from<Surface, ArgumentTypes...>
-		static Surface& storeSurface(std::string name, ArgumentTypes&&... arguments)
+		template<typename ResourceType>
+		FRO_NODISCARD static ResourceType* find(std::string_view const name)
 		{
-			auto&& [resource, didInsert] { sSurfaces.insert({ std::move(name), Surface{ std::forward<ArgumentTypes>(arguments)... } }) };
-			if (didInsert)
-			{
-				Logger::info("stored Surface with ID {} in the ResourceManager!",
-					resource->second.getID());
-			}
-			else
-			{
-				Logger::warn("failed to store Surface with ID {} in the ResourceManager (it's already stored)",
-					resource->second.getID());
-			}
+			auto& resourceMap{ getResourceMap<ResourceType>() };
 
-			return resource->second;
-		}
+			auto const element{ resourceMap.find(name) };
+			if (element == resourceMap.end())
+				return nullptr;
 
-		template<typename... ArgumentTypes>
-			requires std::constructible_from<Texture, ArgumentTypes...>
-		static Texture& storeTexture(std::string name, ArgumentTypes&&... arguments)
-		{
-			auto&& [resource, didInsert] { sTextures.insert({ std::move(name), Texture{ std::forward<ArgumentTypes>(arguments)... } }) };
-			if (didInsert)
-			{
-				Logger::info("stored Texture with ID {} in the ResourceManager!",
-					resource->second.getID());
-			}
-			else
-			{
-				Logger::warn("failed to store Texture with ID {} in the ResourceManager (it's already stored)",
-					resource->second.getID());
-			}
-
-			return resource->second;
+			return &element->second;
 		}
 
 	private:
-		FRO_API static std::unordered_map<std::string, Font> sFonts;
-		FRO_API static std::unordered_map<std::string, Music> sMusics;
-		FRO_API static std::unordered_map<std::string, SoundEffect> sSoundEffect;
-		FRO_API static std::unordered_map<std::string, Surface> sSurfaces;
-		FRO_API static std::unordered_map<std::string, Texture> sTextures;
+		template<typename ResourceType>
+		static auto& getResourceMap()
+		{
+			static std::unordered_map<std::string, ResourceType> resourceMap{};
+			return resourceMap;
+		}
 
 		ResourceManager() = delete;
 		ResourceManager(ResourceManager const&) = delete;
