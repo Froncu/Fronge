@@ -1,23 +1,23 @@
-#if not defined SOUND_EFFECT_IMPL_HPP
-#define SOUND_EFFECT_IMPL_HPP
+#if not defined MUSIC_IMPL_HPP
+#define MUSIC_IMPL_HPP
 
 #include "froch.hpp"
 
-#include "Resources/SoundEffect.hpp"
+#include "Resources/Music/Music.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
-struct Mix_Chunk;
+typedef struct _Mix_Music Mix_Music;
 
 namespace fro
 {
-	class SoundEffect::Implementation final
+	class Music::Implementation final
 	{
 	public:
-		Implementation(std::string_view const filePath);
+		FRO_API Implementation(std::string_view const filePath);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD Mix_Chunk* getSDLSoundEffect() const;
+		FRO_API FRO_NODISCARD Mix_Music* getSDLMusic() const;
 
 	private:
 		Implementation(Implementation const&) = delete;
@@ -26,7 +26,7 @@ namespace fro
 		Implementation& operator=(Implementation const&) = delete;
 		Implementation& operator=(Implementation&&) noexcept = delete;
 
-		CustomUniquePointer<Mix_Chunk> mSDLSoundEffect;
+		CustomUniquePointer<Mix_Music> mSDLMusic;
 	};
 }
 

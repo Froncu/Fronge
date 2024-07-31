@@ -6,8 +6,8 @@
 #include "Core.hpp"
 #include "Events/AudioEvent.hpp"
 #include "Events/Systems/EventQueue.hpp"
-#include "Resources/Music.hpp"
-#include "Resources/SoundEffect.hpp"
+#include "Resources/Music/Music.hpp"
+#include "Resources/SoundEffect/SoundEffect.hpp"
 #include "Reference/Reference.hpp"
 
 namespace fro

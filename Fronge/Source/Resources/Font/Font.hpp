@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Idenitifer/IDGenerator.hpp"
+#include "Reference/Referencable.hpp"
 
 namespace fro
 {

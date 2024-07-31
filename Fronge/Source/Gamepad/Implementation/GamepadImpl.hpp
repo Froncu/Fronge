@@ -12,13 +12,13 @@ namespace fro
 	class Gamepad::Implementation final
 	{
 	public:
-		Implementation(std::int32_t const deviceID);
+		FRO_API Implementation(std::int32_t const deviceID);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_GameController* getSDLGameController() const;
+		FRO_API FRO_NODISCARD SDL_GameController* getSDLGameController() const;
 
-		FRO_NODISCARD std::int32_t getID() const;
+		FRO_API FRO_NODISCARD std::int32_t getID() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

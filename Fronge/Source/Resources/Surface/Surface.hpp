@@ -6,11 +6,11 @@
 #include "Core.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Maths/Structs/Vector2.hpp"
-#include "Reference/Reference.hpp"
-#include "Resources/Font.hpp"
+#include "Reference/Referencable.hpp"
 
 namespace fro
 {
+	class Font;
 	class Renderer;
 
 	class Surface final : public Referencable

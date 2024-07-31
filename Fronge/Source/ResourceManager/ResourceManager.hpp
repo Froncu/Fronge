@@ -5,11 +5,11 @@
 
 #include "Core.hpp"
 #include "Logger/Logger.hpp"
-#include "Resources/Font.hpp"
-#include "Resources/Music.hpp"
-#include "Resources/SoundEffect.hpp"
-#include "Resources/Surface.hpp"
-#include "Resources/Texture.hpp"
+#include "Resources/Font/Font.hpp"
+#include "Resources/Music/Music.hpp"
+#include "Resources/SoundEffect/SoundEffect.hpp"
+#include "Resources/Surface/Surface.hpp"
+#include "Resources/Texture/Texture.hpp"
 
 namespace fro
 {

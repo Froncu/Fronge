@@ -3,7 +3,7 @@
 
 #include "froch.hpp"
 
-#include "Resources/Surface.hpp"
+#include "Resources/Surface/Surface.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Surface;
@@ -13,12 +13,12 @@ namespace fro
 	class Surface::Implementation final
 	{
 	public:
-		Implementation(std::string_view const imagePath);
-		Implementation(Font const& font, std::string_view const text);
+		FRO_API Implementation(std::string_view const imagePath);
+		FRO_API Implementation(Font const& font, std::string_view const text);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_Surface* getSDLSurface() const;
+		FRO_API FRO_NODISCARD SDL_Surface* getSDLSurface() const;
 
 	private:
 		FRO_NODISCARD static CustomUniquePointer<SDL_Surface> loadSurface(std::string_view const imagePath);

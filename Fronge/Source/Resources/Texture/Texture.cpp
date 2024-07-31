@@ -1,30 +1,12 @@
 #include "froch.hpp"
 
-#include "TextureImpl.hpp"
-#include "Renderer/Implementation/RendererImpl.hpp"
+#include "Implementation/TextureImpl.hpp"
 #include "Renderer/Renderer.hpp"
-#include "Resources/Implementations/SurfaceImpl.hpp"
-#include "Resources/Surface.hpp"
-
-#include <SDL.h>
+#include "Resources/Surface/Surface.hpp"
+#include "Texture.hpp"
 
 namespace fro
 {
-	Texture::Implementation::Implementation(Renderer& renderer, Surface const& surface)
-		: mSDLTexture{ SDL_CreateTextureFromSurface(
-			renderer.getImplementation().getSDLRenderer(), surface.getImplementation().getSDLSurface()),
-			SDL_DestroyTexture }
-	{
-		if (not mSDLTexture.get())
-			FRO_EXCEPTION("failed to upload Surface with ID {} as SDL_Texture to Renderer with ID {}!",
-				surface.getID(), renderer.getID());
-	}
-
-	SDL_Texture* Texture::Implementation::getSDLTexture() const
-	{
-		return mSDLTexture.get();
-	}
-
 	IDGenerator Texture::sIDGenerator{};
 
 	Texture::Texture(Renderer& renderer, Surface const& surface)
@@ -42,7 +24,7 @@ namespace fro
 		, mID{ std::move(other.mID) }
 		, mRenderer{ std::move(other.mRenderer) }
 		, mSize{ other.getSize() }
-		, mImplementation{ std::move(other.mImplementation)}
+		, mImplementation{ std::move(other.mImplementation) }
 	{
 		other.mSize = {};
 	}
@@ -70,6 +52,11 @@ namespace fro
 		return *this;
 	}
 
+	Texture::Implementation& Texture::getImplementation() const
+	{
+		return *mImplementation;
+	}
+
 	ID const& Texture::getID() const
 	{
 		return mID;
@@ -78,11 +65,6 @@ namespace fro
 	Reference<Renderer> Texture::getRenderer() const
 	{
 		return mRenderer;
-	}
-
-	Texture::Implementation & Texture::getImplementation() const
-	{
-		return *mImplementation;
 	}
 
 	Vector2<int> Texture::getSize() const

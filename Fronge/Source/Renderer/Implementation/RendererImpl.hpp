@@ -10,11 +10,11 @@ namespace fro
 	class Renderer::Implementation final
 	{
 	public:
-		Implementation(Window const& window);
+		FRO_API Implementation(Window const& window);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_Renderer* getSDLRenderer() const;
+		FRO_API FRO_NODISCARD SDL_Renderer* getSDLRenderer() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

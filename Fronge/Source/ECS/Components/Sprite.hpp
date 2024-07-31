@@ -4,7 +4,7 @@
 #include "ECS/Components/Component.hpp"
 #include "Maths/Structs/Rectangle.hpp"
 #include "Reference/Reference.hpp"
-#include "Resources/Texture.hpp"
+#include "Resources/Texture/Texture.hpp"
 
 namespace fro
 {

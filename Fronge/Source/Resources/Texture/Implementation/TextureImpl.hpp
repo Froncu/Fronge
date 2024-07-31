@@ -1,7 +1,7 @@
 #if not defined TEXTURE_IMPL_HPP
 #define TEXTURE_IMPL_HPP
 
-#include "Resources/Texture.hpp"
+#include "Resources/Texture/Texture.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
 struct SDL_Texture;
@@ -11,11 +11,11 @@ namespace fro
 	class Texture::Implementation final
 	{
 	public:
-		Implementation(Renderer& renderer, Surface const& surface);
+		FRO_API Implementation(Renderer& renderer, Surface const& surface);
 
 		~Implementation() = default;
 
-		FRO_NODISCARD SDL_Texture* getSDLTexture() const;
+		FRO_API FRO_NODISCARD SDL_Texture* getSDLTexture() const;
 
 	private:
 		Implementation(Implementation const&) = delete;

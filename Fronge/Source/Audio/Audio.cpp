@@ -1,8 +1,8 @@
 #include "froch.hpp"
 
 #include "Audio.hpp"
-#include "Resources/Implementations/MusicImpl.hpp"
-#include "Resources/Implementations/SoundEffectImpl.hpp"
+#include "Resources/Music/Implementation/MusicImpl.hpp"
+#include "Resources/SoundEffect/Implementation/SoundEffectImpl.hpp"
 #include "Utility/VariantVisitor.hpp"
 
 #include <SDL_mixer.h>

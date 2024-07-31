@@ -24,9 +24,10 @@ namespace fro
 
 		FRO_API Texture& operator=(Texture&& other) noexcept;
 
+		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
+
 		FRO_API FRO_NODISCARD ID const& getID() const;
 		FRO_API FRO_NODISCARD Reference<Renderer> getRenderer() const;
-		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 		FRO_API FRO_NODISCARD Vector2<int> getSize() const;
 
 	private:
