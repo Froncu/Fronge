@@ -6,38 +6,38 @@ namespace fro
 {
 	void SpriteAnimatorSystem::onUpdate(double const deltaSeconds)
 	{
-		for (auto&& [entity, sprite, spriteAnimation] : sGroup)
+		for (auto&& [entity, sprite, spriteAnimator] : sGroup)
 		{
-			bool& play{ spriteAnimation->play };
-			Reference<SpriteAnimationClip> const& animationClip{ spriteAnimation->animationClip };
-			if (not play or not animationClip.valid())
+			bool& play{ spriteAnimator->play };
+			Reference<SpriteAnimation> const& animation{ spriteAnimator->animation };
+			if (not play or not animation.valid())
 				return;
 
-			auto& sourceRectangles{ animationClip->sourceRectangles };
+			auto& sourceRectangles{ animation->sourceRectangles };
 			if (sourceRectangles.empty())
 				return;
 
-			double& elapsedSeconds{ spriteAnimation->elapsedSeconds };
-			double const frameTimeSeconds{ animationClip->frameTimeSeconds };
-			elapsedSeconds += deltaSeconds;
-			if (elapsedSeconds < frameTimeSeconds)
+			double& frameProgress{ spriteAnimator->frameProgress };
+			double const framesPerSecond{ animation->framesPerSecond };
+			frameProgress += deltaSeconds * framesPerSecond;
+			if (frameProgress < 1.0)
 				return;
 
-			std::size_t& currentFrameIndex{ spriteAnimation->currentFrameIndex };
-			if (currentFrameIndex == sourceRectangles.size() - 1 and not animationClip->shouldLoop)
+			std::size_t& frameIndex{ spriteAnimator->frameIndex };
+			if (frameIndex == sourceRectangles.size() - 1 and not animation->loops)
 			{
-				elapsedSeconds = frameTimeSeconds;
-				spriteAnimation->play = false;
+				frameProgress = 1.0;
+				spriteAnimator->play = false;
 				return;
 			}
 
-			elapsedSeconds -= frameTimeSeconds;
+			--frameProgress;
 
-			++currentFrameIndex %= sourceRectangles.size();
+			++frameIndex %= sourceRectangles.size();
 
-			sprite->sourceRectangle = sourceRectangles[currentFrameIndex];
+			sprite->sourceRectangle = sourceRectangles[frameIndex];
 		}
 	}
 
-	Group<Sprite, SpriteAnimation> SpriteAnimatorSystem::sGroup{};
+	Group<Sprite, SpriteAnimator> SpriteAnimatorSystem::sGroup{};
 }

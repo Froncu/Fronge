@@ -1,7 +1,7 @@
 #if not defined COMPONENT_SPARSE_SET_HPP
 #define COMPONENT_SPARSE_SET_HPP
 
-#include "ECS/Components/Component.hpp"
+#include "ECS/Components/Component/Component.hpp"
 #include "Utility/SparseSet.hpp"
 
 namespace fro

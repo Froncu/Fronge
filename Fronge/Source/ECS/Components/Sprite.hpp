@@ -1,7 +1,7 @@
 #if not defined SPRITE_HPP
 #define SPRITE_HPP
 
-#include "ECS/Components/Component.hpp"
+#include "ECS/Components/Component/Component.hpp"
 #include "Maths/Structs/Rectangle.hpp"
 #include "Reference/Reference.hpp"
 #include "Resources/Texture/Texture.hpp"

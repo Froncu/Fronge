@@ -4,7 +4,7 @@
 #include "Core.hpp"
 #include "ECS/Group.hpp"
 #include "ECS/Components/Sprite.hpp"
-#include "ECS/Components/SpriteAnimation.hpp"
+#include "ECS/Components/SpriteAnimator.hpp"
 
 namespace fro
 {
@@ -14,7 +14,7 @@ namespace fro
 		FRO_API static void onUpdate(double const deltaSeconds);
 
 	private:
-		static Group<Sprite, SpriteAnimation> sGroup;
+		static Group<Sprite, SpriteAnimator> sGroup;
 
 		SpriteAnimatorSystem() = delete;
 		SpriteAnimatorSystem(SpriteAnimatorSystem const&) = delete;

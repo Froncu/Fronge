@@ -3,7 +3,7 @@
 
 #include "froch.hpp"
 
-#include "ECS/Components/Component.hpp"
+#include "ECS/Components/Component/Component.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Reference/Reference.hpp"
