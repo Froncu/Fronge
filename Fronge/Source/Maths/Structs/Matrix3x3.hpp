@@ -52,15 +52,15 @@ namespace fro
 			return mData[index];
 		}
 
-		template<Arithmetic OtherType>
-		FRO_NODISCARD bool operator==(Matrix3x3<OtherType> const& matrix) const
+		template<Arithmetic Type>
+		FRO_NODISCARD auto operator*(Vector3<Type> const& vector) const
 		{
-			for (std::size_t rowIndex{}; rowIndex < 3; ++rowIndex)
-				for (std::size_t columnIndex{}; columnIndex < 3; ++columnIndex)
-					if (mData[rowIndex][columnIndex] not_eq matrix[rowIndex][columnIndex])
-						return false;
-
-			return true;
+			return Vector3
+			{
+				mData[0] * vector,
+				mData[1] * vector,
+				mData[2] * vector
+			};
 		}
 
 		template<Arithmetic OtherType>
@@ -82,6 +82,17 @@ namespace fro
 		auto operator*=(Matrix3x3<OtherType> const& matrix)
 		{
 			return *this = matrix * *this;
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD bool operator==(Matrix3x3<OtherType> const& matrix) const
+		{
+			for (std::size_t rowIndex{}; rowIndex < 3; ++rowIndex)
+				for (std::size_t columnIndex{}; columnIndex < 3; ++columnIndex)
+					if (mData[rowIndex][columnIndex] not_eq matrix[rowIndex][columnIndex])
+						return false;
+
+			return true;
 		}
 
 		FRO_NODISCARD Matrix3x3<Type> getTransposed() const
