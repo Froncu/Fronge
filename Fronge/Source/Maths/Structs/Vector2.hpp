@@ -57,6 +57,11 @@ namespace fro
 			return *this = *this + vector;
 		}
 
+		FRO_NODISCARD constexpr Vector2 operator-() const
+		{
+			return{ -x, -y };
+		}
+
 		template<Arithmetic OtherType>
 		FRO_NODISCARD constexpr auto operator-(Vector2<OtherType> const& vector) const
 		{
@@ -116,6 +121,17 @@ namespace fro
 		FRO_NODISCARD auto getMagnitude() const
 		{
 			return std::sqrt(x * x + y * y);
+		}
+
+		FRO_NODISCARD Vector2 getNormalized() const
+		{
+			auto const magnitude{ getMagnitude() };
+			return{ x / magnitude, y / magnitude };
+		}
+
+		Vector2& normalize()
+		{
+			return *this = getNormalized();
 		}
 
 		Type x;
