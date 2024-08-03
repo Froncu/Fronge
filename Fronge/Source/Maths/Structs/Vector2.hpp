@@ -42,19 +42,80 @@ namespace fro
 		}
 
 		template<Arithmetic OtherType>
-		FRO_NODISCARD auto operator*(Vector2<OtherType> const& vector) const
+		FRO_NODISCARD constexpr auto operator+(Vector2<OtherType> const& vector) const
+		{
+			return Vector2
+			{
+				x + vector.x,
+				y + vector.y
+			};
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD constexpr auto operator+=(Vector2<OtherType> const& vector)
+		{
+			return *this = *this + vector;
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD constexpr auto operator-(Vector2<OtherType> const& vector) const
+		{
+			return Vector2
+			{
+				x - vector.x,
+				y - vector.y
+			};
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD constexpr auto operator-=(Vector2<OtherType> const& vector)
+		{
+			return *this = *this = vector;
+		}
+
+		template<Arithmetic OtherType>
+		FRO_NODISCARD constexpr auto operator*(Vector2<OtherType> const& vector) const
 		{
 			return
 				x * vector.x +
 				y * vector.y;
 		}
 
+		template<Arithmetic MultiplierType>
+		FRO_NODISCARD constexpr auto operator*(MultiplierType const multiplier) const
+		{
+			return Vector2{ x * multiplier, y * multiplier };
+		}
+
+		template<Arithmetic MultiplierType>
+		FRO_NODISCARD constexpr auto operator*=(MultiplierType const multiplier) const
+		{
+			return *this = *this * multiplier;
+		}
+
+		template<Arithmetic DividerType>
+		FRO_NODISCARD constexpr auto operator/(DividerType const divider) const
+		{
+			return Vector2{ x / divider, y / divider };
+		}
+
+		template<Arithmetic DividerType>
+		FRO_NODISCARD constexpr auto operator/=(DividerType const divider) const
+		{
+			return *this = *this / divider;
+		}
+
 		template<Arithmetic OtherType>
-		FRO_NODISCARD bool operator==(Vector2<OtherType> const& vector) const
+		FRO_NODISCARD constexpr bool operator==(Vector2<OtherType> const& vector) const
 		{
 			return
 				x == vector.x and
 				y == vector.y;
+		}
+
+		FRO_NODISCARD auto getMagnitude() const
+		{
+			return std::sqrt(x * x + y * y);
 		}
 
 		Type x;

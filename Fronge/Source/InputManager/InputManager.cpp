@@ -3,7 +3,6 @@
 #include "InputManager.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"
 #include "Utility/VariantVisitor.hpp"
-#include "Maths/MathFunctions.hpp"
 
 #include <SDL.h>
 
@@ -82,7 +81,7 @@ namespace fro
 			std::reduce(actionDeadzones.begin(), actionDeadzones.end(), 0.0) / actionDeadzones.size()
 		};
 
-		double const actionAxis2DMagnitude{ math::getMagnitude(actionAxis2D) };
+		double const actionAxis2DMagnitude{ actionAxis2D.getMagnitude() };
 
 		if (actionAxis2DMagnitude <= avarageDeadzoneMagnitude)
 			return {};

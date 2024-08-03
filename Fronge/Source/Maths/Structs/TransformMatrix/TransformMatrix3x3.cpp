@@ -1,7 +1,6 @@
 #include "froch.hpp"
 
 #include "TransformMatrix3x3.hpp"
-#include "Maths/MathFunctions.hpp"
 
 namespace fro
 {
@@ -153,7 +152,7 @@ namespace fro
 	void TransformMatrix3x3::calculateScale() const
 	{
 		Matrix3x3<double> const& transformation{ getTransformation() };
-		mScale.x = math::getMagnitude(Vector2{ transformation[0][0], transformation[1][0] });
-		mScale.y = math::getMagnitude(Vector2{ transformation[0][1], transformation[1][1] });
+		mScale.x = Vector2{ transformation[0][0], transformation[1][0] }.getMagnitude();
+		mScale.y = Vector2{ transformation[0][1], transformation[1][1] }.getMagnitude();
 	}
 }

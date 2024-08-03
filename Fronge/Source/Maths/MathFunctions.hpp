@@ -21,30 +21,6 @@ namespace fro
 		};
 	}
 
-	template<Arithmetic Type, Arithmetic MultiplierType>
-	FRO_NODISCARD auto operator*(Vector2<Type> const vector, MultiplierType const multiplier)
-	{
-		return Vector2{ vector.x * multiplier, vector.y * multiplier };
-	}
-
-	template<Arithmetic Type, Arithmetic MultiplierType>
-	FRO_NODISCARD auto operator*(Vector3<Type> const vector, MultiplierType const multiplier)
-	{
-		return Vector3{ vector.x * multiplier, vector.y * multiplier, vector.z * multiplier };
-	}
-
-	template<Arithmetic Type, Arithmetic DividerType>
-	FRO_NODISCARD auto operator/(Vector2<Type> const vector, DividerType const divider)
-	{
-		return Vector2{ vector.x / divider, vector.y / divider };
-	}
-
-	template<Arithmetic Type, Arithmetic DividerType>
-	FRO_NODISCARD auto operator/(Vector3<Type> const vector, DividerType const divider)
-	{
-		return Vector3{ vector.x / divider, vector.y / divider, vector.z / divider };
-	}
-
 	namespace math
 	{
 		template<Arithmetic Type>
@@ -116,18 +92,6 @@ namespace fro
 		FRO_NODISCARD constexpr Matrix3x3<Type> createScalar(Vector2<Type> const& scale)
 		{
 			return createScalar(scale.x, scale.y);
-		}
-
-		template<Arithmetic Type>
-		FRO_NODISCARD constexpr auto getMagnitude(Vector2<Type> const& vector)
-		{
-			return std::sqrt(vector.x * vector.x + vector.y * vector.y);
-		}
-
-		template<Arithmetic Type>
-		FRO_NODISCARD constexpr auto getMagnitude(Vector3<Type> const& vector)
-		{
-			return std::sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 		}
 	}
 }
