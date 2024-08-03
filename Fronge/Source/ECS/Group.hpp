@@ -26,7 +26,18 @@ namespace fro
 				tryGroup(*entity);
 		}
 
+		Group(Group const&) = default;
+		Group(Group&&) noexcept = default;
+
 		~Group() = default;
+
+		Group& operator=(Group const&) = default;
+		Group& operator=(Group&&) noexcept = default;
+
+		auto operator[](std::size_t const index) const
+		{
+			return mGroupedComponents[index];
+		}
 
 		auto begin() const
 		{
@@ -38,13 +49,12 @@ namespace fro
 			return mGroupedComponents.cend();
 		}
 
+		std::size_t size() const
+		{
+			return mGroupedComponents.size();
+		}
+
 	private:
-		Group(Group const&) = delete;
-		Group(Group&&) noexcept = delete;
-
-		Group& operator=(Group const&) = delete;
-		Group& operator=(Group&&) noexcept = delete;
-
 		FRO_NODISCARD bool isObserved(std::type_index const componentTypeIndex)
 		{
 			static std::array<std::type_index, sizeof...(ObservedComponentTypes)> const observedTypeIndices
