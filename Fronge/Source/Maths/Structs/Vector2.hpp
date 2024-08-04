@@ -134,6 +134,12 @@ namespace fro
 			return *this = getNormalized();
 		}
 
+		template<Arithmetic OtherType>
+		FRO_NODISCARD auto getCross(Vector2<OtherType> const& vector) const
+		{
+			return x * vector.y - y * vector.x;
+		}
+
 		Type x;
 		Type y;
 	};
