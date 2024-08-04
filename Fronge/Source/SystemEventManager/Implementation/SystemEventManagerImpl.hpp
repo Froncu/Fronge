@@ -3,6 +3,8 @@
 
 #include "SystemEventManager/SystemEventManager.hpp"
 
+#include <SDL_stdinc.h>
+
 struct SDL_ControllerAxisEvent;
 struct SDL_ControllerButtonEvent;
 struct SDL_ControllerDeviceEvent;
