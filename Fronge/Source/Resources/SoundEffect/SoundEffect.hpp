@@ -12,9 +12,10 @@ namespace fro
 	class SoundEffect final : public Referencable
 	{
 		friend class Audio;
-		class Implementation;
 
 	public:
+		class Implementation;
+
 		FRO_API SoundEffect(std::string_view const filePath);
 		FRO_API SoundEffect(SoundEffect&& other) noexcept;
 

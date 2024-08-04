@@ -15,9 +15,9 @@ namespace fro
 
 	class Surface final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Surface(std::string_view const imagePath);
 		FRO_API Surface(Font const& font, std::string_view const text);
 		FRO_API Surface(Surface&& other) noexcept;

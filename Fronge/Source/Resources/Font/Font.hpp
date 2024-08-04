@@ -11,9 +11,9 @@ namespace fro
 {
 	class Font final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Font(std::string_view const filePath, int const size);
 		FRO_API Font(Font&& other) noexcept;
 

@@ -14,9 +14,9 @@ namespace fro
 {
 	class Window final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Window(std::string_view const title = "Fronge Window", Vector2<int> const size = { 640, 480 });
 
 		FRO_API ~Window();

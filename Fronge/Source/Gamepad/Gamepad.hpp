@@ -12,9 +12,9 @@ namespace fro
 {
 	class Gamepad final
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Gamepad(std::int32_t const deviceID);
 		FRO_API Gamepad(Gamepad const& other);
 		FRO_API Gamepad(Gamepad&& other) noexcept;

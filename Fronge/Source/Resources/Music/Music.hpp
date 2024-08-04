@@ -11,9 +11,9 @@ namespace fro
 {
 	class Music final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Music(std::string_view const filePath);
 		FRO_API Music(Music&& other) noexcept;
 

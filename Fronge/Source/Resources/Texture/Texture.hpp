@@ -14,9 +14,9 @@ namespace fro
 
 	class Texture final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API Texture(Renderer& renderer, Surface const& surface);
 		FRO_API Texture(Texture&& other) noexcept;
 

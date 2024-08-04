@@ -10,9 +10,9 @@ namespace fro
 {
 	class SystemEventManager final
 	{
+	public:
 		class Implementation;
 
-	public:
 		FRO_API static void initialize();
 		FRO_API static void shutDown();
 

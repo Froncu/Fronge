@@ -6,8 +6,8 @@
 #include "Core.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Maths/Structs/Matrix3x3.hpp"
-#include "Maths/Structs/Vector2.hpp"
 #include "Maths/Structs/Rectangle.hpp"
+#include "Maths/Structs/Vector2.hpp"
 #include "Reference/Reference.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Utility/CustomUniquePointer.hpp"
@@ -20,9 +20,9 @@ namespace fro
 
 	class Renderer final : public Referencable
 	{
+	public:
 		class Implementation;
 
-	public:
 		enum class ScalingMode
 		{
 			NONE,
