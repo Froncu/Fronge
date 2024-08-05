@@ -13,6 +13,9 @@ workspace "Fronge"
 	include "Premake/globalwks.lua"
 
 	group "Engine"
+		include "External/Box2D"
+
+	group "Engine"
 		include "Fronge"
 	
 	group "Engine"

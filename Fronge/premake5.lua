@@ -10,7 +10,7 @@ project "Fronge"
 	-- Temporary
 	removefiles "Source/OldFronge/**"
 	--
-	includedirs "Source"
+	includedirs { "Source", "../External/Box2D/include" }
 	targetdir ("../Output/" .. outputdir)
 	objdir ("../Intermediate/" .. outputdir .. "/%{prj.name}")
 
@@ -30,5 +30,7 @@ project "Fronge"
 	dofile "../External/SDL2_mixer/premake5.lua"
 	dofile "../External/SDL2_ttf/premake5.lua"
 	dofile "../External/vld/premake5.lua"
+
+	links "Box2D"
 
 project "*"

@@ -12,6 +12,11 @@ namespace fro
 	class Entity final : public Referencable
 	{
 	public:
+		struct Global
+		{
+
+		};
+
 		using DetachedComponent = std::pair<std::unique_ptr<Component>, std::type_index>;
 
 		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>> const& getAllEntities();
@@ -102,6 +107,15 @@ namespace fro
 		}
 
 	private:
+		template<ComponentSparseSetStorable ComponentType>
+		FRO_NODISCARD static SparseSet<ComponentType>& getSparseSet()
+		{
+			using ComponentSparseSetType = ComponentSparseSet<ComponentType>;
+
+			auto& baseComponentSparseSet{ sBaseComponentSparseSets.emplace(typeid(ComponentType), std::make_unique<ComponentSparseSetType>()).first->second };
+			return static_cast<ComponentSparseSetType&>(*baseComponentSparseSet).mSparseSet;
+		}
+
 		static IDGenerator sIDGenerator;
 		static std::unordered_set<Reference<Entity>> sEntities;
 		FRO_API static std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> sBaseComponentSparseSets;
@@ -109,15 +123,6 @@ namespace fro
 		Entity(Entity const&) = delete;
 
 		Entity& operator=(Entity const&) = delete;
-
-		template<ComponentSparseSetStorable ComponentType>
-		FRO_NODISCARD SparseSet<ComponentType>& getSparseSet() const
-		{
-			using ComponentSparseSetType = ComponentSparseSet<ComponentType>;
-
-			auto& baseComponentSparseSet{ sBaseComponentSparseSets.emplace(typeid(ComponentType), std::make_unique<ComponentSparseSetType>()).first->second };
-			return static_cast<ComponentSparseSetType&>(*baseComponentSparseSet).mSparseSet;
-		}
 
 		ID mID{ sIDGenerator.get() };
 	};
