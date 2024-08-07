@@ -7,18 +7,33 @@ namespace fro
 {
 	std::unordered_set<Reference<Entity>> const& Entity::getAllEntities()
 	{
-		return sEntities;
+		return getAllEntitiesInternal();
 	}
 
-	EventDispatcher<Entity, Component, std::type_index const> Entity::sComponentAttachEvent{};
-	EventDispatcher<Entity, Component, std::type_index const> Entity::sComponentDetachEvent{};
+	std::unordered_set<Reference<Entity>>& Entity::getAllEntitiesInternal()
+	{
+		static std::unordered_set<Reference<Entity>> entities{};
+		return entities;
+	}
+
+	EventDispatcher<Entity, Component, std::type_index const>& Entity::getComponentAttachEvent()
+	{
+		static EventDispatcher<Entity, Component, std::type_index const> sComponentAttachEvent{};
+		return sComponentAttachEvent;
+	}
+
+	EventDispatcher<Entity, Component, std::type_index const>& Entity::getComponentDetachEvent()
+	{
+		static EventDispatcher<Entity, Component, std::type_index const> sComponentDetachEvent{};
+		return sComponentDetachEvent;
+	}
+
 	IDGenerator Entity::sIDGenerator{};
-	std::unordered_set<Reference<Entity>> Entity::sEntities{};
 	std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> Entity::sBaseComponentSparseSets{};
 
 	Entity::Entity()
 	{
-		sEntities.insert(this);
+		getAllEntitiesInternal().insert(this);
 
 		Logger::info("created Entity with ID {}!",
 			mID);
@@ -35,7 +50,7 @@ namespace fro
 	{
 		detachAll();
 
-		sEntities.erase(this);
+		getAllEntitiesInternal().erase(this);
 
 		Logger::info("destroyed Entity with ID {}!",
 			mID);
@@ -73,7 +88,7 @@ namespace fro
 				continue;
 
 			auto&& [detachedComponent, detachedComponentTypeIndex] { detachedComponents.emplace_back(std::move(component), componentTypeIndex) };
-			sComponentDetachEvent.notify(*this, *detachedComponent, detachedComponentTypeIndex);
+			getComponentDetachEvent().notify(*this, *detachedComponent, detachedComponentTypeIndex);
 		}
 
 		return detachedComponents;

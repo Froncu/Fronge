@@ -12,19 +12,19 @@ namespace fro
 	class SpriteSystem final
 	{
 	public:
-		SpriteSystem() = default;
-		SpriteSystem(SpriteSystem const&) = default;
-		SpriteSystem(SpriteSystem&&) noexcept = default;
-
-		~SpriteSystem() = default;
-
-		SpriteSystem& operator=(SpriteSystem const&) = default;
-		SpriteSystem& operator=(SpriteSystem&&) noexcept = default;
-
-		FRO_API void onRender(Renderer const& renderer);
+		FRO_API static void onRender(Renderer const& renderer);
 
 	private:
-		Group<Transform, Sprite> const mGroup{};
+		static Group<Transform, Sprite> sGroup;
+
+		SpriteSystem() = delete;
+		SpriteSystem(SpriteSystem const&) = delete;
+		SpriteSystem(SpriteSystem&&) noexcept = delete;
+
+		~SpriteSystem() = delete;
+
+		SpriteSystem& operator=(SpriteSystem const&) = delete;
+		SpriteSystem& operator=(SpriteSystem&&) noexcept = delete;
 	};
 }
 

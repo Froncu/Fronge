@@ -12,17 +12,11 @@ namespace fro
 	class Entity final : public Referencable
 	{
 	public:
-		struct Global
-		{
-
-		};
-
 		using DetachedComponent = std::pair<std::unique_ptr<Component>, std::type_index>;
 
 		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>> const& getAllEntities();
-
-		FRO_API static EventDispatcher<Entity, Component, std::type_index const> sComponentAttachEvent;
-		FRO_API static EventDispatcher<Entity, Component, std::type_index const> sComponentDetachEvent;
+		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentAttachEvent();
+		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentDetachEvent();
 
 		FRO_API Entity();
 		FRO_API Entity(Entity&& other) noexcept;
@@ -44,7 +38,7 @@ namespace fro
 
 			auto&& [component, inserted] { getSparseSet<ComponentType>()[ID] };
 			if (inserted)
-				sComponentAttachEvent.notify(*this, component, typeid(ComponentType));
+				getComponentAttachEvent().notify(*this, component, typeid(ComponentType));
 
 			return &component;
 		}
@@ -63,7 +57,7 @@ namespace fro
 			if (not attachedComponent)
 				return attachedComponent;
 
-			sComponentAttachEvent.notify(*this, *attachedComponent, typeid(ComponentType));
+			getComponentAttachEvent().notify(*this, *attachedComponent, typeid(ComponentType));
 
 			return attachedComponent;
 		}
@@ -81,7 +75,7 @@ namespace fro
 			if (not detachedComponent.has_value())
 				return detachedComponent;
 
-			sComponentDetachEvent.notify(*this, *detachedComponent, typeid(ComponentType));
+			getComponentDetachEvent().notify(*this, *detachedComponent, typeid(ComponentType));
 
 			return detachedComponent;
 		}
@@ -107,6 +101,8 @@ namespace fro
 		}
 
 	private:
+		FRO_NODISCARD static std::unordered_set<Reference<Entity>>& getAllEntitiesInternal();
+
 		template<ComponentSparseSetStorable ComponentType>
 		FRO_NODISCARD static SparseSet<ComponentType>& getSparseSet()
 		{
@@ -117,7 +113,6 @@ namespace fro
 		}
 
 		static IDGenerator sIDGenerator;
-		static std::unordered_set<Reference<Entity>> sEntities;
 		FRO_API static std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> sBaseComponentSparseSets;
 
 		Entity(Entity const&) = delete;

@@ -1,13 +1,14 @@
 #include "froch.hpp"
 
-#include "PhysicsSystem.hpp"
 #include "ECS/Components/Rigidbody/Implementation/RigidbodyImpl.hpp"
+#include "Implementation/PhysicsSystemImpl.hpp"
+#include "PhysicsSystem.hpp"
 
 namespace fro
 {
 	void PhysicsSystem::onFixedUpdate(double const fixedDeltaSeconds)
 	{
-		for (auto&& [entity, transform, rigidbody] : mGroup)
+		for (auto&& [entity, transform, rigidbody] : sGroup)
 		{
 			auto const translation{ transform->world().getTranslation() };
 			auto const rotation{ transform->world().getRotation() };
@@ -19,9 +20,9 @@ namespace fro
 			);
 		}
 
-		Rigidbody::Implementation::getb2World().Step(static_cast<float>(fixedDeltaSeconds), 5, 5);
+		Implementation::sWorld.Step(static_cast<float>(fixedDeltaSeconds), 5, 5);
 
-		for (auto&& [entity, transform, rigidbody] : mGroup)
+		for (auto&& [entity, transform, rigidbody] : sGroup)
 		{
 			transform->setLocalScale({ 1.0, 1.0 });
 
@@ -32,4 +33,6 @@ namespace fro
 			transform->setWorldRotation(rotation);
 		}
 	}
+
+	Group<Transform, Rigidbody> PhysicsSystem::sGroup{};
 }

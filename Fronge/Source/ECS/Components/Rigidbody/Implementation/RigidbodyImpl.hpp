@@ -5,15 +5,13 @@
 #include "ECS/Components/Rigidbody/Rigidbody.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
-#include <box2d/box2d.h>
+#include <box2d/b2_body.h>
 
 namespace fro
 {
 	class Rigidbody::Implementation final
 	{
 	public:
-		FRO_API FRO_NODISCARD static b2World& getb2World();
-
 		FRO_API Implementation(b2BodyDef const& bodyDefinition = {});
 
 		~Implementation() = default;

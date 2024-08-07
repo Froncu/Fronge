@@ -6,7 +6,7 @@ namespace fro
 {
 	void SpriteAnimatorSystem::onUpdate(double const deltaSeconds)
 	{
-		for (auto&& [entity, sprite, spriteAnimator] : mGroup)
+		for (auto&& [entity, sprite, spriteAnimator] : sGroup)
 		{
 			bool& play{ spriteAnimator->play };
 			Reference<SpriteAnimation> const& animation{ spriteAnimator->animation };
@@ -38,4 +38,7 @@ namespace fro
 			sprite->sourceRectangle = sourceRectangles[frameIndex];
 		}
 	}
+
+
+	Group<Sprite, SpriteAnimator> SpriteAnimatorSystem::sGroup{};
 }

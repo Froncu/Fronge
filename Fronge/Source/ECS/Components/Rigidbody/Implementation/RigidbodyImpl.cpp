@@ -1,20 +1,15 @@
 #include "froch.hpp"
 
+#include "ECS/Systems/PhysicsSystem/Implementation/PhysicsSystemImpl.hpp"
 #include "RigidbodyImpl.hpp"
 
 namespace fro
 {
-	b2World& Rigidbody::Implementation::getb2World()
-	{
-		static b2World sWorld{ b2Vec2{ 0.0f, 9.81f } };
-		return sWorld;
-	}
-
 	Rigidbody::Implementation::Implementation(b2BodyDef const& bodyDefinition)
 		: mBody
 		{
-			getb2World().CreateBody(&bodyDefinition),
-			std::bind(&b2World::DestroyBody, &getb2World(), std::placeholders::_1)
+			PhysicsSystem::Implementation::sWorld.CreateBody(&bodyDefinition),
+			std::bind(&b2World::DestroyBody, &PhysicsSystem::Implementation::sWorld, std::placeholders::_1)
 		}
 	{
 	}

@@ -88,7 +88,7 @@ namespace fro
 					return tryGroup(entity);
 
 				return false;
-			}, Entity::sComponentAttachEvent
+			}, Entity::getComponentAttachEvent()
 		};
 
 		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
@@ -109,7 +109,7 @@ namespace fro
 
 				mGroupedComponents.erase(newEnd, mGroupedComponents.end());
 				return true;
-			}, Entity::sComponentDetachEvent
+			}, Entity::getComponentDetachEvent()
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};

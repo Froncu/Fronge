@@ -15,7 +15,7 @@ namespace fro
             
                 mEntity = entity;
                 return true;
-            }, Entity::sComponentAttachEvent
+            }, Entity::getComponentAttachEvent()
         }
         , mOnComponentDetachEvent
         {
@@ -26,7 +26,7 @@ namespace fro
 
                 mEntity.reset();
                 return true;
-            }, Entity::sComponentDetachEvent
+            }, Entity::getComponentDetachEvent()
         }
     {
     }
