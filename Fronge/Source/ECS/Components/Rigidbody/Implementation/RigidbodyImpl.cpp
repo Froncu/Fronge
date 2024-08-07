@@ -10,7 +10,7 @@ namespace fro
 		return sWorld;
 	}
 
-	Rigidbody::Implementation::Implementation(b2BodyDef const bodyDefinition)
+	Rigidbody::Implementation::Implementation(b2BodyDef const& bodyDefinition)
 		: mBody
 		{
 			getb2World().CreateBody(&bodyDefinition),

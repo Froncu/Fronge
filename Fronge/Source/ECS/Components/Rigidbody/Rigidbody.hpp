@@ -4,9 +4,11 @@
 #include "froch.hpp"
 
 #include "ECS/Components/Component/Component.hpp"
-#include "Events/Systems/EventListener.hpp"
+#include "Collider.hpp"
+#include "Maths/Structs/Chain.hpp"
+#include "Maths/Structs/Circle.hpp"
+#include "Maths/Structs/Polygon.hpp"
 #include "Maths/Structs/Rectangle.hpp"
-#include "Maths/Structs/Vector2.hpp"
 
 namespace fro
 {
@@ -35,8 +37,11 @@ namespace fro
 
 		FRO_API void setType(Type const type);
 
+		FRO_API Collider& addCollider();
+
 	private:
 		std::unique_ptr<Implementation> mImplementation;
+		std::vector<Collider> mColliders{};
 	};
 }
 

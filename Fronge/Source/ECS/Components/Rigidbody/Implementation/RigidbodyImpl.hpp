@@ -14,7 +14,7 @@ namespace fro
 	public:
 		FRO_API FRO_NODISCARD static b2World& getb2World();
 
-		FRO_API Implementation(b2BodyDef const bodyDefinition = {});
+		FRO_API Implementation(b2BodyDef const& bodyDefinition = {});
 
 		~Implementation() = default;
 
@@ -29,7 +29,6 @@ namespace fro
 		Implementation& operator=(Implementation&&) noexcept = delete;
 
 		CustomUniquePointer<b2Body> mBody;
-		std::vector<b2Fixture*> mFixtures{};
 	};
 }
 

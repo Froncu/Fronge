@@ -2,8 +2,10 @@
 
 #include "ECS/Entity/Entity.hpp"
 #include "ECS/Components/Transform/Transform.hpp"
+#include "Implementation/ColliderImpl.hpp"
 #include "Implementation/RigidbodyImpl.hpp"
 #include "Rigidbody.hpp"
+#include "Utility/VariantVisitor.hpp"
 
 namespace fro
 {
@@ -17,12 +19,17 @@ namespace fro
 
 		, mImplementation{ std::make_unique<Implementation>(other.mImplementation->getb2BodyDef()) }
 	{
+		mColliders.clear();
+		for (auto const& otherCollider : other.mColliders)
+			mColliders.push_back(std::make_unique<Collider::Implementation>(mImplementation->getb2Body(),
+				otherCollider.getImplementation().getb2FixtureDef()));
 	}
 
 	Rigidbody::Rigidbody(Rigidbody&& other) noexcept
 		: Component(std::move(other))
 
 		, mImplementation{ std::move(other.mImplementation) }
+		, mColliders{ std::move(other.mColliders) }
 	{
 	}
 
@@ -39,6 +46,11 @@ namespace fro
 
 		mImplementation = std::make_unique<Implementation>(other.mImplementation->getb2BodyDef());
 
+		mColliders.clear();
+		for (auto const& otherCollider : other.mColliders)
+			mColliders.push_back(std::make_unique<Collider::Implementation>(mImplementation->getb2Body(),
+				otherCollider.getImplementation().getb2FixtureDef()));
+
 		return *this;
 	}
 
@@ -50,6 +62,7 @@ namespace fro
 		Component::operator=(std::move(other));
 
 		mImplementation = std::move(other.mImplementation);
+		mColliders = std::move(other.mColliders);
 
 		return *this;
 	}
@@ -75,5 +88,14 @@ namespace fro
 			mImplementation->getb2Body().SetType(b2BodyType::b2_dynamicBody);
 			break;
 		}
+	}
+
+	Collider& Rigidbody::addCollider()
+	{
+		auto const b2Shape{ Collider::Implementation::createb2Shape(Rectangle<double>{ 0.0, 0.0, 32.0, 32.0 }) };
+		b2FixtureDef fixtureDefinition{};
+		fixtureDefinition.shape = b2Shape.get();
+
+		return mColliders.emplace_back(std::make_unique<Collider::Implementation>(mImplementation->getb2Body(), fixtureDefinition));
 	}
 }
