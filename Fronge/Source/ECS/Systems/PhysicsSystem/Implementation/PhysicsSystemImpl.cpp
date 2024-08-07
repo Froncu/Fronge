@@ -8,6 +8,9 @@ namespace fro
 	std::unique_ptr<PhysicsDebugRenderer> PhysicsSystem::Implementation::initializeDebugRenderer()
 	{
 		auto debugRenderer{ std::make_unique<PhysicsDebugRenderer>() };
+
+		debugRenderer->AppendFlags(b2Draw::e_shapeBit);
+
 		PhysicsSystem::Implementation::sWorld.SetDebugDraw(debugRenderer.get());
 		return debugRenderer;
 	}

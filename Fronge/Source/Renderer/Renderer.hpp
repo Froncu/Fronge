@@ -6,6 +6,9 @@
 #include "Core.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Maths/Structs/Matrix3x3.hpp"
+#include "Maths/Structs/Chain.hpp"
+#include "Maths/Structs/Circle.hpp"
+#include "Maths/Structs/Polygon.hpp"
 #include "Maths/Structs/Rectangle.hpp"
 #include "Maths/Structs/Vector2.hpp"
 #include "Reference/Reference.hpp"
@@ -40,9 +43,19 @@ namespace fro
 
 		FRO_API void clear() const;
 		FRO_API void present() const;
+
 		FRO_API void renderTexture(Texture const& texture,
 			Matrix3x3<double> const& transform = true,
 			Rectangle<int> sourceRectangle = {}) const;
+
+		FRO_API void renderCircle(Circle<double> const& circle, bool const fill,
+			double const red, double const green, double const blue, double const alpha) const;
+
+		FRO_API void renderPolygon(Polygon<double> const& polygon, bool const fill,
+			double const red, double const green, double const blue, double const alpha) const;
+
+		FRO_API void renderChain(Chain<double> const& chain, double const thickness,
+			double const red, double const green, double const blue, double const alpha) const;
 
 		FRO_API FRO_NODISCARD ID const& getID() const;
 		FRO_API FRO_NODISCARD Vector2<int> getResolution() const;

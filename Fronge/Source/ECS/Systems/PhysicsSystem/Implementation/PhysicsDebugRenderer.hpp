@@ -15,13 +15,15 @@ namespace fro
 
 		virtual ~PhysicsDebugRenderer() override = default;
 
-		FRO_API virtual void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
-		FRO_API virtual void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
-		FRO_API virtual void DrawCircle(const b2Vec2& center, float radius, const b2Color& color) override;
-		FRO_API virtual void DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color) override;
-		FRO_API virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
-		FRO_API virtual void DrawTransform(const b2Transform& xf) override;
-		FRO_API virtual void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
+		FRO_API virtual void DrawPolygon(b2Vec2 const* const vertices, int32 const vertexCount, b2Color const& color) override;
+		FRO_API virtual void DrawSolidPolygon(b2Vec2 const* const vertices, int32 const vertexCount, b2Color const& color) override;
+		FRO_API virtual void DrawCircle(b2Vec2 const& center, float const radius, b2Color const& color) override;
+		FRO_API virtual void DrawSolidCircle(b2Vec2 const& center, float const radius, b2Vec2 const& axis, b2Color const& color) override;
+		FRO_API virtual void DrawSegment(b2Vec2 const& p1, b2Vec2 const& p2, b2Color const& color) override;
+
+		// TODO: what does it mean to draw a transform?
+		FRO_API virtual void DrawTransform(b2Transform const&) override;
+		FRO_API virtual void DrawPoint(b2Vec2 const& p, float const size, b2Color const& color) override;
 
 		Reference<Renderer const> mRenderer{};
 

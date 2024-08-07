@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Implementation/RendererImpl.hpp"
+#include "Implementation/SDL2_gfxPrimitives.h"
 #include "Maths/MathFunctions.hpp"
 #include "Renderer.hpp"
 #include "Resources/Texture/Implementation/TextureImpl.hpp"
@@ -39,6 +40,8 @@ namespace fro
 
 	Renderer::~Renderer()
 	{
+		clearPrimitivesPolyIntsBuffer();
+
 		Logger::info("destroyed Renderer with ID {}!",
 			mID);
 	}
@@ -52,9 +55,6 @@ namespace fro
 	{
 		SDL_Renderer* const SDLRenderer{ mImplementation->getSDLRenderer() };
 
-		SDL_Color previousColor;
-		SDL_GetRenderDrawColor(SDLRenderer, &previousColor.r, &previousColor.g, &previousColor.b, &previousColor.a);
-
 		SDL_SetRenderDrawColor(SDLRenderer,
 			static_cast<Uint8>(0),
 			static_cast<Uint8>(0),
@@ -62,8 +62,6 @@ namespace fro
 			std::numeric_limits<Uint8>::max());
 
 		SDL_RenderClear(SDLRenderer);
-
-		SDL_SetRenderDrawColor(SDLRenderer, previousColor.r, previousColor.g, previousColor.b, previousColor.a);
 	}
 
 	void Renderer::present() const
@@ -143,6 +141,81 @@ namespace fro
 			vIndices.data(), static_cast<int>(vIndices.size())) == -1)
 			Logger::warn("failed to render Texture with ID {} with Renderer with ID {} ({})",
 				texture.getID(), getID(), SDL_GetError());
+	}
+
+	void Renderer::renderCircle(Circle<double> const& circle, bool const fill,
+		double const red, double const green, double const blue, double const alpha) const
+	{
+		if (auto const color{ Implementation::getSDLColor(red, green, blue, alpha) };
+			fill)
+			filledCircleRGBA(mImplementation->getSDLRenderer(),
+				static_cast<Sint16>(circle.center.x),
+				static_cast<Sint16>(circle.center.y),
+				static_cast<Sint16>(circle.radius),
+				color.r,
+				color.g,
+				color.b,
+				color.a);
+		else
+			circleRGBA(mImplementation->getSDLRenderer(),
+				static_cast<Sint16>(circle.center.x),
+				static_cast<Sint16>(circle.center.y),
+				static_cast<Sint16>(circle.radius),
+				color.r,
+				color.g,
+				color.b,
+				color.a);
+	}
+
+	void Renderer::renderPolygon(Polygon<double> const& polygon, bool const fill,
+		double const red, double const green, double const blue, double const alpha) const
+	{
+		std::size_t const vertexCount{ polygon.vertices.size() };
+
+		std::vector<Sint16> convertedVerticesX(vertexCount);
+		std::vector<Sint16> convertedVerticesY(vertexCount);
+		for (std::size_t index{}; index < vertexCount; ++index)
+		{
+			convertedVerticesX[index] = static_cast<Sint16>(polygon.vertices[index].x);
+			convertedVerticesY[index] = static_cast<Sint16>(polygon.vertices[index].y);
+		}
+
+		if (auto const color{ Implementation::getSDLColor(red, green, blue, alpha) };
+			fill)
+			filledPolygonRGBA(mImplementation->getSDLRenderer(),
+				convertedVerticesX.data(), convertedVerticesY.data(), static_cast<int>(vertexCount),
+				color.r, color.b, color.g, color.a);
+		else
+			polygonRGBA(mImplementation->getSDLRenderer(),
+				convertedVerticesX.data(), convertedVerticesY.data(), static_cast<int>(vertexCount),
+				color.r, color.b, color.g, color.a);
+	}
+
+	void Renderer::renderChain(Chain<double> const& chain, double const thickness,
+		double const red, double const green, double const blue, double const alpha) const
+	{
+		std::size_t const vertexCount{ chain.vertices.size() };
+
+		std::vector<Vector2<Sint16>> vertices(vertexCount);
+		for (std::size_t index{}; index < vertexCount; ++index)
+		{
+			vertices[index].x = static_cast<Sint16>(chain.vertices[index].x);
+			vertices[index].y = static_cast<Sint16>(chain.vertices[index].y);
+		}
+
+		auto const color{ Implementation::getSDLColor(red, green, blue, alpha) };
+
+		for (std::size_t index{}; index < vertices.size(); ++index)
+		{
+			thickLineRGBA(mImplementation->getSDLRenderer(),
+				vertices[index].x, vertices[index].y,
+				vertices[(index + 1) % vertices.size()].x, vertices[(index + 1) % vertices.size()].y,
+				static_cast<Uint8>(thickness),
+				color.r,
+				color.g,
+				color.b,
+				color.a);
+		}
 	}
 
 	ID const& Renderer::getID() const
