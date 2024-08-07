@@ -2,6 +2,7 @@
 
 #include "ECS/Components/Rigidbody/Implementation/RigidbodyImpl.hpp"
 #include "Implementation/PhysicsSystemImpl.hpp"
+#include "Implementation/PhysicsDebugRenderer.hpp"
 #include "PhysicsSystem.hpp"
 
 namespace fro
@@ -32,6 +33,15 @@ namespace fro
 			auto const rotation{ rigidbody->getImplementation().getb2Body().GetAngle() };
 			transform->setWorldRotation(rotation);
 		}
+	}
+
+	void PhysicsSystem::onRender(Renderer const& renderer)
+	{
+		if (auto& currentRenderer{ Implementation::sDebugRenderer->mRenderer };
+			not currentRenderer.valid() or &*currentRenderer not_eq &renderer)
+			Implementation::sDebugRenderer->mRenderer = renderer;
+
+		Implementation::sWorld.DebugDraw();
 	}
 
 	Group<Transform, Rigidbody> PhysicsSystem::sGroup{};

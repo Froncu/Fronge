@@ -5,6 +5,7 @@
 #include "ECS/Components/Transform/Transform.hpp"
 #include "ECS/Components/Rigidbody/Rigidbody.hpp"
 #include "ECS/Group.hpp"
+#include "Renderer/Renderer.hpp"
 
 namespace fro
 {
@@ -14,6 +15,7 @@ namespace fro
 		class Implementation;
 
 		FRO_API static void onFixedUpdate(double const fixedDeltaSeconds);
+		FRO_API static void onRender(Renderer const& renderer);
 
 	private:
 		static Group<Transform, Rigidbody> sGroup;
