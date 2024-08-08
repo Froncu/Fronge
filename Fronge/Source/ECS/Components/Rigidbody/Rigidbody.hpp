@@ -36,6 +36,18 @@ namespace fro
 		FRO_API FRO_NODISCARD Implementation& getImplementation() const;
 
 		FRO_API void setType(Type const type);
+		FRO_API void setFixedRotation(bool const lockRotation);
+		FRO_API void setLinearVelocity(Vector2<double> const velocity);
+		FRO_API void setAngularVelocity(double const velocity);
+		FRO_API void applyForce(Vector2<double> const force);
+		FRO_API void applyTorque(double const torque);
+		FRO_API void applyLinearImpulse(Vector2<double> const impulse);
+		FRO_API void applyAngularImpulse(double const impulse);
+
+		FRO_API FRO_NODISCARD Type getType() const;
+		FRO_API FRO_NODISCARD bool isFixedRotation() const;
+		FRO_API FRO_NODISCARD Vector2<double> getLinearVelocity() const;
+		FRO_API FRO_NODISCARD double getAngularVelocity() const;
 
 		FRO_API Collider& addCollider();
 

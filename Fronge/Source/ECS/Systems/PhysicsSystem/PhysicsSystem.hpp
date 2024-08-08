@@ -17,6 +17,11 @@ namespace fro
 		FRO_API static void onFixedUpdate(double const fixedDeltaSeconds);
 		FRO_API static void onRender(Renderer const& renderer);
 
+		FRO_API static void setGravity(Vector2<double> const gravity);
+
+		FRO_API static std::int32_t sVelocityIterations;
+		FRO_API static std::int32_t sPositionIterations;
+
 	private:
 		static Group<Transform, Rigidbody> sGroup;
 

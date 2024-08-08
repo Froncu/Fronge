@@ -21,7 +21,7 @@ namespace fro
 			);
 		}
 
-		Implementation::sWorld.Step(static_cast<float>(fixedDeltaSeconds), 5, 5);
+		Implementation::sWorld.Step(static_cast<float>(fixedDeltaSeconds), sVelocityIterations, sPositionIterations);
 
 		for (auto&& [entity, transform, rigidbody] : sGroup)
 		{
@@ -44,5 +44,12 @@ namespace fro
 		Implementation::sWorld.DebugDraw();
 	}
 
+	void PhysicsSystem::setGravity(Vector2<double> const gravity)
+	{
+		Implementation::sWorld.SetGravity({ static_cast<float>(gravity.x), static_cast<float>(gravity.y) });
+	}
+
+	std::int32_t PhysicsSystem::sVelocityIterations{ 8 };
+	std::int32_t PhysicsSystem::sPositionIterations{ 3 };
 	Group<Transform, Rigidbody> PhysicsSystem::sGroup{};
 }
