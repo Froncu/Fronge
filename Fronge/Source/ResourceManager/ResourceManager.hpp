@@ -35,6 +35,8 @@ namespace fro
 		{
 			auto& resourceMap{ getResourceMap<ResourceType>() };
 
+			// HACK: this and the following two methods construct a temporary std::string to compare,
+			// this should be fixed with a custom hasher and comparer
 			auto node{ resourceMap.extract(name.data()) };
 			if (node.empty())
 			{
@@ -67,7 +69,7 @@ namespace fro
 		{
 			auto& resourceMap{ getResourceMap<ResourceType>() };
 
-			auto const element{ resourceMap.find(name) };
+			auto const element{ resourceMap.find(name.data()) };
 			if (element == resourceMap.end())
 				return nullptr;
 
