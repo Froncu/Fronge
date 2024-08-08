@@ -26,10 +26,10 @@ namespace fro
 					b2Vec2{ static_cast<float>(rectangle.x - halfWidth), static_cast<float>(rectangle.y + halfHeight) },
 				};
 
-				b2PolygonShape polygonShape{};
-				polygonShape.Set(&vertices.front(), static_cast<int32>(vertices.size()));
+				auto polygonShape{ std::make_unique<b2PolygonShape>() };
+				polygonShape->Set(&vertices.front(), static_cast<int32>(vertices.size()));
 
-				convertedShape = std::make_unique<b2PolygonShape>(std::move(polygonShape));
+				convertedShape = std::move(polygonShape);
 			},
 
 			[&convertedShape](Polygon<double> const& convexPolygon)
@@ -41,10 +41,10 @@ namespace fro
 					convertedPolygon[index].y = static_cast<float>(convexPolygon.vertices[index].y);
 				}
 
-				b2PolygonShape polygonShape{};
-				polygonShape.Set(&convertedPolygon.front(), static_cast<int32>(convertedPolygon.size()));
+				auto polygonShape{ std::make_unique<b2PolygonShape>() };
+				polygonShape->Set(&convertedPolygon.front(), static_cast<int32>(convertedPolygon.size()));
 
-				convertedShape = std::make_unique<b2PolygonShape>(std::move(polygonShape));
+				convertedShape = std::move(polygonShape);
 			},
 
 			[&convertedShape](Chain<double> const& chain)
@@ -56,22 +56,22 @@ namespace fro
 					convertedChain[index].y = static_cast<float>(chain.vertices[index].y);
 				}
 
-				b2ChainShape chainShape{};
-				chainShape.CreateChain(&convertedChain.front(), static_cast<int32>(convertedChain.size()),
+				auto chainShape{ std::make_unique<b2ChainShape>() };
+				chainShape->CreateChain(&convertedChain.front(), static_cast<int32>(convertedChain.size()),
 					convertedChain.front(),
 					convertedChain.back());
 
-				convertedShape = std::make_unique<b2ChainShape>(std::move(chainShape));
+				convertedShape = std::move(chainShape);
 			},
 
 			[&convertedShape](Circle<double> const& circle)
 			{
-				b2CircleShape circleShape{};
-				circleShape.m_radius = static_cast<float>(circle.radius);
-				circleShape.m_p.x = static_cast<float>(circle.center.x);
-				circleShape.m_p.y = static_cast<float>(circle.center.y);
+				auto circleShape{ std::make_unique<b2CircleShape>() };
+				circleShape->m_radius = static_cast<float>(circle.radius);
+				circleShape->m_p.x = static_cast<float>(circle.center.x);
+				circleShape->m_p.y = static_cast<float>(circle.center.y);
 
-				convertedShape = std::make_unique<b2CircleShape>(std::move(circleShape));
+				convertedShape = std::move(circleShape);
 			}
 
 		}(shape);
