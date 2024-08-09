@@ -10,6 +10,8 @@ namespace fro
 	template<Dispatchable...>
 	class EventDispatcher;
 
+	// NOTE: be careful with this in case the onNotify is a callable which holds 
+	// references and/or pointers (use fro::Reference if you encounter issues)
 	template<Dispatchable... Payload>
 	class EventListener final
 	{

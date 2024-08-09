@@ -11,13 +11,13 @@ namespace fro
 		{
 			VariantVisitor
 			{
-				[this](GamepadDisconnectedEvent const& event)
+				[smartThis = Reference{ this }](GamepadDisconnectedEvent const& event)
 				{
-					if (event.ID not_eq mID)
+					if (event.ID not_eq smartThis->mID)
 						return false;
 
-					mDeviceID = -1;
-					mImplementation.reset();
+					smartThis->mDeviceID = -1;
+					smartThis->mImplementation.reset();
 					return true;
 				},
 
@@ -38,7 +38,9 @@ namespace fro
 	}
 
 	Gamepad::Gamepad(Gamepad const& other)
-		: mOnInputEvent{ other.mOnInputEvent }
+		: Referencable(other)
+
+		, mOnInputEvent{ other.mOnInputEvent }
 		, mDeviceID{ other.mDeviceID }
 		, mImplementation{ std::make_unique<Implementation>(mDeviceID) }
 		, mID{ mImplementation->getID() }
@@ -48,7 +50,9 @@ namespace fro
 	}
 
 	Gamepad::Gamepad(Gamepad&& other) noexcept
-		: mOnInputEvent{ std::move(other.mOnInputEvent) }
+		: Referencable(std::move(other))
+
+		, mOnInputEvent{ std::move(other.mOnInputEvent) }
 		, mDeviceID{ other.mDeviceID }
 		, mImplementation{ std::move(other.mImplementation) }
 		, mID{ mImplementation->getID() }
@@ -67,6 +71,8 @@ namespace fro
 		if (this == &other)
 			return *this;
 
+		Referencable::operator=(other);
+
 		mOnInputEvent = other.mOnInputEvent;
 		mDeviceID = other.mDeviceID;
 		mImplementation = std::make_unique<Implementation>(mDeviceID);
@@ -79,6 +85,8 @@ namespace fro
 	{
 		if (this == &other)
 			return *this;
+
+		Referencable::operator=(std::move(other));
 
 		mOnInputEvent = std::move(other.mOnInputEvent);
 		mDeviceID = other.mDeviceID;

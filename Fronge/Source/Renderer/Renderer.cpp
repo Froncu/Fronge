@@ -5,7 +5,6 @@
 #include "Maths/MathFunctions.hpp"
 #include "Renderer.hpp"
 #include "Resources/Texture/Implementation/TextureImpl.hpp"
-#include "Window/Window.hpp"
 #include "Window/Implementation/WindowImpl.hpp"
 
 #include <SDL.h>
@@ -17,22 +16,12 @@ namespace fro
 	Renderer::Renderer(Window& window,
 		Vector2<int> const resolution,
 		ScalingMode const scalingMode)
-		: mOnWindowResizeEvent
-		{
-			[this](Vector2<int> const& size)
-			{
-				updateViewPort(size, mResolution, mScalingMode);
-				return true;
-			}
-		}
-		, mWindow{ window }
+		: mWindow{ window }
 		, mResolution{ resolution.x > 0 and resolution.y > 0 ? resolution : mWindow->getSize() }
 		, mScalingMode{ scalingMode }
 		, mImplementation{ std::make_unique<Implementation>(*mWindow) }
 	{
 		updateViewPort(mWindow->getSize(), mResolution, mScalingMode);
-
-		mWindow->mResizeEvent.addListener(mOnWindowResizeEvent);
 
 		Logger::info("created a {}x{} Renderer with ID {} for Window with ID {}!",
 			mResolution.x, mResolution.y, mID, window.getID());

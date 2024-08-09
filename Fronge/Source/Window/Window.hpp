@@ -7,6 +7,7 @@
 #include "Events/Systems/EventListener.hpp"
 #include "Events/WindowEvent.hpp"
 #include "Maths/Structs/Vector2.hpp"
+#include "SystemEventManager/SystemEventManager.hpp"
 #include "Reference/Referencable.hpp"
 #include "Utility/VariantVisitor.hpp"
 
@@ -59,7 +60,7 @@ namespace fro
 					mResizeEvent.notify(mSize);
 					return true;
 				}
-			}
+			}, SystemEventManager::mWindowEvent
 		};
 
 		std::string_view mTitle;

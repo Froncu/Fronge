@@ -14,12 +14,12 @@
 #include "Reference/Reference.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Utility/CustomUniquePointer.hpp"
+#include "Window/Window.hpp"
 
 namespace fro
 {
 	class Surface;
 	class Texture;
-	class Window;
 
 	class Renderer final : public Referencable
 	{
@@ -77,9 +77,18 @@ namespace fro
 			Vector2<int> const resolution,
 			ScalingMode const scalingMode) const;
 
-		EventListener<Vector2<int> const> mOnWindowResizeEvent;
 		ID mID{ sIDGenerator.get() };
 		Reference<Window> mWindow;
+
+		EventListener<Vector2<int> const> mOnWindowResizeEvent
+		{
+			[this](Vector2<int> const& size)
+			{
+				updateViewPort(size, mResolution, mScalingMode);
+				return true;
+			}, mWindow->mResizeEvent
+		};
+
 		Vector2<int> mResolution;
 		ScalingMode mScalingMode;
 		CustomUniquePointer<Implementation> mImplementation;

@@ -6,11 +6,12 @@
 #include "Core.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Events/InputEvent.hpp"
+#include "Reference/Reference.hpp"
 #include "Utility/VariantVisitor.hpp"
 
 namespace fro
 {
-	class Gamepad final
+	class Gamepad final : public Referencable
 	{
 	public:
 		class Implementation;

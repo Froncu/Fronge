@@ -3,8 +3,6 @@
 
 #include "froch.hpp"
 
-// TODO: copy behaviour is disabled; what should happen when an EventDispatcher is copied?
-
 namespace fro
 {
 	template<typename Type>
@@ -23,7 +21,10 @@ namespace fro
 
 	public:
 		EventDispatcher() = default;
-		EventDispatcher(EventDispatcher const&) = delete;
+		EventDispatcher(EventDispatcher const&)
+		{
+		}
+
 		EventDispatcher(EventDispatcher&& other) noexcept
 			: mListeners{ std::move(other.mListeners) }
 		{
@@ -40,7 +41,11 @@ namespace fro
 				listener->mDispatchers.erase(this);
 		};
 
-		EventDispatcher& operator=(EventDispatcher const&) = delete;
+		EventDispatcher& operator=(EventDispatcher const&)
+		{
+			return *this;
+		}
+
 		EventDispatcher& operator=(EventDispatcher&& other) noexcept
 		{
 			for (auto const listener : mListeners)

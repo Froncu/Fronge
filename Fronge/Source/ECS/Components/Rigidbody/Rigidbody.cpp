@@ -12,21 +12,23 @@ namespace fro
 	Rigidbody::Rigidbody()
 		: mOnComponentAttachEvent
 		{
-			[this](Entity& entity, Component& component, std::type_index const& typeIndex)
+			[smartThis = Reference{ this }](Entity& entity, Component& component, std::type_index const& typeIndex)
 			{
-				if (this == &component)
+				auto& parentingEntity{ smartThis->mParentingEntity };
+
+				if (&*smartThis == &component)
 				{
-					mParentingEntity = entity;
-					if (not mParentingEntity->hasComponentAttached<Transform>())
+					parentingEntity = entity;
+					if (not parentingEntity->hasComponentAttached<Transform>())
 						return false;
 
-					mImplementation->getb2Body().SetEnabled(true);
+					smartThis->mImplementation->getb2Body().SetEnabled(true);
 					return true;
 				}
 
-				if (mParentingEntity.valid() and &*mParentingEntity == &entity and typeIndex == typeid(Transform))
+				if (parentingEntity.valid() and &*parentingEntity == &entity and typeIndex == typeid(Transform))
 				{
-					mImplementation->getb2Body().SetEnabled(true);
+					smartThis->mImplementation->getb2Body().SetEnabled(true);
 					return true;
 				}
 
@@ -35,18 +37,20 @@ namespace fro
 		}
 		, mOnComponentDetachEvent
 		{
-			[this](Entity const& entity, Component& component, std::type_index const& typeIndex)
+			[smartThis = Reference{ this }](Entity const& entity, Component& component, std::type_index const& typeIndex)
 			{
-				if (this == &component)
+				auto& parentingEntity{ smartThis->mParentingEntity };
+
+				if (&*smartThis == &component)
 				{
-					mParentingEntity.reset();
-					mImplementation->getb2Body().SetEnabled(false);
+					parentingEntity.reset();
+					smartThis->mImplementation->getb2Body().SetEnabled(false);
 					return true;
 				}
 
-				if (mParentingEntity.valid() and &*mParentingEntity == &entity and typeIndex == typeid(Transform))
+				if (parentingEntity.valid() and &*parentingEntity == &entity and typeIndex == typeid(Transform))
 				{
-					mImplementation->getb2Body().SetEnabled(false);
+					smartThis->mImplementation->getb2Body().SetEnabled(false);
 					return true;
 				}
 
@@ -63,6 +67,8 @@ namespace fro
 	Rigidbody::Rigidbody(Rigidbody const& other)
 		: Component(other)
 
+		, mBeginContactEvent{ other.mBeginContactEvent }
+		, mEndContactEvent{ other.mEndContactEvent }
 		, mOnComponentAttachEvent{ other.mOnComponentAttachEvent }
 		, mOnComponentDetachEvent{ other.mOnComponentDetachEvent }
 		, mParentingEntity{ other.mParentingEntity }
@@ -101,6 +107,8 @@ namespace fro
 
 		Component::operator=(other);
 
+		mBeginContactEvent = other.mBeginContactEvent;
+		mEndContactEvent = other.mEndContactEvent;
 		mOnComponentAttachEvent = other.mOnComponentAttachEvent;
 		mOnComponentDetachEvent = other.mOnComponentDetachEvent;
 		mParentingEntity = other.mParentingEntity;

@@ -13,7 +13,7 @@ namespace fro
 {
 	template<std::derived_from<Component>... ObservedComponentTypes>
 		requires isUnique<ObservedComponentTypes...>
-	class Group final
+	class Group final : public Referencable
 	{
 		using GroupTuple = std::tuple<Reference<Entity const>, Reference<ObservedComponentTypes>...>;
 
@@ -82,10 +82,10 @@ namespace fro
 
 		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent
 		{
-			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
+			[smartThis = Reference{ this }](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
 			{
-				if (isObserved(componentTypeIndex))
-					return tryGroup(entity);
+				if (smartThis->isObserved(componentTypeIndex))
+					return smartThis->tryGroup(entity);
 
 				return false;
 			}, Entity::getComponentAttachEvent()
@@ -93,21 +93,21 @@ namespace fro
 
 		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
 		{
-			[this](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
+			[smartThis = Reference{ this }](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
 			{
-				if (not isObserved(componentTypeIndex))
+				if (not smartThis->isObserved(componentTypeIndex))
 					return false;
 
 				auto const newEnd
 				{
-					std::remove_if(mGroupedComponents.begin(), mGroupedComponents.end(),
+					std::remove_if(smartThis->mGroupedComponents.begin(), smartThis->mGroupedComponents.end(),
 					[&entity](GroupTuple const& groupTuple)
 					{
 						return entity.getID() == std::get<0>(groupTuple)->getID();
 					})
 				};
 
-				mGroupedComponents.erase(newEnd, mGroupedComponents.end());
+				smartThis->mGroupedComponents.erase(newEnd, smartThis->mGroupedComponents.end());
 				return true;
 			}, Entity::getComponentDetachEvent()
 		};

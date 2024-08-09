@@ -1,6 +1,5 @@
 #include "froch.hpp"
 
-#include "SystemEventManager/SystemEventManager.hpp"
 #include "Window.hpp"
 #include "Window/Implementation/WindowImpl.hpp"
 
@@ -14,7 +13,6 @@ namespace fro
 		, mImplementation{ std::make_unique<Implementation>(mTitle, getSize()) }
 		, mID{ mImplementation->getID() }
 	{
-		SystemEventManager::mWindowEvent.addListener(mOnWindowEvent);
 	}
 
 	Window::~Window()
