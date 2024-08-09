@@ -10,13 +10,60 @@
 namespace fro
 {
 	Rigidbody::Rigidbody()
-		: mImplementation{ std::make_unique<Implementation>() }
+		: mOnComponentAttachEvent
+		{
+			[this](Entity& entity, Component& component, std::type_index const& typeIndex)
+			{
+				if (this == &component)
+				{
+					mParentingEntity = entity;
+					if (not mParentingEntity->hasComponentAttached<Transform>())
+						return false;
+
+					mImplementation->getb2Body().SetEnabled(true);
+					return true;
+				}
+
+				if (mParentingEntity.valid() and &*mParentingEntity == &entity and typeIndex == typeid(Transform))
+				{
+					mImplementation->getb2Body().SetEnabled(true);
+					return true;
+				}
+
+				return false;
+			}, Entity::getComponentAttachEvent()
+		}
+		, mOnComponentDetachEvent
+		{
+			[this](Entity const& entity, Component& component, std::type_index const& typeIndex)
+			{
+				if (this == &component)
+				{
+					mParentingEntity.reset();
+					mImplementation->getb2Body().SetEnabled(false);
+					return true;
+				}
+
+				if (mParentingEntity.valid() and &*mParentingEntity == &entity and typeIndex == typeid(Transform))
+				{
+					mImplementation->getb2Body().SetEnabled(false);
+					return true;
+				}
+
+				return false;
+			}, Entity::getComponentDetachEvent()
+		}
+		, mImplementation{ std::make_unique<Implementation>() }
 	{
+		mImplementation->getb2Body().SetEnabled(false);
 	}
 
 	Rigidbody::Rigidbody(Rigidbody const& other)
 		: Component(other)
 
+		, mOnComponentAttachEvent{ other.mOnComponentAttachEvent }
+		, mOnComponentDetachEvent{ other.mOnComponentDetachEvent }
+		, mParentingEntity{ other.mParentingEntity }
 		, mImplementation{ std::make_unique<Implementation>(other.mImplementation->getb2BodyDef()) }
 	{
 		mColliders.clear();
@@ -28,6 +75,9 @@ namespace fro
 	Rigidbody::Rigidbody(Rigidbody&& other) noexcept
 		: Component(std::move(other))
 
+		, mOnComponentAttachEvent{ std::move(other.mOnComponentAttachEvent) }
+		, mOnComponentDetachEvent{ std::move(other.mOnComponentDetachEvent) }
+		, mParentingEntity{ std::move(other.mParentingEntity) }
 		, mImplementation{ std::move(other.mImplementation) }
 		, mColliders{ std::move(other.mColliders) }
 	{
@@ -44,6 +94,9 @@ namespace fro
 
 		Component::operator=(other);
 
+		mOnComponentAttachEvent = other.mOnComponentAttachEvent;
+		mOnComponentDetachEvent = other.mOnComponentDetachEvent;
+		mParentingEntity = other.mParentingEntity;
 		mImplementation = std::make_unique<Implementation>(other.mImplementation->getb2BodyDef());
 
 		mColliders.clear();
@@ -61,6 +114,9 @@ namespace fro
 
 		Component::operator=(std::move(other));
 
+		mOnComponentAttachEvent = std::move(other.mOnComponentAttachEvent);
+		mOnComponentDetachEvent = std::move(other.mOnComponentDetachEvent);
+		mParentingEntity = std::move(other.mParentingEntity);
 		mImplementation = std::move(other.mImplementation);
 		mColliders = std::move(other.mColliders);
 
@@ -127,7 +183,8 @@ namespace fro
 
 	Rigidbody::Type Rigidbody::getType() const
 	{
-		switch (mImplementation->getb2Body().GetType())
+		b2BodyType type{ mImplementation->getb2Body().GetType() };
+		switch (type)
 		{
 		case b2_staticBody:
 			return Type::STATIC;
@@ -137,6 +194,10 @@ namespace fro
 
 		case b2_dynamicBody:
 			return Type::DYNAMIC;
+
+		default:
+			FRO_EXCEPTION("b2BodyType with value {} not supported by Fronge!",
+				static_cast<int>(type));
 		}
 	}
 

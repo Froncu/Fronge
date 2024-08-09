@@ -4,7 +4,7 @@
 #include "Application.hpp"
 #include "Audio/Audio.hpp"
 #include "Core.hpp"
-#include "ECS/Components/Component/Component.hpp"
+#include "ECS/Components/Component.hpp"
 #include "ECS/Components/Sprite.hpp"
 #include "ECS/Components/SpriteAnimator.hpp"
 #include "ECS/Components/Transform/Transform.hpp"

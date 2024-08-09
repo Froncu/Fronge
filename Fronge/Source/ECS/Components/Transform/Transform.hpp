@@ -2,7 +2,7 @@
 #define TRANSFORM_HPP
 
 #include "Core.hpp"
-#include "ECS/Components/Component/Component.hpp"
+#include "ECS/Components/Component.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "Maths/Structs/TransformMatrix/TransformMatrix3x3.hpp"
 #include "Reference/Reference.hpp"

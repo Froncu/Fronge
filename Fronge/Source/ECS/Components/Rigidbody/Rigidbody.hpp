@@ -3,12 +3,11 @@
 
 #include "froch.hpp"
 
-#include "ECS/Components/Component/Component.hpp"
+#include "ECS/Components/Component.hpp"
+#include "ECS/Components/Transform/Transform.hpp"
+#include "ECS/Entity/Entity.hpp"
+#include "Events/Systems/EventListener.hpp"
 #include "Collider.hpp"
-#include "Maths/Structs/Chain.hpp"
-#include "Maths/Structs/Circle.hpp"
-#include "Maths/Structs/Polygon.hpp"
-#include "Maths/Structs/Rectangle.hpp"
 
 namespace fro
 {
@@ -52,6 +51,10 @@ namespace fro
 		FRO_API Collider& addCollider();
 
 	private:
+		// are initialized in the source file because of pimpl
+		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent;
+		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent;
+		Reference<Entity> mParentingEntity{};
 		std::unique_ptr<Implementation> mImplementation;
 		std::vector<Collider> mColliders{};
 	};
