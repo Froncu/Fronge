@@ -15,5 +15,6 @@ filter "configurations:Release Console or configurations:Release"
 	symbols "off"
 	optimize "full"
 	runtime "release"
+	defines "NDEBUG"
 
 filter {}
