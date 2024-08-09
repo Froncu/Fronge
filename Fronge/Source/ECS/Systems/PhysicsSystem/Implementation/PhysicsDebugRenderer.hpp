@@ -12,8 +12,13 @@ namespace fro
 	{
 	public:
 		PhysicsDebugRenderer() = default;
+		FRO_API PhysicsDebugRenderer(PhysicsDebugRenderer const& other);
+		FRO_API PhysicsDebugRenderer(PhysicsDebugRenderer&& other) noexcept;
 
 		virtual ~PhysicsDebugRenderer() override = default;
+
+		FRO_API PhysicsDebugRenderer& operator=(PhysicsDebugRenderer const& other);
+		FRO_API PhysicsDebugRenderer& operator=(PhysicsDebugRenderer&& other) noexcept;
 
 		FRO_API virtual void DrawPolygon(b2Vec2 const* const vertices, int32 const vertexCount, b2Color const& color) override;
 		FRO_API virtual void DrawSolidPolygon(b2Vec2 const* const vertices, int32 const vertexCount, b2Color const& color) override;
@@ -26,13 +31,6 @@ namespace fro
 		FRO_API virtual void DrawPoint(b2Vec2 const& p, float const size, b2Color const& color) override;
 
 		Reference<Renderer const> mRenderer{};
-
-	private:
-		PhysicsDebugRenderer(PhysicsDebugRenderer const&) = delete;
-		PhysicsDebugRenderer(PhysicsDebugRenderer&&) noexcept = delete;
-
-		PhysicsDebugRenderer& operator=(PhysicsDebugRenderer const&) = delete;
-		PhysicsDebugRenderer& operator=(PhysicsDebugRenderer&&) noexcept = delete;
 	};
 }
 

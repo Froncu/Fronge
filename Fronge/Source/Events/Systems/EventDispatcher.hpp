@@ -53,6 +53,8 @@ namespace fro
 				listener->mDispatchers.erase(&other);
 				listener->mDispatchers.insert(this);
 			}
+
+			return *this;
 		}
 
 		void addListener(EventListenerType& eventListener)

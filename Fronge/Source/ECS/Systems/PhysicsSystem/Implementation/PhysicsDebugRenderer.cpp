@@ -4,6 +4,44 @@
 
 namespace fro
 {
+	PhysicsDebugRenderer::PhysicsDebugRenderer(PhysicsDebugRenderer const& other)
+		: mRenderer{ other.mRenderer }
+	{
+		m_drawFlags = other.m_drawFlags;
+	}
+
+	PhysicsDebugRenderer::PhysicsDebugRenderer(PhysicsDebugRenderer&& other) noexcept
+		: mRenderer{ std::move(other.mRenderer) }
+	{
+		m_drawFlags = other.m_drawFlags;
+
+		other.m_drawFlags = 0;
+	}
+
+	PhysicsDebugRenderer& PhysicsDebugRenderer::operator=(PhysicsDebugRenderer const& other)
+	{
+		if (this == &other)
+			return *this;
+
+		mRenderer = other.mRenderer;
+		m_drawFlags = other.m_drawFlags;
+
+		return *this;
+	}
+
+	PhysicsDebugRenderer& PhysicsDebugRenderer::operator=(PhysicsDebugRenderer&& other) noexcept
+	{
+		if (this == &other)
+			return *this;
+
+		mRenderer = std::move(other.mRenderer);
+		m_drawFlags = other.m_drawFlags;
+
+		other.m_drawFlags = 0;
+
+		return *this;
+	}
+
 	void PhysicsDebugRenderer::DrawPolygon(b2Vec2 const* const vertices, int32 const vertexCount, b2Color const& color)
 	{
 		Polygon<double> polygon{};

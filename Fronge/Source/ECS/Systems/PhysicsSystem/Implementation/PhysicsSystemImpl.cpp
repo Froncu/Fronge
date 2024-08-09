@@ -1,20 +1,28 @@
 #include "froch.hpp"
 
 #include "PhysicsSystemImpl.hpp"
-#include "PhysicsDebugRenderer.hpp"
 
 namespace fro
 {
-	std::unique_ptr<PhysicsDebugRenderer> PhysicsSystem::Implementation::initializeDebugRenderer()
+	PhysicsDebugRenderer PhysicsSystem::Implementation::createDebugRenderer()
 	{
-		auto debugRenderer{ std::make_unique<PhysicsDebugRenderer>() };
+		PhysicsDebugRenderer debugRenderer{};
 
-		debugRenderer->AppendFlags(b2Draw::e_shapeBit);
+		debugRenderer.AppendFlags(b2Draw::e_shapeBit);
 
-		PhysicsSystem::Implementation::sWorld.SetDebugDraw(debugRenderer.get());
+		sWorld.SetDebugDraw(&sDebugRenderer);
 		return debugRenderer;
 	}
 
+	PhysicsContactListener PhysicsSystem::Implementation::createContactListener()
+	{
+		PhysicsContactListener contactListener{};
+
+		sWorld.SetContactListener(&sContactListener);
+		return contactListener;
+	}
+
 	b2World PhysicsSystem::Implementation::sWorld{ b2Vec2{ 0.0f, 9.81f } };
-	std::unique_ptr<PhysicsDebugRenderer> const PhysicsSystem::Implementation::sDebugRenderer{ initializeDebugRenderer() };
+	PhysicsDebugRenderer PhysicsSystem::Implementation::sDebugRenderer{ createDebugRenderer() };
+	PhysicsContactListener PhysicsSystem::Implementation::sContactListener{ createContactListener() };
 }

@@ -50,6 +50,9 @@ namespace fro
 
 		FRO_API Collider& addCollider();
 
+		EventDispatcher<Rigidbody> mBeginContactEvent{};
+		EventDispatcher<Rigidbody> mEndContactEvent{};
+
 	private:
 		// are initialized in the source file because of pimpl
 		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent;

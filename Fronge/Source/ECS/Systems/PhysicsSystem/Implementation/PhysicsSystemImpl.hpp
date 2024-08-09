@@ -5,21 +5,23 @@
 
 #include "Core.hpp"
 #include "ECS/Systems/PhysicsSystem/PhysicsSystem.hpp"
+#include "PhysicsContactListener.h"
+#include "PhysicsDebugRenderer.hpp"
 
 #include <box2d/b2_world.h>
 
 namespace fro
 {
-	class PhysicsDebugRenderer;
-
 	class PhysicsSystem::Implementation final
 	{
 	public:
 		FRO_API static b2World sWorld;
-		FRO_API static std::unique_ptr<PhysicsDebugRenderer> const sDebugRenderer;
+		FRO_API static PhysicsDebugRenderer sDebugRenderer;
+		FRO_API static PhysicsContactListener sContactListener;
 
 	private:
-		static std::unique_ptr<PhysicsDebugRenderer> initializeDebugRenderer();
+		static PhysicsDebugRenderer createDebugRenderer();
+		static PhysicsContactListener createContactListener();
 
 		Implementation() = delete;
 		Implementation(Implementation const&) = delete;

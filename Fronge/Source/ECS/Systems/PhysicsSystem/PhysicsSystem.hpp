@@ -5,6 +5,7 @@
 #include "ECS/Components/Transform/Transform.hpp"
 #include "ECS/Components/Rigidbody/Rigidbody.hpp"
 #include "ECS/Group.hpp"
+#include "Events/Systems/EventDispatcher.hpp"
 #include "Renderer/Renderer.hpp"
 
 namespace fro
@@ -19,6 +20,8 @@ namespace fro
 
 		FRO_API static void setGravity(Vector2<double> const gravity);
 
+		FRO_API static EventDispatcher<Rigidbody, Rigidbody> sBeginContactEvent;
+		FRO_API static EventDispatcher<Rigidbody, Rigidbody> sEndContactEvent;
 		FRO_API static std::int32_t sVelocityIterations;
 		FRO_API static std::int32_t sPositionIterations;
 

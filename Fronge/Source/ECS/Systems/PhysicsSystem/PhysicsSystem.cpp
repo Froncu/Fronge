@@ -37,9 +37,9 @@ namespace fro
 
 	void PhysicsSystem::onRender(Renderer const& renderer)
 	{
-		if (auto& currentRenderer{ Implementation::sDebugRenderer->mRenderer };
+		if (auto& currentRenderer{ Implementation::sDebugRenderer.mRenderer };
 			not currentRenderer.valid() or &*currentRenderer not_eq &renderer)
-			Implementation::sDebugRenderer->mRenderer = renderer;
+			Implementation::sDebugRenderer.mRenderer = renderer;
 
 		Implementation::sWorld.DebugDraw();
 	}
@@ -49,6 +49,8 @@ namespace fro
 		Implementation::sWorld.SetGravity({ static_cast<float>(gravity.x), static_cast<float>(gravity.y) });
 	}
 
+	EventDispatcher<Rigidbody, Rigidbody> PhysicsSystem::sBeginContactEvent{};
+	EventDispatcher<Rigidbody, Rigidbody> PhysicsSystem::sEndContactEvent{};
 	std::int32_t PhysicsSystem::sVelocityIterations{ 8 };
 	std::int32_t PhysicsSystem::sPositionIterations{ 3 };
 	Group<Transform, Rigidbody> PhysicsSystem::sGroup{};

@@ -55,7 +55,9 @@ namespace fro
 		}
 		, mImplementation{ std::make_unique<Implementation>() }
 	{
-		mImplementation->getb2Body().SetEnabled(false);
+		auto& body{ mImplementation->getb2Body() };
+		body.SetEnabled(false);
+		body.GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Rigidbody::Rigidbody(Rigidbody const& other)
@@ -70,17 +72,22 @@ namespace fro
 		for (auto const& otherCollider : other.mColliders)
 			mColliders.push_back(std::make_unique<Collider::Implementation>(mImplementation->getb2Body(),
 				otherCollider.getImplementation().getb2FixtureDef()));
+
+		mImplementation->getb2Body().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Rigidbody::Rigidbody(Rigidbody&& other) noexcept
 		: Component(std::move(other))
 
+		, mBeginContactEvent{ std::move(other.mBeginContactEvent) }
+		, mEndContactEvent{ std::move(other.mEndContactEvent) }
 		, mOnComponentAttachEvent{ std::move(other.mOnComponentAttachEvent) }
 		, mOnComponentDetachEvent{ std::move(other.mOnComponentDetachEvent) }
 		, mParentingEntity{ std::move(other.mParentingEntity) }
 		, mImplementation{ std::move(other.mImplementation) }
 		, mColliders{ std::move(other.mColliders) }
 	{
+		mImplementation->getb2Body().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Rigidbody::~Rigidbody()
@@ -104,6 +111,8 @@ namespace fro
 			mColliders.push_back(std::make_unique<Collider::Implementation>(mImplementation->getb2Body(),
 				otherCollider.getImplementation().getb2FixtureDef()));
 
+		mImplementation->getb2Body().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
+
 		return *this;
 	}
 
@@ -114,11 +123,15 @@ namespace fro
 
 		Component::operator=(std::move(other));
 
+		mBeginContactEvent = std::move(other.mBeginContactEvent);
+		mEndContactEvent = std::move(other.mEndContactEvent);
 		mOnComponentAttachEvent = std::move(other.mOnComponentAttachEvent);
 		mOnComponentDetachEvent = std::move(other.mOnComponentDetachEvent);
 		mParentingEntity = std::move(other.mParentingEntity);
 		mImplementation = std::move(other.mImplementation);
 		mColliders = std::move(other.mColliders);
+
+		mImplementation->getb2Body().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 
 		return *this;
 	}
