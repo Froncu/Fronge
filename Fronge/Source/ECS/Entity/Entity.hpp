@@ -1,7 +1,7 @@
 #if not defined ENTITY_HPP
 #define ENTITY_HPP
 
-#include "ComponentSparseSet.hpp"
+#include "EntityManager/EntityManager.hpp"
 #include "Events/Systems/EventListener.hpp"
 #include "Idenitifer/IDGenerator.hpp"
 #include "Reference/Reference.hpp"
@@ -14,10 +14,6 @@ namespace fro
 	public:
 		using DetachedComponent = std::pair<std::unique_ptr<Component>, std::type_index>;
 
-		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>> const& getAllEntities();
-		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentAttachEvent();
-		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentDetachEvent();
-
 		FRO_API Entity();
 		FRO_API Entity(Entity&& other) noexcept;
 
@@ -26,9 +22,7 @@ namespace fro
 		FRO_API Entity& operator=(Entity&& other) noexcept;
 
 		FRO_API FRO_NODISCARD ID const& getID() const;
-
 		FRO_API std::vector<DetachedComponent> detachAll();
-
 		FRO_API void markDoomed();
 		FRO_API FRO_NODISCARD bool isDoomed() const;
 
@@ -40,9 +34,9 @@ namespace fro
 			if (ID == ID::INVALID_ID)
 				return nullptr;
 
-			auto&& [component, inserted] { getSparseSet<ComponentType>()[ID] };
+			auto&& [component, inserted] { EntityManager::getSparseSet<ComponentType>()[ID] };
 			if (inserted)
-				getComponentAttachEvent().notify(*this, component, typeid(ComponentType));
+				EntityManager::getComponentAttachEvent().notify(*this, component, typeid(ComponentType));
 
 			return &component;
 		}
@@ -56,12 +50,12 @@ namespace fro
 				return nullptr;
 
 			ComponentType* const attachedComponent{
-				getSparseSet<ComponentType>().insert(ID, std::forward<ArgumentTypes>(arguments)...) };
+				EntityManager::getSparseSet<ComponentType>().insert(ID, std::forward<ArgumentTypes>(arguments)...) };
 
 			if (not attachedComponent)
 				return attachedComponent;
 
-			getComponentAttachEvent().notify(*this, *attachedComponent, typeid(ComponentType));
+			EntityManager::getComponentAttachEvent().notify(*this, *attachedComponent, typeid(ComponentType));
 
 			return attachedComponent;
 		}
@@ -74,12 +68,12 @@ namespace fro
 				return {};
 
 			std::optional<ComponentType> detachedComponent{
-				getSparseSet<ComponentType>().erase(ID) };
+				EntityManager::getSparseSet<ComponentType>().erase(ID) };
 
 			if (not detachedComponent.has_value())
 				return detachedComponent;
 
-			getComponentDetachEvent().notify(*this, *detachedComponent, typeid(ComponentType));
+			EntityManager::getComponentDetachEvent().notify(*this, *detachedComponent, typeid(ComponentType));
 
 			return detachedComponent;
 		}
@@ -91,7 +85,7 @@ namespace fro
 			if (ID == ID::INVALID_ID)
 				return nullptr;
 
-			return getSparseSet<ComponentType>().find(ID);
+			return EntityManager::getSparseSet<ComponentType>().find(ID);
 		}
 
 		template<ComponentSparseSetStorable ComponentType>
@@ -101,27 +95,11 @@ namespace fro
 			if (ID == ID::INVALID_ID)
 				return false;
 
-			return getSparseSet<ComponentType>().contains(ID);
+			return EntityManager::getSparseSet<ComponentType>().contains(ID);
 		}
 
 	private:
-		FRO_NODISCARD static std::unordered_set<Reference<Entity>>& getAllEntitiesInternal();
-
-		template<ComponentSparseSetStorable ComponentType>
-		FRO_NODISCARD static SparseSet<ComponentType>& getSparseSet()
-		{
-			using ComponentSparseSetType = ComponentSparseSet<ComponentType>;
-
-			std::unique_ptr<ComponentSparseSetType> temporary{};
-			auto& baseComponentSparseSet{ sBaseComponentSparseSets.emplace(typeid(ComponentType), std::move(temporary)).first->second };
-			if (not baseComponentSparseSet.get())
-				baseComponentSparseSet = std::make_unique<ComponentSparseSetType>();
-
-			return static_cast<ComponentSparseSetType&>(*baseComponentSparseSet).mSparseSet;
-		}
-
 		static IDGenerator sIDGenerator;
-		FRO_API static std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> sBaseComponentSparseSets;
 
 		Entity(Entity const&) = delete;
 

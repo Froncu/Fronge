@@ -22,7 +22,7 @@ namespace fro
 		// before attaching and detaching components
 		Group()
 		{
-			for (auto const& entity : Entity::getAllEntities())
+			for (auto const& entity : EntityManager::getAllEntities())
 				tryGroup(*entity);
 		}
 
@@ -88,7 +88,7 @@ namespace fro
 					return smartThis->tryGroup(entity);
 
 				return false;
-			}, Entity::getComponentAttachEvent()
+			}, EntityManager::getComponentAttachEvent()
 		};
 
 		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
@@ -109,7 +109,7 @@ namespace fro
 
 				smartThis->mGroupedComponents.erase(newEnd, smartThis->mGroupedComponents.end());
 				return true;
-			}, Entity::getComponentDetachEvent()
+			}, EntityManager::getComponentDetachEvent()
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};

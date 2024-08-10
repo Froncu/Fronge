@@ -33,7 +33,7 @@ namespace fro
 				}
 
 				return false;
-			}, Entity::getComponentAttachEvent()
+			}, EntityManager::getComponentAttachEvent()
 		}
 		, mOnComponentDetachEvent
 		{
@@ -55,7 +55,7 @@ namespace fro
 				}
 
 				return false;
-			}, Entity::getComponentDetachEvent()
+			}, EntityManager::getComponentDetachEvent()
 		}
 		, mImplementation{ std::make_unique<Implementation>() }
 	{
