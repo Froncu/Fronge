@@ -9,6 +9,7 @@ namespace fro
 	Collider::Collider(std::unique_ptr<Implementation>&& implementation)
 		: mImplementation{ std::move(implementation) }
 	{
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Collider::Collider(Collider const& other)
@@ -20,6 +21,7 @@ namespace fro
 				other.mImplementation->getb2FixtureDef())
 		}
 	{
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Collider::Collider(Collider&& other) noexcept
@@ -27,6 +29,7 @@ namespace fro
 
 		, mImplementation{ std::move(other.mImplementation) }
 	{
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	Collider::~Collider()
@@ -44,6 +47,8 @@ namespace fro
 			std::make_unique<Implementation>(*other.mImplementation->getb2Fixture().GetBody(),
 				other.mImplementation->getb2FixtureDef());
 
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
+
 		return *this;
 	}
 
@@ -55,6 +60,8 @@ namespace fro
 		Referencable::operator=(std::move(other));
 
 		mImplementation = std::move(other.mImplementation);
+
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 
 		return *this;
 	}
@@ -82,5 +89,59 @@ namespace fro
 	void Collider::setRestitution(double const restitution)
 	{
 		mImplementation->getb2Fixture().SetRestitution(static_cast<float>(restitution));
+	}
+
+	void Collider::setCategoryBits(std::uint16_t const categoryBits)
+	{
+		b2Fixture& fixture{ mImplementation->getb2Fixture() };
+
+		b2Filter const currentFilterData{ fixture.GetFilterData() };
+		b2Filter newFilterData{};
+		newFilterData.categoryBits = categoryBits;
+		newFilterData.maskBits = currentFilterData.maskBits;
+		newFilterData.groupIndex = currentFilterData.groupIndex;
+
+		fixture.SetFilterData(newFilterData);
+	}
+
+	void Collider::setMaskBits(std::uint16_t const maskBits)
+	{
+		b2Fixture& fixture{ mImplementation->getb2Fixture() };
+
+		b2Filter const currentFilterData{ fixture.GetFilterData() };
+		b2Filter newFilterData{};
+		newFilterData.categoryBits = currentFilterData.categoryBits;
+		newFilterData.maskBits = maskBits;
+		newFilterData.groupIndex = currentFilterData.groupIndex;
+
+		fixture.SetFilterData(newFilterData);
+	}
+
+	void Collider::setGroupIndex(std::int16_t const groupIndex)
+	{
+		b2Fixture& fixture{ mImplementation->getb2Fixture() };
+
+		b2Filter const currentFilterData{ fixture.GetFilterData() };
+		b2Filter newFilterData{};
+		newFilterData.categoryBits = currentFilterData.categoryBits;
+		newFilterData.maskBits = currentFilterData.maskBits;
+		newFilterData.groupIndex = groupIndex;
+
+		fixture.SetFilterData(newFilterData);
+	}
+
+	std::uint16_t Collider::getCategoryBits() const
+	{
+		return mImplementation->getb2Fixture().GetFilterData().categoryBits;
+	}
+
+	std::uint16_t Collider::getMaskBits() const
+	{
+		return mImplementation->getb2Fixture().GetFilterData().maskBits;
+	}
+
+	std::int16_t Collider::getGroupIndex() const
+	{
+		return mImplementation->getb2Fixture().GetFilterData().groupIndex;
 	}
 }

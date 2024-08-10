@@ -50,8 +50,8 @@ namespace fro
 
 		FRO_API Collider& addCollider();
 
-		EventDispatcher<Rigidbody> mBeginContactEvent{};
-		EventDispatcher<Rigidbody> mEndContactEvent{};
+		EventDispatcher<Collider, Rigidbody, Collider> mBeginContactEvent{};
+		EventDispatcher<Collider, Rigidbody, Collider> mEndContactEvent{};
 
 	private:
 		// are initialized in the source file because of pimpl

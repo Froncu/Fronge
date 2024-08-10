@@ -36,6 +36,14 @@ namespace fro
 		FRO_API void setDensity(double const density);
 		FRO_API void setRestitution(double const restitution);
 
+		FRO_API void setCategoryBits(std::uint16_t const categoryBits);
+		FRO_API void setMaskBits(std::uint16_t const maskBits);
+		FRO_API void setGroupIndex(std::int16_t const groupIndex);
+
+		FRO_API FRO_NODISCARD std::uint16_t getCategoryBits() const;
+		FRO_API FRO_NODISCARD std::uint16_t getMaskBits() const;
+		FRO_API FRO_NODISCARD std::int16_t getGroupIndex() const;
+
 	private:
 		std::unique_ptr<Implementation> mImplementation;
 	};

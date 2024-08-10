@@ -10,25 +10,39 @@ namespace fro
 {
 	void PhysicsContactListener::BeginContact(b2Contact* const contact)
 	{
-		auto const userDataA{ contact->GetFixtureA()->GetBody()->GetUserData().pointer };
-		Rigidbody& rigibodyA{ *reinterpret_cast<Rigidbody* const>(userDataA) };
-		auto const userDataB{ contact->GetFixtureB()->GetBody()->GetUserData().pointer };
-		Rigidbody& rigibodyB{ *reinterpret_cast<Rigidbody* const>(userDataB) };
+		auto const userDataFixtureA{ contact->GetFixtureA()->GetUserData().pointer };
+		Collider& colliderA{ *reinterpret_cast<Collider* const>(userDataFixtureA) };
+
+		auto const userDataFixtureB{ contact->GetFixtureB()->GetUserData().pointer };
+		Collider& colliderB{ *reinterpret_cast<Collider* const>(userDataFixtureB) };
+
+		auto const userDataBodyA{ contact->GetFixtureA()->GetBody()->GetUserData().pointer };
+		Rigidbody& rigibodyA{ *reinterpret_cast<Rigidbody* const>(userDataBodyA) };
+
+		auto const userDataBodyB{ contact->GetFixtureB()->GetBody()->GetUserData().pointer };
+		Rigidbody& rigibodyB{ *reinterpret_cast<Rigidbody* const>(userDataBodyB) };
 
 		PhysicsSystem::sBeginContactEvent.notify(rigibodyA, rigibodyB);
-		rigibodyA.mBeginContactEvent.notify(rigibodyB);
-		rigibodyB.mBeginContactEvent.notify(rigibodyA);
+		rigibodyA.mBeginContactEvent.notify(colliderA, rigibodyB, colliderB);
+		rigibodyB.mBeginContactEvent.notify(colliderB, rigibodyA, colliderA);
 	}
 
 	void PhysicsContactListener::EndContact(b2Contact* const contact)
 	{
-		auto const userDataA{ contact->GetFixtureA()->GetBody()->GetUserData().pointer };
-		Rigidbody& rigibodyA{ *reinterpret_cast<Rigidbody* const>(userDataA) };
-		auto const userDataB{ contact->GetFixtureB()->GetBody()->GetUserData().pointer };
-		Rigidbody& rigibodyB{ *reinterpret_cast<Rigidbody* const>(userDataB) };
+		auto const userDataFixtureA{ contact->GetFixtureA()->GetUserData().pointer };
+		Collider& colliderA{ *reinterpret_cast<Collider* const>(userDataFixtureA) };
+
+		auto const userDataFixtureB{ contact->GetFixtureB()->GetUserData().pointer };
+		Collider& colliderB{ *reinterpret_cast<Collider* const>(userDataFixtureB) };
+
+		auto const userDataBodyA{ contact->GetFixtureA()->GetBody()->GetUserData().pointer };
+		Rigidbody& rigibodyA{ *reinterpret_cast<Rigidbody* const>(userDataBodyA) };
+
+		auto const userDataBodyB{ contact->GetFixtureB()->GetBody()->GetUserData().pointer };
+		Rigidbody& rigibodyB{ *reinterpret_cast<Rigidbody* const>(userDataBodyB) };
 
 		PhysicsSystem::sEndContactEvent.notify(rigibodyA, rigibodyB);
-		rigibodyA.mEndContactEvent.notify(rigibodyB);
-		rigibodyB.mEndContactEvent.notify(rigibodyA);
+		rigibodyA.mEndContactEvent.notify(colliderA, rigibodyB, colliderB);
+		rigibodyB.mEndContactEvent.notify(colliderB, rigibodyA, colliderA);
 	}
 }
