@@ -18,7 +18,7 @@ namespace fro
 		using GroupTuple = std::tuple<Reference<Entity const>, Reference<ObservedComponentTypes>...>;
 
 	public:
-		// constructing a group can be expensive; preferrably you'd create all your groups
+		// NOTE: constructing a group can be expensive; preferrably you'd create all your groups
 		// before attaching and detaching components
 		Group()
 		{

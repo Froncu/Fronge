@@ -13,8 +13,8 @@ namespace fro
 {
 	class Rigidbody;
 
-	// intentionally left out FRO_API from the constructors, operators and destructors;
-	// the user should not create this outside Rigidbody
+	// NOTE: intentionally left out FRO_API from the constructors, operators and destructors;
+	// the user should not create this outside fro::Rigidbody
 	class Collider final : public Referencable
 	{
 	public:
