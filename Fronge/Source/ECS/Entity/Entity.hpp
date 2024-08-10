@@ -26,7 +26,11 @@ namespace fro
 		FRO_API Entity& operator=(Entity&& other) noexcept;
 
 		FRO_API FRO_NODISCARD ID const& getID() const;
+
 		FRO_API std::vector<DetachedComponent> detachAll();
+
+		FRO_API void markDoomed();
+		FRO_API FRO_NODISCARD bool isDoomed() const;
 
 		template<ComponentSparseSetStorable ComponentType>
 			requires std::default_initializable<ComponentType>
@@ -108,7 +112,11 @@ namespace fro
 		{
 			using ComponentSparseSetType = ComponentSparseSet<ComponentType>;
 
-			auto& baseComponentSparseSet{ sBaseComponentSparseSets.emplace(typeid(ComponentType), std::make_unique<ComponentSparseSetType>()).first->second };
+			std::unique_ptr<ComponentSparseSetType> temporary{};
+			auto& baseComponentSparseSet{ sBaseComponentSparseSets.emplace(typeid(ComponentType), std::move(temporary)).first->second };
+			if (not baseComponentSparseSet.get())
+				baseComponentSparseSet = std::make_unique<ComponentSparseSetType>();
+
 			return static_cast<ComponentSparseSetType&>(*baseComponentSparseSet).mSparseSet;
 		}
 
@@ -120,6 +128,7 @@ namespace fro
 		Entity& operator=(Entity const&) = delete;
 
 		ID mID{ sIDGenerator.get() };
+		bool mIsDoomed{};
 	};
 }
 
@@ -128,7 +137,22 @@ struct std::hash<fro::Reference<fro::Entity>>
 {
 	std::size_t operator()(fro::Reference<fro::Entity> const& entity) const
 	{
-		return std::hash<std::size_t>{}(entity->getID());
+		if (not entity.valid())
+			return fro::ID::INVALID_ID;
+
+		return static_cast<std::size_t>(entity->getID());
+	}
+};
+
+template<>
+struct std::equal_to<fro::Reference<fro::Entity>>
+{
+	bool operator()(fro::Reference<fro::Entity> const& entity1, fro::Reference<fro::Entity> const& entity2) const
+	{
+		if (not entity1.valid() or not entity2.valid())
+			return false;
+
+		return &*entity1 == &*entity2;
 	}
 };
 

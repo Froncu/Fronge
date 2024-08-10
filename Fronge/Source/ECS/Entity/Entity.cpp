@@ -43,6 +43,7 @@ namespace fro
 		: Referencable(std::move(other))
 
 		, mID{ std::move(other.mID) }
+		, mIsDoomed{ other.mIsDoomed }
 	{
 	}
 
@@ -61,9 +62,12 @@ namespace fro
 		if (this == &other)
 			return *this;
 
+		detachAll();
+
 		Referencable::operator=(std::move(other));
 
 		mID = std::move(other.mID);
+		mIsDoomed = other.mIsDoomed;
 
 		return *this;
 	}
@@ -92,5 +96,18 @@ namespace fro
 		}
 
 		return detachedComponents;
+	}
+
+	void Entity::markDoomed()
+	{
+		if (mIsDoomed)
+			return;
+
+		mIsDoomed = true;
+	}
+
+	bool Entity::isDoomed() const
+	{
+		return mIsDoomed;
 	}
 }
