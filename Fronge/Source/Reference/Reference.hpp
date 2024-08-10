@@ -104,31 +104,31 @@ namespace fro
 			return *this;
 		}
 
-		Type* operator->() const
+		FRO_NODISCARD Type* operator->() const
 		{
 			return &get();
 		}
 
-		Type& operator*() const
+		FRO_NODISCARD Type& operator*() const
 		{
 			return get();
 		}
 
 		template<ReferencableType OtherType>
 			requires PolymorphicType<Type, OtherType> and ConstantPromotableType<Type, OtherType>
-		Reference<OtherType> dynamicCast() const
+		FRO_NODISCARD Reference<OtherType> dynamicCast() const
 		{
 			return dynamic_cast<OtherType* const>(mReferencable);
 		}
 
 		template<ReferencableType OtherType>
 			requires EitherDerivedType<Type, OtherType> and ConstantPromotableType<Type, OtherType>
-		Reference<OtherType> staticCast() const
+		FRO_NODISCARD Reference<OtherType> staticCast() const
 		{
 			return static_cast<OtherType* const>(mReferencable);
 		}
 
-		Type& get() const
+		FRO_NODISCARD Type& get() const
 		{
 			return *static_cast<Type* const>(mReferencable);
 		}
