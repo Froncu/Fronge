@@ -12,14 +12,26 @@ namespace fro
 
 	EventDispatcher<Entity, Component, std::type_index const>& EntityManager::getComponentAttachEvent()
 	{
-		static EventDispatcher<Entity, Component, std::type_index const> sComponentAttachEvent{};
-		return sComponentAttachEvent;
+		static EventDispatcher<Entity, Component, std::type_index const> event{};
+		return event;
 	}
 
 	EventDispatcher<Entity, Component, std::type_index const>& EntityManager::getComponentDetachEvent()
 	{
-		static EventDispatcher<Entity, Component, std::type_index const> sComponentDetachEvent{};
-		return sComponentDetachEvent;
+		static EventDispatcher<Entity, Component, std::type_index const> event{};
+		return event;
+	}
+
+	EventDispatcher<Entity, Scene>& EntityManager::getAddedToSceneEvent()
+	{
+		static EventDispatcher<Entity, Scene> event{};
+		return event;
+	}
+
+	EventDispatcher<Entity, Scene>& EntityManager::getRemovedFromSceneEvent()
+	{
+		static EventDispatcher<Entity, Scene> event{};
+		return event;
 	}
 
 	std::unordered_set<Reference<Entity>>& EntityManager::getAllEntitiesInternal()
@@ -30,7 +42,7 @@ namespace fro
 
 	std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>>& EntityManager::getBaseComponentSparseSets()
 	{
-		static std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> sBaseComponentSparseSets{};
-		return sBaseComponentSparseSets;
+		static std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> baseComponentSparseSets{};
+		return baseComponentSparseSets;
 	}
 }

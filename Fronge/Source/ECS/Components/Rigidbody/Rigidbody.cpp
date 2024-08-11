@@ -22,6 +22,17 @@ namespace fro
 					if (not parentingEntity->hasComponentAttached<Transform>())
 						return false;
 
+					auto const& parentingScene{ parentingEntity->getParentingScene() };
+					if (not parentingScene.valid())
+						return false;
+
+					auto const& activeScene{ SceneManager::getActiveScene() };
+					if (not activeScene.valid())
+						return false;
+
+					if (&*parentingScene not_eq &*SceneManager::getActiveScene())
+						return false;
+
 					smartThis->mImplementation->getb2Body().SetEnabled(true);
 					return true;
 				}
@@ -57,6 +68,65 @@ namespace fro
 				return false;
 			}, EntityManager::getComponentDetachEvent()
 		}
+		, mOnAddedToSceneEvent
+		{
+			[smartThis = Reference{ this }](Entity const& entity, Scene const& scene)
+			{
+				auto const& parentingEntity{ smartThis->mParentingEntity };
+
+				if (not parentingEntity.valid())
+					return false;
+
+				if (&*parentingEntity not_eq &entity)
+					return false;
+
+				auto const& activeScene{ SceneManager::getActiveScene() };
+				if (not activeScene.valid())
+					return false;
+
+				if (&*activeScene not_eq &scene)
+					return false;
+				
+				smartThis->mImplementation->getb2Body().SetEnabled(true);
+				return true;
+			}, EntityManager::getAddedToSceneEvent()
+		}
+		, mOnRemovedFromSceneEvent
+		{
+			[smartThis = Reference{ this }](Entity const& entity, Scene const&)
+			{
+				auto const& parentingEntity{ smartThis->mParentingEntity };
+
+				if (not parentingEntity.valid())
+					return false;
+
+				if (&*parentingEntity not_eq &entity)
+					return false;
+
+				smartThis->mImplementation->getb2Body().SetEnabled(false);
+				return true;
+			}, EntityManager::getRemovedFromSceneEvent()
+		}
+		, mOnActiveSceneChangedEvent
+		{
+			[smartThis = Reference{ this }](Reference<Scene> const&, Reference<Scene> const& activeScene)
+			{
+				auto const& parentingEntity{ smartThis->mParentingEntity };
+
+				if (not parentingEntity.valid())
+					return false;
+
+				auto const& parentingScene{ parentingEntity->getParentingScene() };
+				if (not parentingScene.valid())
+					return false;
+
+				if (not activeScene.valid())
+					return false;
+
+				smartThis->mImplementation->getb2Body().SetEnabled(&*parentingScene == &*activeScene);
+				return true;
+			}, SceneManager::getActiveSceneChangedEvent()
+		}
 		, mImplementation{ std::make_unique<Implementation>() }
 	{
 		auto& body{ mImplementation->getb2Body() };
@@ -71,6 +141,9 @@ namespace fro
 		, mEndContactEvent{ other.mEndContactEvent }
 		, mOnComponentAttachEvent{ other.mOnComponentAttachEvent }
 		, mOnComponentDetachEvent{ other.mOnComponentDetachEvent }
+		, mOnAddedToSceneEvent{ other.mOnAddedToSceneEvent }
+		, mOnRemovedFromSceneEvent{ other.mOnRemovedFromSceneEvent }
+		, mOnActiveSceneChangedEvent{ other.mOnActiveSceneChangedEvent }
 		, mParentingEntity{ other.mParentingEntity }
 		, mImplementation{ std::make_unique<Implementation>(other.mImplementation->getb2BodyDef()) }
 	{
@@ -89,6 +162,9 @@ namespace fro
 		, mEndContactEvent{ std::move(other.mEndContactEvent) }
 		, mOnComponentAttachEvent{ std::move(other.mOnComponentAttachEvent) }
 		, mOnComponentDetachEvent{ std::move(other.mOnComponentDetachEvent) }
+		, mOnAddedToSceneEvent{ std::move(other.mOnAddedToSceneEvent) }
+		, mOnRemovedFromSceneEvent{ std::move(other.mOnRemovedFromSceneEvent) }
+		, mOnActiveSceneChangedEvent{ std::move(other.mOnActiveSceneChangedEvent) }
 		, mParentingEntity{ std::move(other.mParentingEntity) }
 		, mImplementation{ std::move(other.mImplementation) }
 		, mColliders{ std::move(other.mColliders) }
@@ -111,6 +187,9 @@ namespace fro
 		mEndContactEvent = other.mEndContactEvent;
 		mOnComponentAttachEvent = other.mOnComponentAttachEvent;
 		mOnComponentDetachEvent = other.mOnComponentDetachEvent;
+		mOnAddedToSceneEvent = other.mOnAddedToSceneEvent;
+		mOnRemovedFromSceneEvent = other.mOnRemovedFromSceneEvent;
+		mOnActiveSceneChangedEvent = other.mOnActiveSceneChangedEvent;
 		mParentingEntity = other.mParentingEntity;
 		mImplementation = std::make_unique<Implementation>(other.mImplementation->getb2BodyDef());
 
@@ -135,6 +214,9 @@ namespace fro
 		mEndContactEvent = std::move(other.mEndContactEvent);
 		mOnComponentAttachEvent = std::move(other.mOnComponentAttachEvent);
 		mOnComponentDetachEvent = std::move(other.mOnComponentDetachEvent);
+		mOnAddedToSceneEvent = std::move(other.mOnAddedToSceneEvent);
+		mOnRemovedFromSceneEvent = std::move(other.mOnRemovedFromSceneEvent);
+		mOnActiveSceneChangedEvent = std::move(other.mOnActiveSceneChangedEvent);
 		mParentingEntity = std::move(other.mParentingEntity);
 		mImplementation = std::move(other.mImplementation);
 		mColliders = std::move(other.mColliders);

@@ -19,6 +19,7 @@ namespace fro
 		: Referencable(std::move(other))
 
 		, mID{ std::move(other.mID) }
+		, mParentingScene{ std::move(other.mParentingScene) }
 		, mIsDoomed{ other.mIsDoomed }
 	{
 	}
@@ -43,6 +44,7 @@ namespace fro
 		Referencable::operator=(std::move(other));
 
 		mID = std::move(other.mID);
+		mParentingScene = std::move(other.mParentingScene);
 		mIsDoomed = other.mIsDoomed;
 
 		return *this;
@@ -72,6 +74,11 @@ namespace fro
 		}
 
 		return detachedComponents;
+	}
+
+	Reference<Scene> Entity::getParentingScene() const
+	{
+		return mParentingScene;
 	}
 
 	void Entity::markDoomed()

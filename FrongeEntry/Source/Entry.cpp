@@ -24,6 +24,7 @@ int main(int, char**)
 	Audio::shutDown();
 	InputManager::shutDown();
 	SystemEventManager::shutDown();
+	SceneManager::shutDown();
 
 	return 0;
 }

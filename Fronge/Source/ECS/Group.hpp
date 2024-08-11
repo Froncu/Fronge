@@ -5,6 +5,8 @@
 
 #include "ECS/Components/Component.hpp"
 #include "ECS/Entity/Entity.hpp"
+#include "ECS/Scene/Scene.hpp"
+#include "ECS/Scene/SceneManager/SceneManager.h"
 #include "Events/Systems/EventListener.hpp"
 #include "Reference/Reference.hpp"
 #include "Utility/UniqueParameterPack.hpp"
@@ -71,6 +73,9 @@ namespace fro
 
 		bool tryGroup(Entity const& entity)
 		{
+			if (&*entity.getParentingScene() not_eq &*SceneManager::getActiveScene())
+				return false;
+
 			GroupTuple groupTuple{ entity, entity.findComponent<ObservedComponentTypes>()... };
 
 			if (not (std::get<Reference<ObservedComponentTypes>>(groupTuple).valid() and ...))
@@ -84,10 +89,13 @@ namespace fro
 		{
 			[smartThis = Reference{ this }](Entity const& entity, Component const&, std::type_index const& componentTypeIndex)
 			{
-				if (smartThis->isObserved(componentTypeIndex))
-					return smartThis->tryGroup(entity);
+				if (not entity.getParentingScene().valid())
+					return false;
 
-				return false;
+				if (not smartThis->isObserved(componentTypeIndex))
+					return false;
+
+				return smartThis->tryGroup(entity);
 			}, EntityManager::getComponentAttachEvent()
 		};
 
@@ -110,6 +118,48 @@ namespace fro
 				smartThis->mGroupedComponents.erase(newEnd, smartThis->mGroupedComponents.end());
 				return true;
 			}, EntityManager::getComponentDetachEvent()
+		};
+
+		EventListener<Entity, Scene> mOnAddedToSceneEvent
+		{
+			[smartThis = Reference{ this }](Entity const& entity, Scene const&)
+			{
+				return smartThis->tryGroup(entity);
+			}, EntityManager::getAddedToSceneEvent()
+		};
+
+		EventListener<Entity, Scene> mOnRemovedFromSceneEvent
+		{
+			[smartThis = Reference{ this }](Entity const& entity, Scene const&)
+			{
+				auto const newEnd
+				{
+					std::remove_if(smartThis->mGroupedComponents.begin(), smartThis->mGroupedComponents.end(),
+					[&entity](GroupTuple const& groupTuple)
+					{
+						return entity.getID() == std::get<0>(groupTuple)->getID();
+					})
+				};
+
+				smartThis->mGroupedComponents.erase(newEnd, smartThis->mGroupedComponents.end());
+				return true;
+			}, EntityManager::getRemovedFromSceneEvent()
+		};
+
+		EventListener<Reference<Scene> const, Reference<Scene> const> mOnActiveSceneChangedEvent
+		{
+			[smartThis = Reference{ this }](Reference<Scene> const&, Reference<Scene> const& activeScene)
+			{
+				smartThis->mGroupedComponents.clear();
+
+				if (not activeScene.valid())
+					return true;
+
+				for (Entity const& entity : activeScene->getEntities())
+					smartThis->tryGroup(entity);
+
+				return true;
+			}, SceneManager::getActiveSceneChangedEvent()
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};

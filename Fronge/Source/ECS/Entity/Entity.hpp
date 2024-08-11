@@ -9,8 +9,12 @@
 
 namespace fro
 {
+	class Scene;
+
 	class Entity final : public Referencable
 	{
+		friend Scene;
+
 	public:
 		using DetachedComponent = std::pair<std::unique_ptr<Component>, std::type_index>;
 
@@ -22,7 +26,11 @@ namespace fro
 		FRO_API Entity& operator=(Entity&& other) noexcept;
 
 		FRO_API FRO_NODISCARD ID const& getID() const;
+
 		FRO_API std::vector<DetachedComponent> detachAll();
+
+		FRO_API Reference<Scene> getParentingScene() const;
+
 		FRO_API void markDoomed();
 		FRO_API FRO_NODISCARD bool isDoomed() const;
 
@@ -106,6 +114,7 @@ namespace fro
 		Entity& operator=(Entity const&) = delete;
 
 		ID mID{ sIDGenerator.get() };
+		Reference<Scene> mParentingScene{};
 		bool mIsDoomed{};
 	};
 }

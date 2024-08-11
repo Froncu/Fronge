@@ -10,6 +10,7 @@ namespace fro
 {
 	class Component;
 	class Entity;
+	class Scene;
 
 	class EntityManager final
 	{
@@ -19,6 +20,8 @@ namespace fro
 		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>> const& getAllEntities();
 		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentAttachEvent();
 		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Component, std::type_index const>& getComponentDetachEvent();
+		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Scene>& getAddedToSceneEvent();
+		FRO_API FRO_NODISCARD static EventDispatcher<Entity, Scene>& getRemovedFromSceneEvent();
 
 	private:
 		FRO_API FRO_NODISCARD static std::unordered_set<Reference<Entity>>& getAllEntitiesInternal();

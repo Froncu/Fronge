@@ -10,7 +10,7 @@
 #include "ECS/Components/Transform/Transform.hpp"
 #include "ECS/Entity/Entity.hpp"
 #include "ECS/Group.hpp"
-#include "ECS/Scene/Scene.hpp"
+#include "ECS/Scene/SceneManager/SceneManager.h"
 #include "ECS/Systems/PhysicsSystem/PhysicsSystem.hpp"
 #include "ECS/Systems/SpriteSystem/SpriteSystem.hpp"
 #include "ECS/Systems/SpriteAnimatorSystem/SpriteAnimatorSystem.hpp"

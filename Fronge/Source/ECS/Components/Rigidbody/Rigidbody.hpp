@@ -6,6 +6,7 @@
 #include "ECS/Components/Component.hpp"
 #include "ECS/Components/Transform/Transform.hpp"
 #include "ECS/Entity/Entity.hpp"
+#include "ECS/Scene/SceneManager/SceneManager.h"
 #include "Events/Systems/EventListener.hpp"
 #include "Collider.hpp"
 
@@ -57,6 +58,9 @@ namespace fro
 		// are initialized in the source file because of pimpl
 		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent;
 		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent;
+		EventListener<Entity, Scene> mOnAddedToSceneEvent;
+		EventListener<Entity, Scene> mOnRemovedFromSceneEvent;
+		EventListener<Reference<Scene> const, Reference<Scene> const> mOnActiveSceneChangedEvent;
 		Reference<Entity> mParentingEntity{};
 		std::unique_ptr<Implementation> mImplementation;
 		std::vector<Collider> mColliders{};
