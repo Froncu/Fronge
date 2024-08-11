@@ -52,7 +52,7 @@ namespace fro
 		}
 
 		template<Arithmetic OtherType>
-		FRO_NODISCARD constexpr auto operator+=(Vector2<OtherType> const& vector)
+		constexpr auto operator+=(Vector2<OtherType> const& vector)
 		{
 			return *this = *this + vector;
 		}
@@ -73,9 +73,9 @@ namespace fro
 		}
 
 		template<Arithmetic OtherType>
-		FRO_NODISCARD constexpr auto operator-=(Vector2<OtherType> const& vector)
+		constexpr auto operator-=(Vector2<OtherType> const& vector)
 		{
-			return *this = *this = vector;
+			return *this = *this - vector;
 		}
 
 		template<Arithmetic OtherType>

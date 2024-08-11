@@ -20,6 +20,7 @@
 #include "Gamepad/Gamepad.hpp"
 #include "InputManager/InputManager.hpp"
 #include "Logger/Logger.hpp"
+#include "SVGParser/SVGParser.hpp"
 #include "SystemEventManager/SystemEventManager.hpp"
 #include "Maths/MathFunctions.hpp"
 #include "Maths/Structs/Chain.hpp"

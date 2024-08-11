@@ -35,6 +35,7 @@ namespace fro
 		FRO_API void setShape(std::variant<Rectangle<double>, Polygon<double>, Chain<double>, Circle<double>> const& shape);
 		FRO_API void setDensity(double const density);
 		FRO_API void setRestitution(double const restitution);
+		FRO_API void setFriction(double const friction);
 
 		FRO_API void setCategoryBits(std::uint16_t const categoryBits);
 		FRO_API void setMaskBits(std::uint16_t const maskBits);

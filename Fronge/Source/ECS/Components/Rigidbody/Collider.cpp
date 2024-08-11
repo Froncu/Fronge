@@ -91,6 +91,11 @@ namespace fro
 		mImplementation->getb2Fixture().SetRestitution(static_cast<float>(restitution));
 	}
 
+	void Collider::setFriction(double const friction)
+	{
+		mImplementation->getb2Fixture().SetFriction(static_cast<float>(friction));
+	}
+
 	void Collider::setCategoryBits(std::uint16_t const categoryBits)
 	{
 		b2Fixture& fixture{ mImplementation->getb2Fixture() };

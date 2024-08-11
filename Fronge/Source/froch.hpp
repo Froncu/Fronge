@@ -12,6 +12,7 @@
 #include <time.h>
 #include <deque>
 #include <format>
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -20,6 +21,7 @@
 #include <numeric>
 #include <optional>
 #include <set>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <thread>
