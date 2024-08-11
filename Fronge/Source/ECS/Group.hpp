@@ -17,11 +17,19 @@ namespace fro
 		requires isUnique<ObservedComponentTypes...>
 	class Group final : public Referencable
 	{
+	public:
 		using GroupTuple = std::tuple<Reference<Entity const>, Reference<ObservedComponentTypes>...>;
 
-	public:
 		// NOTE: constructing a group can be expensive; preferrably you'd create all your groups
 		// before attaching and detaching components
+
+		Group(std::function<bool(GroupTuple const&, GroupTuple const&)> sorter)
+			: mSorter{ std::move(sorter) }
+		{
+			for (auto const& entity : EntityManager::getAllEntities())
+				tryGroup(*entity);
+		}
+
 		Group()
 		{
 			for (auto const& entity : EntityManager::getAllEntities())
@@ -35,6 +43,11 @@ namespace fro
 
 		Group& operator=(Group const&) = default;
 		Group& operator=(Group&&) noexcept = default;
+
+		void setSorter(std::function<bool(GroupTuple const&, GroupTuple const&)> sorter)
+		{
+			mSorter = std::move(sorter);
+		}
 
 		auto operator[](std::size_t const index) const
 		{
@@ -82,6 +95,9 @@ namespace fro
 				return false;
 
 			mGroupedComponents.emplace_back(std::move(groupTuple));
+			if (mSorter not_eq nullptr)
+				std::sort(mGroupedComponents.begin(), mGroupedComponents.end(), mSorter);
+
 			return true;
 		}
 
@@ -163,6 +179,7 @@ namespace fro
 		};
 
 		std::vector<GroupTuple> mGroupedComponents{};
+		std::function<bool(GroupTuple const&, GroupTuple const&)> mSorter{};
 	};
 }
 

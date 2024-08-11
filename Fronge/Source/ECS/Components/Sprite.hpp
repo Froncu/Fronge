@@ -13,6 +13,7 @@ namespace fro
 	public:
 		Reference<Texture const> texture{};
 		Rectangle<int> sourceRectangle{};
+		std::size_t layer{};
 	};
 }
 
