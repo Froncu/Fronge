@@ -7,9 +7,6 @@ project "Fronge"
 	defines { "FRO_BUILD_DLL", "FRO_ENGINE" }
 	
 	files "Source/**"
-	-- Temporary
-	removefiles "Source/OldFronge/**"
-	--
 	includedirs { "Source", "../External/Box2D/include" }
 	targetdir ("../Output/" .. outputdir)
 	objdir ("../Intermediate/" .. outputdir .. "/%{prj.name}")
