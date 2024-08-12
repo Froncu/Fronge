@@ -78,6 +78,13 @@ namespace fro
 				return polygons;
 			}
 
+			double sign{};
+			for (std::size_t index{}; index < polygon.vertices.size(); ++index)
+				sign += polygon.vertices[index].getCross(polygon.vertices[(index + 1) % polygon.vertices.size()]);
+
+			if (sign < 0.0)
+				std::reverse(polygon.vertices.begin(), polygon.vertices.end());
+
 			polygons.push_back(polygon);
 		}
 
