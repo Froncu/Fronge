@@ -96,6 +96,12 @@ namespace fro
 		mImplementation->getb2Fixture().SetFriction(static_cast<float>(friction));
 	}
 
+
+	void Collider::setSensor(bool const isSensor)
+	{
+		mImplementation->getb2Fixture().SetSensor(isSensor);
+	}
+
 	void Collider::setCategoryBits(std::uint16_t const categoryBits)
 	{
 		b2Fixture& fixture{ mImplementation->getb2Fixture() };
