@@ -51,7 +51,7 @@ namespace fro
 		Implementation::sWorld.SetGravity({ static_cast<float>(gravity.x), static_cast<float>(gravity.y) });
 	}
 
-	Reference<Rigidbody> PhysicsSystem::raycast(Vector2<double> const from, Vector2<double> const to)
+	std::pair<Reference<Rigidbody>, Reference<Collider>> PhysicsSystem::raycast(Vector2<double> const from, Vector2<double> const to)
 	{
 		b2RayCastInput const input
 		{
@@ -62,7 +62,7 @@ namespace fro
 
 		float closestFraction{ 1.0f };
 
-		b2Body* closestBody{};
+		b2Fixture* closestFixture{};
 		for (b2Body* body{ Implementation::sWorld.GetBodyList() }; body; body = body->GetNext())
 			for (b2Fixture* fixture{ body->GetFixtureList() }; fixture; fixture = fixture->GetNext())
 			{
@@ -73,14 +73,18 @@ namespace fro
 				if (output.fraction < closestFraction)
 				{
 					closestFraction = output.fraction;
-					closestBody = body;
+					closestFixture = fixture;
 				}
 			}
 
-		if (not closestBody)
+		if (not closestFixture)
 			return {};
 
-		return reinterpret_cast<Rigidbody*>(closestBody->GetUserData().pointer);
+		return
+		{
+			reinterpret_cast<Rigidbody* const>(closestFixture->GetBody()->GetUserData().pointer),
+			reinterpret_cast<Collider* const>(closestFixture->GetUserData().pointer)
+		};
 	}
 
 	EventDispatcher<Rigidbody, Rigidbody> PhysicsSystem::sBeginContactEvent{};
