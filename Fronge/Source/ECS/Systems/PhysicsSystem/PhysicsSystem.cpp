@@ -5,6 +5,8 @@
 #include "Implementation/PhysicsDebugRenderer.hpp"
 #include "PhysicsSystem.hpp"
 
+#include <box2d/b2_fixture.h>
+
 namespace fro
 {
 	void PhysicsSystem::onFixedUpdate(double const fixedDeltaSeconds)
@@ -47,6 +49,38 @@ namespace fro
 	void PhysicsSystem::setGravity(Vector2<double> const gravity)
 	{
 		Implementation::sWorld.SetGravity({ static_cast<float>(gravity.x), static_cast<float>(gravity.y) });
+	}
+
+	Reference<Rigidbody> PhysicsSystem::raycast(Vector2<double> const from, Vector2<double> const to)
+	{
+		b2RayCastInput const input
+		{
+			.p1{ static_cast<float>(from.x), static_cast<float>(from.y) },
+			.p2{ static_cast<float>(to.x), static_cast<float>(to.y) },
+			.maxFraction{ 1.0f }
+		};
+
+		float closestFraction{ 1.0f };
+
+		b2Body* closestBody{};
+		for (b2Body* body{ Implementation::sWorld.GetBodyList() }; body; body = body->GetNext())
+			for (b2Fixture* fixture{ body->GetFixtureList() }; fixture; fixture = fixture->GetNext())
+			{
+				b2RayCastOutput output;
+				if (not fixture->RayCast(&output, input, 0))
+					continue;
+
+				if (output.fraction < closestFraction)
+				{
+					closestFraction = output.fraction;
+					closestBody = body;
+				}
+			}
+
+		if (not closestBody)
+			return {};
+
+		return reinterpret_cast<Rigidbody*>(closestBody->GetUserData().pointer);
 	}
 
 	EventDispatcher<Rigidbody, Rigidbody> PhysicsSystem::sBeginContactEvent{};

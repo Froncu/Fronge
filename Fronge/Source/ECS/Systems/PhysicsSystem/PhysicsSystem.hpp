@@ -19,6 +19,7 @@ namespace fro
 		FRO_API static void onRender(Renderer const& renderer);
 
 		FRO_API static void setGravity(Vector2<double> const gravity);
+		FRO_API FRO_NODISCARD static Reference<Rigidbody> raycast(Vector2<double> const from, Vector2<double> const to);
 
 		FRO_API static EventDispatcher<Rigidbody, Rigidbody> sBeginContactEvent;
 		FRO_API static EventDispatcher<Rigidbody, Rigidbody> sEndContactEvent;
