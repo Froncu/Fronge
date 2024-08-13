@@ -78,6 +78,7 @@ namespace fro
 		fixtureDefinition.shape = b2Shape.get();
 
 		mImplementation = std::make_unique<Implementation>(*mImplementation->getb2Fixture().GetBody(), fixtureDefinition);
+		mImplementation->getb2Fixture().GetUserData().pointer = reinterpret_cast<std::uintptr_t>(this);
 	}
 
 	void Collider::setDensity(double const density)

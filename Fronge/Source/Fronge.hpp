@@ -37,6 +37,7 @@
 #include "Resources/SpriteAnimation.hpp"
 #include "Resources/Surface/Surface.hpp"
 #include "Resources/Texture/Texture.hpp"
+#include "Utility/Bitfield.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 #include "Utility/LazyHasher.hpp"
 #include "Utility/SparseSet.hpp"
