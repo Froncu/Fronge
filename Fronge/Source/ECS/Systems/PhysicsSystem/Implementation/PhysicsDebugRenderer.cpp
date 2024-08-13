@@ -47,7 +47,7 @@ namespace fro
 		Polygon<double> polygon{};
 		polygon.vertices.resize(vertexCount);
 
-		for (std::size_t index{}; index < vertexCount; ++index)
+		for (int32 index{}; index < vertexCount; ++index)
 		{
 			polygon.vertices[index].x = static_cast<double>(vertices[index].x);
 			polygon.vertices[index].y = static_cast<double>(vertices[index].y);
@@ -61,7 +61,7 @@ namespace fro
 		Polygon<double> polygon{};
 		polygon.vertices.resize(vertexCount);
 
-		for (std::size_t index{}; index < vertexCount; ++index)
+		for (int32 index{}; index < vertexCount; ++index)
 		{
 			polygon.vertices[index].x = static_cast<double>(vertices[index].x);
 			polygon.vertices[index].y = static_cast<double>(vertices[index].y);
