@@ -33,6 +33,9 @@ namespace fro
 		FRO_API FRO_NODISCARD static Reference<SoundEffect> getActiveSoundEffect(int const channel);
 		FRO_API FRO_NODISCARD static int getAmountOfChannels();
 
+		FRO_API static void setMute(bool const mute);
+		FRO_API FRO_NODISCARD static bool isMuted();
+
 	private:
 		static void internalPauseSoundEffect(int const channel);
 		static void internalResumeSoundEffect(int const channel);
@@ -59,6 +62,7 @@ namespace fro
 		static Reference<Music> sActiveMusic;
 		static std::unique_ptr<Music> sLoadedMusic;
 		static bool sRunThread;
+		static bool sMuted;
 
 		Audio() = delete;
 		Audio(Audio const&) = delete;

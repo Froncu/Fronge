@@ -7,10 +7,10 @@
 
 namespace fro
 {
-	template<std::same_as<std::size_t>... BitTypes>
+	template<std::same_as<int>... BitTypes>
 	FRO_NODISCARD std::uint16_t createBitfield(BitTypes const... bits)
 	{
-		return ((static_cast<std::uint16_t>(1) << bits) | ...);
+		return ((static_cast<std::uint16_t>(1) << static_cast<std::uint16_t>(bits)) | ...);
 	}
 }
 

@@ -110,6 +110,18 @@ namespace fro
 		return MIX_CHANNELS;
 	}
 
+	void Audio::setMute(bool const mute)
+	{
+		sMuted = mute;
+		Mix_MasterVolume(sMuted ? 0 : MIX_MAX_VOLUME);
+		Mix_VolumeMusic(sMuted ? 0 : MIX_MAX_VOLUME);
+	}
+
+	bool Audio::isMuted()
+	{
+		return sMuted;
+	}
+
 	void Audio::internalPauseSoundEffect(int const channel)
 	{
 		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
@@ -243,7 +255,7 @@ namespace fro
 			{
 				auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.filePath)) };
 
-				int const channel{ Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 1) };
+				int const channel{ Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 0) };
 				if (channel not_eq -1)
 				{
 					Logger::info("loaded and played SoundEffect with ID {} on channel {}!",
@@ -274,7 +286,7 @@ namespace fro
 				else
 				{
 					int& channel{ soundEffect->mChannel };
-					channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 1);
+					channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 0);
 					if (channel not_eq -1)
 					{
 						Logger::info("played SoundEffect with ID {} on channel {}!",
@@ -360,4 +372,5 @@ namespace fro
 	Reference<Music> Audio::sActiveMusic{};
 	std::unique_ptr<Music> Audio::sLoadedMusic{};
 	bool Audio::sRunThread{ true };
+	bool Audio::sMuted{};
 }
