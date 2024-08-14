@@ -6,16 +6,17 @@ namespace fro
 {
 	void Scene::doomAndAdd()
 	{
-		auto const newEnd
+		// NOTE: used to be a std::remove_if, but it does some clever
+		// stuff that messed up fro::Reference's
+		for (std::size_t index{}; index < mEntities.size(); ++index)
 		{
-			std::remove_if(mEntities.begin(), mEntities.end(),
-				[](Entity const& entity)
-				{
-					return entity.isDoomed();
-				})
-		};
+			Entity& entity{ mEntities[index] };
+			if (not entity.isDoomed())
+				continue;
 
-		mEntities.erase(newEnd, mEntities.end());
+			Entity owner{ std::move(entity) };
+			mEntities.erase(mEntities.begin() + index);
+		}
 
 		for (Entity& entity : mEntitiesToAdd)
 		{
