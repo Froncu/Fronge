@@ -21,9 +21,12 @@ namespace fro
 		Transform& operator=(Transform const&) = default;
 		Transform& operator=(Transform&&) noexcept = default;
 
+		FRO_API FRO_NODISCARD Reference<Entity> getParentingEntity() const;
+
 		FRO_API bool setParent(Transform* const parent, bool keepWorldTransform = true);
 
 		FRO_API FRO_NODISCARD bool isParenting(Transform const& transform) const;
+		FRO_API FRO_NODISCARD std::vector<Reference<Transform>> const& getChildren() const;
 		
 		FRO_API void setLocalTranslation(Vector2<double> const translation);
 		FRO_API void setLocalRotation(double const rotation);
@@ -50,11 +53,37 @@ namespace fro
 		void calculateWorldTransform() const;
 		void calculateLocalTransform();
 
+		EventListener<Entity, Component, std::type_index const> mOnComponentAttachEvent
+		{
+			[smartThis = Reference{ this }](Entity& entity, Component const& component, std::type_index const&)
+			{
+				if (&*smartThis not_eq &component)
+					return false;
+				
+				smartThis->mParentingEntity = entity;
+				return true;
+			}, EntityManager::getComponentAttachEvent()
+		};
+
+		EventListener<Entity, Component, std::type_index const> mOnComponentDetachEvent
+		{
+			[smartThis = Reference{ this }](Entity const&, Component const& component, std::type_index const&)
+			{
+				if (&*smartThis not_eq &component)
+					return false;
+
+				smartThis->mParentingEntity.reset();
+				return true;
+			}, EntityManager::getComponentDetachEvent()
+		};
+
 		TransformMatrix3x3 mLocalTransform{};
 		mutable TransformMatrix3x3 mWorldTransform{};
 
 		std::vector<Reference<Transform>> mChildren{};
 		Reference<Transform> mParent{};
+
+		Reference<Entity> mParentingEntity{};
 
 		mutable bool mIsWorldTransformDirty{};
 	};

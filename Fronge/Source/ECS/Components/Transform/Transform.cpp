@@ -28,6 +28,11 @@ namespace fro
 		mChildren.clear();
 	}
 
+	Reference<Entity> Transform::getParentingEntity() const
+	{
+		return mParentingEntity;
+	}
+
 	bool Transform::setParent(Transform* const parent, bool keepWorldTransform)
 	{
 		if ((mParent.valid() and parent == &*mParent) or parent == this or (parent and isParenting(*parent)))
@@ -73,6 +78,12 @@ namespace fro
 			{
 				return &transform == &*child;
 			});
+	}
+
+
+	std::vector<Reference<Transform>> const& Transform::getChildren() const
+	{
+		return mChildren;
 	}
 
 	void Transform::setLocalTranslation(Vector2<double> const translation)
