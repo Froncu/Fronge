@@ -6,7 +6,7 @@
 #include "Resources/Font/Font.hpp"
 #include "Utility/CustomUniquePointer.hpp"
 
-typedef struct _TTF_Font TTF_Font;
+struct TTF_Font;
 
 namespace fro
 {
