@@ -1,4 +1,4 @@
-#if not defined SYTEM_EVENT_MANAGER_HPP
+#ifndef SYTEM_EVENT_MANAGER_HPP
 #define SYTEM_EVENT_MANAGER_HPP
 
 #include "Core.hpp"

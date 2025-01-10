@@ -1,4 +1,4 @@
-#if not defined ID_HPP
+#ifndef ID_HPP
 #define ID_HPP
 
 #include "froch.hpp"

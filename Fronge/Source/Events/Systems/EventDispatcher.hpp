@@ -1,4 +1,4 @@
-#if not defined EVENT_DISPATCHER_HPP
+#ifndef EVENT_DISPATCHER_HPP
 #define EVENT_DISPATCHER_HPP
 
 #include "froch.hpp"

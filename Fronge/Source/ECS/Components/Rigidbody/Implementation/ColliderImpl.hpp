@@ -1,4 +1,4 @@
-#if not defined COLLIDER_IMPL_HPP
+#ifndef COLLIDER_IMPL_HPP
 #define COLLIDER_IMPL_HPP
 
 #include "Core.hpp"

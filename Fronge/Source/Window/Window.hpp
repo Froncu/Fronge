@@ -1,4 +1,4 @@
-#if not defined WINDOW_HPP
+#ifndef WINDOW_HPP
 #define WINDOW_HPP
 
 #include "froch.hpp"

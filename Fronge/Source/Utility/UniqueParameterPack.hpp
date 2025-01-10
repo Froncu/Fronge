@@ -1,4 +1,4 @@
-#if not defined UNIQUE_PARAMETER_PACK_HPP
+#ifndef UNIQUE_PARAMETER_PACK_HPP
 #define UNIQUE_PARAMETER_PACK_HPP
 
 #include "froch.hpp"

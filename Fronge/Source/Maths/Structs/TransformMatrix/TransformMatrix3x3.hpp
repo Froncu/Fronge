@@ -1,4 +1,4 @@
-#if not defined TRANSFORM_MATRIX3X3_HPP
+#ifndef TRANSFORM_MATRIX3X3_HPP
 #define TRANSFORM_MATRIX3X3_HPP
 
 #include "Maths/Structs/Matrix3x3.hpp"

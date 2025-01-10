@@ -1,4 +1,4 @@
-#if not defined TEXTURE_IMPL_HPP
+#ifndef TEXTURE_IMPL_HPP
 #define TEXTURE_IMPL_HPP
 
 #include "Resources/Texture/Texture.hpp"

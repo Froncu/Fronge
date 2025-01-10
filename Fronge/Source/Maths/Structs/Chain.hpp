@@ -1,4 +1,4 @@
-#if not defined CHAIN_HPP
+#ifndef CHAIN_HPP
 #define CHAIN_HPP
 
 #include "froch.hpp"

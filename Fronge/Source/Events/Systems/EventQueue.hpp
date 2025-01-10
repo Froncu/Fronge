@@ -1,4 +1,4 @@
-#if not defined EVENT_QUEUE_HPP
+#ifndef EVENT_QUEUE_HPP
 #define EVENT_QUEUE_HPP
 
 #include "froch.hpp"

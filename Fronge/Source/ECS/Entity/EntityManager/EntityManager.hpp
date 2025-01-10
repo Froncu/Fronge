@@ -1,4 +1,4 @@
-#if not defined ENTITY_MANAGER_HPP
+#ifndef ENTITY_MANAGER_HPP
 #define ENTITY_MANAGER_HPP
 
 #include "ComponentSparseSet.hpp"

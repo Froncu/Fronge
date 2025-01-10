@@ -1,4 +1,4 @@
-#if not defined RESOURCE_MANAGER_HPP
+#ifndef RESOURCE_MANAGER_HPP
 #define RESOURCE_MANAGER_HPP
 
 #include "froch.hpp"

@@ -1,4 +1,4 @@
-#if not defined MATRIX3X3_HPP
+#ifndef MATRIX3X3_HPP
 #define MATRIX3X3_HPP
 
 #include "froch.hpp"

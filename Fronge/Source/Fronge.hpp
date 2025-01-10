@@ -1,4 +1,4 @@
-#if not defined FRONGE_HPP
+#ifndef FRONGE_HPP
 #define FRONGE_HPP
 
 #include "Application.hpp"

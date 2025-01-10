@@ -1,4 +1,4 @@
-#if not defined GROUP_HPP
+#ifndef GROUP_HPP
 #define GROUP_HPP
 
 #include "froch.hpp"

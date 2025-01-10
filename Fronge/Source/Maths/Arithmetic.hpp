@@ -1,4 +1,4 @@
-#if not defined ARITHMETIC_HPP
+#ifndef ARITHMETIC_HPP
 #define ARITHMETIC_HPP
 
 #include "froch.hpp"

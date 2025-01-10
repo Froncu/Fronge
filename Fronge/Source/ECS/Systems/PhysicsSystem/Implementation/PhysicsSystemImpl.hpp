@@ -1,4 +1,4 @@
-#if not defined PHYSICS_SYSTEM_IMPL_HPP
+#ifndef PHYSICS_SYSTEM_IMPL_HPP
 #define PHYSICS_SYSTEM_IMPL_HPP
 
 #include "froch.hpp"

@@ -1,4 +1,4 @@
-#if not defined PHYSICS_DEBUG_RENDERER_HPP
+#ifndef PHYSICS_DEBUG_RENDERER_HPP
 #define PHYSICS_DEBUG_RENDERER_HPP
 
 #include "Core.hpp"

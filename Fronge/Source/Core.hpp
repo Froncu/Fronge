@@ -1,4 +1,4 @@
-#if not defined CORE_HPP
+#ifndef CORE_HPP
 #define CORE_HPP
 
 #define FRO_NODISCARD [[nodiscard("returned value ignored!")]]

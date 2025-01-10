@@ -1,4 +1,4 @@
-#if not defined RIGIDBODY_HPP
+#ifndef RIGIDBODY_HPP
 #define RIGIDBODY_HPP
 
 #include "froch.hpp"

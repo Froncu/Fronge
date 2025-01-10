@@ -1,4 +1,4 @@
-#if not defined RENDERER_IMPL_HPP
+#ifndef RENDERER_IMPL_HPP
 #define RENDERER_IMPL_HPP
 
 #include "Renderer/Renderer.hpp"

@@ -1,4 +1,4 @@
-#if not defined COMPONENT_SPARSE_SET_HPP
+#ifndef COMPONENT_SPARSE_SET_HPP
 #define COMPONENT_SPARSE_SET_HPP
 
 #include "ECS/Components/Component.hpp"

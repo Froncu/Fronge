@@ -1,4 +1,4 @@
-#if not defined SCENE_MANAGER_HPP
+#ifndef SCENE_MANAGER_HPP
 #define SCENE_MANAGER_HPP
 
 #include "froch.hpp"

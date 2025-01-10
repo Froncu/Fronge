@@ -1,4 +1,4 @@
-#if not defined PHYSICS_CONTACT_LISTENER_HPP
+#ifndef PHYSICS_CONTACT_LISTENER_HPP
 #define PHYSICS_CONTACT_LISTENER_HPP
 
 #include <box2d/b2_world_callbacks.h>

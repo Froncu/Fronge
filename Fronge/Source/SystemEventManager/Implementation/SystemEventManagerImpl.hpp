@@ -1,4 +1,4 @@
-#if not defined SYSTEM_EVENT_MANAGER_IMPL_HPP
+#ifndef SYSTEM_EVENT_MANAGER_IMPL_HPP
 #define SYSTEM_EVENT_MANAGER_IMPL_HPP
 
 #include "SystemEventManager/SystemEventManager.hpp"

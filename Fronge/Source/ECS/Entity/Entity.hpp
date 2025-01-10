@@ -1,4 +1,4 @@
-#if not defined ENTITY_HPP
+#ifndef ENTITY_HPP
 #define ENTITY_HPP
 
 #include "EntityManager/EntityManager.hpp"

@@ -1,4 +1,4 @@
-#if not defined CIRCLE_HPP
+#ifndef CIRCLE_HPP
 #define CIRCLE_HPP
 
 #include "Maths/Arithmetic.hpp"

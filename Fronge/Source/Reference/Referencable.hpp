@@ -1,4 +1,4 @@
- #if not defined REFERENCABLE_HPP
+ #ifndef REFERENCABLE_HPP
 #define REFERENCABLE_HPP
 
 #include "froch.hpp"

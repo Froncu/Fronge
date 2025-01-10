@@ -1,4 +1,4 @@
-#if not defined LOGGER_HPP
+#ifndef LOGGER_HPP
 #define LOGGER_HPP
 
 #include "froch.hpp"

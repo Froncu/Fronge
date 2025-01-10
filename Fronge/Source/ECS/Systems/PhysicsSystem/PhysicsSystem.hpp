@@ -1,4 +1,4 @@
-#if not defined PHYSICS_SYSTEM_HPP
+#ifndef PHYSICS_SYSTEM_HPP
 #define PHYSICS_SYSTEM_HPP
 
 #include "Core.hpp"

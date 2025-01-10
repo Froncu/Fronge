@@ -1,4 +1,4 @@
-#if not defined VARIANT_VISITOR_HPP
+#ifndef VARIANT_VISITOR_HPP
 #define VARIANT_VISITOR_HPP
 
 #include "froch.hpp"

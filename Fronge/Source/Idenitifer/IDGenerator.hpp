@@ -1,4 +1,4 @@
-#if not defined ID_GENERATOR_HPP
+#ifndef ID_GENERATOR_HPP
 #define ID_GENERATOR_HPP
 
 #include "froch.hpp"

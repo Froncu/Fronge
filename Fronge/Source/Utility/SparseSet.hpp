@@ -2,7 +2,7 @@
 // blog posts about ECS (https://skypjack.github.io/)
 // as well as his EnTT library (https://github.com/skypjack/entt)
 
-#if not defined SPARSE_SET_HPP
+#ifndef SPARSE_SET_HPP
 #define SPARSE_SET_HPP
 
 #include "froch.hpp"

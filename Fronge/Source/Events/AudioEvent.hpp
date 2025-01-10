@@ -1,4 +1,4 @@
-#if not defined AUDIO_EVENT_HPP
+#ifndef AUDIO_EVENT_HPP
 #define AUDIO_EVENT_HPP
 
 #include "froch.hpp"

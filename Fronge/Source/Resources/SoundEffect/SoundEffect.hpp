@@ -1,4 +1,4 @@
-#if not defined SOUND_EFFECT_HPP
+#ifndef SOUND_EFFECT_HPP
 #define SOUND_EFFECT_HPP
 
 #include "froch.hpp"

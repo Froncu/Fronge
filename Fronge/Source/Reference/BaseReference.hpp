@@ -1,4 +1,4 @@
-#if not defined BASE_REFERENCE_HPP
+#ifndef BASE_REFERENCE_HPP
 #define BASE_REFERENCE_HPP
 
 #include "froch.hpp"

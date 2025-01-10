@@ -1,4 +1,4 @@
-#if not defined MUSIC_IMPL_HPP
+#ifndef MUSIC_IMPL_HPP
 #define MUSIC_IMPL_HPP
 
 #include "froch.hpp"

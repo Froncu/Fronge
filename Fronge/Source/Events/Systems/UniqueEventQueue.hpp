@@ -1,4 +1,4 @@
-#if not defined UNIQUE_EVENT_QUEUE_HPP
+#ifndef UNIQUE_EVENT_QUEUE_HPP
 #define UNIQUE_EVENT_QUEUE_HPP
 
 #include "Events/Systems/EventQueue.hpp"

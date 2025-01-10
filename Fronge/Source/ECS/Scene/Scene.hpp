@@ -1,4 +1,4 @@
-#if not defined SCENE_HPP
+#ifndef SCENE_HPP
 #define SCENE_HPP
 
 #include "froch.hpp"

@@ -1,4 +1,4 @@
-#if not defined RENDERER_HPP
+#ifndef RENDERER_HPP
 #define RENDERER_HPP
 
 #include "froch.hpp"

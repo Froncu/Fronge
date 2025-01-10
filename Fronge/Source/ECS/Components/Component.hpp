@@ -1,4 +1,4 @@
-#if not defined COMPONENT_HPP
+#ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 
 #include "Core.hpp"

@@ -1,4 +1,4 @@
-#if not defined RECTANGLE_HPP
+#ifndef RECTANGLE_HPP
 #define RECTANGLE_HPP
 
 #include "froch.hpp"

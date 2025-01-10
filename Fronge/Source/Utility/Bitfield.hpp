@@ -1,4 +1,4 @@
-#if not defined BITFIELD_HPP
+#ifndef BITFIELD_HPP
 #define BITFIELD_HPP
 
 #include "froch.hpp"

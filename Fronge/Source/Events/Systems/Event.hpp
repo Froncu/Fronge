@@ -1,4 +1,4 @@
-#if not defined EVENT_HPP
+#ifndef EVENT_HPP
 #define EVENT_HPP
 
 #include "froch.hpp"

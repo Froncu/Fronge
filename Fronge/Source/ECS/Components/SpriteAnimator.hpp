@@ -1,4 +1,4 @@
-#if not defined SPRITE_ANIMATOR_HPP
+#ifndef SPRITE_ANIMATOR_HPP
 #define SPRITE_ANIMATOR_HPP
 
 #include "froch.hpp"

@@ -1,4 +1,4 @@
-#if not defined GAMEPAD_IMPL_HPP
+#ifndef GAMEPAD_IMPL_HPP
 #define GAMEPAD_IMPL_HPP
 
 #include "Gamepad/Gamepad.hpp"

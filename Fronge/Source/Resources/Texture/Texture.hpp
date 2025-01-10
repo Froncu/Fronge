@@ -1,4 +1,4 @@
-#if not defined TEXTURE_HPP
+#ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
 #include "froch.hpp"

@@ -1,4 +1,4 @@
-#if not defined COLLIDER_HPP
+#ifndef COLLIDER_HPP
 #define COLLIDER_HPP
 
 #include "froch.hpp"

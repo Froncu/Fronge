@@ -1,4 +1,4 @@
-#if not defined WINDOW_EVENT_HPP
+#ifndef WINDOW_EVENT_HPP
 #define WINDOW_EVENT_HPP
 
 #include "froch.hpp"

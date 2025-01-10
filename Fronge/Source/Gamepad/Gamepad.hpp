@@ -1,4 +1,4 @@
-#if not defined GAMEPAD_HPP
+#ifndef GAMEPAD_HPP
 #define GAMEPAD_HPP
 
 #include "froch.hpp"

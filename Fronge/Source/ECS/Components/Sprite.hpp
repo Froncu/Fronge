@@ -1,4 +1,4 @@
-#if not defined SPRITE_HPP
+#ifndef SPRITE_HPP
 #define SPRITE_HPP
 
 #include "ECS/Components/Component.hpp"

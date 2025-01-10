@@ -1,4 +1,4 @@
-#if not defined VECTOR2_HPP
+#ifndef VECTOR2_HPP
 #define VECTOR2_HPP
 
 #include "froch.hpp"

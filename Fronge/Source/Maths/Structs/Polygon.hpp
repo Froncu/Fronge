@@ -1,4 +1,4 @@
-#if not defined POLYGON_HPP
+#ifndef POLYGON_HPP
 #define POLYGON_HPP
 
 #include "froch.hpp"

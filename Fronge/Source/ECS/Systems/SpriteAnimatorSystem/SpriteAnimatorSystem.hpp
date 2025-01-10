@@ -1,4 +1,4 @@
-#if not defined SPRITE_ANIMATOR_SYSTEM_HPP
+#ifndef SPRITE_ANIMATOR_SYSTEM_HPP
 #define SPRITE_ANIMATOR_SYSTEM_HPP
 
 #include "Core.hpp"

@@ -1,4 +1,4 @@
-#if not defined INPUT_MANAGER_HPP
+#ifndef INPUT_MANAGER_HPP
 #define INPUT_MANAGER_HPP
 
 #include "froch.hpp"

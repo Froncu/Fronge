@@ -1,7 +1,7 @@
 // Written based on Alx Sathskovsky's LinkedIn post
 // (https://www.linkedin.com/pulse/generic-tuple-hashing-modern-c-alex-dathskovsky/)
 
-#if not defined LAZY_HASHER_HPP
+#ifndef LAZY_HASHER_HPP
 #define LAZY_HASHER_HPP
 
 #include "froch.hpp"

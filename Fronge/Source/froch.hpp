@@ -1,4 +1,4 @@
-#if not defined FROCH_HPP
+#ifndef FROCH_HPP
 #define FROCH_HPP
 
 #include <algorithm>

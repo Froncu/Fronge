@@ -1,4 +1,4 @@
-#if not defined INPUT_IMPL_HPP
+#ifndef INPUT_IMPL_HPP
 #define INPUT_IMPL_HPP
 
 #include "Core.hpp"

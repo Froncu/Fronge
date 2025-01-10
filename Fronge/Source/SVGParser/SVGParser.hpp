@@ -1,4 +1,4 @@
-#if not defined SVG_PARSER_HPP
+#ifndef SVG_PARSER_HPP
 #define SVG_PARSER_HPP
 
 // NOTE: yoinked from DAE's game engine for Programming 2 and modified a bit

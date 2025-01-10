@@ -1,4 +1,4 @@
-#if not defined REFERENCE_H
+#ifndef REFERENCE_H
 #define REFERENCE_H
 
 #include "froch.hpp"

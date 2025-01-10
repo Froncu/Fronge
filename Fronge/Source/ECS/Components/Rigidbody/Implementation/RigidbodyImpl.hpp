@@ -1,4 +1,4 @@
-#if not defined RIGIDBODY_IMPL_HPP
+#ifndef RIGIDBODY_IMPL_HPP
 #define RIGIDBODY_IMPL_HPP
 
 #include "Core.hpp"

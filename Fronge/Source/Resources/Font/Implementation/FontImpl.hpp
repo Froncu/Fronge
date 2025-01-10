@@ -1,4 +1,4 @@
-#if not defined FONT_IMPL_HPP
+#ifndef FONT_IMPL_HPP
 #define FONT_IMPL_HPP
 
 #include "froch.hpp"

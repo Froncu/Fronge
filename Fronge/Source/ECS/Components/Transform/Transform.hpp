@@ -1,4 +1,4 @@
-#if not defined TRANSFORM_HPP
+#ifndef TRANSFORM_HPP
 #define TRANSFORM_HPP
 
 #include "Core.hpp"

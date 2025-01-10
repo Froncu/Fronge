@@ -1,4 +1,4 @@
-#if not defined EVENT_LISTENER_HPP
+#ifndef EVENT_LISTENER_HPP
 #define EVENT_LISTENER_HPP
 
 #include "froch.hpp"

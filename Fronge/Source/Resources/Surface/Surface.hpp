@@ -1,4 +1,4 @@
-#if not defined SURFACE_HPP
+#ifndef SURFACE_HPP
 #define SURFACE_HPP
 
 #include "froch.hpp"
