@@ -5,7 +5,7 @@
 
 //---
 
-#if defined FRO_BUILD_DLL
+#ifdef FRO_BUILD_DLL
 	#define FRO_API _declspec(dllexport)
 #else
 	#define FRO_API _declspec(dllimport)
@@ -15,7 +15,7 @@
 
 #include "Logger/Logger.hpp"
 
-#if defined FRO_DEBUG
+#ifdef FRO_DEBUG
 	#define FRO_ASSERT(condition, ...) { if (not (condition)) { fro::Logger::error(__VA_ARGS__); __debugbreak(); } }
 #else
 	#define FRO_ASSERT(condition, ...)

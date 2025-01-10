@@ -1,5 +1,5 @@
 #include "froch.hpp"
 
-#if defined FRO_DEBUG
+#ifdef FRO_DEBUG
 	#include <vld.h>
 #endif
