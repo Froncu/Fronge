@@ -54,9 +54,10 @@ target_include_directories(Fronge PUBLIC
 target_precompile_headers(Fronge PRIVATE
    Source/froch.hpp)
 
-target_compile_definitions(Fronge PRIVATE
-   FRO_BUILD_DLL
-   FRO_CONSOLE)
+target_compile_definitions(Fronge
+   PRIVATE FRO_ENGINE
+   PRIVATE FRO_BUILD_DLL
+   PUBLIC FRO_CONSOLE)
 
 target_link_libraries(Fronge PRIVATE
    box2d
