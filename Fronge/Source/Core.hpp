@@ -3,9 +3,7 @@
 
 #define FRO_NODISCARD [[nodiscard("returned value ignored!")]]
 
-//---
-
-#ifdef FRO_BUILD_DLL
+#ifdef FRO_ENGINE
 	#define FRO_API _declspec(dllexport)
 #else
 	#define FRO_API _declspec(dllimport)

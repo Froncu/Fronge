@@ -56,7 +56,6 @@ target_precompile_headers(Fronge PRIVATE
 
 target_compile_definitions(Fronge
    PRIVATE FRO_ENGINE
-   PRIVATE FRO_BUILD_DLL
    PUBLIC FRO_CONSOLE)
 
 target_link_libraries(Fronge PRIVATE
