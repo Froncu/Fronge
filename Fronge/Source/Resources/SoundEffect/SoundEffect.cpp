@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Implementation/SoundEffectImpl.hpp"
+#include "Logger/Logger.hpp"
 #include "SoundEffect.hpp"
 
 namespace fro

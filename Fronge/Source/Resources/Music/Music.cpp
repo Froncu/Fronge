@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Implementation/MusicImpl.hpp"
+#include "Logger/Logger.hpp"
 #include "Music.hpp"
 
 namespace fro

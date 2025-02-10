@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Logger/Logger.hpp"
+#include "Utility/Assert.hpp"
 #include "WindowImpl.hpp"
 
 #include <SDL.h>
@@ -13,7 +14,7 @@ namespace fro
 			size.x, size.y,
 			SDL_WINDOW_RESIZABLE), SDL_DestroyWindow }
 	{
-		FRO_ASSERT(mSDLWindow.get(), "failed to create Window ({})", SDL_GetError());
+		assert(mSDLWindow.get(), "failed to create Window ({})", SDL_GetError());
 		Logger::info("created a {}x{} Window titled \"{}\" with ID {}!",
 			size.x, size.y, windowTitle, getID());
 	}

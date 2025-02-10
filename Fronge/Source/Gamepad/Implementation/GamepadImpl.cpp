@@ -10,7 +10,7 @@ namespace fro
 		: mSDLGameController{ SDL_GameControllerOpen(deviceID), SDL_GameControllerClose }
 	{
 		if (mSDLGameController.get() == nullptr)
-			FRO_EXCEPTION("failed to open SDL_GameControllerOpen with device ID {} ({})",
+			exception("failed to open SDL_GameControllerOpen with device ID {} ({})",
 				deviceID, SDL_GetError());
 	}
 

@@ -13,7 +13,7 @@ namespace fro
 		: mSDLMusic{ Mix_LoadMUS(filePath.data()), Mix_FreeMusic }
 	{
 		if (not mSDLMusic.get())
-			FRO_EXCEPTION("failed to load {} as Mix_Music ({})",
+			exception("failed to load {} as Mix_Music ({})",
 				filePath, Mix_GetError());
 	}
 

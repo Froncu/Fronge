@@ -16,7 +16,7 @@ namespace fro
 			SDL_DestroyTexture }
 	{
 		if (not mSDLTexture.get())
-			FRO_EXCEPTION("failed to upload Surface with ID {} as SDL_Texture to Renderer with ID {}!",
+			exception("failed to upload Surface with ID {} as SDL_Texture to Renderer with ID {}!",
 				surface.getID(), renderer.getID());
 	}
 

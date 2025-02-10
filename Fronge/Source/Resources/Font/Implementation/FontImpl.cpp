@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "FontImpl.hpp"
+#include "Utility/Exception.hpp"
 
 #include <SDL_ttf.h>
 
@@ -9,7 +10,7 @@ namespace fro
 	CustomUniquePointer<TTF_Font> Font::Implementation::createFont(std::string_view const filePath, int const size)
 	{
 		if (TTF_Init() == -1)
-			FRO_EXCEPTION("failed to initalize SDL_ttf ({})",
+			exception("failed to initalize SDL_ttf ({})",
 				TTF_GetError());
 
 		if (TTF_WasInit() == 1)
@@ -30,7 +31,7 @@ namespace fro
 		: mSDLFont{ createFont(filePath, size) }
 	{
 		if (not mSDLFont.get())
-			FRO_EXCEPTION("failed to load {} as TTF_Font ({})",
+			exception("failed to load {} as TTF_Font ({})",
 				filePath, TTF_GetError());
 	}
 

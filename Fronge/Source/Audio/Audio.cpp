@@ -3,6 +3,7 @@
 #include "Audio.hpp"
 #include "Resources/Music/Implementation/MusicImpl.hpp"
 #include "Resources/SoundEffect/Implementation/SoundEffectImpl.hpp"
+#include "Utility/Assert.hpp"
 #include "Utility/VariantVisitor.hpp"
 
 #include <SDL_mixer.h>
@@ -12,7 +13,7 @@ namespace fro
 	void Audio::initialize()
 	{
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
-			FRO_EXCEPTION("failed to open audio device ({})", Mix_GetError());
+			exception("failed to open audio device ({})", Mix_GetError());
 
 		Logger::info("initialized Audio!");
 	}
@@ -60,7 +61,7 @@ namespace fro
 	void Audio::playSoundEffect(std::string filePath, int const channel)
 	{
 		if (channel < -1 or channel >= getAmountOfChannels())
-			FRO_EXCEPTION("channel {} is out of range!", channel);
+			exception("channel {} is out of range!", channel);
 
 		pushEvent<LoadPlaySoundEffectEvent>(std::move(filePath), channel);
 	}
@@ -68,7 +69,7 @@ namespace fro
 	void Audio::playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel)
 	{
 		if (channel < -1 or channel >= getAmountOfChannels())
-			FRO_EXCEPTION("channel {} is out of range!", channel);
+			exception("channel {} is out of range!", channel);
 
 		pushEvent<PlaySoundEffectEvent>(soundEffect, channel);
 	}
@@ -76,7 +77,7 @@ namespace fro
 	void Audio::pauseSoundEffect(int const channel)
 	{
 		if (channel < -1 or channel >= getAmountOfChannels())
-			FRO_EXCEPTION("channel {} is out of range!", channel);
+			exception("channel {} is out of range!", channel);
 
 		pushEvent<PauseSoundEffectEvent>(channel);
 	}
@@ -84,7 +85,7 @@ namespace fro
 	void Audio::resumeSoundEffect(int const channel)
 	{
 		if (channel < -1 or channel >= getAmountOfChannels())
-			FRO_EXCEPTION("channel {} is out of range!", channel);
+			exception("channel {} is out of range!", channel);
 
 		pushEvent<ResumeSoundEffectEvent>(channel);
 	}
@@ -92,14 +93,14 @@ namespace fro
 	void Audio::stopSoundEffect(int const channel)
 	{
 		if (channel < -1 or channel >= getAmountOfChannels())
-			FRO_EXCEPTION("channel {} is out of range!", channel);
+			exception("channel {} is out of range!", channel);
 
 		pushEvent<StopSoundEffectEvent>(channel);
 	}
 
 	Reference<SoundEffect> Audio::getActiveSoundEffect(int const channel)
 	{
-		FRO_ASSERT(channel >= 0 and channel < getAmountOfChannels(),
+		assert(channel >= 0 and channel < getAmountOfChannels(),
 			"channel {} is out of range!", channel);
 
 		return sActiveSoundEffects[channel];

@@ -29,7 +29,7 @@ namespace fro
 		CustomUniquePointer<SDL_Surface> surface{ IMG_Load(imagePath.data()), SDL_FreeSurface };
 
 		if (not surface.get())
-			FRO_EXCEPTION("failed to load {} as SDL_Surface ({})",
+			exception("failed to load {} as SDL_Surface ({})",
 				imagePath, IMG_GetError());
 
 		return surface;
@@ -42,7 +42,7 @@ namespace fro
 			SDL_FreeSurface };
 
 		if (not surface.get())
-			FRO_EXCEPTION("failed to render \"{}\" with Font ID {} as SDL_Surface ({})",
+			exception("failed to render \"{}\" with Font ID {} as SDL_Surface ({})",
 				text, font.getID(), TTF_GetError());
 
 		return surface;

@@ -4,6 +4,7 @@
 #include "froch.hpp"
 
 #include "Core.hpp"
+#include "Utility/Exception.hpp"
 
 namespace fro
 {
@@ -22,7 +23,7 @@ namespace fro
 			: mEventProcessor{ std::move(eventProcessor) }
 		{
 			if (mEventProcessor == nullptr)
-				FRO_EXCEPTION("the event processor cannot be a nullptr!");
+				exception("the event processor cannot be a nullptr!");
 		}
 
 		EventQueue(EventQueue const&) = default;

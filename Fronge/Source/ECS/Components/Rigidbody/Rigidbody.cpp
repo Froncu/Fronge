@@ -299,7 +299,7 @@ namespace fro
 			return Type::DYNAMIC;
 
 		default:
-			FRO_EXCEPTION("b2BodyType with value {} not supported by Fronge!",
+			exception("b2BodyType with value {} not supported by Fronge!",
 				static_cast<int>(type));
 		}
 	}

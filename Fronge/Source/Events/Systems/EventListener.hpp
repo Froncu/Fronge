@@ -4,6 +4,7 @@
 #include "froch.hpp"
 
 #include "EventDispatcher.hpp"
+#include "Utility/Exception.hpp"
 
 namespace fro
 {
@@ -24,7 +25,7 @@ namespace fro
 			: mOnNotify{ std::move(onNotify) }
 		{
 			if (mOnNotify == nullptr)
-				FRO_EXCEPTION("the onNotify callback cannot be a nullptr!");
+				exception("the onNotify callback cannot be a nullptr!");
 
 			(eventDispatchers.addListener(*this), ...);
 		}

@@ -5,6 +5,7 @@
 
 #include "Core.hpp"
 #include "Maths/Arithmetic.hpp"
+#include "Utility/Exception.hpp"
 
 namespace fro
 {
@@ -22,7 +23,7 @@ namespace fro
 				return y;
 
 			default:
-				FRO_EXCEPTION("index {} outside [0, 1] range!", index);
+				exception("index {} outside [0, 1] range!", index);
 			}
 		}
 
@@ -37,7 +38,7 @@ namespace fro
 				return y;
 
 			default:
-				FRO_EXCEPTION("index {} outside [0, 1] range!", index);
+				exception("index {} outside [0, 1] range!", index);
 			}
 		}
 

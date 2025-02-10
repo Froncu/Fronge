@@ -1,6 +1,7 @@
 #include "froch.hpp"
 
 #include "Font.hpp"
+#include "Logger/Logger.hpp"
 #include "Implementation/FontImpl.hpp"
 
 namespace fro
