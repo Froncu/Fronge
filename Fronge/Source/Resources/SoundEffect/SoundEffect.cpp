@@ -15,6 +15,11 @@ namespace fro
 			filePath, mID);
 	}
 
+	SoundEffect::SoundEffect(SoundEffect const&)
+		: mImplementation{}
+	{
+	}
+
 	SoundEffect::SoundEffect(SoundEffect&& other) noexcept
 		: Referencable(std::move(other))
 
