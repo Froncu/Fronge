@@ -1,98 +1,110 @@
 #ifndef RESOURCE_MANAGER_HPP
 #define RESOURCE_MANAGER_HPP
 
-#include "froch.hpp"
-
 #include "Core.hpp"
+#include "froch.hpp"
 #include "Logger/Logger.hpp"
 
 namespace fro
 {
-	class ResourceManager final
-	{
-	public:
-		template<typename ResourceType, typename NameType, typename... ArgumentTypes>
-			requires std::constructible_from<ResourceType, ArgumentTypes...> and std::constructible_from<std::string, NameType>
-		static ResourceType& store(NameType&& name, ArgumentTypes&&... arguments)
-		{
-			auto& resourceMap{ getResourceMap<ResourceType>() };
-			auto&& [element, didInsert] { resourceMap.try_emplace(
-				std::forward<NameType>(name), 
-				std::forward<ArgumentTypes>(arguments)...) };
+   class ResourceManager final
+   {
+      public:
+         ResourceManager() = default;
+         ResourceManager(ResourceManager const&) = delete;
+         ResourceManager(ResourceManager&&) noexcept = delete;
 
-			if (didInsert)
-				Logger::info("stored a {} named \"{}\" in the ResourceManager!",
-					typeid(ResourceType).name(), element->first);
-			else
-				Logger::warn("failed to store a {} named \"{}\" in the ResourceManager (name is already taken for this type)",
-					typeid(ResourceType).name(), element->first);
+         ~ResourceManager() = default;
 
-			return element->second;
-		}
+         ResourceManager& operator=(ResourceManager const&) = delete;
+         ResourceManager& operator=(ResourceManager&&) noexcept = delete;
 
-		template<std::movable ResourceType>
-		static std::optional<ResourceType> free(std::string_view const name)
-		{
-			auto& resourceMap{ getResourceMap<ResourceType>() };
+         template<typename ResourceType, typename NameType, typename... ArgumentTypes> requires
+            std::constructible_from<ResourceType, ArgumentTypes...> and std::constructible_from<std::string, NameType>
+         ResourceType& store(NameType&& name, ArgumentTypes&&... arguments)
+         {
+            auto&& [element, didInsert]{
+               getResourceMap<ResourceType>().try_emplace(
+                  std::forward<NameType>(name),
+                  std::forward<ArgumentTypes>(arguments)...)
+            };
 
-			// HACK: this and the following two methods construct a temporary std::string to compare,
-			// this should be fixed with a custom hasher and comparer
-			auto node{ resourceMap.extract(name.data()) };
-			if (node.empty())
-			{
-				Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
-					typeid(ResourceType).name(), name);
+            if (didInsert)
+               Logger::info("stored a {} named \"{}\" in the ResourceManager!",
+                  typeid(ResourceType).name(), element->first);
+            else
+               Logger::warn("failed to store a {} named \"{}\" in the ResourceManager (name is already taken for this type)",
+                  typeid(ResourceType).name(), element->first);
 
-				return std::nullopt;
-			}
+            return element->second;
+         }
 
-			Logger::info("freed a {} named \"{}\" from the ResourceManager!",
-				typeid(ResourceType).name(), name);
+         template<std::movable ResourceType>
+         std::optional<ResourceType> free(std::string_view const name)
+         {
+            // HACK: this and the following two methods construct a temporary std::string to compare,
+            // this should be fixed with a custom hasher and comparer
+            auto&& node{ getResourceMap<ResourceType>().extract(name.data()) };
+            if (node.empty())
+            {
+               Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
+                  typeid(ResourceType).name(), name);
 
-			return std::move(node.mapped());
-		}
+               return std::nullopt;
+            }
 
-		template<typename ResourceType>
-		static bool free(std::string_view const name)
-		{
-			bool const didFree{ getResourceMap<ResourceType>().erase(name.data()) };
-			if (didFree)
-				Logger::info("freed a {} named \"{}\" from the ResourceManager!",
-					typeid(ResourceType).name(), name);
-			else
-				Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
-					typeid(ResourceType).name(), name);;
-		}
+            Logger::info("freed a {} named \"{}\" from the ResourceManager!",
+               typeid(ResourceType).name(), name);
 
-		template<typename ResourceType>
-		FRO_NODISCARD static ResourceType* find(std::string_view const name)
-		{
-			auto& resourceMap{ getResourceMap<ResourceType>() };
+            return std::move(node.mapped());
+         }
 
-			auto const element{ resourceMap.find(name.data()) };
-			if (element == resourceMap.end())
-				return nullptr;
+         template<typename ResourceType>
+         bool free(std::string_view const name)
+         {
+            bool const didFree{ static_cast<bool>(getResourceMap<ResourceType>().erase(name.data())) };
+            if (didFree)
+               Logger::info("freed a {} named \"{}\" from the ResourceManager!",
+                  typeid(ResourceType).name(), name);
+            else
+               Logger::warn("failed to free a {} named \"{}\" from the ResourceManager (it's not stored)",
+                  typeid(ResourceType).name(), name);
 
-			return &element->second;
-		}
+            return didFree;
+         }
 
-	private:
-		template<typename ResourceType>
-		static auto& getResourceMap()
-		{
-			static std::unordered_map<std::string, ResourceType> resourceMap{};
-			return resourceMap;
-		}
+         template<std::copyable ResourceType>
+         FRO_NODISCARD ResourceType* find(std::string_view const name)
+         {
+            auto& resourceMap{ getResourceMap<ResourceType>() };
 
-		ResourceManager() = delete;
-		ResourceManager(ResourceManager const&) = delete;
-		ResourceManager(ResourceManager&&) noexcept = delete;
+            auto const element{ resourceMap.find(name.data()) };
+            if (element == resourceMap.end())
+               return nullptr;
 
-		~ResourceManager() = delete;
+            return &element->second;
+         }
 
-		ResourceManager& operator=(ResourceManager const&) = delete;
-		ResourceManager& operator=(ResourceManager&&) noexcept = delete;
-	};
+      private:
+         std::unordered_map<std::type_index, std::any> mResourceMaps{};
+
+         // TODO: the resources in this class will never be copied,
+         // however std::any requires the std::unordered_maps to be copyable
+         // thus requiring the resources to be copyable, maybe there
+         // is a workaround/better approach
+         template<std::copyable ResourceType>
+         auto&& getResourceMap()
+         {
+            using MapType = std::unordered_map<std::string, ResourceType>;
+
+            std::type_index const typeIndex{ typeid(ResourceType) };
+
+            if (auto typeMap{ mResourceMaps.find(typeIndex) }; typeMap not_eq mResourceMaps.end())
+               return std::any_cast<MapType&>(typeMap->second);
+
+            return std::any_cast<MapType&>(mResourceMaps.emplace(typeIndex, MapType{}).first->second);
+         }
+   };
 }
 
 #endif
