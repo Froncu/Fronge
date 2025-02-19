@@ -1,59 +1,52 @@
-#include "froch.hpp"
-
-#include "SystemEventManager.hpp"
-#include "Implementation/SystemEventManagerImpl.hpp"
-
 #include <SDL.h>
+
+#include "froch.hpp"
+#include "Implementation/SystemEventManagerImpl.hpp"
+#include "SystemEventManager.hpp"
 
 namespace fro
 {
-	void SystemEventManager::initialize()
-	{
-		SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+   SystemEventManager::SystemEventManager()
+      : mImplementation{ std::make_unique<Implementation>() }
+   {
+      Logger::info("initialized SystemEventManager!");
+   }
 
-		Logger::info("initialized SystemEventManager!");
-	}
+   SystemEventManager::~SystemEventManager()
+   {
+      Logger::info("shut down SystemEventManager!");
+   }
 
-	void SystemEventManager::shutDown()
-	{
-		SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+   void SystemEventManager::pollEvents()
+   {
+      SDL_Event event;
+      while (SDL_PollEvent(&event))
+         switch (event.type)
+         {
+            case SDL_WINDOWEVENT:
+               mImplementation->dispatchSDLWindowEvent(*this, event.window);
+               break;
 
-		Logger::info("shut down SystemEventManager!");
-	}
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+               // TODO: no support for repeated key down events
+               if (event.key.repeat == 0)
+                  mImplementation->dispatchSDLKeyboardEvent(*this, event.key);
+               break;
 
-	void SystemEventManager::pollEvents()
-	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-			switch (event.type)
-			{
-			case SDL_WINDOWEVENT:
-				Implementation::dispatchSDLWindowEvent(event.window);
-				break;
+            case SDL_CONTROLLERDEVICEADDED:
+            case SDL_CONTROLLERDEVICEREMOVED:
+               mImplementation->dispatchSDLControllerDeviceEvent(*this, event.cdevice);
+               break;
 
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-				// TODO: no support for repeated key down events
-				if (event.key.repeat == 0)
-					Implementation::dispatchSDLKeyboardEvent(event.key);
-				break;
+            case SDL_CONTROLLERBUTTONDOWN:
+            case SDL_CONTROLLERBUTTONUP:
+               mImplementation->dispatchSDLControllerButtonEvent(*this, event.cbutton);
+               break;
 
-			case SDL_CONTROLLERDEVICEADDED:
-			case SDL_CONTROLLERDEVICEREMOVED:
-				Implementation::dispatchSDLControllerDeviceEvent(event.cdevice);
-				break;
-
-			case SDL_CONTROLLERBUTTONDOWN:
-			case SDL_CONTROLLERBUTTONUP:
-				Implementation::dispatchSDLControllerButtonEvent(event.cbutton);
-				break;
-
-			case SDL_CONTROLLERAXISMOTION:
-				Implementation::dispatchSDLControllerAxisEvent(event.caxis);
-				break;
-			}
-	}
-
-	EventDispatcher<WindowEvent const> SystemEventManager::mWindowEvent{};
-	EventDispatcher<InputEvent const> SystemEventManager::mInputEvent{};
+            case SDL_CONTROLLERAXISMOTION:
+               mImplementation->dispatchSDLControllerAxisEvent(*this, event.caxis);
+               break;
+         }
+   }
 }

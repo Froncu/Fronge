@@ -1,377 +1,347 @@
-#include "froch.hpp"
+#include <SDL_mixer.h>
 
 #include "Audio.hpp"
+#include "froch.hpp"
 #include "Resources/Music/Implementation/MusicImpl.hpp"
 #include "Resources/SoundEffect/Implementation/SoundEffectImpl.hpp"
 #include "Utility/Assert.hpp"
 #include "Utility/VariantVisitor.hpp"
 
-#include <SDL_mixer.h>
-
 namespace fro
 {
-	void Audio::initialize()
-	{
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
-			exception("failed to open audio device ({})", Mix_GetError());
+   Audio::Audio()
+      : mEventQueue
+      {
+         VariantVisitor
+         {
+            [this](LoadPlayMusicEvent&& event)
+            {
+               auto loadedMusic{ std::make_unique<Music>(std::move(event.filePath)) };
 
-		Logger::info("initialized Audio!");
-	}
+               if (Mix_PlayMusic(loadedMusic->getImplementation().getSDLMusic(), -1) == 0)
+               {
+                  Logger::info("loaded and played Music with ID {}!",
+                     loadedMusic->getID());
 
-	void Audio::shutDown()
-	{
-		Mix_CloseAudio();
+                  mActiveMusic = loadedMusic.get();
+                  mLoadedMusic = std::move(loadedMusic);
+               }
+               else
+                  Logger::warn("failed to play Music with ID {} ({})",
+                     loadedMusic->getID(), Mix_GetError());
+            },
 
-		sRunThread = false;
-		sConditionVariable.notify_one();
+            [this](PlayMusicEvent&& event)
+            {
+               Reference<Music> const& music{ event.music };
 
-		Logger::info("shut down Audio!");
-	}
+               if (not music.valid())
+                  Logger::warn("failed to play Music (passed Reference to Music is not valid)");
+               else if (Mix_PlayMusic(music->getImplementation().getSDLMusic(), -1) == 0)
+               {
+                  Logger::info("played Music with ID {}!",
+                     music->getID());
 
-	void Audio::playMusic(std::string filePath)
-	{
-		pushEvent<LoadPlayMusicEvent>(std::move(filePath));
-	}
+                  mActiveMusic = music;
+                  mLoadedMusic.reset();
+               }
+               else
+                  Logger::warn("failed to play Music with ID {} ({})",
+                     music->getID(), Mix_GetError());
+            },
 
-	void Audio::playMusic(Reference<Music> const music)
-	{
-		pushEvent<PlayMusicEvent>(music);
-	}
+            [this](PauseMusicEvent&&)
+            {
+               if (not mActiveMusic.valid())
+                  Logger::warn("failed to pause Music (no active Music)");
+               else if (Mix_PausedMusic())
+                  Logger::warn("failed to pause Music (Music is not playing)");
+               else
+                  Logger::info("paused music with ID {}!",
+                     mActiveMusic->getID());
 
-	void Audio::pauseMusic()
-	{
-		pushEvent<PauseMusicEvent>();
-	}
+               Mix_PauseMusic();
+            },
 
-	void Audio::resumeMusic()
-	{
-		pushEvent<ResumeMusicEvent>();
-	}
+            [this](ResumeMusicEvent&&)
+            {
+               if (not mActiveMusic.valid())
+                  Logger::warn("failed to resume Music (no active Music)");
+               else if (not Mix_PausedMusic())
+                  Logger::warn("failed to resume Music with ID {} (music is already playing)",
+                     mActiveMusic->getID());
+               else
+                  Logger::info("resumed Music with ID {}!",
+                     mActiveMusic->getID());
 
-	void Audio::stopMusic()
-	{
-		pushEvent<StopMusicEvent>();
-	}
+               Mix_ResumeMusic();
+            },
 
-	Reference<Music> Audio::getActiveMusic()
-	{
-		return sActiveMusic;
-	}
+            [this](StopMusicEvent&&)
+            {
+               if (not mActiveMusic.valid())
+                  Logger::warn("failed to stop music (no active Music)");
+               else
+                  Logger::info("stopped Music with ID {}!",
+                     mActiveMusic->getID());
 
-	void Audio::playSoundEffect(std::string filePath, int const channel)
-	{
-		if (channel < -1 or channel >= getAmountOfChannels())
-			exception("channel {} is out of range!", channel);
+               Mix_HaltMusic();
+               mActiveMusic.reset();
+               mLoadedMusic.reset();
+            },
 
-		pushEvent<LoadPlaySoundEffectEvent>(std::move(filePath), channel);
-	}
+            [this](LoadPlaySoundEffectEvent&& event)
+            {
+               auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.filePath)) };
 
-	void Audio::playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel)
-	{
-		if (channel < -1 or channel >= getAmountOfChannels())
-			exception("channel {} is out of range!", channel);
+               int const channel{
+                  Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 0)
+               };
+               if (channel not_eq -1)
+               {
+                  Logger::info("loaded and played SoundEffect with ID {} on channel {}!",
+                     loadedSoundEffect->getID(), channel);
 
-		pushEvent<PlaySoundEffectEvent>(soundEffect, channel);
-	}
+                  mActiveSoundEffects[channel] = loadedSoundEffect.get();
+                  mLoadedSoundEffects[channel] = std::move(loadedSoundEffect);
+               }
+               else
+               {
+                  if (event.channel == -1)
+                     Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
+                        loadedSoundEffect->getID(), Mix_GetError());
+                  else
+                     Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
+                        loadedSoundEffect->getID(), event.channel, Mix_GetError());
 
-	void Audio::pauseSoundEffect(int const channel)
-	{
-		if (channel < -1 or channel >= getAmountOfChannels())
-			exception("channel {} is out of range!", channel);
+                  loadedSoundEffect.reset();
+               }
+            },
 
-		pushEvent<PauseSoundEffectEvent>(channel);
-	}
+            [this](PlaySoundEffectEvent&& event)
+            {
+               Reference<SoundEffect> const& soundEffect{ event.soundEffect };
 
-	void Audio::resumeSoundEffect(int const channel)
-	{
-		if (channel < -1 or channel >= getAmountOfChannels())
-			exception("channel {} is out of range!", channel);
+               if (not soundEffect.valid())
+                  Logger::warn("failed to play sound effect (passed Reference to SoundEffect is not valid)");
+               else
+               {
+                  int& channel{ soundEffect->mChannel };
+                  channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 0);
+                  if (channel not_eq -1)
+                  {
+                     Logger::info("played SoundEffect with ID {} on channel {}!",
+                        soundEffect->getID(), channel);
 
-		pushEvent<ResumeSoundEffectEvent>(channel);
-	}
+                     mActiveSoundEffects[channel] = soundEffect;
+                     mLoadedSoundEffects[channel].reset();
+                  }
+                  else if (event.channel == -1)
+                     Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
+                        soundEffect->getID(), Mix_GetError());
+                  else
+                     Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
+                        soundEffect->getID(), event.channel, Mix_GetError());
+               }
+            },
 
-	void Audio::stopSoundEffect(int const channel)
-	{
-		if (channel < -1 or channel >= getAmountOfChannels())
-			exception("channel {} is out of range!", channel);
+            [this](PauseSoundEffectEvent&& event)
+            {
+               if (event.channel not_eq -1)
+                  internalPauseSoundEffect(event.channel);
+               else
+               {
+                  Logger::info("pausing all sound effect channels...");
+                  for (int channel{}; channel < getAmountOfChannels(); ++channel)
+                     internalPauseSoundEffect(channel);
+               }
+            },
 
-		pushEvent<StopSoundEffectEvent>(channel);
-	}
+            [this](ResumeSoundEffectEvent&& event)
+            {
+               if (event.channel not_eq -1)
+                  internalResumeSoundEffect(event.channel);
+               else
+               {
+                  Logger::info("resuming all sound effect channels...");
+                  for (int channel{}; channel < getAmountOfChannels(); ++channel)
+                     internalResumeSoundEffect(channel);
+               }
+            },
 
-	Reference<SoundEffect> Audio::getActiveSoundEffect(int const channel)
-	{
-		assert(channel >= 0 and channel < getAmountOfChannels(),
-			"channel {} is out of range!", channel);
+            [this](StopSoundEffectEvent&& event)
+            {
+               if (event.channel not_eq -1)
+                  internalStopSoundEffect(event.channel);
+               else
+               {
+                  Logger::info("stopping all sound effect channels...");
+                  for (int channel{}; channel < getAmountOfChannels(); ++channel)
+                     internalStopSoundEffect(channel);
+               }
+            }
+         }
+      }
+    , mActiveSoundEffects(getAmountOfChannels())
+    , mLoadedSoundEffects(getAmountOfChannels())
+   {
+      if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
+         exception("failed to open audio device ({})", Mix_GetError());
 
-		return sActiveSoundEffects[channel];
-	}
+      Logger::info("initialized Audio!");
+   }
 
-	int Audio::getAmountOfChannels()
-	{
-		return MIX_CHANNELS;
-	}
+   Audio::~Audio()
+   {
+      Mix_CloseAudio();
 
-	void Audio::setMute(bool const mute)
-	{
-		sMuted = mute;
-		Mix_MasterVolume(sMuted ? 0 : MIX_MAX_VOLUME);
-		Mix_VolumeMusic(sMuted ? 0 : MIX_MAX_VOLUME);
-	}
+      mRunThread = false;
+      mConditionVariable.notify_one();
 
-	bool Audio::isMuted()
-	{
-		return sMuted;
-	}
+      Logger::info("shut down Audio!");
+   }
 
-	void Audio::internalPauseSoundEffect(int const channel)
-	{
-		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
+   void Audio::playMusic(std::string filePath)
+   {
+      pushEvent<LoadPlayMusicEvent>(std::move(filePath));
+   }
 
-		if (not activeSoundEffect.valid())
-			Logger::warn("failed to pause sound effect on channel {} (no active SoundEffect in channel)",
-				channel);
-		else if (Mix_Paused(channel))
-			Logger::warn("failed to pause SoundEffect with ID {} on channel {} (channel is not playing)",
-				activeSoundEffect->getID(), channel);
-		else
-			Logger::info("paused SoundEffect with ID {} on channel {}!",
-				activeSoundEffect->getID(), channel);
+   void Audio::playMusic(Reference<Music> const music)
+   {
+      pushEvent<PlayMusicEvent>(music);
+   }
 
-		Mix_Pause(channel);
-	}
+   void Audio::pauseMusic()
+   {
+      pushEvent<PauseMusicEvent>();
+   }
 
-	void Audio::internalResumeSoundEffect(int const channel)
-	{
-		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
+   void Audio::resumeMusic()
+   {
+      pushEvent<ResumeMusicEvent>();
+   }
 
-		if (not activeSoundEffect.valid())
-			Logger::warn("failed to resume sound effect on channel {} (no active SoundEffect in channel)",
-				channel);
-		else if (not Mix_Paused(channel))
-			Logger::warn("failed to resume SoundEffect with ID {} on channel {} (channel is already playing)",
-				activeSoundEffect->getID(), channel);
-		else
-			Logger::info("paused SoundEffect with ID {} on channel {}!",
-				activeSoundEffect->getID(), channel);
+   void Audio::stopMusic()
+   {
+      pushEvent<StopMusicEvent>();
+   }
 
-		Mix_Resume(channel);
-	}
+   Reference<Music> Audio::getActiveMusic()
+   {
+      return mActiveMusic;
+   }
 
-	void Audio::internalStopSoundEffect(int const channel)
-	{
-		Reference<SoundEffect> const& activeSoundEffect{ sActiveSoundEffects[channel] };
+   void Audio::playSoundEffect(std::string filePath, int const channel)
+   {
+      if (channel < -1 or channel >= getAmountOfChannels())
+         exception("channel {} is out of range!", channel);
 
-		if (not activeSoundEffect.valid())
-			Logger::warn("failed to stop sound effect on channel {} (no active sound effect)",
-				channel);
-		else
-			Logger::info("stopped SoundEffect with ID {} on channel {}!",
-				activeSoundEffect->getID(), channel);
+      pushEvent<LoadPlaySoundEffectEvent>(std::move(filePath), channel);
+   }
 
-		Mix_HaltChannel(channel);
-		sLoadedSoundEffects[channel].reset();
-	}
+   void Audio::playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel)
+   {
+      if (channel < -1 or channel >= getAmountOfChannels())
+         exception("channel {} is out of range!", channel);
 
-	EventQueue<AudioEvent> Audio::sEventQueue
-	{
-		VariantVisitor
-		{
-			[](LoadPlayMusicEvent&& event)
-			{
-				auto loadedMusic{ std::make_unique<Music>(std::move(event.filePath)) };
+      pushEvent<PlaySoundEffectEvent>(soundEffect, channel);
+   }
 
-				if (Mix_PlayMusic(loadedMusic->getImplementation().getSDLMusic(), -1) == 0)
-				{
-					Logger::info("loaded and played Music with ID {}!",
-						loadedMusic->getID());
+   void Audio::pauseSoundEffect(int const channel)
+   {
+      if (channel < -1 or channel >= getAmountOfChannels())
+         exception("channel {} is out of range!", channel);
 
-					sActiveMusic = loadedMusic.get();
-					sLoadedMusic = std::move(loadedMusic);
-				}
-				else
-					Logger::warn("failed to play Music with ID {} ({})",
-						loadedMusic->getID(), Mix_GetError());
-			},
+      pushEvent<PauseSoundEffectEvent>(channel);
+   }
 
-			[](PlayMusicEvent&& event)
-			{
-				Reference<Music> const& music{ event.music };
+   void Audio::resumeSoundEffect(int const channel)
+   {
+      if (channel < -1 or channel >= getAmountOfChannels())
+         exception("channel {} is out of range!", channel);
 
-				if (not music.valid())
-					Logger::warn("failed to play Music (passed Reference to Music is not valid)");
-				else if (Mix_PlayMusic(music->getImplementation().getSDLMusic(), -1) == 0)
-				{
-					Logger::info("played Music with ID {}!",
-						music->getID());
+      pushEvent<ResumeSoundEffectEvent>(channel);
+   }
 
-					sActiveMusic = music;
-					sLoadedMusic.reset();
-				}
-				else
-					Logger::warn("failed to play Music with ID {} ({})",
-						music->getID(), Mix_GetError());
-			},
+   void Audio::stopSoundEffect(int const channel)
+   {
+      if (channel < -1 or channel >= getAmountOfChannels())
+         exception("channel {} is out of range!", channel);
 
-			[](PauseMusicEvent&&)
-			{
-				if (not sActiveMusic.valid())
-					Logger::warn("failed to pause Music (no active Music)");
-				else if (Mix_PausedMusic())
-					Logger::warn("failed to pause Music (Music is not playing)");
-				else
-					Logger::info("paused music with ID {}!",
-						sActiveMusic->getID());
+      pushEvent<StopSoundEffectEvent>(channel);
+   }
 
-				Mix_PauseMusic();
-			},
+   Reference<SoundEffect> Audio::getActiveSoundEffect(int const channel)
+   {
+      assert(channel >= 0 and channel < getAmountOfChannels(),
+         "channel {} is out of range!", channel);
 
-			[](ResumeMusicEvent&&)
-			{
-				if (not sActiveMusic.valid())
-					Logger::warn("failed to resume Music (no active Music)");
-				else if (not Mix_PausedMusic())
-					Logger::warn("failed to resume Music with ID {} (music is already playing)",
-						sActiveMusic->getID());
-				else
-					Logger::info("resumed Music with ID {}!",
-						sActiveMusic->getID());
+      return mActiveSoundEffects[channel];
+   }
 
-				Mix_ResumeMusic();
-			},
+   int Audio::getAmountOfChannels()
+   {
+      return MIX_CHANNELS;
+   }
 
-			[](StopMusicEvent&&)
-			{
-				if (not sActiveMusic.valid())
-					Logger::warn("failed to stop music (no active Music)");
-				else
-					Logger::info("stopped Music with ID {}!",
-						sActiveMusic->getID());
+   void Audio::setMute(bool const mute)
+   {
+      mMuted = mute;
+      Mix_MasterVolume(mMuted ? 0 : MIX_MAX_VOLUME);
+      Mix_VolumeMusic(mMuted ? 0 : MIX_MAX_VOLUME);
+   }
 
-				Mix_HaltMusic();
-				sActiveMusic.reset();
-				sLoadedMusic.reset();
-			},
+   bool Audio::isMuted()
+   {
+      return mMuted;
+   }
 
-			[](LoadPlaySoundEffectEvent&& event)
-			{
-				auto loadedSoundEffect{ std::make_unique<SoundEffect>(std::move(event.filePath)) };
+   void Audio::internalPauseSoundEffect(int const channel)
+   {
+      Reference<SoundEffect> const& activeSoundEffect{ mActiveSoundEffects[channel] };
 
-				int const channel{ Mix_PlayChannel(event.channel, loadedSoundEffect->getImplementation().getSDLSoundEffect(), 0) };
-				if (channel not_eq -1)
-				{
-					Logger::info("loaded and played SoundEffect with ID {} on channel {}!",
-						loadedSoundEffect->getID(), channel);
+      if (not activeSoundEffect.valid())
+         Logger::warn("failed to pause sound effect on channel {} (no active SoundEffect in channel)",
+            channel);
+      else if (Mix_Paused(channel))
+         Logger::warn("failed to pause SoundEffect with ID {} on channel {} (channel is not playing)",
+            activeSoundEffect->getID(), channel);
+      else
+         Logger::info("paused SoundEffect with ID {} on channel {}!",
+            activeSoundEffect->getID(), channel);
 
-					sActiveSoundEffects[channel] = loadedSoundEffect.get();
-					sLoadedSoundEffects[channel] = std::move(loadedSoundEffect);
-				}
-				else
-				{
-					if (event.channel == -1)
-						Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
-							loadedSoundEffect->getID(), Mix_GetError());
-					else
-						Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
-							loadedSoundEffect->getID(), event.channel, Mix_GetError());
+      Mix_Pause(channel);
+   }
 
-					loadedSoundEffect.reset();
-				}
-			},
+   void Audio::internalResumeSoundEffect(int const channel)
+   {
+      Reference<SoundEffect> const& activeSoundEffect{ mActiveSoundEffects[channel] };
 
-			[](PlaySoundEffectEvent&& event)
-			{
-				Reference<SoundEffect> const& soundEffect{ event.soundEffect };
+      if (not activeSoundEffect.valid())
+         Logger::warn("failed to resume sound effect on channel {} (no active SoundEffect in channel)",
+            channel);
+      else if (not Mix_Paused(channel))
+         Logger::warn("failed to resume SoundEffect with ID {} on channel {} (channel is already playing)",
+            activeSoundEffect->getID(), channel);
+      else
+         Logger::info("paused SoundEffect with ID {} on channel {}!",
+            activeSoundEffect->getID(), channel);
 
-				if (not soundEffect.valid())
-					Logger::warn("failed to play sound effect (passed Reference to SoundEffect is not valid)");
-				else
-				{
-					int& channel{ soundEffect->mChannel };
-					channel = Mix_PlayChannel(event.channel, soundEffect->getImplementation().getSDLSoundEffect(), 0);
-					if (channel not_eq -1)
-					{
-						Logger::info("played SoundEffect with ID {} on channel {}!",
-							soundEffect->getID(), channel);
+      Mix_Resume(channel);
+   }
 
-						sActiveSoundEffects[channel] = soundEffect;
-						sLoadedSoundEffects[channel].reset();
-					}
-					else if (event.channel == -1)
-						Logger::warn("failed to play SoundEffect with ID {} on first free channel ({})",
-							soundEffect->getID(), Mix_GetError());
-					else
-						Logger::warn("failed to play SoundEffect with ID {} on channel {} ({})",
-							soundEffect->getID(), event.channel, Mix_GetError());
-				}
-			},
+   void Audio::internalStopSoundEffect(int const channel)
+   {
+      Reference<SoundEffect> const& activeSoundEffect{ mActiveSoundEffects[channel] };
 
-			[](PauseSoundEffectEvent&& event)
-			{
-				if (event.channel not_eq -1)
-					internalPauseSoundEffect(event.channel);
-				else
-				{
-					Logger::info("pausing all sound effect channels...");
-					for (int channel{}; channel < getAmountOfChannels(); ++channel)
-						internalPauseSoundEffect(channel);
-				}
-			},
+      if (not activeSoundEffect.valid())
+         Logger::warn("failed to stop sound effect on channel {} (no active sound effect)",
+            channel);
+      else
+         Logger::info("stopped SoundEffect with ID {} on channel {}!",
+            activeSoundEffect->getID(), channel);
 
-			[](ResumeSoundEffectEvent&& event)
-			{
-				if (event.channel not_eq -1)
-					internalResumeSoundEffect(event.channel);
-				else
-				{
-					Logger::info("resuming all sound effect channels...");
-					for (int channel{}; channel < getAmountOfChannels(); ++channel)
-						internalResumeSoundEffect(channel);
-				}
-			},
-
-			[](StopSoundEffectEvent&& event)
-			{
-				if (event.channel not_eq -1)
-					internalStopSoundEffect(event.channel);
-				else
-				{
-					Logger::info("stopping all sound effect channels...");
-					for (int channel{}; channel < getAmountOfChannels(); ++channel)
-						internalStopSoundEffect(channel);
-				}
-			}
-		}
-	};
-
-	std::jthread Audio::sEventProcessingThread
-	{
-		[]()
-		{
-			while (true)
-			{
-				std::unique_lock uniqueLock{ sMutex };
-				sConditionVariable.wait(uniqueLock,
-					[]()
-					{
-						return not sEventQueue.getQueue().empty() or not sRunThread;
-					});
-
-				if (not sRunThread)
-					break;
-
-				sEventQueue.fetchNextEvent();
-				uniqueLock.unlock();
-				sEventQueue.processEvent();
-			}
-		}
-	};
-
-	std::mutex Audio::sMutex{};
-	std::condition_variable Audio::sConditionVariable{};
-	std::vector<Reference<SoundEffect>> Audio::sActiveSoundEffects(MIX_CHANNELS);
-	std::vector<std::unique_ptr<SoundEffect>> Audio::sLoadedSoundEffects(MIX_CHANNELS);
-	Reference<Music> Audio::sActiveMusic{};
-	std::unique_ptr<Music> Audio::sLoadedMusic{};
-	bool Audio::sRunThread{ true };
-	bool Audio::sMuted{};
+      Mix_HaltChannel(channel);
+      mLoadedSoundEffects[channel].reset();
+   }
 }

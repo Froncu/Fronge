@@ -10,26 +10,26 @@ struct SDL_Window;
 
 namespace fro
 {
-	class Window::Implementation final
-	{
-	public:
-		FRO_API Implementation(std::string_view const windowTitle, Vector2<int> const size);
+   class Window::Implementation final
+   {
+      public:
+         FRO_API Implementation(std::string_view const windowTitle, Vector2<int> const size);
 
-		~Implementation() = default;
+         ~Implementation() = default;
 
-		FRO_API FRO_NODISCARD SDL_Window* getSDLWindow() const;
+         FRO_API FRO_NODISCARD SDL_Window* getSDLWindow() const;
 
-		FRO_API FRO_NODISCARD std::uint32_t getID() const;
+         FRO_API FRO_NODISCARD std::uint32_t getID() const;
 
-	private:
-		Implementation(Implementation const&) = delete;
-		Implementation(Implementation&) noexcept = delete;
+      private:
+         Implementation(Implementation const&) = delete;
+         Implementation(Implementation&) noexcept = delete;
 
-		Implementation& operator=(Implementation const&) = delete;
-		Implementation& operator=(Implementation&) noexcept = delete;
+         Implementation& operator=(Implementation const&) = delete;
+         Implementation& operator=(Implementation&) noexcept = delete;
 
-		CustomUniquePointer<SDL_Window> mSDLWindow;
-	};
+         CustomUniquePointer<SDL_Window> mSDLWindow;
+   };
 }
 
 #endif

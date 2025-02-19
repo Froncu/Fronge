@@ -6,25 +6,18 @@
 
 namespace fro
 {
-	std::unique_ptr<Application> createApplication();
+   std::unique_ptr<Application> createApplication();
 }
 
 int main(int, char**)
 {
-	using namespace fro;
+   using namespace fro;
 
-	Logger::info("welcome to Fronge!\n");
+   Logger::info("welcome to Fronge!\n");
 
-	SystemEventManager::initialize();
-	InputManager::initialize();
-	Audio::initialize();
+   createApplication()->run();
 
-	createApplication()->run();
+   SceneManager::shutDown();
 
-	Audio::shutDown();
-	InputManager::shutDown();
-	SystemEventManager::shutDown();
-	SceneManager::shutDown();
-
-	return 0;
+   return 0;
 }

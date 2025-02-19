@@ -1,78 +1,95 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include "froch.hpp"
-
 #include "Core.hpp"
 #include "Events/AudioEvent.hpp"
 #include "Events/Systems/EventQueue.hpp"
+#include "froch.hpp"
+#include "Reference/Reference.hpp"
 #include "Resources/Music/Music.hpp"
 #include "Resources/SoundEffect/SoundEffect.hpp"
-#include "Reference/Reference.hpp"
 
 namespace fro
 {
-	class Audio final
-	{
-	public:
-		FRO_API static void initialize();
-		FRO_API static void shutDown();
+   class Audio final
+   {
+      public:
+         FRO_API Audio();
+         Audio(Audio const&) = delete;
+         Audio(Audio&&) noexcept = delete;
 
-		FRO_API static void playMusic(std::string filePath);
-		FRO_API static void playMusic(Reference<Music> const music);
-		FRO_API static void pauseMusic();
-		FRO_API static void resumeMusic();
-		FRO_API static void stopMusic();
-		FRO_API FRO_NODISCARD static Reference<Music> getActiveMusic();
+         FRO_API ~Audio();
 
-		FRO_API static void playSoundEffect(std::string filePath, int const channel = -1);
-		FRO_API static void playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel = -1);
-		FRO_API static void pauseSoundEffect(int const channel = -1);
-		FRO_API static void resumeSoundEffect(int const channel = -1);
-		FRO_API static void stopSoundEffect(int const channel = -1);
-		FRO_API FRO_NODISCARD static Reference<SoundEffect> getActiveSoundEffect(int const channel);
-		FRO_API FRO_NODISCARD static int getAmountOfChannels();
+         Audio& operator=(Audio const&) = delete;
+         Audio& operator=(Audio&&) noexcept = delete;
 
-		FRO_API static void setMute(bool const mute);
-		FRO_API FRO_NODISCARD static bool isMuted();
+         FRO_API void playMusic(std::string filePath);
+         FRO_API void playMusic(Reference<Music> const music);
+         FRO_API void pauseMusic();
+         FRO_API void resumeMusic();
+         FRO_API void stopMusic();
+         FRO_API FRO_NODISCARD Reference<Music> getActiveMusic();
 
-	private:
-		static void internalPauseSoundEffect(int const channel);
-		static void internalResumeSoundEffect(int const channel);
-		static void internalStopSoundEffect(int const channel);
+         FRO_API void playSoundEffect(std::string filePath, int const channel = -1);
+         FRO_API void playSoundEffect(Reference<SoundEffect> const soundEffect, int const channel = -1);
+         FRO_API void pauseSoundEffect(int const channel = -1);
+         FRO_API void resumeSoundEffect(int const channel = -1);
+         FRO_API void stopSoundEffect(int const channel = -1);
+         FRO_API FRO_NODISCARD Reference<SoundEffect> getActiveSoundEffect(int const channel);
+         FRO_API FRO_NODISCARD int getAmountOfChannels();
 
-		template<typename EventType, typename... Arguments>
-			requires std::constructible_from<AudioEvent, EventType> and std::constructible_from<EventType, Arguments...>
-		static void pushEvent(Arguments&&... arguments)
-		{
-			{
-				std::lock_guard const lockGuard{ sMutex };
-				sEventQueue.pushEvent(EventType(std::forward<Arguments>(arguments)...));
-			}
+         FRO_API void setMute(bool const mute);
+         FRO_API FRO_NODISCARD bool isMuted();
 
-			sConditionVariable.notify_one();
-		}
+      private:
+         void internalPauseSoundEffect(int const channel);
+         void internalResumeSoundEffect(int const channel);
+         void internalStopSoundEffect(int const channel);
 
-		static EventQueue<AudioEvent> sEventQueue;
-		static std::jthread sEventProcessingThread;
-		static std::mutex sMutex;
-		static std::condition_variable sConditionVariable;
-		static std::vector<Reference<SoundEffect>> sActiveSoundEffects;
-		static std::vector<std::unique_ptr<SoundEffect>> sLoadedSoundEffects;
-		static Reference<Music> sActiveMusic;
-		static std::unique_ptr<Music> sLoadedMusic;
-		static bool sRunThread;
-		static bool sMuted;
+         template<typename EventType, typename... Arguments> requires
+            std::constructible_from<AudioEvent, EventType> and std::constructible_from<EventType, Arguments...>
+         void pushEvent(Arguments&&... arguments)
+         {
+            {
+               std::lock_guard const lockGuard{ mMutex };
+               mEventQueue.pushEvent(EventType(std::forward<Arguments>(arguments)...));
+            }
 
-		Audio() = delete;
-		Audio(Audio const&) = delete;
-		Audio(Audio&&) noexcept = delete;
+            mConditionVariable.notify_one();
+         }
 
-		~Audio() = delete;
+         EventQueue<AudioEvent> mEventQueue;
+         std::mutex mMutex{};
+         std::condition_variable mConditionVariable{};
+         std::jthread mEventProcessingThread
+         {
+            [this]()
+            {
+               while (true)
+               {
+                  std::unique_lock uniqueLock{ mMutex };
+                  mConditionVariable.wait(uniqueLock,
+                     [this]()
+                     {
+                        return not mEventQueue.getQueue().empty() or not mRunThread;
+                     });
 
-		Audio& operator=(Audio const&) = delete;
-		Audio& operator=(Audio&&) noexcept = delete;
-	};
+                  if (not mRunThread)
+                     break;
+
+                  mEventQueue.fetchNextEvent();
+                  uniqueLock.unlock();
+                  mEventQueue.processEvent();
+               }
+            }
+         };
+         std::vector<Reference<SoundEffect>> mActiveSoundEffects;
+         std::vector<std::unique_ptr<SoundEffect>> mLoadedSoundEffects;
+         Reference<Music> mActiveMusic{};
+         std::unique_ptr<Music> mLoadedMusic{};
+         bool mRunThread{ true };
+         bool mMuted{};
+   };
 }
 
 #endif

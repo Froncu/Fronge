@@ -1,9 +1,9 @@
 #ifndef SYSTEM_EVENT_MANAGER_IMPL_HPP
 #define SYSTEM_EVENT_MANAGER_IMPL_HPP
 
-#include "SystemEventManager/SystemEventManager.hpp"
-
 #include <SDL_stdinc.h>
+
+#include "SystemEventManager/SystemEventManager.hpp"
 
 struct SDL_ControllerAxisEvent;
 struct SDL_ControllerButtonEvent;
@@ -13,31 +13,34 @@ struct SDL_WindowEvent;
 
 namespace fro
 {
-	class SystemEventManager::Implementation final
-	{
-	public:
-		static void dispatchSDLWindowEvent(SDL_WindowEvent const& SDLEvent);
-		static void dispatchSDLKeyboardEvent(SDL_KeyboardEvent const& SDLEvent);
-		static void dispatchSDLControllerDeviceEvent(SDL_ControllerDeviceEvent const& SDLEvent);
-		static void dispatchSDLControllerButtonEvent(SDL_ControllerButtonEvent const& SDLEvent);
-		static void dispatchSDLControllerAxisEvent(SDL_ControllerAxisEvent const& SDLEvent);
-		static void resetOppositeAxis(SDL_ControllerAxisEvent const& SDLEvent);
+   class SystemEventManager::Implementation final
+   {
+      public:
+         Implementation() = default;
+         Implementation(Implementation const&) = delete;
+         Implementation(Implementation&&) noexcept = delete;
 
-	private:
-		static Sint16 sPreviousRightStickX;
-		static Sint16 sPreviousRightStickY;
-		static Sint16 sPreviousLeftStickX;
-		static Sint16 sPreviousLeftStickY;
+         ~Implementation() = default;
 
-		Implementation() = delete;
-		Implementation(Implementation const&) = delete;
-		Implementation(Implementation&&) noexcept = delete;
+         Implementation& operator=(Implementation const&) = delete;
+         Implementation& operator=(Implementation&&) noexcept = delete;
 
-		~Implementation() = delete;
+         void dispatchSDLWindowEvent(SystemEventManager& systemEventManager, SDL_WindowEvent const& SDLEvent);
+         void dispatchSDLKeyboardEvent(SystemEventManager& systemEventManager, SDL_KeyboardEvent const& SDLEvent);
+         void dispatchSDLControllerDeviceEvent(SystemEventManager& systemEventManager,
+            SDL_ControllerDeviceEvent const& SDLEvent);
+         void dispatchSDLControllerButtonEvent(SystemEventManager& systemEventManager,
+            SDL_ControllerButtonEvent const& SDLEvent);
+         void dispatchSDLControllerAxisEvent(SystemEventManager& systemEventManager,
+            SDL_ControllerAxisEvent const& SDLEvent);
+         void resetOppositeAxis(SystemEventManager& systemEventManager, SDL_ControllerAxisEvent const& SDLEvent);
 
-		Implementation& operator=(Implementation const&) = delete;
-		Implementation& operator=(Implementation&&) noexcept = delete;
-	};
+      private:
+         Sint16 mPreviousRightStickX{};
+         Sint16 mPreviousRightStickY{};
+         Sint16 mPreviousLeftStickX{};
+         Sint16 mPreviousLeftStickY{};
+   };
 }
 
 #endif
