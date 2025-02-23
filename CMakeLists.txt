@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(Fronge)
+set(FRO_ENGINE_NAME Fronge)
+
+project(${FRO_ENGINE_NAME})
 
 if (NOT MSVC)
    message(FATAL_ERROR "This project currently can be build only using Microsoft Visual C++ (MSVC).")
@@ -8,5 +10,5 @@ endif ()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(Libraries)
 
-add_subdirectory(Fronge)
-add_subdirectory(FrongeEntry)
+add_subdirectory(Engine)
+add_subdirectory(Entry)

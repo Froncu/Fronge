@@ -1,9 +1,5 @@
-add_library(Fronge SHARED
+add_library(${FRO_ENGINE_NAME} SHARED
    Source/Audio/Audio.cpp
-   Source/ECS/Components/Rigidbody/Implementation/ColliderImpl.cpp
-   Source/ECS/Components/Rigidbody/Implementation/RigidbodyImpl.cpp
-   Source/ECS/Components/Rigidbody/Collider.cpp
-   Source/ECS/Components/Rigidbody/Rigidbody.cpp
    Source/ECS/Components/Transform/Transform.cpp
    Source/ECS/Entity/EntityManager/EntityManager.cpp
    Source/ECS/Entity/Entity.cpp
@@ -45,30 +41,28 @@ add_library(Fronge SHARED
    Source/SystemEventManager/Implementation/SystemEventManagerImpl.cpp
    Source/SystemEventManager/SystemEventManager.cpp
    Source/Window/Implementation/WindowImpl.cpp
-   Source/Window/Window.cpp
-   Source/froch.cpp)
+   Source/Window/Window.cpp)
 
-target_include_directories(Fronge PUBLIC
-   Source)
+target_include_directories(${FRO_ENGINE_NAME}
+   PUBLIC Source)
 
-target_precompile_headers(Fronge PRIVATE
-   Source/froch.hpp)
+target_precompile_headers(${FRO_ENGINE_NAME}
+   PRIVATE Source/froch.hpp)
 
-target_compile_definitions(Fronge
+target_compile_definitions(${FRO_ENGINE_NAME}
    PRIVATE FRO_ENGINE
    PUBLIC FRO_CONSOLE)
 
-target_link_libraries(Fronge PRIVATE
-   box2d
-   SDL2::SDL2
-   SDL2_ttf
-   SDL2_image
-   SDL2_mixer)
+target_link_libraries(${FRO_ENGINE_NAME}
+   PRIVATE SDL2::SDL2
+   PRIVATE SDL2_ttf
+   PRIVATE SDL2_image
+   PRIVATE SDL2_mixer)
 
-set_target_properties(Fronge PROPERTIES
+set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
    CXX_STANDARD 20
    CXX_STANDARD_REQUIRED TRUE)
 
-target_compile_options(Fronge PRIVATE
-   /W4
-   /WX)
+target_compile_options(${FRO_ENGINE_NAME}
+   PRIVATE /W4
+   PRIVATE /WX)
