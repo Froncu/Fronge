@@ -5,10 +5,6 @@ add_library(${FRO_ENGINE_NAME} SHARED
    Source/ECS/Entity/Entity.cpp
    Source/ECS/Scene/SceneManager/SceneManager.cpp
    Source/ECS/Scene/Scene.cpp
-   Source/ECS/Systems/PhysicsSystem/Implementation/PhysicsContactListener.cpp
-   Source/ECS/Systems/PhysicsSystem/Implementation/PhysicsDebugRenderer.cpp
-   Source/ECS/Systems/PhysicsSystem/Implementation/PhysicsSystemImpl.cpp
-   Source/ECS/Systems/PhysicsSystem/PhysicsSystem.cpp
    Source/ECS/Systems/SpriteAnimatorSystem/SpriteAnimatorSystem.cpp
    Source/ECS/Systems/SpriteSystem/SpriteSystem.cpp
    Source/Events/AudioEvent.cpp

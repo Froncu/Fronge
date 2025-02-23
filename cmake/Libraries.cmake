@@ -1,6 +1,7 @@
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
+set(BUILD_SHARED_LIBS FALSE)
 set(SDL_TEST OFF CACHE BOOL "Build the SDL2_test library")
 set(SDL2_DISABLE_UNINSTALL ON CACHE BOOL "Disable uninstallation of SDL2")
 FetchContent_Declare(SDL
