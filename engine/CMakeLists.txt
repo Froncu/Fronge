@@ -32,7 +32,6 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/resources/surface/surface.cpp
    source/resources/texture/implementation/texture_impl.cpp
    source/resources/texture/texture.cpp
-   source/svg_parser/svg_parser.cpp
    source/system_event_manager/implementation/system_event_manager_impl.cpp
    source/system_event_manager/system_event_manager.cpp
    source/window/implementation/window_impl.cpp
