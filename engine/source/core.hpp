@@ -1,12 +1,14 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
-#define FRO_NODISCARD [[nodiscard("returned value ignored!")]]
-
+#ifdef _MSC_VER
 #ifdef FRO_ENGINE
-	#define FRO_API _declspec(dllexport)
+#define FRO_API __declspec(dllexport)
 #else
-	#define FRO_API _declspec(dllimport)
+    #define FRO_API __declspec(dllimport)
+#endif
+#else
+  #define FRO_API __attribute__((visibility("default")))
 #endif
 
 #endif

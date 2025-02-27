@@ -15,5 +15,5 @@ set_target_properties(${FRO_ENTRY_NAME} PROPERTIES
    CXX_STANDARD_REQUIRED TRUE)
 
 target_compile_options(${FRO_ENTRY_NAME}
-   PRIVATE /W4
-   PRIVATE /WX)
+   PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -Werror>
+   PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>)

@@ -5,9 +5,9 @@
 
 namespace fro
 {
-	template<typename Type>
-	concept Arithmetic =
-		std::is_arithmetic_v<Type>;
+   template <typename T>
+   concept Arithmetic =
+      std::is_arithmetic_v<T>;
 }
 
 #endif

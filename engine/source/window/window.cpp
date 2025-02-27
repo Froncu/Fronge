@@ -1,67 +1,57 @@
+#include <SDL3/SDL.h>
+
 #include "froch.hpp"
-
-#include "Window.hpp"
-#include "Window/Implementation/WindowImpl.hpp"
-
-#include <SDL.h>
+#include "utility/assert.hpp"
+#include "window.hpp"
 
 namespace fro
 {
    Window::Window(std::string_view const title, Vector2<int> const size)
-      : mTitle{ title }
-      , mSize{ size }
-      , mImplementation{ std::make_unique<Implementation>(mTitle, getSize()) }
-      , mID{ mImplementation->getID() }
-   {
-   }
+      : native_window_{
+         [title, size]
+         {
+            if (not SDL_InitSubSystem(SDL_INIT_VIDEO))
+               exception("failed to initialize the video subsystem ({})", SDL_GetError());
 
-   Window::~Window()
-   {
-      Logger::info("destroyed Window with ID {}!",
-         mID);
-   }
-
-   Window::Implementation& Window::getImplementation() const
-   {
-      return *mImplementation;
-   }
-
-   bool Window::setFullscreen(bool const fullscreen)
-   {
-      int result;
-      if (fullscreen)
-      {
-         result = SDL_SetWindowFullscreen(mImplementation->getSDLWindow(), SDL_WINDOW_FULLSCREEN_DESKTOP);
-
-         if (result == 0)
-            Logger::info("set Window with ID {} to fullscreen!",
-               mID);
-         else
-            Logger::warn("failed to set Window with ID {} to fullscreen ({})",
-               mID, SDL_GetError());
+            return SDL_CreateWindow(title.data(), size.x, size.y, SDL_WINDOW_RESIZABLE);
+         }(),
+         [](SDL_Window* const window)
+         {
+            SDL_QuitSubSystem(SDL_INIT_VIDEO);
+            SDL_DestroyWindow(window);
+         }
       }
-      else
-      {
-         result = SDL_SetWindowFullscreen(mImplementation->getSDLWindow(), 0);
-
-         if (result == 0)
-            Logger::info("set Window with ID {} to windowed!",
-               mID);
-         else
-            Logger::warn("failed to set Window with ID {} to windowed ({})",
-               mID, SDL_GetError());
-      }
-
-      return result;
+   {
    }
 
-   std::uint32_t Window::getID() const
+   void Window::change_fullscreen_mode(bool const fullscreen) const
    {
-      return mID;
+      bool const succeeded{ SDL_SetWindowFullscreen(native_window_.get(), fullscreen) };
+      assert(succeeded, "failed to set Window{}'s fullscreen to {} ({})",
+         id(), fullscreen, SDL_GetError());
    }
 
-   Vector2<int> Window::getSize() const
+   std::uint32_t Window::id() const
    {
-      return mSize;
+      std::uint32_t const id{ SDL_GetWindowID(native_window_.get()) };
+      assert(id, "failed to retrieve the ID of a Window titled {} ({})",
+         title(), SDL_GetError());
+
+      return id;
+   }
+
+   Vector2<int> Window::size() const
+   {
+      Vector2<int> size;
+      bool const succeeded{ SDL_GetWindowSize(native_window_.get(), &size.x, &size.y) };
+      assert(succeeded, "failed to retrieve Window{}'s size ({})",
+         id(), SDL_GetError());
+
+      return size;
+   }
+
+   std::string_view Window::title() const
+   {
+      return SDL_GetWindowTitle(native_window_.get());
    }
 }

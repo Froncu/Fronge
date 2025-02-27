@@ -1,23 +1,17 @@
-#include "Fronge.hpp"
+#include <SDL3/SDL_main.h>
 
-#include <SDL_main.h>
-
-#include <memory>
+#include "fronge.hpp"
 
 namespace fro
 {
-   std::unique_ptr<Application> createApplication();
+   std::unique_ptr<Application> create_application();
 }
 
 int main(int, char**)
 {
-   using namespace fro;
+   fro::Logger::info("welcome to Fronge!\n");
 
-   Logger::info("welcome to Fronge!\n");
-
-   createApplication()->run();
-
-   scene_manager::shutDown();
+   fro::create_application()->run();
 
    return 0;
 }

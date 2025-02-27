@@ -1,16 +1,15 @@
 #include "froch.hpp"
-
-#include "WindowEvent.hpp"
+#include "window_event.hpp"
 
 namespace fro
 {
-	std::string WindowCloseEvent::getLogString() const
-	{
-		return std::format("close Window with ID {} event", ID);
-	}
+   std::string WindowCloseEvent::get_log_string() const
+   {
+      return std::format("closed Window with ID {}", id);
+   }
 
-	FRO_API FRO_NODISCARD std::string WindowResizeEvent::getLogString() const
-	{
-		return std::format("resize Window with ID {} to {}x{} event", ID, size.x, size.y);
-	}
+   std::string WindowResizeEvent::get_log_string() const
+   {
+      return std::format("resized Window with ID {} to {}x{}", id, size.x, size.y);
+   }
 }

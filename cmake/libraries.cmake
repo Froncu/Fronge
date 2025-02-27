@@ -16,21 +16,23 @@ FetchContent_Declare(SDL_image
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 
-# TODO: replace with a release tag
+set(SDLTTF_VENDORED TRUE)
 FetchContent_Declare(SDL_ttf
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
-   GIT_TAG prerelease-3.1.2
+   GIT_TAG prerelease-3.1.2 # TODO: replace with a release tag
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 
-# TODO: replace with a release tag
 FetchContent_Declare(SDL_mixer
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer
-   GIT_TAG 863f8c0c0a1f3d8efe9b9cdb7f474efdfac54b76
-   GIT_PROGRESS TRUE)
+   GIT_TAG 863f8c0c0a1f3d8efe9b9cdb7f474efdfac54b76 # TODO: replace with a release tag
+   GIT_PROGRESS TRUE
+   #[[GIT_SHALLOW TRUE]]) # TODO: enable this after changing to a release tag
 
 FetchContent_MakeAvailable(
    SDL
    SDL_image
    SDL_ttf
    SDL_mixer)
+
+target_compile_options(harfbuzz PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>)

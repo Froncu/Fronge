@@ -5,37 +5,37 @@
 
 namespace fro
 {
-	template<typename... CallableTypes>
-	class VariantVisitor final
-	{
-		struct Visitor final : public CallableTypes...
-		{
-			using CallableTypes::operator()...;
-		};
+   template <typename... Callables>
+   class VariantVisitor final
+   {
+      struct Visitor final : Callables...
+      {
+         using Callables::operator()...;
+      };
 
-	public:
-		VariantVisitor(CallableTypes... callables)
-			: mVisitor{ callables... }
-		{
-		}
+      public:
+         explicit VariantVisitor(Callables... callables)
+            : visitor_{ callables... }
+         {
+         }
 
-		VariantVisitor(VariantVisitor const&) = default;
-		VariantVisitor(VariantVisitor&&) noexcept = default;
+         VariantVisitor(VariantVisitor const&) = default;
+         VariantVisitor(VariantVisitor&&) = default;
 
-		~VariantVisitor() = default;
+         ~VariantVisitor() = default;
 
-		VariantVisitor& operator=(VariantVisitor const&) = default;
-		VariantVisitor& operator=(VariantVisitor&&) noexcept = default;
+         VariantVisitor& operator=(VariantVisitor const&) = default;
+         VariantVisitor& operator=(VariantVisitor&&) = default;
 
-		template<typename VariantType>
-		auto operator()(VariantType&& variant)
-		{
-			return std::visit(mVisitor, std::forward<VariantType>(variant));
-		}
+         template <typename VariantType>
+         auto operator()(VariantType&& variant)
+         {
+            return std::visit(visitor_, std::forward<VariantType>(variant));
+         }
 
-	private:
-		Visitor mVisitor;
-	};
+      private:
+         Visitor visitor_;
+   };
 }
 
 #endif

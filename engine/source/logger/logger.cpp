@@ -1,8 +1,6 @@
-#include "froch.hpp"
-
-#include "Logger.hpp"
+#include "logger.hpp"
 
 namespace fro
 {
-	std::mutex Logger::sOutputMutex{};
+   std::mutex Logger::output_mutex_{};
 }

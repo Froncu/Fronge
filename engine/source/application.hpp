@@ -1,25 +1,22 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "Core.hpp"
-
 namespace fro
 {
-	class Application
-	{
-	public:
-		virtual ~Application() = default;
+   class Application
+   {
+      public:
+         Application() = default;
+         Application(Application const&) = default;
+         Application(Application&&) = default;
 
-		virtual void run() = 0;
+         virtual ~Application() = default;
 
-	protected:
-		Application() = default;
-		Application(Application const&) = default;
-		Application(Application&&) noexcept = default;
+         Application& operator=(Application const&) = default;
+         Application& operator=(Application&&) = default;
 
-		Application& operator=(Application const&) = default;
-		Application& operator=(Application&&) noexcept = default;;
-	};
+         virtual void run() = 0;
+   };
 }
 
 #endif

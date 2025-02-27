@@ -1,72 +1,62 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include "core.hpp"
+#include "events/observer/event_dispatcher.hpp"
+#include "events/window_event.hpp"
 #include "froch.hpp"
+#include "maths/vector2.hpp"
+#include "services/locator.hpp"
+#include "services/system_event_dispatcher/system_event_dispatcher.hpp"
+#include "utility/unique_pointer.hpp"
+#include "utility/variant_visitor.hpp"
 
-#include "Core.hpp"
-#include "Events/Systems/EventListener.hpp"
-#include "Events/WindowEvent.hpp"
-#include "Maths/Structs/Vector2.hpp"
-#include "SystemEventManager/SystemEventManager.hpp"
-#include "Reference/Referencable.hpp"
-#include "Utility/VariantVisitor.hpp"
+struct SDL_Window;
 
 namespace fro
 {
-   class Window final : public Referencable
+   class Window final
    {
       public:
-         class Implementation;
+         explicit FRO_API Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
 
-         FRO_API Window(std::string_view const title = "Fronge Window", Vector2<int> const size = { 640, 480 });
+         Window(Window const&) = delete;
+         Window(Window&&) = default;
 
-         FRO_API ~Window();
+         FRO_API ~Window() = default;
 
-         FRO_API FRO_NODISCARD Implementation& getImplementation() const;
+         Window& operator=(Window const&) = delete;
+         Window& operator=(Window&&) = default;
 
-         FRO_API bool setFullscreen(bool const fullscreen);
+         FRO_API void change_fullscreen_mode(bool fullscreen) const;
+         FRO_API [[nodiscard]] std::uint32_t id() const;
+         FRO_API [[nodiscard]] Vector2<int> size() const;
+         FRO_API [[nodiscard]] std::string_view title() const;
 
-         FRO_API FRO_NODISCARD std::uint32_t getID() const;
-         FRO_API FRO_NODISCARD Vector2<int> getSize() const;
-
-         EventDispatcher<> mCloseEvent{};
-         EventDispatcher<Vector2<int> const> mResizeEvent{};
-
-         EventListener<WindowEvent const> mOnWindowEvent
+         EventDispatcher<> close_event{};
+         EventListener<WindowEvent const> on_window_event
          {
             VariantVisitor
             {
-               [this](WindowCloseEvent const& windowCloseEvent)
+               [this](WindowCloseEvent const& event)
                {
-                  if (windowCloseEvent.ID not_eq mID)
+                  if (id() not_eq event.id)
                      return false;
 
-                  return mCloseEvent.notify();
+                  close_event.notify();
+                  return true;
                },
 
-               [this](WindowResizeEvent const& windowResizeEvent)
+               [](auto)
                {
-                  if (windowResizeEvent.ID not_eq mID)
-                     return false;
-
-                  mSize = windowResizeEvent.size;
-                  mResizeEvent.notify(mSize);
-                  return true;
+                  return false;
                }
-            }
+            },
+            Locator::get<SystemEventDispatcher>().window_event
          };
 
       private:
-         Window(Window const&) = delete;
-         Window(Window&&) noexcept = delete;
-
-         Window& operator=(Window const&) = delete;
-         Window& operator=(Window&&) noexcept = delete;
-
-         std::string_view mTitle;
-         Vector2<int> mSize;
-         std::unique_ptr<Implementation> mImplementation;
-         std::uint32_t mID;
+         UniquePointer<SDL_Window> native_window_;
    };
 }
 

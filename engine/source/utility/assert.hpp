@@ -1,29 +1,31 @@
 #ifndef ASSERT_HPP
 #define ASSERT_HPP
 
-#include "Logger/Logger.hpp"
+#include "constants.hpp"
+#include "logger/logger.hpp"
 
 namespace fro
 {
-	template <typename... Arguments>
-	void assert([[maybe_unused]] bool const condition,
-		[[maybe_unused]] std::format_string<Arguments...> const format,
-		[[maybe_unused]] Arguments&&... arguments)
-	{
-#ifndef NDEBUG
-		if (condition)
-			return;
+   template <typename... Arguments>
+   void assert([[maybe_unused]] bool const condition,
+      [[maybe_unused]] std::format_string<Arguments...> const format,
+      [[maybe_unused]] Arguments&&... arguments)
+   {
+      if constexpr (DEBUG)
+      {
+         if (condition)
+            return;
 
-		fro::Logger::error(format, std::forward<Arguments>(arguments)...);
-		__debugbreak();
-#endif
-	}
+         Logger::error(format, std::forward<Arguments>(arguments)...);
+         std::abort();
+      }
+   }
 
-	template <typename Type>
-	void assert(bool const condition, Type&& message)
-	{
-		assert(condition, "{}", std::forward<Type>(message));
-	}
+   template <typename Message>
+   void assert(bool const condition, Message&& message)
+   {
+      assert(condition, "{}", std::forward<Message>(message));
+   }
 }
 
 #endif
