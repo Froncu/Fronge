@@ -1,34 +1,33 @@
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
-set(BUILD_SHARED_LIBS FALSE)
-set(SDL_TEST OFF CACHE BOOL "Build the SDL2_test library")
-set(SDL2_DISABLE_UNINSTALL ON CACHE BOOL "Disable uninstallation of SDL2")
+set(SDL_TEST_LIBRARY OFF)
+set(BUILD_SHARED_LIBS OFF)
 FetchContent_Declare(SDL
    GIT_REPOSITORY https://github.com/libsdl-org/SDL
-   GIT_TAG release-2.30.11
+   GIT_TAG release-3.2.4
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 
+set(SDLIMAGE_AVIF OFF)
 FetchContent_Declare(SDL_image
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-   GIT_TAG release-2.8.4
+   GIT_TAG release-3.2.0
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 
-set(SDL2TTF_VENDORED TRUE)
+# TODO: replace with a release tag
 FetchContent_Declare(SDL_ttf
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
-   GIT_TAG release-2.24.0
+   GIT_TAG prerelease-3.1.2
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 
-set(SDL2MIXER_VENDORED TRUE)
+# TODO: replace with a release tag
 FetchContent_Declare(SDL_mixer
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer
-   GIT_TAG release-2.8.0
-   GIT_PROGRESS TRUE
-   GIT_SHALLOW TRUE)
+   GIT_TAG 863f8c0c0a1f3d8efe9b9cdb7f474efdfac54b76
+   GIT_PROGRESS TRUE)
 
 FetchContent_MakeAvailable(
    SDL

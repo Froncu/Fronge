@@ -8,8 +8,7 @@ target_include_directories(${FRO_ENTRY_NAME}
    PRIVATE ${FRONGE_INCLUDE_DIRS})
 
 target_link_libraries(${FRO_ENTRY_NAME}
-   PRIVATE SDL2::SDL2
-   PRIVATE SDL2::SDL2main)
+   PRIVATE SDL3::SDL3)
 
 set_target_properties(${FRO_ENTRY_NAME} PROPERTIES
    CXX_STANDARD 20
