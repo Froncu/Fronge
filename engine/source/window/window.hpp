@@ -17,6 +17,7 @@ namespace fro
 {
    class Window final
    {
+      friend class Renderer;
       public:
          FRO_API explicit Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
 
