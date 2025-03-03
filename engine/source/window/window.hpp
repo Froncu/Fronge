@@ -18,20 +18,31 @@ namespace fro
    class Window final
    {
       public:
-         explicit FRO_API Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
+         FRO_API explicit Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
 
-         Window(Window const&) = delete;
+         FRO_API Window(Window const& other);
          Window(Window&&) = default;
 
          FRO_API ~Window() = default;
 
-         Window& operator=(Window const&) = delete;
+         FRO_API Window& operator=(Window const& other);
          Window& operator=(Window&&) = default;
 
+         FRO_API void change_title(std::string_view title) const;
+         FRO_API void change_size(Vector2<int> size) const;
+         FRO_API void change_position(Vector2<int> position) const;
+         FRO_API void center() const;
          FRO_API void change_fullscreen_mode(bool fullscreen) const;
+         FRO_API void change_resizability(bool resizable) const;
+         FRO_API void change_visibility(bool show) const;
+
          FRO_API [[nodiscard]] std::uint32_t id() const;
-         FRO_API [[nodiscard]] Vector2<int> size() const;
          FRO_API [[nodiscard]] std::string_view title() const;
+         FRO_API [[nodiscard]] Vector2<int> size() const;
+         FRO_API [[nodiscard]] Vector2<int> position() const;
+         FRO_API [[nodiscard]] bool fullscreen() const;
+         FRO_API [[nodiscard]] bool resizable() const;
+         FRO_API [[nodiscard]] bool visible() const;
 
          EventDispatcher<> close_event{};
          EventListener<WindowEvent const> on_window_event
@@ -56,6 +67,9 @@ namespace fro
          };
 
       private:
+         Window(std::string_view title, Vector2<int> size, std::uint64_t flags,
+            std::optional<Vector2<int>> const& position = std::nullopt);
+
          UniquePointer<SDL_Window> native_window_;
    };
 }
