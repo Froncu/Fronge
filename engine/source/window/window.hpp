@@ -6,6 +6,8 @@
 #include "events/window_event.hpp"
 #include "froch.hpp"
 #include "maths/vector2.hpp"
+#include "reference/referenceable.hpp"
+#include "reference/reference.hpp"
 #include "services/locator.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "utility/unique_pointer.hpp"
@@ -15,7 +17,7 @@ struct SDL_Window;
 
 namespace fro
 {
-   class Window final
+   class Window final : public Referenceable
    {
       public:
          FRO_API explicit Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
@@ -49,12 +51,12 @@ namespace fro
          {
             VariantVisitor
             {
-               [this](WindowCloseEvent const& event)
+               [smart_this = Reference<Window>{ this }](WindowCloseEvent const& event)
                {
-                  if (id() not_eq event.id)
+                  if (smart_this->id() not_eq event.id)
                      return false;
 
-                  close_event.notify();
+                  smart_this->close_event.notify();
                   return true;
                },
 

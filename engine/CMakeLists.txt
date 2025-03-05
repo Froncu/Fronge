@@ -4,7 +4,9 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/services/system_event_dispatcher/regular_system_event_dispatcher.cpp
    source/window/window.cpp
    source/logger/logger.cpp
-   source/services/locator.cpp)
+   source/services/locator.cpp
+   source/reference/referenceable.cpp
+   source/reference/base_reference.cpp)
 
 target_include_directories(${FRO_ENGINE_NAME}
    PUBLIC source)
