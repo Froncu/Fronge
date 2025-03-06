@@ -2,6 +2,7 @@
 #define BASE_REFERENCE_HPP
 
 #include "core.hpp"
+#include "events/observer/event_dispatcher.hpp"
 #include "froch.hpp"
 
 namespace fro
@@ -22,6 +23,8 @@ namespace fro
 
          FRO_API void reset();
          FRO_API bool valid() const;
+
+         EventDispatcher<> reference_delete_event{};
 
       protected:
          BaseReference() = default;

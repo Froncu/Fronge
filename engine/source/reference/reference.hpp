@@ -128,8 +128,6 @@ namespace fro
          {
             return *static_cast<T* const>(referencable_);
          }
-
-         EventDispatcher<> reference_deleted_event{};
    };
 }
 

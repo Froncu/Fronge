@@ -17,7 +17,10 @@ namespace fro
    Referenceable::~Referenceable()
    {
       for (BaseReference* const reference : references_)
+      {
+         reference->reference_delete_event.notify();
          reference->referencable_ = nullptr;
+      }
    }
 
    Referenceable& Referenceable::operator=(Referenceable const&)
