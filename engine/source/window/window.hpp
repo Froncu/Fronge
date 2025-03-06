@@ -19,6 +19,8 @@ namespace fro
 {
    class Window final : public Referenceable
    {
+      friend class Renderer;
+
       public:
          FRO_API explicit Window(std::string_view title = "Fronge Window", Vector2<int> size = { 640, 480 });
 
@@ -30,13 +32,13 @@ namespace fro
          FRO_API Window& operator=(Window const& other);
          Window& operator=(Window&&) = default;
 
-         FRO_API void change_title(std::string_view title) const;
-         FRO_API void change_size(Vector2<int> size) const;
-         FRO_API void change_position(Vector2<int> position) const;
-         FRO_API void center() const;
-         FRO_API void change_fullscreen_mode(bool fullscreen) const;
-         FRO_API void change_resizability(bool resizable) const;
-         FRO_API void change_visibility(bool show) const;
+         FRO_API void change_title(std::string_view title);
+         FRO_API void change_size(Vector2<int> size);
+         FRO_API void change_position(Vector2<int> position);
+         FRO_API void center();
+         FRO_API void change_fullscreen_mode(bool fullscreen);
+         FRO_API void change_resizability(bool resizable);
+         FRO_API void change_visibility(bool show);
 
          FRO_API [[nodiscard]] std::uint32_t id() const;
          FRO_API [[nodiscard]] std::string_view title() const;

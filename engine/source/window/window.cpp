@@ -46,47 +46,47 @@ namespace fro
       return *this;
    }
 
-   void Window::change_title(std::string_view const title) const
+   void Window::change_title(std::string_view const title)
    {
       bool const succeeded{ SDL_SetWindowTitle(native_window_.get(), title.data()) };
       assert(succeeded, "failed to set Window{}'s title to {} ({})",
          id(), title, SDL_GetError());
    }
 
-   void Window::change_size(Vector2<int> const size) const
+   void Window::change_size(Vector2<int> const size)
    {
       bool const succeeded{ SDL_SetWindowSize(native_window_.get(), size.x, size.y) };
       assert(succeeded, "failed to set Window{}'s size to {}x{} ({})",
          id(), size.x, size.y, SDL_GetError());
    }
 
-   void Window::change_position(Vector2<int> position) const
+   void Window::change_position(Vector2<int> position)
    {
       bool const succeeded{ SDL_SetWindowPosition(native_window_.get(), position.x, position.y) };
       assert(succeeded, "failed to set Window{}'s position to {}x{} ({})",
          id(), position.x, position.y, SDL_GetError());
    }
 
-   void Window::center() const
+   void Window::center()
    {
       change_position({ SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED });
    }
 
-   void Window::change_fullscreen_mode(bool const fullscreen) const
+   void Window::change_fullscreen_mode(bool const fullscreen)
    {
       bool const succeeded{ SDL_SetWindowFullscreen(native_window_.get(), fullscreen) };
       assert(succeeded, "failed to set Window{}'s fullscreen to {} ({})",
          id(), fullscreen ? "fullscreen" : "windowed", SDL_GetError());
    }
 
-   void Window::change_resizability(bool const resizable) const
+   void Window::change_resizability(bool const resizable)
    {
       bool const succeeded{ SDL_SetWindowResizable(native_window_.get(), resizable) };
       assert(succeeded, "failed to set Window{}'s resizability to {} ({})",
          id(), resizable, SDL_GetError());
    }
 
-   void Window::change_visibility(bool const show) const
+   void Window::change_visibility(bool const show)
    {
       bool const succeeded{ show ? SDL_ShowWindow(native_window_.get()) : SDL_HideWindow(native_window_.get()) };
       assert(succeeded, "failed to set Window{}'s visibility to {} ({})",
