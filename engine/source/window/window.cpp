@@ -8,13 +8,13 @@ namespace fro
 {
    Window::Window(std::string_view title, Vector2<int> size, std::uint64_t flags, std::optional<Vector2<int>> const& position)
       : native_window_{
-         [title, size, flags]
+         [](auto&& title, auto&& size, auto&& flags)
          {
             if (not SDL_InitSubSystem(SDL_INIT_VIDEO))
                exception("failed to initialize the video subsystem ({})", SDL_GetError());
 
             return SDL_CreateWindow(title.data(), size.x, size.y, flags);
-         }(),
+         }(title, size, flags),
          [](SDL_Window* const window)
          {
             SDL_QuitSubSystem(SDL_INIT_VIDEO);
