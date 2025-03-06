@@ -13,6 +13,8 @@
 #include "logger/logger.hpp"
 #include "maths/arithmetic.hpp"
 #include "maths/vector2.hpp"
+#include "reference/reference.hpp"
+#include "reference/referenceable.hpp"
 #include "services/locator.hpp"
 #include "services/system_event_dispatcher/regular_system_event_dispatcher.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
