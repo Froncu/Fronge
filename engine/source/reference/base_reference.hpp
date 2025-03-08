@@ -24,7 +24,7 @@ namespace fro
          FRO_API void reset();
          FRO_API bool valid() const;
 
-         EventDispatcher<> reference_delete_event{};
+         EventDispatcher<> invalidate_event{};
 
       protected:
          BaseReference() = default;

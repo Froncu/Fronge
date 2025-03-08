@@ -27,7 +27,7 @@ namespace fro
          FRO_API Window(Window const& other);
          Window(Window&&) = default;
 
-         FRO_API ~Window() = default;
+         FRO_API virtual ~Window() override = default;
 
          FRO_API Window& operator=(Window const& other);
          Window& operator=(Window&&) = default;

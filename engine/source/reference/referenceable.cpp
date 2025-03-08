@@ -18,7 +18,7 @@ namespace fro
    {
       for (BaseReference* const reference : references_)
       {
-         reference->reference_delete_event.notify();
+         reference->invalidate_event.notify();
          reference->referencable_ = nullptr;
       }
    }
