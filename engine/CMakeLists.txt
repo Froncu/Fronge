@@ -5,8 +5,16 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/window/window.cpp
    source/logger/logger.cpp
    source/services/locator.cpp
+   source/renderer/renderer.cpp
+   source/resources/surface/surface.cpp
+   source/renderer/texture.cpp
+   source/services/locator.cpp
    source/reference/referenceable.cpp
-   source/reference/base_reference.cpp)
+   source/reference/base_reference.cpp
+   source/services/locator.cpp
+   source/window/renderer/renderer.cpp
+   source/resources/surface/surface.cpp
+   source/window/renderer/texture.cpp)
 
 target_include_directories(${FRO_ENGINE_NAME}
    PUBLIC source)
