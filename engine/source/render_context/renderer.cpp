@@ -2,7 +2,7 @@
 
 #include "renderer.hpp"
 #include "resources/surface/surface.hpp"
-#include "window/window.hpp"
+#include "window.hpp"
 
 namespace fro
 {
