@@ -1,5 +1,5 @@
-#ifndef WINDOW_EVENT_HPP
-#define WINDOW_EVENT_HPP
+#ifndef RENDER_CONTEXT_EVENT_HPP
+#define RENDER_CONTEXT_EVENT_HPP
 
 #include "core.hpp"
 #include "event.hpp"
@@ -8,14 +8,14 @@
 
 namespace fro
 {
-   struct WindowCloseEvent final
+   struct RenderContextCloseEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
       std::uint32_t const id;
    };
 
-   struct WindowResizeEvent final
+   struct RenderContextResizeEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
@@ -23,9 +23,9 @@ namespace fro
       Vector2<int> const size;
    };
 
-   using WindowEvent = Events<
-      WindowCloseEvent,
-      WindowResizeEvent>;
+   using RenderContextEvent = Events<
+      RenderContextCloseEvent,
+      RenderContextResizeEvent>;
 }
 
 #endif

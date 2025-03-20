@@ -5,6 +5,6 @@ namespace fro
 {
    void SystemEventDispatcher::poll_events()
    {
-      Logger::error("no provider set for SystemEventDispatcherService!");
+      Logger::error("no provider set for SystemEventDispatcher!");
    }
 }

@@ -1,14 +1,13 @@
 #ifndef REFERENCABLE_HPP
 #define REFERENCABLE_HPP
 
-#include "core.hpp"
-#include "froch.hpp"
+#include "base_reference.hpp"
 
 namespace fro
 {
    class Referenceable
    {
-      friend class BaseReference;
+      friend BaseReference;
 
       public:
          FRO_API virtual ~Referenceable();

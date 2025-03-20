@@ -22,8 +22,8 @@ namespace fro
          {
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
             {
-               WindowCloseEvent const event{ .id{ native_event.window.windowID } };
-               window_event.notify(event);
+               RenderContextCloseEvent const event{ .id{ native_event.window.windowID } };
+               render_context_event.notify(event);
                break;
             }
 

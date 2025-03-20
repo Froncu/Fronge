@@ -1,12 +1,14 @@
 add_library(${FRO_ENGINE_NAME} SHARED
-   source/events/window_event.cpp
-   source/services/system_event_dispatcher/system_event_dispatcher.cpp
-   source/services/system_event_dispatcher/regular_system_event_dispatcher.cpp
-   source/window/window.cpp
+   source/events/render_context_event.cpp
    source/logger/logger.cpp
-   source/services/locator.cpp
+   source/reference/base_reference.cpp
    source/reference/referenceable.cpp
-   source/reference/base_reference.cpp)
+   source/render_context/render_context.cpp
+   source/render_context/texture.cpp
+   source/resources/surface/surface.cpp
+   source/services/locator.cpp
+   source/services/system_event_dispatcher/regular_system_event_dispatcher.cpp
+   source/services/system_event_dispatcher/system_event_dispatcher.cpp)
 
 target_include_directories(${FRO_ENGINE_NAME}
    PUBLIC source)

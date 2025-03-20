@@ -3,7 +3,7 @@
 
 #include "core.hpp"
 #include "events/observer/event_dispatcher.hpp"
-#include "events/window_event.hpp"
+#include "events/render_context_event.hpp"
 
 namespace fro
 {
@@ -21,7 +21,7 @@ namespace fro
 
          FRO_API virtual void poll_events();
 
-         EventDispatcher<WindowEvent const> window_event{};
+         EventDispatcher<RenderContextEvent const> render_context_event{};
    };
 }
 
