@@ -98,7 +98,7 @@ namespace fro
       private:
          RenderContext(std::string_view title, Vector2<int> size,
             std::optional<Vector2<int>> const& position, std::uint64_t flags,
-            std::unordered_set<Texture> const& textures);
+            SDL_Renderer* renderer, std::unordered_set<Texture> const& textures);
 
          UniquePointer<SDL_Window> native_window_;
          UniquePointer<SDL_Renderer> native_renderer_;

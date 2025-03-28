@@ -8,7 +8,7 @@ namespace fro
 {
    RenderContext::RenderContext(std::string_view const title, Vector2<int> const size,
       std::optional<Vector2<int>> const& position, std::uint64_t const flags,
-      std::unordered_set<Texture> const& textures)
+      SDL_Renderer* renderer, std::unordered_set<Texture> const& textures)
       : native_window_{
          [](std::string_view const title, Vector2<int> const size, std::uint64_t const flags)
          {
@@ -53,17 +53,26 @@ namespace fro
    {
       if (position.has_value())
          change_position(*position);
+
+      if (renderer)
+      {
+         int width;
+         int height;
+         SDL_RendererLogicalPresentation scaling_mode;
+         SDL_GetRenderLogicalPresentation(renderer, &width, &height, &scaling_mode);
+         SDL_SetRenderLogicalPresentation(native_renderer_.get(), width, height, scaling_mode);
+      }
    }
 
    RenderContext::RenderContext(std::string_view const title, Vector2<int> const size)
-      : RenderContext(title, size, {}, {}, {})
+      : RenderContext(title, size, {}, {}, {}, {})
    {
    }
 
    RenderContext::RenderContext(RenderContext const& other)
       : RenderContext(other.title(), other.size(),
          other.position(), SDL_GetWindowFlags(other.native_window_.get()),
-         other.textures_)
+         other.native_renderer_.get(), other.textures_)
    {
    }
 
