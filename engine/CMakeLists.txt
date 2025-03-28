@@ -19,7 +19,7 @@ target_precompile_headers(${FRO_ENGINE_NAME}
 
 target_compile_definitions(${FRO_ENGINE_NAME}
    PRIVATE FRO_ENGINE
-   PUBLIC FRO_CONSOLE)
+   PUBLIC FRO_LOGGER)
 
 target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE SDL3::SDL3
