@@ -70,7 +70,7 @@ namespace fro
          }
 
          template <Arithmetic OtherComponent>
-         [[nodiscard]] Matrix<ResultingComponent<Component, OtherComponent>> operator*(
+         [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> operator*(
             Vector3<OtherComponent> const& vector) const
          {
             return
