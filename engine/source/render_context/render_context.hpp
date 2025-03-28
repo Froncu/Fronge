@@ -61,7 +61,7 @@ namespace fro
          FRO_API void change_resizability(bool resizable);
          FRO_API void change_visibility(bool show);
          FRO_API void change_resolution(Vector2<int> resolution);
-         FRO_API void change_scaling_mode(ScalingMode resolution);
+         FRO_API void change_scaling_mode(ScalingMode scaling_mode);
 
          FRO_API [[nodiscard]] std::uint32_t id() const;
          FRO_API [[nodiscard]] std::string_view title() const;
