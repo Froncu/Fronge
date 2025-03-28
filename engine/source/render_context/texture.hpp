@@ -57,9 +57,9 @@ struct std::equal_to<fro::Texture>
 {
    using is_transparent = void;
 
-   [[nodiscard]] bool operator()(fro::Texture const& texture_a, fro::Texture const& texture_b) const noexcept
+   [[nodiscard]] bool operator()(fro::Texture const& texture0, fro::Texture const& texture1) const noexcept
    {
-      return texture_a.hash() == texture_b.hash();
+      return texture0.hash() == texture1.hash();
    }
 
    [[nodiscard]] bool operator()(fro::Texture const& texture, fro::Surface const& surface) const noexcept
