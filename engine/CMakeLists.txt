@@ -1,6 +1,7 @@
 add_library(${FRO_ENGINE_NAME} SHARED
    source/events/render_context_event.cpp
    source/logger/logger.cpp
+   source/maths/transform_matrix.cpp
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp
    source/render_context/render_context.cpp
