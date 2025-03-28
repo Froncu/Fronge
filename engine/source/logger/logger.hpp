@@ -16,7 +16,7 @@ namespace fro
          static constexpr void info(std::format_string<Arguments...> const format,
             Arguments&&... arguments)
          {
-            log(ENGINE ? "1;2;37;40" : "1;37;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
+            log(ENGINE ? "1;2;36;40" : "1;36;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
          }
 
          template <typename... Arguments>
