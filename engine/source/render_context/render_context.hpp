@@ -24,6 +24,15 @@ namespace fro
    class RenderContext final : public Referenceable
    {
       public:
+         enum class ScalingMode
+         {
+            NONE,
+            STRETCH,
+            LETTERBOX,
+            OVERSCAN,
+            INTEGER_SCALE
+         };
+
          FRO_API explicit RenderContext(std::string_view title = "Application", Vector2<int> size = { 640, 480 });
 
          FRO_API RenderContext(RenderContext const& other);
@@ -51,6 +60,8 @@ namespace fro
          FRO_API void change_fullscreen_mode(bool fullscreen);
          FRO_API void change_resizability(bool resizable);
          FRO_API void change_visibility(bool show);
+         FRO_API void change_resolution(Vector2<int> resolution);
+         FRO_API void change_scaling_mode(ScalingMode resolution);
 
          FRO_API [[nodiscard]] std::uint32_t id() const;
          FRO_API [[nodiscard]] std::string_view title() const;
@@ -59,6 +70,8 @@ namespace fro
          FRO_API [[nodiscard]] bool fullscreen() const;
          FRO_API [[nodiscard]] bool resizable() const;
          FRO_API [[nodiscard]] bool visible() const;
+         FRO_API [[nodiscard]] Vector2<int> resolution() const;
+         FRO_API [[nodiscard]] ScalingMode scaling_mode() const;
 
          EventDispatcher<> close_event{};
          EventListener<RenderContextEvent const> on_render_context_event

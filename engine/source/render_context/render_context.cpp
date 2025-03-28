@@ -13,11 +13,11 @@ namespace fro
          [](std::string_view const title, Vector2<int> const size, std::uint64_t const flags)
          {
             bool const succeeded{ SDL_InitSubSystem(SDL_INIT_VIDEO) };
-            assert(succeeded, "failed to initialize the video subsystem ({})",
+            assert(succeeded, "failed to initialize the SDL video subsystem ({})",
                SDL_GetError());
 
             SDL_Window* const native_window{ SDL_CreateWindow(title.data(), size.x, size.y, flags) };
-            assert(native_window, "failed to create a window ({})",
+            assert(native_window, "failed to create an SDL window ({})",
                SDL_GetError());
             return native_window;
          }(title, size, flags),
@@ -32,7 +32,7 @@ namespace fro
          {
             // NOTE: not initializing the video subsystem here because it's already initialized by the window
             SDL_Renderer* const native_renderer{ SDL_CreateRenderer(native_window, nullptr) };
-            assert(native_renderer, "failed to create a renderer ({})",
+            assert(native_renderer, "failed to create an SDL renderer ({})",
                SDL_GetError());
             return native_renderer;
          }(native_window_.get()),
@@ -253,14 +253,46 @@ namespace fro
          id(), show ? "show" : "hidden", SDL_GetError());
    }
 
-   bool RenderContext::fullscreen() const
+   SDL_RendererLogicalPresentation scaling_mode_to_sdl(RenderContext::ScalingMode const scaling_mode)
    {
-      return SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_FULLSCREEN;
+      switch (scaling_mode)
+      {
+         case RenderContext::ScalingMode::STRETCH:
+            return SDL_LOGICAL_PRESENTATION_STRETCH;
+
+         case RenderContext::ScalingMode::OVERSCAN:
+            return SDL_LOGICAL_PRESENTATION_OVERSCAN;
+
+         case RenderContext::ScalingMode::LETTERBOX:
+            return SDL_LOGICAL_PRESENTATION_LETTERBOX;
+
+         case RenderContext::ScalingMode::INTEGER_SCALE:
+            return SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
+
+         default:
+            return SDL_LOGICAL_PRESENTATION_DISABLED;
+      }
    }
 
-   bool RenderContext::visible() const
+   void RenderContext::change_resolution(Vector2<int> const resolution)
    {
-      return not(SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_HIDDEN);
+      ScalingMode const current_scaling_mode{ scaling_mode() };
+      if (current_scaling_mode == ScalingMode::NONE)
+         Logger::warn("RenderContext{}'s scaling mode is NONE; "
+            "changing the resolution will not have any effect until the scaling mode is changed",
+            id());
+
+      SDL_SetRenderLogicalPresentation(native_renderer_.get(),
+         resolution.x, resolution.y,
+         scaling_mode_to_sdl(current_scaling_mode));
+   }
+
+   void RenderContext::change_scaling_mode(ScalingMode const scaling_mode)
+   {
+      auto const [resolution_width, resolution_height]{ resolution() };
+      SDL_SetRenderLogicalPresentation(native_renderer_.get(),
+         resolution_width, resolution_height,
+         scaling_mode_to_sdl(scaling_mode));
    }
 
    std::uint32_t RenderContext::id() const
@@ -295,5 +327,45 @@ namespace fro
          id(), SDL_GetError());
 
       return position;
+   }
+
+   bool RenderContext::fullscreen() const
+   {
+      return SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_FULLSCREEN;
+   }
+
+   bool RenderContext::visible() const
+   {
+      return not(SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_HIDDEN);
+   }
+
+   Vector2<int> RenderContext::resolution() const
+   {
+      Vector2<int> resolution;
+      SDL_GetRenderLogicalPresentation(native_renderer_.get(), &resolution.x, &resolution.y, nullptr);
+      return resolution;
+   }
+
+   RenderContext::ScalingMode RenderContext::scaling_mode() const
+   {
+      SDL_RendererLogicalPresentation native_scaling_mode;
+      SDL_GetRenderLogicalPresentation(native_renderer_.get(), nullptr, nullptr, &native_scaling_mode);
+      switch (native_scaling_mode)
+      {
+         case SDL_LOGICAL_PRESENTATION_STRETCH:
+            return ScalingMode::STRETCH;
+
+         case SDL_LOGICAL_PRESENTATION_LETTERBOX:
+            return ScalingMode::LETTERBOX;
+
+         case SDL_LOGICAL_PRESENTATION_OVERSCAN:
+            return ScalingMode::OVERSCAN;
+
+         case SDL_LOGICAL_PRESENTATION_INTEGER_SCALE:
+            return ScalingMode::INTEGER_SCALE;
+
+         default:
+            return ScalingMode::NONE;
+      }
    }
 }
