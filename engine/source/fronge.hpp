@@ -13,6 +13,7 @@
 #include "logger/logger.hpp"
 #include "maths/arithmetic.hpp"
 #include "maths/matrix.hpp"
+#include "maths/rectangle.hpp"
 #include "maths/resulting_component.hpp"
 #include "maths/transform_matrix.hpp"
 #include "maths/vector2.hpp"
