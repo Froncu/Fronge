@@ -109,7 +109,8 @@ namespace fro
          id(), SDL_GetError());
    }
 
-   void RenderContext::render(Reference<Surface const> const& surface)
+   void RenderContext::render(Reference<Surface const> const& surface, TransformMatrix const& transform,
+      Rectangle<int> source_rectangle)
    {
       if (not surface.valid())
          exception("the Surface passed to RenderContext{} is invalid",
@@ -121,7 +122,79 @@ namespace fro
          exception("attempted to render a Texture which was not uploaded to RenderContext{}",
             id());
 
-      bool const succeeded{ SDL_RenderTexture(native_renderer_.get(), texture->native_texture_.get(), nullptr, nullptr) };
+      auto const [surface_width, surface_height]{ surface->size() };
+
+      if (not source_rectangle.width or not source_rectangle.height)
+      {
+         source_rectangle.x = 0;
+         source_rectangle.y = 0;
+         source_rectangle.width = surface_width;
+         source_rectangle.height = surface_height;
+      }
+
+      SDL_FColor constexpr vertex_color{
+         .r{ 1.0f },
+         .g{ 1.0f },
+         .b{ 1.0f },
+         .a{ 1.0f }
+      };
+
+      Vector2 const top_left_texture{
+         static_cast<float>(source_rectangle.x) / surface_width,
+         static_cast<float>(source_rectangle.y) / surface_height
+      };
+
+      Vector2 const bottom_right_texture{
+         static_cast<float>(source_rectangle.x + source_rectangle.width) / surface_width,
+         static_cast<float>(source_rectangle.y + source_rectangle.height) / surface_height,
+      };
+
+      Vector2 const half_source_size{ source_rectangle.width / 2.0f, source_rectangle.height / 2.0f };
+      std::array<SDL_Vertex, 4> vertices{
+         {
+            {
+               .position = { -half_source_size.x, -half_source_size.y },
+               .color = vertex_color,
+               .tex_coord = { top_left_texture.x, top_left_texture.y }
+            },
+            {
+               .position = { half_source_size.x, -half_source_size.y },
+               .color = vertex_color,
+               .tex_coord = { bottom_right_texture.x, top_left_texture.y }
+            },
+            {
+               .position = { half_source_size.x, half_source_size.y },
+               .color = vertex_color,
+               .tex_coord = { bottom_right_texture.x, bottom_right_texture.y }
+            },
+            {
+               .position = { -half_source_size.x, half_source_size.y },
+               .color = vertex_color,
+               .tex_coord = { top_left_texture.x, bottom_right_texture.y }
+            }
+         }
+      };
+
+      for (SDL_Vertex& vertex : vertices)
+      {
+         Vector3<double> position{ vertex.position.x, vertex.position.y, 1.0 };
+
+         position = transform.transformation() * position;
+         vertex.position.x = static_cast<float>(std::floor(position.x));
+         vertex.position.y = static_cast<float>(std::floor(position.y));
+      }
+
+      std::array constexpr indices
+      {
+         0, 1, 2,
+         2, 3, 0
+      };;
+
+      bool const succeeded{
+         SDL_RenderGeometry(native_renderer_.get(), texture->native_texture_.get(),
+            vertices.data(), vertices.size(),
+            indices.data(), indices.size())
+      };
       assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
          id(), SDL_GetError());
    }

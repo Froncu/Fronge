@@ -5,6 +5,8 @@
 #include "events/observer/event_dispatcher.hpp"
 #include "events/render_context_event.hpp"
 #include "froch.hpp"
+#include "maths/rectangle.hpp"
+#include "maths/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
@@ -36,7 +38,8 @@ namespace fro
          FRO_API bool unload_texture(Reference<Surface const> const& surface);
 
          FRO_API void clear();
-         FRO_API void render(Reference<Surface const> const& surface);
+         FRO_API void render(Reference<Surface const> const& surface, TransformMatrix const& transform = {},
+            Rectangle<int> source_rectangle = {});
          FRO_API void present();
 
          // NOTE: these functions can be made constant since they are not modifying any data members,
