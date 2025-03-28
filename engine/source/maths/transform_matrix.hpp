@@ -21,7 +21,6 @@ namespace fro
          FRO_API [[nodiscard]] TransformMatrix operator*(TransformMatrix const& other) const;
          FRO_API TransformMatrix& operator*=(TransformMatrix const& other);
          FRO_API [[nodiscard]] bool operator==(TransformMatrix const& other) const;
-         FRO_API [[nodiscard]] explicit operator Matrix<double> const&() const;
 
          FRO_API void translate(Vector2<double> translation);
          FRO_API void rotate(double rotation_radians);
@@ -31,6 +30,7 @@ namespace fro
          FRO_API void change_rotation(double rotation_radians);
          FRO_API void change_scale(Vector2<double> scale);
 
+         FRO_API [[nodiscard]] Matrix<double> const& transformation() const;
          FRO_API [[nodiscard]] Vector2<double> translation() const;
          FRO_API [[nodiscard]] double rotation() const;
          FRO_API [[nodiscard]] Vector2<double> scale() const;
@@ -39,7 +39,6 @@ namespace fro
          FRO_API TransformMatrix& inverse();
 
       private:
-         [[nodiscard]] Matrix<double> const& transformation() const;
          void calculate_rotation() const;
          void calculate_scale() const;
 

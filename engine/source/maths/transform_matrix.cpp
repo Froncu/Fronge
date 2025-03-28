@@ -25,11 +25,6 @@ namespace fro
       return transformation() == other.transformation();
    }
 
-   TransformMatrix::operator Matrix<double> const&() const
-   {
-      return transformation();
-   }
-
    void TransformMatrix::translate(Vector2<double> const translation)
    {
       transformation_[0][2] += translation.x;
@@ -82,6 +77,29 @@ namespace fro
       is_transformation_dirty_ = true;
    }
 
+   Matrix<double> const& TransformMatrix::transformation() const
+   {
+      if (is_transformation_dirty_)
+      {
+         if (are_trigonometric_values_dirty_)
+         {
+            rotation_cosine_ = std::cos(rotation_);
+            rotation_sine_ = std::sin(rotation_);
+
+            are_trigonometric_values_dirty_ = false;
+         }
+
+         transformation_[0][0] = scale_.x * rotation_cosine_;
+         transformation_[0][1] = -scale_.y * rotation_sine_;
+         transformation_[1][0] = scale_.x * rotation_sine_;
+         transformation_[1][1] = scale_.y * rotation_cosine_;
+
+         is_transformation_dirty_ = false;
+      }
+
+      return transformation_;
+   }
+
    Vector2<double> TransformMatrix::translation() const
    {
       return { transformation_[0][2], transformation_[1][2] };
@@ -117,29 +135,6 @@ namespace fro
    TransformMatrix& TransformMatrix::inverse()
    {
       return *this = inversed();
-   }
-
-   Matrix<double> const& TransformMatrix::transformation() const
-   {
-      if (is_transformation_dirty_)
-      {
-         if (are_trigonometric_values_dirty_)
-         {
-            rotation_cosine_ = std::cos(rotation_);
-            rotation_sine_ = std::sin(rotation_);
-
-            are_trigonometric_values_dirty_ = false;
-         }
-
-         transformation_[0][0] = scale_.x * rotation_cosine_;
-         transformation_[0][1] = -scale_.y * rotation_sine_;
-         transformation_[1][0] = scale_.x * rotation_sine_;
-         transformation_[1][1] = scale_.y * rotation_cosine_;
-
-         is_transformation_dirty_ = false;
-      }
-
-      return transformation_;
    }
 
    void TransformMatrix::calculate_rotation() const
