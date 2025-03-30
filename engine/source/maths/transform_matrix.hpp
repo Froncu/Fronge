@@ -10,7 +10,7 @@ namespace fro
    {
       public:
          TransformMatrix() = default;
-         FRO_API TransformMatrix(Matrix<double> const& transformation);
+         FRO_API explicit TransformMatrix(Matrix<double> const& transformation);
          TransformMatrix(TransformMatrix const&) = default;
          TransformMatrix(TransformMatrix&&) noexcept = default;
 

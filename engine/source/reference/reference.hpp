@@ -43,35 +43,35 @@ namespace fro
          Reference() = default;
 
          template <ReferenceConstructable<T> Other>
-         Reference(Other* const referencable)
+         explicit Reference(Other* const referencable)
             : BaseReference(referencable)
          {
          }
 
          template <ReferenceConstructable<T> Other>
-         Reference(Other& referencable)
+         explicit Reference(Other& referencable)
             : BaseReference(referencable)
          {
          }
 
-         Reference(T* const referencable)
+         explicit Reference(T* const referencable)
             : BaseReference(referencable)
          {
          }
 
-         Reference(T& referencable)
-            : BaseReference(referencable)
-         {
-         }
-
-         template <ReferenceConstructable<T> Other>
-         Reference(Reference<Other> const* const referencable)
+         explicit Reference(T& referencable)
             : BaseReference(referencable)
          {
          }
 
          template <ReferenceConstructable<T> Other>
-         Reference(Reference<Other> const& referencable)
+         explicit Reference(Reference<Other> const* const referencable)
+            : BaseReference(referencable)
+         {
+         }
+
+         template <ReferenceConstructable<T> Other>
+         explicit Reference(Reference<Other> const& referencable)
             : BaseReference(referencable)
          {
          }

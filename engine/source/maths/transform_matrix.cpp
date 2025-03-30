@@ -12,7 +12,7 @@ namespace fro
 
    TransformMatrix TransformMatrix::operator*(TransformMatrix const& other) const
    {
-      return transformation() * other.transformation();
+      return static_cast<TransformMatrix>(transformation() * other.transformation());
    }
 
    TransformMatrix& TransformMatrix::operator*=(TransformMatrix const& other)
@@ -129,7 +129,7 @@ namespace fro
 
    TransformMatrix TransformMatrix::inversed() const
    {
-      return transformation().inversed();
+      return static_cast<TransformMatrix>(transformation().inversed());
    }
 
    TransformMatrix& TransformMatrix::inverse()
