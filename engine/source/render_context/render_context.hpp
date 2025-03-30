@@ -51,8 +51,6 @@ namespace fro
             Rectangle<int> source_rectangle = {});
          FRO_API void present();
 
-         // NOTE: these functions can be made constant since they are not modifying any data members,
-         // but the actual window is in fact modified, so the choice is to not make the constant
          FRO_API void change_title(std::string_view title);
          FRO_API void change_size(Vector2<int> size);
          FRO_API void change_position(Vector2<int> position);
