@@ -33,22 +33,22 @@ namespace fro
             log(ENGINE ? "1;2;31;40" : "1;31;40", LOGGER_NAME, format, std::forward<Arguments>(arguments)...);
          }
 
-         template <typename Type>
-         static constexpr void info(Type&& value)
+         template <typename Message>
+         static constexpr void info(Message&& value)
          {
-            info("{}", std::forward<Type>(value));
+            info("{}", std::forward<Message>(value));
          }
 
-         template <typename Type>
-         static constexpr void warn(Type&& value)
+         template <typename Message>
+         static constexpr void warn(Message&& value)
          {
-            warn("{}", std::forward<Type>(value));
+            warn("{}", std::forward<Message>(value));
          }
 
-         template <typename Type>
-         static constexpr void error(Type&& value)
+         template <typename Message>
+         static constexpr void error(Message&& value)
          {
-            error("{}", std::forward<Type>(value));
+            error("{}", std::forward<Message>(value));
          }
 
          Logger() = delete;
@@ -68,12 +68,11 @@ namespace fro
          {
             if constexpr (LOGGER)
             {
-               auto const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
-               std::tm local_time;
-               localtime_s(&local_time, &now);
+               std::time_t const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
+               std::tm const* const local_time{ std::localtime(&now) };
 
                std::ostringstream time_stream;
-               time_stream << std::put_time(&local_time, "%H:%M:%S");
+               time_stream << std::put_time(local_time, "%H:%M:%S");
 
                std::lock_guard const lock{ output_mutex_ };
                std::cout
