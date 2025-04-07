@@ -201,8 +201,8 @@ namespace fro
 
       bool const succeeded{
          SDL_RenderGeometry(native_renderer_.get(), texture->native_texture_.get(),
-            vertices.data(), vertices.size(),
-            indices.data(), indices.size())
+            vertices.data(),static_cast<int>(vertices.size()),
+            indices.data(), static_cast<int>(indices.size()))
       };
       assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
          id(), SDL_GetError());

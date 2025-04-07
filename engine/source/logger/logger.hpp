@@ -69,10 +69,11 @@ namespace fro
             if constexpr (LOGGER)
             {
                std::time_t const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
-               std::tm const* const local_time{ std::localtime(&now) };
-
+               std::tm local_time;
+               localtime_s(&local_time, &now);
+               
                std::ostringstream time_stream;
-               time_stream << std::put_time(local_time, "%H:%M:%S");
+               time_stream << std::put_time(&local_time, "%H:%M:%S");
 
                std::lock_guard const lock{ output_mutex_ };
                std::cout
