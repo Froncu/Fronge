@@ -44,10 +44,20 @@ namespace fro
       std::string const& positive_action_name_y,
       std::string const& negative_action_name_y)
    {
-      Vector2 const action_axis_2d{
+      Vector2 action_axis_2d{
          actions_[positive_action_name_x].raw_strength - actions_[negative_action_name_x].raw_strength,
          actions_[positive_action_name_y].raw_strength - actions_[negative_action_name_y].raw_strength
       };
+
+      double const action_axis_2d_magnitude{ action_axis_2d.magnitude() };
+
+      if (action_axis_2d_magnitude == 0.0)
+         return action_axis_2d;
+
+      action_axis_2d /= action_axis_2d_magnitude;
+
+      if (action_axis_2d_magnitude > 1.0)
+         return action_axis_2d;
 
       std::array const action_deadzones{
          actions_[positive_action_name_x].deadzone,
@@ -60,18 +70,7 @@ namespace fro
          std::reduce(action_deadzones.begin(), action_deadzones.end()) / action_deadzones.size()
       };
 
-      double const action_axis_2d_magnitude{ action_axis_2d.magnitude() };
-
-      if (action_axis_2d_magnitude <= avarage_deadzone_magnitude)
-         return {};
-
-      if (action_axis_2d_magnitude > 1.0)
-         return action_axis_2d / action_axis_2d_magnitude;
-
-      double const inverse_lerped_length{
-         (action_axis_2d_magnitude - avarage_deadzone_magnitude) / (1.0 - avarage_deadzone_magnitude)
-      };
-      return action_axis_2d * (inverse_lerped_length / action_axis_2d_magnitude);
+      return action_axis_2d * deadzoned_strength(action_axis_2d_magnitude, avarage_deadzone_magnitude);
    }
 
    bool InputManager::input_just_pressed(Input const& input)
@@ -153,7 +152,7 @@ namespace fro
 
    double InputManager::deadzoned_strength(double const strength, double const deadzone)
    {
-      return strength <= deadzone ? 0.0 : (strength - deadzone) / (1.0 - deadzone);
+      return strength < deadzone ? 0.0 : (strength - deadzone) / (1.0 - deadzone);
    }
 
    bool InputManager::is_just_pressed(double const absolute_strength, double const relative_strength)
