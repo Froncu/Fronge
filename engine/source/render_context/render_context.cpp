@@ -289,7 +289,7 @@ namespace fro
    {
       ScalingMode const current_scaling_mode{ scaling_mode() };
       if (current_scaling_mode == ScalingMode::NONE)
-         Logger::warn("RenderContext{}'s scaling mode is NONE; "
+         Locator::get<Logger>().warning("RenderContext{}'s scaling mode is NONE; "
             "changing the resolution will not have any effect until the scaling mode is changed",
             id());
 
@@ -338,7 +338,7 @@ namespace fro
       }
 
       if (not SDL_SetRenderVSync(native_renderer_.get(), native_presenting_mode))
-         Logger::warn("failed to change RenderContext{}'s presenting mode to {} ({})",
+         Locator::get<Logger>().warning("failed to change RenderContext{}'s presenting mode to {} ({})",
             id(), static_cast<int>(presenting_mode), SDL_GetError());
    }
 

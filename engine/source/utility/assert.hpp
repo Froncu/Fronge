@@ -2,7 +2,8 @@
 #define ASSERT_HPP
 
 #include "constants.hpp"
-#include "logger/logger.hpp"
+#include "services/locator.hpp"
+#include "services/logger/logger.hpp"
 
 namespace fro
 {
@@ -16,7 +17,7 @@ namespace fro
          if (condition)
             return;
 
-         Logger::error(format, std::forward<Arguments>(arguments)...);
+         Locator::get<Logger>().error(format, std::forward<Arguments>(arguments)...);
          std::abort();
       }
    }

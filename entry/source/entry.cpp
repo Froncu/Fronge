@@ -9,9 +9,6 @@ namespace fro
 
 int main(int, char**)
 {
-   fro::Logger::info("welcome to Fronge!\n");
-
    fro::create_application()->run();
-
    return 0;
 }
