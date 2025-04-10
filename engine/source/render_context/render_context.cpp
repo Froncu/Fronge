@@ -85,9 +85,7 @@ namespace fro
       if (this == &other)
          return *this;
 
-      *this = RenderContext{ other };
-
-      return *this;
+      return *this = RenderContext{ other };
    }
 
    bool RenderContext::upload_texture(Reference<Surface const> const& surface)
