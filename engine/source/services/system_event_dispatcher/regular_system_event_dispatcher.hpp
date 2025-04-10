@@ -19,6 +19,17 @@ namespace fro
          RegularSystemEventManager& operator=(RegularSystemEventManager&&) = default;
 
          FRO_API virtual void poll_events() override;
+
+      private:
+         struct GamepadStickValues final
+         {
+            std::int16_t left_stick_x{};
+            std::int16_t left_stick_y{};
+            std::int16_t right_stick_x{};
+            std::int16_t right_stick_y{};
+         };
+
+         std::unordered_map<std::uint32_t, GamepadStickValues> previous_gamepad_stick_values_{};
    };
 }
 

@@ -40,6 +40,7 @@ namespace fro
 
             case SDL_EVENT_GAMEPAD_REMOVED:
                input_event.notify(GamepadDisconnectedEvent{ .id{ native_event.gdevice.which } });
+               previous_gamepad_stick_values_.erase(native_event.gdevice.which);
                break;
 
             case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
@@ -56,12 +57,57 @@ namespace fro
 
             case SDL_EVENT_GAMEPAD_AXIS_MOTION:
             {
-               auto&& [axis, value]{ convert_sdl_controller_axis(native_event.gaxis.axis, native_event.gaxis.value) };
+               std::int16_t* previous_stick_value;
+               auto& [left_stick_x, left_stick_y, right_stick_x, right_stick_y]{
+                  previous_gamepad_stick_values_[native_event.gaxis.which]
+               };
+
+               switch (native_event.gaxis.axis)
+               {
+                  case SDL_GAMEPAD_AXIS_LEFTX:
+                     previous_stick_value = &left_stick_x;
+                     break;
+
+                  case SDL_GAMEPAD_AXIS_LEFTY:
+                     previous_stick_value = &left_stick_y;
+                     break;
+
+                  case SDL_GAMEPAD_AXIS_RIGHTX:
+                     previous_stick_value = &right_stick_x;
+                     break;
+
+                  case SDL_GAMEPAD_AXIS_RIGHTY:
+                     previous_stick_value = &right_stick_y;
+                     break;
+
+                  default:
+                     previous_stick_value = nullptr;
+                     break;
+               }
+
+               if (previous_stick_value)
+               {
+                  if ((*previous_stick_value < 0 and native_event.gaxis.value > 0) or
+                     (*previous_stick_value > 0 and native_event.gaxis.value < 0))
+                  {
+                     GamepadAxis const opposite_axis{
+                        convert_sdl_controller_axis(native_event.gaxis.axis, -native_event.gaxis.value)
+                     };
+
+                     input_event.notify(GamepadAxisEvent{
+                        .input{ native_event.gaxis.which, opposite_axis },
+                        .value{}
+                     });
+                  }
+
+                  *previous_stick_value = native_event.gaxis.value;
+               };
+
+               auto&& [axis, value]{ convert_sdl_controller_axis_value(native_event.gaxis.axis, native_event.gaxis.value) };
                input_event.notify(GamepadAxisEvent{
                   .input{ native_event.gaxis.which, axis },
                   .value{ value }
                });
-               break;
             }
 
             default:
