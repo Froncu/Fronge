@@ -1,6 +1,7 @@
 add_library(${FRO_ENGINE_NAME} SHARED
    source/events/input_event.cpp
    source/events/render_context_event.cpp
+   source/input/gamepad.cpp
    source/input/input_conversions.cpp
    source/input/input_manager.cpp
    source/logger/logger.cpp

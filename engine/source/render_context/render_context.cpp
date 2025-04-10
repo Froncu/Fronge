@@ -12,7 +12,7 @@ namespace fro
       : native_window_{
          [](std::string_view const title, Vector2<int> const size, std::uint64_t const flags)
          {
-            bool const succeeded{ SDL_InitSubSystem(SDL_INIT_VIDEO) };
+            bool const succeeded{ SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD) };
             assert(succeeded, "failed to initialize the SDL video subsystem ({})",
                SDL_GetError());
 
@@ -23,7 +23,7 @@ namespace fro
          }(title, size, flags),
          [](SDL_Window* const window)
          {
-            SDL_QuitSubSystem(SDL_INIT_VIDEO);
+            SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD);
             SDL_DestroyWindow(window);
          }
       }
