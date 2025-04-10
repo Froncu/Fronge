@@ -2,6 +2,7 @@
 #define SYTEM_EVENT_DISPATCHER_HPP
 
 #include "core.hpp"
+#include "events/input_event.hpp"
 #include "events/observer/event_dispatcher.hpp"
 #include "events/render_context_event.hpp"
 
@@ -22,6 +23,7 @@ namespace fro
          FRO_API virtual void poll_events();
 
          EventDispatcher<RenderContextEvent const> render_context_event{};
+         EventDispatcher<InputEvent const> input_event{};
    };
 }
 

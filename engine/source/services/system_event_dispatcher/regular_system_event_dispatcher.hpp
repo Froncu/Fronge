@@ -1,5 +1,5 @@
-#ifndef SYTEM_EVENT_MANAGER_HPP
-#define SYTEM_EVENT_MANAGER_HPP
+#ifndef RESGULAR_SYTEM_EVENT_DISPATCHER_HPP
+#define RESGULAR_SYTEM_EVENT_DISPATCHER_HPP
 
 #include "core.hpp"
 #include "system_event_dispatcher.hpp"
