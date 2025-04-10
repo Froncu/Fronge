@@ -636,44 +636,39 @@ namespace fro
       }
    }
 
-   std::pair<GamepadAxis, double> convert_sdl_controller_axis(Uint8 const axis, Sint16 const value)
+   GamepadAxis convert_sdl_controller_axis(Uint8 axis, Sint16 value)
    {
-      GamepadAxis converted_axis;
-
       switch (axis)
       {
          case SDL_GAMEPAD_AXIS_LEFTX:
-            converted_axis = value >= 0 ? GamepadAxis::LEFT_STICK_EAST : GamepadAxis::LEFT_STICK_WEST;
-            break;
+            return value >= 0 ? GamepadAxis::LEFT_STICK_EAST : GamepadAxis::LEFT_STICK_WEST;
 
          case SDL_GAMEPAD_AXIS_LEFTY:
-            converted_axis = value >= 0 ? GamepadAxis::LEFT_STICK_SOUTH : GamepadAxis::LEFT_STICK_NORTH;
-            break;
+            return value >= 0 ? GamepadAxis::LEFT_STICK_SOUTH : GamepadAxis::LEFT_STICK_NORTH;
 
          case SDL_GAMEPAD_AXIS_RIGHTX:
-            converted_axis = value >= 0 ? GamepadAxis::RIGHT_STICK_EAST : GamepadAxis::RIGHT_STICK_WEST;
-            break;
+            return value >= 0 ? GamepadAxis::RIGHT_STICK_EAST : GamepadAxis::RIGHT_STICK_WEST;
 
          case SDL_GAMEPAD_AXIS_RIGHTY:
-            converted_axis = value >= 0 ? GamepadAxis::RIGHT_STICK_SOUTH : GamepadAxis::RIGHT_STICK_NORTH;
-            break;
+            return value >= 0 ? GamepadAxis::RIGHT_STICK_SOUTH : GamepadAxis::RIGHT_STICK_NORTH;
 
          case SDL_GAMEPAD_AXIS_LEFT_TRIGGER:
-            converted_axis = GamepadAxis::LEFT_TRIGGER;
-            break;
+            return GamepadAxis::LEFT_TRIGGER;
 
          case SDL_GAMEPAD_AXIS_RIGHT_TRIGGER:
-            converted_axis = GamepadAxis::RIGHT_TRIGGER;
-            break;
+            return GamepadAxis::RIGHT_TRIGGER;
 
          default:
-            return { GamepadAxis::UNKNOWN, 0.0 };
+            return GamepadAxis::UNKNOWN;
       }
+   }
 
+   std::pair<GamepadAxis, double> convert_sdl_controller_axis_value(Uint8 const axis, Sint16 const value)
+   {
       auto constexpr highest_axis_value{ std::numeric_limits<decltype(value)>::max() };
       auto constexpr lowest_axis_value{ std::numeric_limits<decltype(value)>::lowest() };
       return {
-         converted_axis,
+         convert_sdl_controller_axis(axis, value),
          static_cast<double>(value) / (value >= 0 ? highest_axis_value : lowest_axis_value)
       };
    }
