@@ -33,6 +33,16 @@ namespace fro
             INTEGER_SCALE
          };
 
+         enum class PresentingMode
+         {
+            DIRECT,
+            ADAPTIVE,
+            SINGLE_BUFFERED,
+            DOUBLE_BUFFERED,
+            TRIPLE_BUFFERED,
+            QUADRUPLE_BUFFERED
+         };
+
          FRO_API explicit RenderContext(std::string_view title = "Application", Vector2<int> size = { 640, 480 });
 
          FRO_API RenderContext(RenderContext const& other);
@@ -60,6 +70,7 @@ namespace fro
          FRO_API void change_visibility(bool show);
          FRO_API void change_resolution(Vector2<int> resolution);
          FRO_API void change_scaling_mode(ScalingMode scaling_mode);
+         FRO_API void change_present_mode(PresentingMode presenting_mode);
 
          FRO_API [[nodiscard]] std::uint32_t id() const;
          FRO_API [[nodiscard]] std::string_view title() const;

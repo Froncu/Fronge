@@ -61,6 +61,10 @@ namespace fro
          SDL_RendererLogicalPresentation scaling_mode;
          SDL_GetRenderLogicalPresentation(renderer, &width, &height, &scaling_mode);
          SDL_SetRenderLogicalPresentation(native_renderer_.get(), width, height, scaling_mode);
+
+         int vsync;
+         SDL_GetRenderVSync(native_renderer_.get(), &vsync);
+         SDL_SetRenderVSync(native_renderer_.get(), vsync);
       }
    }
 
@@ -302,6 +306,42 @@ namespace fro
       SDL_SetRenderLogicalPresentation(native_renderer_.get(),
          resolution_width, resolution_height,
          scaling_mode_to_sdl(scaling_mode));
+   }
+
+   void RenderContext::change_present_mode(PresentingMode presenting_mode)
+   {
+      int native_presenting_mode;
+
+      switch (presenting_mode)
+      {
+         case PresentingMode::ADAPTIVE:
+            native_presenting_mode = SDL_RENDERER_VSYNC_ADAPTIVE;
+            break;
+
+         case PresentingMode::SINGLE_BUFFERED:
+            native_presenting_mode = 1;
+            break;
+
+         case PresentingMode::DOUBLE_BUFFERED:
+            native_presenting_mode = 2;
+            break;
+
+         case PresentingMode::TRIPLE_BUFFERED:
+            native_presenting_mode = 3;
+            break;
+
+         case PresentingMode::QUADRUPLE_BUFFERED:
+            native_presenting_mode = 4;
+            break;
+
+         default:
+            native_presenting_mode = SDL_RENDERER_VSYNC_DISABLED;
+            break;
+      }
+
+      if (not SDL_SetRenderVSync(native_renderer_.get(), native_presenting_mode))
+         Logger::warn("failed to change RenderContext{}'s presenting mode to {} ({})",
+            id(), static_cast<int>(presenting_mode), SDL_GetError());
    }
 
    std::uint32_t RenderContext::id() const
