@@ -2,6 +2,7 @@
 #define LOGGER_HPP
 
 #include "constants.hpp"
+#include "core.hpp"
 #include "froch.hpp"
 
 namespace fro
@@ -62,7 +63,7 @@ namespace fro
          }
 
       private:
-         virtual void log(Type type, bool engine_level, std::string_view message);
+         FRO_API virtual void log(Type type, bool engine_level, std::string_view message);
    };
 }
 

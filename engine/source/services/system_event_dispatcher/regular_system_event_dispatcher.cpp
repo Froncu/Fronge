@@ -91,20 +91,14 @@ namespace fro
                {
                   if ((*previous_stick_value < 0 and native_event.gaxis.value > 0) or
                      (*previous_stick_value > 0 and native_event.gaxis.value < 0))
-                  {
-                     GamepadAxis const opposite_axis{
-                        convert_sdl_controller_axis(native_event.gaxis.axis, -native_event.gaxis.value)
-                     };
-
                      input_event.notify(GamepadAxisEvent{
                         .id{ native_event.gaxis.which },
-                        .axis{ opposite_axis },
+                        .axis{ convert_sdl_controller_axis(native_event.gaxis.axis, -native_event.gaxis.value) },
                         .value{}
                      });
-                  }
 
                   *previous_stick_value = native_event.gaxis.value;
-               };
+               }
 
                auto&& [axis, value]{ convert_sdl_controller_axis_value(native_event.gaxis.axis, native_event.gaxis.value) };
                input_event.notify(GamepadAxisEvent{

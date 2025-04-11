@@ -127,7 +127,7 @@ namespace fro
          };
 
       private:
-         void set_input_strength(Input const& input, double new_strength);
+         FRO_API void set_input_strength(Input const& input, double new_strength);
 
          [[nodiscard]] static double deadzoned_strength(double strength, double deadzone);
          [[nodiscard]] static bool is_just_pressed(double absolute_strength, double relative_strength);
