@@ -38,18 +38,18 @@ namespace fro
    std::string GamepadButtonDownEvent::get_log_string() const
    {
       return std::format("Gamepad with ID {} button down event",
-         input.first);
+         id);
    }
 
    std::string GamepadButtonUpEvent::get_log_string() const
    {
       return std::format("Gamepad with ID {} button up event",
-         input.first);
+         id);
    }
 
    std::string GamepadAxisEvent::get_log_string() const
    {
       return std::format("Gamepad with ID {} axis event",
-         input.first);
+         id);
    }
 }

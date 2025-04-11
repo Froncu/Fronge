@@ -54,21 +54,24 @@ namespace fro
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      GamepadButtonInput const input;
+      std::uint32_t const id;
+      GamepadButton const button;
    };
 
    struct GamepadButtonUpEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      GamepadButtonInput const input;
+      std::uint32_t const id;
+      GamepadButton const button;
    };
 
    struct GamepadAxisEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      GamepadAxisInput const input;
+      std::uint32_t const id;
+      GamepadAxis const axis;
       double const value;
    };
 

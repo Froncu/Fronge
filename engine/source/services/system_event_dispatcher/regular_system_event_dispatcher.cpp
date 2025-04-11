@@ -45,13 +45,15 @@ namespace fro
 
             case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
                input_event.notify(GamepadButtonDownEvent{
-                  .input{ native_event.gbutton.which, convert_sdl_controller_button(native_event.gbutton.button) }
+                  .id{ native_event.gbutton.which },
+                  .button{ convert_sdl_controller_button(native_event.gbutton.button) }
                });
                break;
 
             case SDL_EVENT_GAMEPAD_BUTTON_UP:
                input_event.notify(GamepadButtonUpEvent{
-                  .input{ native_event.gbutton.which, convert_sdl_controller_button(native_event.gbutton.button) }
+                  .id{ native_event.gbutton.which },
+                  .button{ convert_sdl_controller_button(native_event.gbutton.button) }
                });
                break;
 
@@ -95,7 +97,8 @@ namespace fro
                      };
 
                      input_event.notify(GamepadAxisEvent{
-                        .input{ native_event.gaxis.which, opposite_axis },
+                        .id{ native_event.gaxis.which },
+                        .axis{ opposite_axis },
                         .value{}
                      });
                   }
@@ -105,7 +108,8 @@ namespace fro
 
                auto&& [axis, value]{ convert_sdl_controller_axis_value(native_event.gaxis.axis, native_event.gaxis.value) };
                input_event.notify(GamepadAxisEvent{
-                  .input{ native_event.gaxis.which, axis },
+                  .id{ native_event.gaxis.which },
+                  .axis{ axis },
                   .value{ value }
                });
             }

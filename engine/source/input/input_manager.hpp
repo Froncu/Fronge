@@ -103,19 +103,19 @@ namespace fro
 
                [this](GamepadButtonDownEvent const& event)
                {
-                  set_input_strength(event.input, 1.0);
+                  set_input_strength(event.button, 1.0);
                   return true;
                },
 
                [this](GamepadButtonUpEvent const& event)
                {
-                  set_input_strength(event.input, 0.0);
+                  set_input_strength(event.button, 0.0);
                   return true;
                },
 
                [this](GamepadAxisEvent const& event)
                {
-                  set_input_strength(event.input, event.value);
+                  set_input_strength(event.axis, event.value);
                   return true;
                },
 

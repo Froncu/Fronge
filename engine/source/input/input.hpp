@@ -2,7 +2,6 @@
 #define INPUT_HPP
 
 #include "froch.hpp"
-#include "utility/lazy_hasher.hpp"
 
 namespace fro
 {
@@ -290,32 +289,11 @@ namespace fro
       LEFT_TRIGGER
    };
 
-   using GamepadButtonInput = std::pair<std::uint32_t, GamepadButton>;
-   using GamepadAxisInput = std::pair<std::uint32_t, GamepadAxis>;
-
    using Input = std::variant<
       MouseButton,
       Key,
-      GamepadButtonInput,
-      GamepadAxisInput>;
+      GamepadButton,
+      GamepadAxis>;
 }
-
-template <>
-struct std::hash<fro::GamepadButtonInput>
-{
-   std::size_t operator()(fro::GamepadButtonInput const& input) const noexcept
-   {
-      return fro::LazyHasher{}(input.first, input.second);
-   }
-};
-
-template <>
-struct std::hash<fro::GamepadAxisInput>
-{
-   std::size_t operator()(fro::GamepadAxisInput const& input) const noexcept
-   {
-      return fro::LazyHasher{}(input.first, input.second);
-   }
-};
 
 #endif
