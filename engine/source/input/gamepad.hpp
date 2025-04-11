@@ -24,6 +24,7 @@ namespace fro
          FRO_API Gamepad& operator=(Gamepad const& other);
          FRO_API Gamepad& operator=(Gamepad&&) = default;
 
+         FRO_API bool rumble(std::uint16_t low_frequency, std::uint16_t high_frequency, std::uint32_t duration_milliseconds);
          FRO_API std::uint32_t id() const;
 
       private:

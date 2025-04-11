@@ -35,6 +35,16 @@ namespace fro
       return *this = Gamepad{ other.id_ };
    }
 
+   bool Gamepad::rumble(std::uint16_t const low_frequency, std::uint16_t const high_frequency,
+      std::uint32_t const duration_milliseconds)
+   {
+      if (SDL_RumbleGamepad(native_gamepad_.get(), low_frequency, high_frequency, duration_milliseconds))
+         return true;
+
+      Locator::get<Logger>().warning("failed to rumble Gamepad{} ({})", id(), SDL_GetError());
+      return false;
+   }
+
    std::uint32_t Gamepad::id() const
    {
       return id_;
