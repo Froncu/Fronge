@@ -90,6 +90,14 @@ namespace fro
             event_listener.dispatchers_.erase(this);
          }
 
+         void remove_all_listeners()
+         {
+            for (auto const listener : listeners_)
+               listener->dispatchers_.erase(this);
+
+            listeners_.clear();
+         }
+
       private:
          std::unordered_set<EventListenerType*> listeners_{};
    };

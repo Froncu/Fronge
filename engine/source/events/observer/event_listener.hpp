@@ -113,6 +113,14 @@ namespace fro
             event_dispatcher.listeners_.erase(this);
          }
 
+         void unsubscribe_all()
+         {
+            for (auto const dispatcher : dispatchers_)
+               dispatcher->listeners_.erase(this);
+
+            dispatchers_.clear();
+         }
+
       private:
          CallbackType on_notify_;
          std::unordered_set<EventDispatcherType*> dispatchers_{};
