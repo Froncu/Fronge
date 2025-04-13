@@ -10,6 +10,8 @@
 #include "events/observer/event_listener.hpp"
 #include "events/render_context_event.hpp"
 #include "froch.hpp"
+#include "identifier/id.hpp"
+#include "identifier/id_generator.hpp"
 #include "input/gamepad.hpp"
 #include "input/input.hpp"
 #include "input/input_manager.hpp"
