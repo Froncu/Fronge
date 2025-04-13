@@ -39,13 +39,13 @@ namespace fro
 
       public:
          InputManager() = default;
-         InputManager(InputManager const&) = delete;
-         InputManager(InputManager&&) noexcept = delete;
+         InputManager(InputManager const&) = default;
+         InputManager(InputManager&&) = default;
 
          ~InputManager() = default;
 
-         InputManager& operator=(InputManager const&) = delete;
-         InputManager& operator=(InputManager&&) noexcept = delete;
+         InputManager& operator=(InputManager const&) = default;
+         InputManager& operator=(InputManager&&) = default;
 
          FRO_API void process_input_continous();
 
@@ -63,15 +63,15 @@ namespace fro
             std::string const& positive_action_name_y,
             std::string const& negative_action_name_y);
 
-         FRO_API [[nodiscard]] bool input_just_pressed(Input const& input);
-         FRO_API [[nodiscard]] bool action_just_pressed(std::string const& action_name);
-         FRO_API [[nodiscard]] bool input_just_released(Input const& input);
-         FRO_API [[nodiscard]] bool action_just_released(std::string const& action_name);
+         FRO_API [[nodiscard]] bool input_just_activated(Input const& input);
+         FRO_API [[nodiscard]] bool action_just_activated(std::string const& action_name);
+         FRO_API [[nodiscard]] bool input_just_deactivated(Input const& input);
+         FRO_API [[nodiscard]] bool action_just_deactivated(std::string const& action_name);
 
-         EventDispatcher<Input const, double const> input_pressed_event{};
-         EventDispatcher<Input const, double const> input_released_event{};
-         EventDispatcher<std::string const, double const> action_pressed_event{};
-         EventDispatcher<std::string const, double const> action_released_event{};
+         EventDispatcher<Input const, double const> input_activated_event{};
+         EventDispatcher<Input const, double const> input_deactivated_event{};
+         EventDispatcher<std::string const, double const> action_activated_event{};
+         EventDispatcher<std::string const, double const> action_deactivated_event{};
 
          EventListener<InputEvent const> on_input_event
          {
@@ -130,8 +130,8 @@ namespace fro
          FRO_API void set_input_strength(Input const& input, double new_strength);
 
          [[nodiscard]] static double deadzoned_strength(double strength, double deadzone);
-         [[nodiscard]] static bool is_just_pressed(double absolute_strength, double relative_strength);
-         [[nodiscard]] static bool is_just_released(double absolute_strength, double relative_strength);
+         [[nodiscard]] static bool is_just_activated(double absolute_strength, double relative_strength);
+         [[nodiscard]] static bool is_just_deactivated(double absolute_strength, double relative_strength);
          [[nodiscard]] static StrengthInfo strength_info(double absolute_strength, double relative_strength);
 
          std::unordered_map<Input, InputInfo> inputs_{};

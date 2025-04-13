@@ -73,32 +73,32 @@ namespace fro
       return action_axis_2d * deadzoned_strength(action_axis_2d_magnitude, avarage_deadzone_magnitude);
    }
 
-   bool InputManager::input_just_pressed(Input const& input)
+   bool InputManager::input_just_activated(Input const& input)
    {
       auto const& [absoluteStrength, relativeStrength]{ inputs_[input] };
 
-      return is_just_pressed(absoluteStrength, relativeStrength);
+      return is_just_activated(absoluteStrength, relativeStrength);
    }
 
-   bool InputManager::action_just_pressed(std::string const& action_name)
+   bool InputManager::action_just_activated(std::string const& action_name)
    {
       auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone]{ actions_[action_name] };
 
-      return is_just_pressed(absoluteStrength, relativeStrength);
+      return is_just_activated(absoluteStrength, relativeStrength);
    }
 
-   bool InputManager::input_just_released(Input const& input)
+   bool InputManager::input_just_deactivated(Input const& input)
    {
       auto const& [absoluteStrength, relativeStrength]{ inputs_[input] };
 
-      return is_just_released(absoluteStrength, relativeStrength);
+      return is_just_deactivated(absoluteStrength, relativeStrength);
    }
 
-   bool InputManager::action_just_released(std::string const& action_name)
+   bool InputManager::action_just_deactivated(std::string const& action_name)
    {
       auto const& [boundInputs, rawStrength, absoluteStrength, relativeStrength, deadzone]{ actions_[action_name] };
 
-      return is_just_released(absoluteStrength, relativeStrength);
+      return is_just_deactivated(absoluteStrength, relativeStrength);
    }
 
    void InputManager::set_input_strength(Input const& input, double const new_strength)
@@ -112,9 +112,9 @@ namespace fro
          did_just_change)
       {
          if (is_active)
-            input_pressed_event.notify(input, absolute_strength);
+            input_activated_event.notify(input, absolute_strength);
          else
-            input_released_event.notify(input, absolute_strength);
+            input_deactivated_event.notify(input, absolute_strength);
       }
 
       for (auto&& [action_name, action_info] : actions_)
@@ -143,9 +143,9 @@ namespace fro
             }; didJustChange)
             {
                if (isActive)
-                  action_pressed_event.notify(action_name, absolute_strength);
+                  action_activated_event.notify(action_name, absolute_strength);
                else
-                  action_released_event.notify(action_name, absolute_strength);
+                  action_deactivated_event.notify(action_name, absolute_strength);
             }
          }
    }
@@ -155,13 +155,13 @@ namespace fro
       return strength < deadzone ? 0.0 : (strength - deadzone) / (1.0 - deadzone);
    }
 
-   bool InputManager::is_just_pressed(double const absolute_strength, double const relative_strength)
+   bool InputManager::is_just_activated(double const absolute_strength, double const relative_strength)
    {
       auto const [is_active, did_just_change]{ strength_info(absolute_strength, relative_strength) };
       return is_active and did_just_change;
    }
 
-   bool InputManager::is_just_released(double const absolute_strength, double const relative_strength)
+   bool InputManager::is_just_deactivated(double const absolute_strength, double const relative_strength)
    {
       auto const [is_active, did_just_change]{ strength_info(absolute_strength, relative_strength) };
       return not is_active and did_just_change;
