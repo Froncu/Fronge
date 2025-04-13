@@ -203,7 +203,7 @@ namespace fro
 
       bool const succeeded{
          SDL_RenderGeometry(native_renderer_.get(), texture->native_texture_.get(),
-            vertices.data(),static_cast<int>(vertices.size()),
+            vertices.data(), static_cast<int>(vertices.size()),
             indices.data(), static_cast<int>(indices.size()))
       };
       assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
@@ -293,17 +293,23 @@ namespace fro
             "changing the resolution will not have any effect until the scaling mode is changed",
             id());
 
-      SDL_SetRenderLogicalPresentation(native_renderer_.get(),
-         resolution.x, resolution.y,
-         scaling_mode_to_sdl(current_scaling_mode));
+      bool const succeeded{
+         SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution.x, resolution.y,
+            scaling_mode_to_sdl(current_scaling_mode))
+      };
+      assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
+         id(), SDL_GetError());
    }
 
    void RenderContext::change_scaling_mode(ScalingMode const scaling_mode)
    {
       auto const [resolution_width, resolution_height]{ resolution() };
-      SDL_SetRenderLogicalPresentation(native_renderer_.get(),
-         resolution_width, resolution_height,
-         scaling_mode_to_sdl(scaling_mode));
+      bool const succeeded{
+         SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution_width, resolution_height,
+            scaling_mode_to_sdl(scaling_mode))
+      };
+      assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
+         id(), SDL_GetError());
    }
 
    void RenderContext::change_present_mode(PresentingMode presenting_mode)
@@ -389,14 +395,20 @@ namespace fro
    Vector2<int> RenderContext::resolution() const
    {
       Vector2<int> resolution;
-      SDL_GetRenderLogicalPresentation(native_renderer_.get(), &resolution.x, &resolution.y, nullptr);
+      bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), &resolution.x, &resolution.y, nullptr) };
+      assert(succeeded, "failed to retrieve RenderContext{}'s resolution ({})",
+         id(), SDL_GetError());
+
       return resolution;
    }
 
    RenderContext::ScalingMode RenderContext::scaling_mode() const
    {
       SDL_RendererLogicalPresentation native_scaling_mode;
-      SDL_GetRenderLogicalPresentation(native_renderer_.get(), nullptr, nullptr, &native_scaling_mode);
+      bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), nullptr, nullptr, &native_scaling_mode) };
+      assert(succeeded, "failed to retrieve RenderContext{}'s scaling mode ({})",
+         id(), SDL_GetError());
+
       switch (native_scaling_mode)
       {
          case SDL_LOGICAL_PRESENTATION_STRETCH:
