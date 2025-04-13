@@ -13,27 +13,28 @@ namespace fro
       friend IDGenerator;
 
       public:
-         static std::uint32_t constexpr INVALID_ID{ std::numeric_limits<std::uint32_t>::max() };
+         using InternalValue = IDGenerator::InternalValue;
+         static InternalValue constexpr INVALID_ID{ IDGenerator::INVALID_ID };
+         static InternalValue constexpr MAX_ID{ IDGenerator::MAX_ID };
 
+         FRO_API ID(ID const& other);
          FRO_API ID(ID&& other) noexcept;
 
          FRO_API ~ID();
 
+         FRO_API ID& operator=(ID const& other);
          FRO_API ID& operator=(ID&& other) noexcept;
-         FRO_API [[nodiscard]] explicit operator std::uint32_t() const;
+         FRO_API [[nodiscard]] explicit operator InternalValue() const;
          FRO_API [[nodiscard]] bool operator==(ID const& other) const;
          FRO_API [[nodiscard]] std::partial_ordering operator<=>(ID const& other) const;
 
          FRO_API [[nodiscard]] Reference<IDGenerator> generator() const;
 
       private:
-         ID(Reference<IDGenerator> generator, std::uint32_t id);
-         ID(ID const&) = delete;
-
-         ID& operator=(ID const&) = delete;
+         ID(IDGenerator& generator, InternalValue id);
 
          Reference<IDGenerator> generator_;
-         std::uint32_t id_;
+         InternalValue value_;
    };
 }
 
@@ -47,10 +48,10 @@ struct std::formatter<fro::ID>
 
    static auto format(fro::ID const& id, std::format_context& context)
    {
-      if (static_cast<std::uint32_t>(id) == fro::ID::INVALID_ID)
+      if (static_cast<fro::ID::InternalValue>(id) == fro::ID::INVALID_ID)
          return std::format_to(context.out(), "{}", "INVALID");
 
-      return std::format_to(context.out(), "{}", static_cast<std::uint32_t>(id));
+      return std::format_to(context.out(), "{}", static_cast<fro::ID::InternalValue>(id));
    }
 };
 

@@ -4,11 +4,6 @@
 
 namespace fro
 {
-   IDGenerator::IDGenerator()
-      : highest_taken_id_{ ID::INVALID_ID }
-   {
-   }
-
    IDGenerator::IDGenerator(IDGenerator&& other) noexcept
       : Referenceable(std::move(other))
       , highest_taken_id_{ other.highest_taken_id_ }
@@ -33,10 +28,20 @@ namespace fro
 
    ID IDGenerator::generate()
    {
-      std::uint32_t id;
+      return { *this, internal_generate() };
+   }
+
+   IDGenerator::InternalValue IDGenerator::internal_generate()
+   {
+      InternalValue id;
 
       if (free_ids_.empty())
+      {
+         if (highest_taken_id_ == ID::MAX_ID)
+            exception("the ID generator has run out of IDs");
+
          id = ++highest_taken_id_;
+      }
       else
       {
          auto const lowest_free_id{ --free_ids_.end() };
@@ -44,11 +49,6 @@ namespace fro
          free_ids_.erase(lowest_free_id);
       }
 
-      return { Reference{ this }, id };
-   }
-
-   std::uint32_t IDGenerator::highest_taken_id() const
-   {
-      return highest_taken_id_;
+      return id;
    }
 }

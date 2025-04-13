@@ -3,30 +3,34 @@
 
 namespace fro
 {
-   ID::ID(Reference<IDGenerator> generator, std::uint32_t const id)
-      : generator_{ std::move(generator) }
-      , id_{ id }
+   ID::ID(IDGenerator& generator, InternalValue const id)
+      : generator_{ generator }
+      , value_{ id }
+   {
+   }
+
+   ID::ID(ID const& other)
+      : generator_{ other.generator_ }
+      , value_{ generator_.valid() ? generator_->internal_generate() : INVALID_ID }
    {
    }
 
    ID::ID(ID&& other) noexcept
       : generator_{ std::move(other.generator_) }
-      , id_{ other.id_ }
+      , value_{ other.value_ }
    {
-      other.id_ = INVALID_ID;
+      other.value_ = INVALID_ID;
    }
 
    ID::~ID()
    {
-      if (not generator_.valid())
+      if (value_ == INVALID_ID or not generator_.valid())
          return;
 
-      std::uint32_t& highest_taken_id{ generator_->highest_taken_id_ };
+      InternalValue& highest_taken_id{ generator_->highest_taken_id_ };
       auto& free_ids{ generator_->free_ids_ };
 
-      if (id_ not_eq highest_taken_id)
-         free_ids.insert(id_);
-      else
+      if (value_ == highest_taken_id)
       {
          --highest_taken_id;
 
@@ -41,6 +45,19 @@ namespace fro
             --highest_taken_id;
          }
       }
+      else
+         free_ids.insert(value_);
+   }
+
+   ID& ID::operator=(ID const& other)
+   {
+      if (this == &other)
+         return *this;
+
+      generator_ = other.generator_;
+      value_ = generator_.valid() ? generator_->internal_generate() : INVALID_ID;
+
+      return *this;
    }
 
    ID& ID::operator=(ID&& other) noexcept
@@ -49,16 +66,16 @@ namespace fro
          return *this;
 
       generator_ = std::move(other.generator_);
-      id_ = other.id_;
+      value_ = other.value_;
 
-      other.id_ = INVALID_ID;
+      other.value_ = INVALID_ID;
 
       return *this;
    }
 
-   ID::operator std::uint32_t() const
+   ID::operator InternalValue() const
    {
-      return id_;
+      return value_;
    }
 
    bool ID::operator==(ID const& other) const
@@ -68,7 +85,7 @@ namespace fro
 
       return
          generator_ == other.generator_ and
-         id_ == other.id_;
+         value_ == other.value_;
    }
 
    std::partial_ordering ID::operator<=>(ID const& other) const
@@ -77,7 +94,7 @@ namespace fro
          return std::partial_ordering::unordered;
 
       if (generator_ == other.generator_)
-         return id_ <=> other.id_;
+         return value_ <=> other.value_;
 
       return generator_ <=> other.generator_;
    }

@@ -13,25 +13,27 @@ namespace fro
    {
       friend ID;
 
+      using InternalValue = std::uint32_t;
+      static InternalValue constexpr INVALID_ID{ std::numeric_limits<InternalValue>::max() };
+      static InternalValue constexpr MAX_ID{ INVALID_ID - 1 };
+
       public:
-         FRO_API IDGenerator();
+         IDGenerator() = default;
+         IDGenerator(IDGenerator const&) = delete;
          FRO_API IDGenerator(IDGenerator&& other) noexcept;
 
          virtual ~IDGenerator() override = default;
 
+         IDGenerator& operator=(IDGenerator const&) = delete;
          FRO_API IDGenerator& operator=(IDGenerator&& other) noexcept;
 
          FRO_API [[nodiscard]] ID generate();
-         FRO_API [[nodiscard]] std::uint32_t highest_taken_id() const;
 
       private:
-         IDGenerator(IDGenerator const&) = delete;
+         [[nodiscard]] InternalValue internal_generate();
 
-         IDGenerator& operator=(IDGenerator const&) = delete;
-
-         // NOTE: not initializing here as id.hpp cannot be included here
-         std::uint32_t highest_taken_id_;
-         std::set<std::uint32_t, std::greater<std::uint32_t>> free_ids_{};
+         InternalValue highest_taken_id_{ INVALID_ID };
+         std::set<InternalValue, std::greater<InternalValue>> free_ids_{};
    };
 }
 
