@@ -17,10 +17,7 @@ namespace fro
    Referenceable::~Referenceable()
    {
       for (BaseReference* const reference : references_)
-      {
-         reference->invalidate_event.notify();
          reference->referencable_ = nullptr;
-      }
    }
 
    Referenceable& Referenceable::operator=(Referenceable const&)

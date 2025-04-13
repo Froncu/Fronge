@@ -24,8 +24,6 @@ namespace fro
          FRO_API void reset();
          FRO_API bool valid() const;
 
-         EventDispatcher<> invalidate_event{};
-
       protected:
          BaseReference() = default;
          FRO_API explicit BaseReference(Referenceable const* referencable);
