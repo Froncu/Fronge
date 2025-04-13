@@ -22,7 +22,7 @@ namespace fro
          FRO_API IDGenerator& operator=(IDGenerator&& other) noexcept;
 
          FRO_API [[nodiscard]] ID generate();
-         FRO_API [[nodiscard]] std::size_t highest_taken_id() const;
+         FRO_API [[nodiscard]] std::uint32_t highest_taken_id() const;
 
       private:
          IDGenerator(IDGenerator const&) = delete;
@@ -30,8 +30,8 @@ namespace fro
          IDGenerator& operator=(IDGenerator const&) = delete;
 
          // NOTE: not initializing here as id.hpp cannot be included here
-         std::size_t highest_taken_id_;
-         std::set<std::size_t, std::greater<std::size_t>> free_ids_{};
+         std::uint32_t highest_taken_id_;
+         std::set<std::uint32_t, std::greater<std::uint32_t>> free_ids_{};
    };
 }
 

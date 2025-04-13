@@ -33,7 +33,7 @@ namespace fro
 
    ID IDGenerator::generate()
    {
-      std::size_t id;
+      std::uint32_t id;
 
       if (free_ids_.empty())
          id = ++highest_taken_id_;
@@ -47,7 +47,7 @@ namespace fro
       return { Reference{ this }, id };
    }
 
-   std::size_t IDGenerator::highest_taken_id() const
+   std::uint32_t IDGenerator::highest_taken_id() const
    {
       return highest_taken_id_;
    }

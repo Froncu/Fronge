@@ -3,7 +3,7 @@
 
 namespace fro
 {
-   ID::ID(Reference<IDGenerator> generator, std::size_t const id)
+   ID::ID(Reference<IDGenerator> generator, std::uint32_t const id)
       : generator_{ std::move(generator) }
       , id_{ id }
    {
@@ -21,7 +21,7 @@ namespace fro
       if (not generator_.valid())
          return;
 
-      std::size_t& highest_taken_id{ generator_->highest_taken_id_ };
+      std::uint32_t& highest_taken_id{ generator_->highest_taken_id_ };
       auto& free_ids{ generator_->free_ids_ };
 
       if (id_ not_eq highest_taken_id)
@@ -56,7 +56,7 @@ namespace fro
       return *this;
    }
 
-   ID::operator std::size_t() const
+   ID::operator std::uint32_t() const
    {
       return id_;
    }
