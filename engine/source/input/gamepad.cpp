@@ -7,8 +7,7 @@
 namespace fro
 {
    Gamepad::Gamepad(std::uint32_t const id)
-      : id_{ id }
-      , native_gamepad_{
+      : native_gamepad_{
          [](std::uint32_t const id)
          {
             SDL_Gamepad* native_gamepad{ SDL_OpenGamepad(id) };
@@ -16,14 +15,14 @@ namespace fro
                id, SDL_GetError());
 
             return native_gamepad;
-         }(id_),
+         }(id),
          SDL_CloseGamepad
       }
    {
    }
 
    Gamepad::Gamepad(Gamepad const& other)
-      : Gamepad(other.id_)
+      : Gamepad(other.id())
    {
    }
 
@@ -32,7 +31,7 @@ namespace fro
       if (this == &other)
          return *this;
 
-      return *this = Gamepad{ other.id_ };
+      return *this = Gamepad{ other.id() };
    }
 
    bool Gamepad::rumble(std::uint16_t const low_frequency, std::uint16_t const high_frequency,
@@ -47,6 +46,10 @@ namespace fro
 
    std::uint32_t Gamepad::id() const
    {
-      return id_;
+      std::uint32_t const id{ SDL_GetGamepadID(native_gamepad_.get()) };
+      assert(id, "failed to get the ID of a Gamepad ({})",
+         SDL_GetError());
+
+      return id;
    }
 }

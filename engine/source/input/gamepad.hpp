@@ -28,7 +28,6 @@ namespace fro
          FRO_API std::uint32_t id() const;
 
       private:
-         std::uint32_t id_;
          UniquePointer<SDL_Gamepad> native_gamepad_;
    };
 }
