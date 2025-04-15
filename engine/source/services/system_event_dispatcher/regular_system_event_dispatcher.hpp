@@ -17,11 +17,11 @@ namespace fro
       };
 
       public:
-         FRO_API RegularSystemEventManager();
+         RegularSystemEventManager() = default;
          RegularSystemEventManager(RegularSystemEventManager const&) = default;
          RegularSystemEventManager(RegularSystemEventManager&&) = default;
 
-         FRO_API virtual ~RegularSystemEventManager() override;
+         virtual ~RegularSystemEventManager() override = default;
 
          RegularSystemEventManager& operator=(RegularSystemEventManager const&) = default;
          RegularSystemEventManager& operator=(RegularSystemEventManager&&) = default;

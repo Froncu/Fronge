@@ -1,7 +1,7 @@
 #ifndef FRONGE_HPP
 #define FRONGE_HPP
 
-#include "application.hpp"
+#include "application/application.hpp"
 #include "constants.hpp"
 #include "core.hpp"
 #include "events/event.hpp"

@@ -6,16 +6,6 @@
 
 namespace fro
 {
-   RegularSystemEventManager::RegularSystemEventManager()
-   {
-      SDL_InitSubSystem(SDL_INIT_EVENTS);
-   }
-
-   RegularSystemEventManager::~RegularSystemEventManager()
-   {
-      SDL_QuitSubSystem(SDL_INIT_EVENTS);
-   }
-
    void RegularSystemEventManager::poll_events()
    {
       SDL_Event native_event;
