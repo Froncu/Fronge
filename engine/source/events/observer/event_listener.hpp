@@ -96,6 +96,15 @@ namespace fro
             return *this;
          }
 
+         EventListener& operator=(CallbackType on_notify)
+         {
+            if (not on_notify)
+               exception("the on_notify callback cannot be a nullptr!");
+
+            on_notify_ = std::move(on_notify);
+            return *this;
+         }
+
          bool operator()(Payload&... payload)
          {
             return on_notify_(payload...);
