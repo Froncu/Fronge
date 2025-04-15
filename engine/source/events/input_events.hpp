@@ -75,13 +75,19 @@ namespace fro
       double const value;
    };
 
-   using InputEvent = Events<
+   using MouseButtonEvent = Events<
       MouseButtonDownEvent,
-      MouseButtonUpEvent,
+      MouseButtonUpEvent>;
+
+   using KeyEvent = Events<
       KeyDownEvent,
-      KeyUpEvent,
+      KeyUpEvent>;
+
+   using GamepadConnectionEvent = Events<
       GamepadConnectedEvent,
-      GamepadDisconnectedEvent,
+      GamepadDisconnectedEvent>;
+
+   using GamepadInputEvent = Events<
       GamepadButtonDownEvent,
       GamepadButtonUpEvent,
       GamepadAxisEvent>;

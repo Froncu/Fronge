@@ -2,7 +2,7 @@
 #define SYTEM_EVENT_DISPATCHER_HPP
 
 #include "core.hpp"
-#include "events/input_event.hpp"
+#include "events/input_events.hpp"
 #include "events/observer/event_dispatcher.hpp"
 #include "events/render_context_event.hpp"
 
@@ -23,7 +23,10 @@ namespace fro
          FRO_API virtual void poll_events();
 
          EventDispatcher<RenderContextEvent const> render_context_event{};
-         EventDispatcher<InputEvent const> input_event{};
+         EventDispatcher<MouseButtonEvent const> mouse_button_event{};
+         EventDispatcher<KeyEvent const> key_event{};
+         EventDispatcher<GamepadConnectionEvent const> gamepad_connection_event{};
+         EventDispatcher<GamepadInputEvent const> gamepad_input_event{};
    };
 }
 

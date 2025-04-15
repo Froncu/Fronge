@@ -17,31 +17,31 @@ namespace fro
                break;
 
             case SDL_EVENT_KEY_DOWN:
-               input_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
+               key_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
                break;
 
             case SDL_EVENT_KEY_UP:
-               input_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
+               key_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
                break;
 
             case SDL_EVENT_GAMEPAD_ADDED:
-               input_event.notify(GamepadConnectedEvent{ .id{ native_event.gdevice.which } });
+               gamepad_connection_event.notify(GamepadConnectedEvent{ .id{ native_event.gdevice.which } });
                break;
 
             case SDL_EVENT_GAMEPAD_REMOVED:
-               input_event.notify(GamepadDisconnectedEvent{ .id{ native_event.gdevice.which } });
+               gamepad_connection_event.notify(GamepadDisconnectedEvent{ .id{ native_event.gdevice.which } });
                previous_gamepad_stick_values_.erase(native_event.gdevice.which);
                break;
 
             case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-               input_event.notify(GamepadButtonDownEvent{
+               gamepad_input_event.notify(GamepadButtonDownEvent{
                   .id{ native_event.gbutton.which },
                   .button{ convert_sdl_controller_button(native_event.gbutton.button) }
                });
                break;
 
             case SDL_EVENT_GAMEPAD_BUTTON_UP:
-               input_event.notify(GamepadButtonUpEvent{
+               gamepad_input_event.notify(GamepadButtonUpEvent{
                   .id{ native_event.gbutton.which },
                   .button{ convert_sdl_controller_button(native_event.gbutton.button) }
                });
@@ -81,7 +81,7 @@ namespace fro
                {
                   if ((*previous_stick_value < 0 and native_event.gaxis.value > 0) or
                      (*previous_stick_value > 0 and native_event.gaxis.value < 0))
-                     input_event.notify(GamepadAxisEvent{
+                     gamepad_input_event.notify(GamepadAxisEvent{
                         .id{ native_event.gaxis.which },
                         .axis{ convert_sdl_controller_axis(native_event.gaxis.axis, -native_event.gaxis.value) },
                         .value{}
@@ -91,7 +91,7 @@ namespace fro
                }
 
                auto&& [axis, value]{ convert_sdl_controller_axis_value(native_event.gaxis.axis, native_event.gaxis.value) };
-               input_event.notify(GamepadAxisEvent{
+               gamepad_input_event.notify(GamepadAxisEvent{
                   .id{ native_event.gaxis.which },
                   .axis{ axis },
                   .value{ value }

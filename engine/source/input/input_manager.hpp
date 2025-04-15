@@ -2,7 +2,7 @@
 #define INPUT_MANAGER_HPP
 
 #include "core.hpp"
-#include "events/input_event.hpp"
+#include "events/input_events.hpp"
 #include "events/observer/event_listener.hpp"
 #include "froch.hpp"
 #include "input/input.hpp"
@@ -73,7 +73,7 @@ namespace fro
          EventDispatcher<std::string const, double const> action_activated_event{};
          EventDispatcher<std::string const, double const> action_deactivated_event{};
 
-         EventListener<InputEvent const> on_input_event
+         EventListener<MouseButtonEvent const> on_mouse_button_event
          {
             VariantVisitor
             {
@@ -87,8 +87,14 @@ namespace fro
                {
                   set_input_strength(event.button, 0.0);
                   return true;
-               },
+               }
+            }, Locator::get<SystemEventDispatcher>().mouse_button_event
+         };
 
+         EventListener<KeyEvent const> on_key_event
+         {
+            VariantVisitor
+            {
                [this](KeyDownEvent const& event)
                {
                   set_input_strength(event.key, 1.0);
@@ -99,8 +105,14 @@ namespace fro
                {
                   set_input_strength(event.key, 0.0);
                   return true;
-               },
+               }
+            }, Locator::get<SystemEventDispatcher>().key_event
+         };
 
+         EventListener<GamepadInputEvent const> on_gamepad_input_event
+         {
+            VariantVisitor
+            {
                [this](GamepadButtonDownEvent const& event)
                {
                   set_input_strength(event.button, 1.0);
@@ -117,13 +129,8 @@ namespace fro
                {
                   set_input_strength(event.axis, event.value);
                   return true;
-               },
-
-               [](auto&&)
-               {
-                  return false;
                }
-            }, Locator::get<SystemEventDispatcher>().input_event
+            }, Locator::get<SystemEventDispatcher>().gamepad_input_event
          };
 
       private:

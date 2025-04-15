@@ -1,6 +1,6 @@
 add_library(${FRO_ENGINE_NAME} SHARED
    source/application/application.cpp
-   source/events/input_event.cpp
+   source/events/input_events.cpp
    source/events/render_context_event.cpp
    source/identifier/id.cpp
    source/identifier/id_generator.cpp
