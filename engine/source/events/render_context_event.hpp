@@ -4,6 +4,7 @@
 #include "core.hpp"
 #include "event.hpp"
 #include "froch.hpp"
+#include "identifier/id.hpp"
 #include "maths/vector2.hpp"
 
 namespace fro
@@ -12,14 +13,14 @@ namespace fro
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
    };
 
    struct RenderContextResizeEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
       Vector2<int> const size;
    };
 

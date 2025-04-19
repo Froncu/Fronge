@@ -20,6 +20,7 @@
 #include <numbers>
 #include <numeric>
 #include <optional>
+#include <ranges>
 #include <set>
 #include <sstream>
 #include <stdexcept>

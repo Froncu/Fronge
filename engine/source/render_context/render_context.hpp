@@ -72,7 +72,7 @@ namespace fro
          FRO_API void change_scaling_mode(ScalingMode scaling_mode);
          FRO_API void change_present_mode(PresentingMode presenting_mode);
 
-         FRO_API [[nodiscard]] std::uint32_t id() const;
+         FRO_API [[nodiscard]] ID::InternalValue id() const;
          FRO_API [[nodiscard]] std::string_view title() const;
          FRO_API [[nodiscard]] Vector2<int> size() const;
          FRO_API [[nodiscard]] Vector2<int> position() const;

@@ -339,9 +339,9 @@ namespace fro
             id(), static_cast<int>(presenting_mode), SDL_GetError());
    }
 
-   std::uint32_t RenderContext::id() const
+   ID::InternalValue RenderContext::id() const
    {
-      std::uint32_t const id{ SDL_GetWindowID(native_window_.get()) };
+      ID::InternalValue const id{ SDL_GetWindowID(native_window_.get()) };
       assert(id, "failed to retrieve the ID of a RenderContext ({})",
          SDL_GetError());
 
