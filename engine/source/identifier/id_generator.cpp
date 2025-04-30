@@ -28,7 +28,7 @@ namespace fro
 
    ID IDGenerator::generate()
    {
-      return { *this, internal_generate() };
+      return ID{ *this };
    }
 
    IDGenerator::InternalValue IDGenerator::internal_generate()

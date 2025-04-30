@@ -3,9 +3,9 @@
 
 namespace fro
 {
-   ID::ID(IDGenerator& generator, InternalValue const id)
+   ID::ID(IDGenerator& generator)
       : generator_{ generator }
-      , value_{ id }
+      , value_{ generator_->internal_generate() }
    {
    }
 
@@ -24,50 +24,26 @@ namespace fro
 
    ID::~ID()
    {
-      if (value_ == INVALID_ID or not generator_.valid())
-         return;
-
-      InternalValue& highest_taken_id{ generator_->highest_taken_id_ };
-      auto& free_ids{ generator_->free_ids_ };
-
-      if (value_ == highest_taken_id)
-      {
-         --highest_taken_id;
-
-         auto begin{ free_ids.begin() };
-         while (begin not_eq free_ids.end())
-         {
-            auto const highest_free_id{ begin++ };
-            if (highest_taken_id not_eq *highest_free_id)
-               break;
-
-            free_ids.erase(highest_free_id);
-            --highest_taken_id;
-         }
-      }
-      else
-         free_ids.insert(value_);
+      free_value();
    }
 
-   ID& ID::operator=(ID const& other)
+   ID& ID::operator=(ID const&)
    {
-      if (this == &other)
-         return *this;
-
-      generator_ = other.generator_;
-      value_ = generator_.valid() ? generator_->internal_generate() : INVALID_ID;
-
       return *this;
    }
 
-   ID& ID::operator=(ID&& other) noexcept
+   ID& ID::operator=(ID&& other)
    {
       if (this == &other)
          return *this;
 
-      generator_ = std::move(other.generator_);
+      if (generator_ not_eq other.generator_)
+         exception("cannot move assign ID with different generators");
+
+      free_value();
       value_ = other.value_;
 
+      other.generator_.reset();
       other.value_ = INVALID_ID;
 
       return *this;
@@ -102,5 +78,32 @@ namespace fro
    Reference<IDGenerator> ID::generator() const
    {
       return generator_;
+   }
+
+   void ID::free_value() const
+   {
+      if (value_ == INVALID_ID or not generator_.valid())
+         return;
+
+      InternalValue& highest_taken_id{ generator_->highest_taken_id_ };
+      auto& free_ids{ generator_->free_ids_ };
+
+      if (value_ == highest_taken_id)
+      {
+         --highest_taken_id;
+
+         auto begin{ free_ids.begin() };
+         while (begin not_eq free_ids.end())
+         {
+            auto const highest_free_id{ begin++ };
+            if (highest_taken_id not_eq *highest_free_id)
+               break;
+
+            free_ids.erase(highest_free_id);
+            --highest_taken_id;
+         }
+      }
+      else
+         free_ids.insert(value_);
    }
 }

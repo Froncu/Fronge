@@ -23,7 +23,7 @@ namespace fro
          FRO_API ~ID();
 
          FRO_API ID& operator=(ID const& other);
-         FRO_API ID& operator=(ID&& other) noexcept;
+         FRO_API ID& operator=(ID&& other) noexcept(false);
          FRO_API [[nodiscard]] explicit operator InternalValue() const;
          FRO_API [[nodiscard]] bool operator==(ID const& other) const;
          FRO_API [[nodiscard]] std::partial_ordering operator<=>(ID const& other) const;
@@ -31,7 +31,9 @@ namespace fro
          FRO_API [[nodiscard]] Reference<IDGenerator> generator() const;
 
       private:
-         ID(IDGenerator& generator, InternalValue id);
+         explicit ID(IDGenerator& generator);
+
+         void free_value() const;
 
          Reference<IDGenerator> generator_;
          InternalValue value_;
