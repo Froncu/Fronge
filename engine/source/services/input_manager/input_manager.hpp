@@ -27,9 +27,11 @@ namespace fro
          InputManager& operator=(InputManager&&) = default;
 
          FRO_API void assign_keyboard_mouse(UserInput const& user_input);
+         FRO_API void unassign_keyboard_mouse();
          FRO_API void assign_gamepad(UserInput const& user_input, Gamepad const& gamepad);
+         FRO_API void unassign_gamepad(Gamepad const& gamepad);
 
-         FRO_API UserInput const& user_input(int user_input_id);
+         FRO_API [[nodiscard]] UserInput const& user_input(int id);
          FRO_API [[nodiscard]] std::vector<Gamepad> const& gamepads() const;
 
          EventDispatcher<Gamepad const> gamepad_connected_event{};
@@ -41,15 +43,19 @@ namespace fro
             {
                [smart_this = Reference{ this }](MouseButtonDownEvent const& event)
                {
-                  smart_this->change_input_strength(event.button, 1.0,
-                     smart_this->user_input(smart_this->keyboard_mouse_assigned_user_input_id_));
+                  if (smart_this->keyboard_mouse_user_input_id_ == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(smart_this->keyboard_mouse_user_input_id_).change_input_strength(event.button, 1.0);
                   return true;
                },
 
                [smart_this = Reference{ this }](MouseButtonUpEvent const& event)
                {
-                  smart_this->change_input_strength(event.button, 0.0,
-                     smart_this->user_input(smart_this->keyboard_mouse_assigned_user_input_id_));
+                  if (smart_this->keyboard_mouse_user_input_id_ == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(smart_this->keyboard_mouse_user_input_id_).change_input_strength(event.button, 0.0);
                   return true;
                }
             },
@@ -62,15 +68,19 @@ namespace fro
             {
                [smart_this = Reference{ this }](KeyDownEvent const& event)
                {
-                  smart_this->change_input_strength(event.key, 1.0,
-                     smart_this->user_input(smart_this->keyboard_mouse_assigned_user_input_id_));
+                  if (smart_this->keyboard_mouse_user_input_id_ == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(smart_this->keyboard_mouse_user_input_id_).change_input_strength(event.key, 1.0);
                   return true;
                },
 
                [smart_this = Reference{ this }](KeyUpEvent const& event)
                {
-                  smart_this->change_input_strength(event.key, 0.0,
-                     smart_this->user_input(smart_this->keyboard_mouse_assigned_user_input_id_));
+                  if (smart_this->keyboard_mouse_user_input_id_ == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(smart_this->keyboard_mouse_user_input_id_).change_input_strength(event.key, 0.0);
                   return true;
                }
             },
@@ -83,9 +93,7 @@ namespace fro
             {
                [smart_this = Reference{ this }](GamepadConnectedEvent const& event)
                {
-                  Gamepad gamepad{ event.id };
-                  smart_this->user_input(gamepad.user_input_id());
-                  smart_this->gamepad_connected_event.notify(smart_this->gamepads_.emplace_back(std::move(gamepad)));
+                  smart_this->gamepad_connected_event.notify(smart_this->gamepads_.emplace_back(Gamepad{ event.id }));
                   return true;
                },
 
@@ -108,22 +116,31 @@ namespace fro
             {
                [smart_this = Reference{ this }](GamepadButtonDownEvent const& event)
                {
-                  smart_this->change_input_strength(event.button, 1.0,
-                     smart_this->user_input(Gamepad::user_input_id(event.id)));
+                  int const user_input_id{ Gamepad::user_input_id(event.id) };
+                  if (user_input_id == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(user_input_id).change_input_strength(event.button, 1.0);
                   return true;
                },
 
                [smart_this = Reference{ this }](GamepadButtonUpEvent const& event)
                {
-                  smart_this->change_input_strength(event.button, 0.0,
-                     smart_this->user_input(Gamepad::user_input_id(event.id)));
+                  int const user_input_id{ Gamepad::user_input_id(event.id) };
+                  if (user_input_id == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(user_input_id).change_input_strength(event.button, 0.0);
                   return true;
                },
 
                [smart_this = Reference{ this }](GamepadAxisEvent const& event)
                {
-                  smart_this->change_input_strength(event.axis, event.value,
-                     smart_this->user_input(Gamepad::user_input_id(event.id)));
+                  int const user_input_id{ Gamepad::user_input_id(event.id) };
+                  if (user_input_id == UserInput::INVALID_USER_ID)
+                     return false;
+
+                  smart_this->user_input(user_input_id).change_input_strength(event.axis, event.value);
                   return true;
                }
             },
@@ -131,11 +148,9 @@ namespace fro
          };
 
       private:
-         FRO_API void change_input_strength(Input input, double strength, UserInput const& user_input);
-
          std::unordered_set<UserInput> user_inputs_{};
          std::vector<Gamepad> gamepads_{};
-         int keyboard_mouse_assigned_user_input_id_{};
+         int keyboard_mouse_user_input_id_{};
    };
 }
 

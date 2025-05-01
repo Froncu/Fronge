@@ -35,7 +35,7 @@ namespace fro
       };
 
       public:
-         static int constexpr GLOBAL_USER_ID{ -1 };
+         static int constexpr INVALID_USER_ID{ -1 };
 
          UserInput(UserInput const&) = delete;
          UserInput(UserInput&&) = default;
@@ -69,10 +69,9 @@ namespace fro
 
          void calculate_action_values_if(std::function<bool(std::unordered_set<Input> const&)> const& predicate) const;
          void reset_input_strength_if(std::function<bool(Input)> const& predicate) const;
-         void copy_input_strength_if(UserInput const& user_input, std::function<bool(Input)> const& predicate) const;
          void move_input_strength_if(UserInput const& user_input, std::function<bool(Input)> const& predicate) const;
          void swap_input_strengths_if(UserInput const& user_input, std::function<bool(Input)> const& predicate) const;
-         void change_input_strength(Input input, double strength) const;
+         FRO_API void change_input_strength(Input input, double strength) const;
 
          mutable std::unordered_map<Input, double> input_strengths_{};
          mutable std::unordered_map<std::string, InternalValueAction> value_actions_{};

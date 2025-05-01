@@ -32,7 +32,7 @@ namespace fro
 
          FRO_API explicit Gamepad(ID::InternalValue id);
 
-         void assign_user_input_id(int user_input_id);
+         void assign_user_input_id(int user_input_id) const;
 
          UniquePointer<SDL_Gamepad> native_gamepad_;
    };

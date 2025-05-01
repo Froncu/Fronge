@@ -41,7 +41,7 @@ namespace fro
       return user_input_id(id());
    }
 
-   void Gamepad::assign_user_input_id(int user_input_id)
+   void Gamepad::assign_user_input_id(int user_input_id) const
    {
       bool const succeeded{ SDL_SetGamepadPlayerIndex(native_gamepad_.get(), user_input_id) };
       assert(succeeded, "failed to assign UserInput{} to Gamepad{} ({})",

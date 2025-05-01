@@ -176,46 +176,16 @@ namespace fro
          });
    }
 
-   void UserInput::copy_input_strength_if(UserInput const& user_input, std::function<bool(Input)> const& predicate) const
-   {
-      std::unordered_set<Input> copied_inputs{};
-      for (auto const [input, other_strength] : user_input.input_strengths_)
-      {
-         double& strength{ input_strengths_[input] };
-         if (strength == other_strength or not predicate(input))
-            continue;
-
-         strength = other_strength;
-         copied_inputs.insert(input);
-      }
-
-      if (copied_inputs.empty())
-         return;
-
-      calculate_action_values_if(
-         [&copied_inputs](std::unordered_set<Input> const& inputs)
-         {
-            return std::ranges::any_of(inputs,
-               [&copied_inputs](Input const input)
-               {
-                  return copied_inputs.contains(input);
-               });
-         });
-   }
-
    void UserInput::move_input_strength_if(UserInput const& user_input, std::function<bool(Input)> const& predicate) const
    {
       std::unordered_set<Input> moved_inputs{};
       for (auto& [input, other_strength] : user_input.input_strengths_)
-      {
-         double& strength{ input_strengths_[input] };
-         if (strength == other_strength or not predicate(input))
-            continue;
-
-         strength = other_strength;
-         other_strength = {};
-         moved_inputs.insert(input);
-      }
+         if (double& strength{ input_strengths_[input] }; strength not_eq other_strength and predicate(input))
+         {
+            strength = other_strength;
+            other_strength = {};
+            moved_inputs.insert(input);
+         }
 
       if (moved_inputs.empty())
          return;
