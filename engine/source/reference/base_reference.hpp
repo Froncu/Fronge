@@ -2,7 +2,6 @@
 #define BASE_REFERENCE_HPP
 
 #include "core.hpp"
-#include "events/observer/event_dispatcher.hpp"
 #include "froch.hpp"
 
 namespace fro

@@ -12,19 +12,19 @@ namespace fro
    {
       auto operator()(std::size_t hash, auto&&... values) const
       {
-         auto lazyCombiner
+         auto lazy_combiner
          {
-            [&hash](auto&& value)
+            [&hash]<typename Type>(Type&& value)
             {
                return hash ^=
-                  std::hash<std::decay_t<decltype(value)>>{}(value)+
+                  std::hash<std::decay_t<Type>>{}(value)+
                   0x9e3779b9 +
                   (hash << 6) +
                   (hash >> 2);
             }
          };
 
-         (lazyCombiner(std::forward<decltype(values)>(values)), ...);
+         (lazy_combiner(std::forward<decltype(values)>(values)), ...);
 
          return hash;
       }

@@ -22,7 +22,7 @@ namespace fro
 
             bool succeeded{ SDL_SetRenderTarget(&target_native_renderer, target_native_texture) };
             assert(succeeded, "failed to set the target rendering context ({})",
-               SDL_GetError());;
+               SDL_GetError());
 
             if (UniquePointer<SDL_Texture> const source_native_texture{
                SDL_CreateTextureFromSurface(&target_native_renderer, &source_surface),

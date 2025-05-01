@@ -20,6 +20,6 @@ namespace fro
    {
       exception("{}", std::forward<Message>(message));
    }
-};
+}
 
 #endif

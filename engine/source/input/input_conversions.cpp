@@ -636,7 +636,7 @@ namespace fro
       }
    }
 
-   GamepadAxis convert_sdl_controller_axis(Uint8 axis, Sint16 value)
+   GamepadAxis convert_sdl_controller_axis(Uint8 const axis, Sint16 const value)
    {
       switch (axis)
       {

@@ -41,7 +41,7 @@ namespace fro
          {
             for (auto const listener : listeners_)
                listener->dispatchers_.erase(this);
-         };
+         }
 
          EventDispatcher& operator=(EventDispatcher const&)
          {

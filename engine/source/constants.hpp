@@ -20,6 +20,6 @@ namespace fro
    #else
    auto constexpr LOGGER{ false };
    #endif
-};
+}
 
 #endif

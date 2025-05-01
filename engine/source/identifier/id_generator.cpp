@@ -1,6 +1,7 @@
 #include "froch.hpp"
 #include "id.hpp"
 #include "id_generator.hpp"
+#include "utility/exception.hpp"
 
 namespace fro
 {

@@ -2,7 +2,6 @@
 #define INPUT_EVENT_HPP
 
 #include "core.hpp"
-#include "event.hpp"
 #include "froch.hpp"
 #include "identifier/id.hpp"
 #include "input/input.hpp"
@@ -11,84 +10,66 @@ namespace fro
 {
    struct MouseButtonDownEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       MouseButton const button;
    };
 
    struct MouseButtonUpEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       MouseButton const button;
    };
 
    struct KeyDownEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       Key const key;
    };
 
    struct KeyUpEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       Key const key;
    };
 
    struct GamepadConnectedEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       ID::InternalValue const id;
    };
 
    struct GamepadDisconnectedEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       ID::InternalValue const id;
    };
 
    struct GamepadButtonDownEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       ID::InternalValue const id;
       GamepadButton const button;
    };
 
    struct GamepadButtonUpEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       ID::InternalValue const id;
       GamepadButton const button;
    };
 
    struct GamepadAxisEvent final
    {
-      FRO_API [[nodiscard]] std::string get_log_string() const;
-
       ID::InternalValue const id;
       GamepadAxis const axis;
       double const value;
    };
 
-   using MouseButtonEvent = Events<
+   using MouseButtonEvent = std::variant<
       MouseButtonDownEvent,
       MouseButtonUpEvent>;
 
-   using KeyEvent = Events<
+   using KeyEvent = std::variant<
       KeyDownEvent,
       KeyUpEvent>;
 
-   using GamepadConnectionEvent = Events<
+   using GamepadConnectionEvent = std::variant<
       GamepadConnectedEvent,
       GamepadDisconnectedEvent>;
 
-   using GamepadInputEvent = Events<
+   using GamepadInputEvent = std::variant<
       GamepadButtonDownEvent,
       GamepadButtonUpEvent,
       GamepadAxisEvent>;

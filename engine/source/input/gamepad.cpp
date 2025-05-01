@@ -7,7 +7,7 @@
 
 namespace fro
 {
-   int Gamepad::user_input_id(ID::InternalValue id)
+   int Gamepad::user_input_id(ID::InternalValue const id)
    {
       return SDL_GetGamepadPlayerIndexForID(id);
    }

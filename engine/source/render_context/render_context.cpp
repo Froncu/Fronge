@@ -190,7 +190,7 @@ namespace fro
       {
          0, 1, 2,
          2, 3, 0
-      };;
+      };
 
       bool const succeeded{
          SDL_RenderGeometry(native_renderer_.get(), texture->native_texture_.get(),
@@ -376,6 +376,11 @@ namespace fro
    bool RenderContext::fullscreen() const
    {
       return SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_FULLSCREEN;
+   }
+
+   bool RenderContext::resizable() const
+   {
+      return SDL_GetWindowFlags(native_window_.get()) & SDL_WINDOW_RESIZABLE;
    }
 
    bool RenderContext::visible() const

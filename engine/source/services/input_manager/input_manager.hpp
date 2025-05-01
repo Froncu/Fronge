@@ -6,7 +6,6 @@
 #include "events/observer/event_listener.hpp"
 #include "froch.hpp"
 #include "input/gamepad.hpp"
-#include "input/input.hpp"
 #include "input/user_input.hpp"
 #include "services/locator.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"

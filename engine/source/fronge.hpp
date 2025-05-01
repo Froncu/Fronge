@@ -4,7 +4,6 @@
 #include "application/application.hpp"
 #include "constants.hpp"
 #include "core.hpp"
-#include "events/event.hpp"
 #include "events/observer/dispatchable.hpp"
 #include "events/observer/event_dispatcher.hpp"
 #include "events/observer/event_listener.hpp"
