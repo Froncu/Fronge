@@ -20,14 +20,11 @@ namespace fro
 
       public:
          template <std::same_as<EventDispatcherType>... EventDispatcherTypes>
-         explicit EventListener(CallbackType on_notify, EventDispatcherTypes&... event_dispatchers)
+         explicit EventListener(CallbackType on_notify = {}, EventDispatcherTypes&... event_dispatchers)
             : on_notify_{ std::move(on_notify) }
          {
-            // ReSharper disable once CppDFAConstantConditions
-            // this is not always true
             if (not on_notify_)
-               // ReSharper disable once CppDFAUnreachableCode
-               exception("the on_notify callback cannot be a nullptr!");
+               exception("the on_notify callback cannot be a null!");
 
             (subscribe(event_dispatchers), ...);
          }

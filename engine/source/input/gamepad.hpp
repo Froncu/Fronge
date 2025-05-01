@@ -3,8 +3,9 @@
 
 #include "core.hpp"
 #include "froch.hpp"
-#include "reference/referenceable.hpp"
+#include "identifier/id.hpp"
 #include "utility/unique_pointer.hpp"
+#include "user_input.hpp"
 
 struct SDL_Gamepad;
 
@@ -15,19 +16,24 @@ namespace fro
       friend class InputManager;
 
       public:
-         FRO_API explicit Gamepad(std::uint32_t id);
-         FRO_API Gamepad(Gamepad const& other);
-         FRO_API Gamepad(Gamepad&&) = default;
+         Gamepad(Gamepad const&) = delete;
+         Gamepad(Gamepad&&) = default;
 
-         FRO_API virtual ~Gamepad() override = default;
+         virtual ~Gamepad() override = default;
 
-         FRO_API Gamepad& operator=(Gamepad const& other);
-         FRO_API Gamepad& operator=(Gamepad&&) = default;
+         Gamepad& operator=(Gamepad const&) = delete;
+         Gamepad& operator=(Gamepad&&) = default;
 
-         FRO_API bool rumble(std::uint16_t low_frequency, std::uint16_t high_frequency, std::uint32_t duration_milliseconds);
-         FRO_API std::uint32_t id() const;
+         FRO_API [[nodiscard]] ID::InternalValue id() const;
+         FRO_API [[nodiscard]] int user_input_id() const;
 
       private:
+         FRO_API [[nodiscard]] static int user_input_id(ID::InternalValue id);
+
+         FRO_API explicit Gamepad(ID::InternalValue id);
+
+         void assign_user_input_id(int user_input_id);
+
          UniquePointer<SDL_Gamepad> native_gamepad_;
    };
 }

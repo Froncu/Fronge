@@ -6,13 +6,14 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/identifier/id_generator.cpp
    source/input/gamepad.cpp
    source/input/input_conversions.cpp
-   source/input/input_manager.cpp
+   source/input/user_input.cpp
    source/maths/transform_matrix.cpp
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp
    source/render_context/render_context.cpp
    source/render_context/texture.cpp
    source/resources/surface/surface.cpp
+   source/services/input_manager/input_manager.cpp
    source/services/locator.cpp
    source/services/logger/coloured_logger.cpp
    source/services/logger/disabled_logger.cpp

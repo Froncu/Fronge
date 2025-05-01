@@ -4,6 +4,7 @@
 #include "core.hpp"
 #include "event.hpp"
 #include "froch.hpp"
+#include "identifier/id.hpp"
 #include "input/input.hpp"
 
 namespace fro
@@ -40,21 +41,21 @@ namespace fro
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
    };
 
    struct GamepadDisconnectedEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
    };
 
    struct GamepadButtonDownEvent final
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
       GamepadButton const button;
    };
 
@@ -62,7 +63,7 @@ namespace fro
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
       GamepadButton const button;
    };
 
@@ -70,7 +71,7 @@ namespace fro
    {
       FRO_API [[nodiscard]] std::string get_log_string() const;
 
-      std::uint32_t const id;
+      ID::InternalValue const id;
       GamepadAxis const axis;
       double const value;
    };
