@@ -1,5 +1,6 @@
 add_library(${FRO_ENGINE_NAME} SHARED
    source/application/application.cpp
+   source/ecs/registry.cpp
    source/identifier/id.cpp
    source/identifier/id_generator.cpp
    source/input/gamepad.cpp
@@ -17,7 +18,11 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/services/logger/disabled_logger.cpp
    source/services/logger/logger.cpp
    source/services/system_event_dispatcher/regular_system_event_dispatcher.cpp
-   source/services/system_event_dispatcher/system_event_dispatcher.cpp)
+   source/services/system_event_dispatcher/system_event_dispatcher.cpp
+   source/ecs/component_sparse_set.cpp
+   source/ecs/component_sparse_set.hpp
+   source/ecs/entity.cpp
+   source/ecs/entity.hpp)
 
 target_include_directories(${FRO_ENGINE_NAME}
    PUBLIC source)
