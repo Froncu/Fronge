@@ -42,9 +42,5 @@ FetchContent_MakeAvailable(
    SDL_mixer
    box2d)
 
-if(MINGW)
-   target_compile_options(harfbuzz PRIVATE -Wa,-mbig-obj)
-   target_compile_options(box2d PRIVATE -Wno-strict-prototypes)
-else()
-   target_compile_options(box2d PRIVATE /wd4255)
-endif()
+target_compile_options(harfbuzz PRIVATE $<$<BOOL:${MINGW}>:-Wa,-mbig-obj>)
+target_compile_options(box2d PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/wd4255>)
