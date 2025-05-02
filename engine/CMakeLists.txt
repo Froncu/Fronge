@@ -33,7 +33,8 @@ target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE SDL3::SDL3
    PRIVATE SDL3_image::SDL3_image
    PRIVATE SDL3_ttf::SDL3_ttf
-   PRIVATE SDL3_mixer::SDL3_mixer)
+   PRIVATE SDL3_mixer::SDL3_mixer
+   PRIVATE box2d::box2d)
 
 set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
    CXX_STANDARD 20

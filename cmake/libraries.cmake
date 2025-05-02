@@ -29,10 +29,22 @@ FetchContent_Declare(SDL_mixer
    GIT_PROGRESS TRUE
    #[[GIT_SHALLOW TRUE]]) # TODO: enable this after changing to a release tag
 
+FetchContent_Declare(box2d
+   GIT_REPOSITORY https://github.com/erincatto/box2d
+   GIT_TAG v3.1.0
+   GIT_PROGRESS TRUE
+   GIT_SHALLOW TRUE)
+
 FetchContent_MakeAvailable(
    SDL
    SDL_image
    SDL_ttf
-   SDL_mixer)
+   SDL_mixer
+   box2d)
 
-target_compile_options(harfbuzz PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>)
+if(MINGW)
+   target_compile_options(harfbuzz PRIVATE -Wa,-mbig-obj)
+   target_compile_options(box2d PRIVATE -Wno-strict-prototypes)
+else()
+   target_compile_options(box2d PRIVATE /wd4255)
+endif()
