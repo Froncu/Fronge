@@ -1,3 +1,6 @@
+// Inspired by Matias Devred's locator from his "gooey" engine
+// (https://git.allpurposem.at/mat/gooey/src/branch/main/src/lib/services/locator.cppm)
+
 #ifndef LOCATOR_HPP
 #define LOCATOR_HPP
 
