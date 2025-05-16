@@ -1,5 +1,7 @@
 add_library(${FRO_ENGINE_NAME} SHARED
    source/application/application.cpp
+   source/ecs/entity.cpp
+   source/ecs/scene.cpp
    source/identifier/id.cpp
    source/identifier/id_generator.cpp
    source/input/gamepad.cpp
