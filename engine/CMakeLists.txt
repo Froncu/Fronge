@@ -37,7 +37,7 @@ target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE box2d::box2d)
 
 set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
-   CXX_STANDARD 20
+   CXX_STANDARD 23
    CXX_STANDARD_REQUIRED TRUE)
 
 target_compile_options(${FRO_ENGINE_NAME}

@@ -11,7 +11,7 @@ target_link_libraries(${FRO_ENTRY_NAME}
    PRIVATE SDL3::SDL3)
 
 set_target_properties(${FRO_ENTRY_NAME} PROPERTIES
-   CXX_STANDARD 20
+   CXX_STANDARD 23
    CXX_STANDARD_REQUIRED TRUE)
 
 target_compile_options(${FRO_ENTRY_NAME}
