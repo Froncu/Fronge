@@ -47,21 +47,21 @@ namespace fro
       private:
          void try_group(ID::InternalValue entity_id)
          {
-            std::tuple<SparseSet<OwnedComponents>&...> component_sparse_sets{ scene_->sparse_set<OwnedComponents>()... };
+            std::tuple<SparseSet<OwnedComponents>&...> component_sparse_sets{
+               scene_->component_sparse_set<OwnedComponents>().sparse_set...
+            };
 
             if ((not std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).contains(entity_id) or ...))
                return;
 
-            (std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).move(entity_id, owned_sparse_set_size_), ...);
+            (std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).move(entity_id, owned_components_.size()), ...);
 
-            ++owned_sparse_set_size_;
             owned_components_ = std::views::zip(std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).dense_data()...) |
-               std::views::take(owned_sparse_set_size_);
+               std::views::take(owned_components_.size() + 1);
          }
 
          Reference<Scene> scene_;
          OwnedComponentsView owned_components_{};
-         std::size_t owned_sparse_set_size_{};
    };
 }
 

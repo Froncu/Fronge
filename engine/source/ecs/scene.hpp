@@ -26,7 +26,16 @@ namespace fro
             BaseComponentSparseSet& operator=(BaseComponentSparseSet const&) = default;
             BaseComponentSparseSet& operator=(BaseComponentSparseSet&&) = default;
 
-            virtual void remove_component(std::size_t entity) = 0;
+            virtual void remove_queued() = 0;
+            virtual void add_queued() = 0;
+
+            void remove(ID::InternalValue const entity_id)
+            {
+               remove_queue_.insert(entity_id);
+            }
+
+         protected:
+            std::unordered_set<ID::InternalValue> remove_queue_{};
       };
 
       template <SparseSetStorable Component>
@@ -42,13 +51,33 @@ namespace fro
             ComponentSparseSet& operator=(ComponentSparseSet const&) = default;
             ComponentSparseSet& operator=(ComponentSparseSet&&) = default;
 
+            template <typename... Arguments>
+               requires std::constructible_from<Component, Arguments...>
+            Component& add(ID::InternalValue const entity_id, Arguments&&... arguments)
+            {
+               return add_queue_.insert({ entity_id, std::forward<Arguments>(arguments)... }).first->second;
+            }
+
             SparseSet<Component> sparse_set{};
 
          private:
-            virtual void remove_component(std::size_t entity) override
+            virtual void remove_queued() override
             {
-               sparse_set.erase(entity);
+               for (ID::InternalValue entity_id : remove_queue_)
+                  sparse_set.erase(entity_id);
+
+               remove_queue_.clear();
             }
+
+            virtual void add_queued() override
+            {
+               for (auto& [entity_id, component] : add_queue_)
+                  sparse_set.insert(entity_id, std::move(component));
+
+               add_queue_.clear();
+            }
+
+            std::unordered_map<ID::InternalValue, Component> add_queue_{};
       };
 
       public:
@@ -65,7 +94,7 @@ namespace fro
 
       private:
          template <SparseSetStorable Component>
-         [[nodiscard]] SparseSet<Component>& sparse_set()
+         [[nodiscard]] ComponentSparseSet<Component>& component_sparse_set()
          {
             using ComponentSparseSet = ComponentSparseSet<Component>;
 
@@ -76,7 +105,7 @@ namespace fro
             if (not component_sparse_set)
                component_sparse_set.reset(new ComponentSparseSet{});
 
-            return static_cast<ComponentSparseSet&>(*component_sparse_set).sparse_set;
+            return static_cast<ComponentSparseSet&>(*component_sparse_set);
          }
 
          std::unordered_map<std::type_index, std::unique_ptr<BaseComponentSparseSet>> component_sparse_sets_{};

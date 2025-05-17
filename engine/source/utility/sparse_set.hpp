@@ -19,7 +19,7 @@ namespace fro
    {
       public:
          using Key = std::size_t;
-         using DataIndex = std::size_t;
+         using DataIndex = Key;
 
          static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 

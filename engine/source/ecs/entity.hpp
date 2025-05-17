@@ -23,19 +23,20 @@ namespace fro
             requires std::constructible_from<Component, Arguments...>
          Component& add_component(Arguments&&... arguments)
          {
-            return scene_->sparse_set<Component>().insert(static_cast<ID::InternalValue>(id_), std::forward<Arguments>(arguments)...);
+            return scene_->component_sparse_set<Component>().add(
+               static_cast<ID::InternalValue>(id_), std::forward<Arguments>(arguments)...);
          }
 
          template <SparseSetStorable Component>
          Component* find_component() const
          {
-            return scene_->sparse_set<Component>().find(static_cast<ID::InternalValue>(id_));
+            return scene_->component_sparse_set<Component>().sparse_set.find(static_cast<ID::InternalValue>(id_));
          }
 
          template <SparseSetStorable Component>
          void remove_component()
          {
-            scene_->sparse_set<Component>().erase(static_cast<ID::InternalValue>(id_));
+            scene_->component_sparse_set<Component>().remove(static_cast<ID::InternalValue>(id_));
          }
 
          ID const& id() const

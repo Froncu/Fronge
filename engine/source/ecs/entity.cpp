@@ -13,6 +13,6 @@ namespace fro
    {
       for (std::unique_ptr<Scene::BaseComponentSparseSet> const& component_sparse_set :
            std::views::values(scene_->component_sparse_sets_))
-         component_sparse_set->remove_component(static_cast<std::uint32_t>(id_));
+         component_sparse_set->remove(static_cast<std::uint32_t>(id_));
    }
 }
