@@ -40,6 +40,7 @@
 #include "utility/exception.hpp"
 #include "utility/lazy_hasher.hpp"
 #include "utility/sparse_set.hpp"
+#include "utility/template_parameter_pack.hpp"
 #include "utility/type_index.hpp"
 #include "utility/unique_pointer.hpp"
 #include "utility/variant_visitor.hpp"

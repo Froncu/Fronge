@@ -19,7 +19,7 @@ namespace fro
    {
       public:
          using Key = std::size_t;
-         using DataIndex = std::size_t;
+         using DataIndex = Key;
 
          static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 
@@ -59,14 +59,6 @@ namespace fro
             return data;
          }
 
-         [[nodiscard]] Data* find(Key const key)
-         {
-            if (not contains(key))
-               return nullptr;
-
-            return &naive_find(key);
-         }
-
          void clear()
          {
             sparse_.clear();
@@ -103,11 +95,27 @@ namespace fro
 
          bool move(Key const key, DataIndex const where)
          {
-            if (not in_dense_range(where) or not contains(key))
+            if (not in_dense_range(where) or not contains(key) or sparse_[key] == where)
                return false;
 
             naive_move(key, where);
             return true;
+         }
+
+         [[nodiscard]] Data* find(Key const key)
+         {
+            if (not contains(key))
+               return nullptr;
+
+            return &naive_find(key);
+         }
+
+         [[nodiscard]] Data const* find(Key const key) const
+         {
+            if (not contains(key))
+               return nullptr;
+
+            return &naive_find(key);
          }
 
          [[nodiscard]] bool contains(Key const key) const
@@ -140,12 +148,12 @@ namespace fro
             return sparse_;
          }
 
-         [[nodiscard]] std::span<Key const> dense() const
+         [[nodiscard]] std::span<Key> dense()
          {
             return dense_;
          }
 
-         [[nodiscard]] std::span<Key> dense()
+         [[nodiscard]] std::span<Key const> dense() const
          {
             return dense_;
          }
@@ -161,26 +169,6 @@ namespace fro
          }
 
       private:
-         [[nodiscard]] bool in_sparse_range(Key const key) const
-         {
-            return key < sparse_.size();
-         }
-
-         [[nodiscard]] bool in_dense_range(DataIndex const data_index) const
-         {
-            return data_index < dense_.size();
-         }
-
-         [[nodiscard]] bool naive_contains(Key const key) const
-         {
-            return sparse_[key] not_eq UNUSED_DATA_INDEX;
-         }
-
-         [[nodiscard]] Data& naive_find(Key const key)
-         {
-            return dense_data_[sparse_[key]];
-         }
-
          template <typename... ArgumentTypes>
             requires std::constructible_from<Data, ArgumentTypes...>
          Data& naive_insert(Key const key, ArgumentTypes&&... arguments)
@@ -199,6 +187,31 @@ namespace fro
             std::swap(dense_data_[sparse_[key]], dense_data_[where]);
 
             std::swap(sparse_[key], sparse_[other_key]);
+         }
+
+         [[nodiscard]] Data& naive_find(Key const key)
+         {
+            return dense_data_[sparse_[key]];
+         }
+
+         [[nodiscard]] Data const& naive_find(Key const key) const
+         {
+            return dense_data_[sparse_[key]];
+         }
+
+         [[nodiscard]] bool naive_contains(Key const key) const
+         {
+            return sparse_[key] not_eq UNUSED_DATA_INDEX;
+         }
+
+         [[nodiscard]] bool in_sparse_range(Key const key) const
+         {
+            return key < sparse_.size();
+         }
+
+         [[nodiscard]] bool in_dense_range(DataIndex const data_index) const
+         {
+            return data_index < dense_.size();
          }
 
          std::vector<DataIndex> sparse_{};

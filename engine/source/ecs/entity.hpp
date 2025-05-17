@@ -6,6 +6,8 @@
 
 namespace fro
 {
+   class Scene;
+
    class Entity final : public Referenceable
    {
       friend Scene;
@@ -23,19 +25,39 @@ namespace fro
             requires std::constructible_from<Component, Arguments...>
          Component& add_component(Arguments&&... arguments)
          {
-            return scene_->sparse_set<Component>().insert(static_cast<ID::InternalValue>(id_), std::forward<Arguments>(arguments)...);
-         }
-
-         template <SparseSetStorable Component>
-         Component* find_component() const
-         {
-            return scene_->sparse_set<Component>().find(static_cast<ID::InternalValue>(id_));
+            return scene_->component_sparse_set<Component>().enqueue_add(static_cast<ID::InternalValue>(id()),
+               std::forward<Arguments>(arguments)...);
          }
 
          template <SparseSetStorable Component>
          void remove_component()
          {
-            scene_->sparse_set<Component>().erase(static_cast<ID::InternalValue>(id_));
+            scene_->component_sparse_set<Component>().enqueue_remove(static_cast<ID::InternalValue>(id()));
+         }
+
+         void remove_components()
+         {
+            for (std::unique_ptr<Scene::BaseComponentSparseSet> const& component_sparse_set :
+               std::views::values(scene_->component_sparse_sets_))
+               component_sparse_set->enqueue_remove(static_cast<ID::InternalValue>(id()));
+         }
+
+         template <SparseSetStorable Component>
+         [[nodiscard]] Component* find_component()
+         {
+            return scene_->component_sparse_set<Component>().find(static_cast<ID::InternalValue>(id()));
+         }
+
+         template <SparseSetStorable Component>
+         [[nodiscard]] Component const* find_component() const
+         {
+            return scene_->component_sparse_set<Component>().find(static_cast<ID::InternalValue>(id()));
+         }
+
+         template<SparseSetStorable Component>
+         [[nodiscard]] bool contains_component() const
+         {
+            return scene_->component_sparse_set<Component>().contains(static_cast<ID::InternalValue>(id()));
          }
 
          ID const& id() const

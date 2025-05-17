@@ -1,67 +1,127 @@
 #ifndef GROUP_HPP
 #define GROUP_HPP
 
-#include "entity.hpp"
+#include "scene.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"
-#include "reference/referenceable.hpp"
-#include "scene.hpp"
+#include "utility/template_parameter_pack.hpp"
 
 namespace fro
 {
-   template <typename... OwnedComponents>
-   class Group final : public Referenceable
+   class Entity;
+
+   template <typename OwnedComponents, typename ObservedComponents>
+   class Group;
+
+   template <typename... OwnedComponents, typename... ObservedComponents>
+   class Group<TemplateParameterPack<OwnedComponents...>, TemplateParameterPack<ObservedComponents...>> final
    {
-      using OwnedComponentsTuple = std::tuple<OwnedComponents...>;
-      using OwnedComponentsView = std::ranges::take_view<std::ranges::zip_view<std::span<OwnedComponents>...>>;
+      friend Scene;
 
       public:
-         // NOTE: constructing a group can be expensive; preferrably you'd create all your groups
-         // before attaching and detaching components
-
-         Group(Group const&) = default;
-         Group(Group&&) noexcept = default;
-
-         virtual ~Group() override = default;
-
-         Group& operator=(Group const&) = default;
-         Group& operator=(Group&&) noexcept = default;
-
          explicit Group(Scene& scene)
             : scene_{ scene }
          {
-            for (std::unique_ptr<Entity> const& entity : scene_->entities_)
-               try_group(static_cast<ID::InternalValue>(entity->id()));
          }
 
-         auto begin()
+         Group(Group const&) = delete;
+         Group(Group&&) noexcept = delete;
+
+         ~Group() = default;
+
+         Group& operator=(Group const&) = delete;
+         Group& operator=(Group&&) noexcept = delete;
+
+         [[nodiscard]] auto begin()
          {
-            return owned_components_.begin();
+            return view_.begin();
          }
 
-         auto end()
+         [[nodiscard]] auto end()
          {
-            return owned_components_.end();
+            return view_.end();
+         }
+
+         void update()
+         {
+            view_ = construct_view();
          }
 
       private:
-         void try_group(ID::InternalValue entity_id)
+         [[nodiscard]] auto construct_view()
          {
-            std::tuple<SparseSet<OwnedComponents>&...> component_sparse_sets{ scene_->sparse_set<OwnedComponents>()... };
+            std::tuple<Scene::ComponentSparseSet<OwnedComponents> &...> owned_component_sparse_sets{
+               scene_->component_sparse_set<OwnedComponents>()...
+            };
 
-            if ((not std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).contains(entity_id) or ...))
-               return;
+            std::tuple<Scene::ComponentSparseSet<ObservedComponents> &...> observed_component_sparse_sets{
+               scene_->component_sparse_set<ObservedComponents>()...
+            };
 
-            (std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).move(entity_id, owned_sparse_set_size_), ...);
+            entities_.clear();
+            (std::get<std::vector<ObservedComponents*>>(observed_components_).clear(), ...);
 
-            ++owned_sparse_set_size_;
-            owned_components_ = std::views::zip(std::get<SparseSet<OwnedComponents>&>(component_sparse_sets).dense_data()...) |
-               std::views::take(owned_sparse_set_size_);
+            for (std::unique_ptr<Entity> const& entity : scene_->entities_)
+            {
+               ID::InternalValue const entity_id{ entity->id() };
+
+               bool const can_group_owned{
+                  (std::get<Scene::ComponentSparseSet<OwnedComponents>&>(owned_component_sparse_sets).contains(entity_id)
+                     and ...)
+               };
+
+               bool const can_group_observed{
+                  (std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets).contains(entity_id)
+                     and ...)
+               };
+
+               if (not can_group_owned or not can_group_observed)
+                  continue;
+
+               (std::get<Scene::ComponentSparseSet<OwnedComponents>&>(owned_component_sparse_sets)
+                  .move(entity_id, entities_.size()), ...);
+
+               (std::get<std::vector<ObservedComponents*>>(observed_components_)
+                  .push_back(std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets)
+                     .find(entity_id)), ...);
+
+               entities_.push_back(entity.get());
+            }
+
+            return std::views::zip(
+               entities_ |
+               std::views::transform(std::function<Entity&(Entity*)>{
+                  [](Entity* const entity) -> Entity&
+                  {
+                     return *entity;
+                  }
+               }),
+
+               std::get<Scene::ComponentSparseSet<OwnedComponents>&>(owned_component_sparse_sets).components()...,
+
+               std::get<std::vector<ObservedComponents*>>(observed_components_) |
+               std::views::transform(std::function<ObservedComponents&(ObservedComponents*)>{
+                  [](ObservedComponents* const observed_component) -> ObservedComponents&
+                  {
+                     return *observed_component;
+                  }
+               })...);
          }
 
          Reference<Scene> scene_;
-         OwnedComponentsView owned_components_{};
-         std::size_t owned_sparse_set_size_{};
+         std::vector<Entity*> entities_{};
+         std::tuple<std::vector<ObservedComponents*...>> observed_components_{};
+
+         // NOTE: std::invoke_result_t does not work on MSVC here because Group
+         // is still considered undefined, whereas GCC works fine
+         std::ranges::zip_view<
+            std::ranges::transform_view<
+               std::ranges::ref_view<std::vector<Entity*>>,
+               std::function<Entity&(Entity*)>>,
+            std::span<OwnedComponents>...,
+            std::ranges::transform_view<
+               std::ranges::ref_view<std::vector<ObservedComponents*>>,
+               std::function<ObservedComponents&(ObservedComponents*)>>...> view_{ construct_view() };
    };
 }
 
