@@ -5,6 +5,7 @@
 #include "froch.hpp"
 #include "reference/reference.hpp"
 #include "utility/template_parameter_pack.hpp"
+#include "utility/unique_parameter_pack.hpp"
 
 namespace fro
 {
@@ -14,6 +15,7 @@ namespace fro
    class Group;
 
    template <typename... OwnedComponents, typename... ObservedComponents>
+      requires IS_UNIQUE<OwnedComponents..., ObservedComponents...>
    class Group<TemplateParameterPack<OwnedComponents...>, TemplateParameterPack<ObservedComponents...>> final
    {
       friend Scene;
