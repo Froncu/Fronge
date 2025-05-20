@@ -2,6 +2,7 @@
 #define GROUP_HPP
 
 #include "scene.hpp"
+#include "components/components.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"
 #include "utility/template_parameter_pack.hpp"
@@ -14,7 +15,7 @@ namespace fro
    template <typename OwnedComponents, typename ObservedComponents>
    class Group;
 
-   template <typename... OwnedComponents, typename... ObservedComponents>
+   template <Componentable... OwnedComponents, Componentable... ObservedComponents>
       requires IS_UNIQUE<OwnedComponents..., ObservedComponents...>
    class Group<TemplateParameterPack<OwnedComponents...>, TemplateParameterPack<ObservedComponents...>> final
    {
@@ -52,12 +53,12 @@ namespace fro
       private:
          [[nodiscard]] auto construct_view()
          {
-            std::tuple<Scene::ComponentSparseSet<OwnedComponents> &...> owned_component_sparse_sets{
-               scene_->component_sparse_set<OwnedComponents>()...
+            std::tuple<Scene::ComponentSparseSet<OwnedComponents>&...> const owned_component_sparse_sets{
+               std::get<Scene::ComponentSparseSet<OwnedComponents>>(scene_->component_sparse_sets_)...
             };
 
-            std::tuple<Scene::ComponentSparseSet<ObservedComponents> &...> observed_component_sparse_sets{
-               scene_->component_sparse_set<ObservedComponents>()...
+            std::tuple<Scene::ComponentSparseSet<ObservedComponents>&...> const observed_component_sparse_sets{
+               std::get<Scene::ComponentSparseSet<ObservedComponents>>(scene_->component_sparse_sets_)...
             };
 
             entities_.clear();
@@ -67,25 +68,24 @@ namespace fro
             {
                ID::InternalValue const entity_id{ entity->id() };
 
-               bool const can_group_owned{
+               bool const can_group_owned_components{
                   (std::get<Scene::ComponentSparseSet<OwnedComponents>&>(owned_component_sparse_sets).contains(entity_id)
                      and ...)
                };
 
-               bool const can_group_observed{
-                  (std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets).contains(entity_id)
-                     and ...)
+               std::tuple<ObservedComponents*...> const observed_components{
+                  std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets)
+                     .find(entity_id)...
                };
 
-               if (not can_group_owned or not can_group_observed)
+               if (not can_group_owned_components or (not std::get<ObservedComponents*>(observed_components) or ...))
                   continue;
 
                (std::get<Scene::ComponentSparseSet<OwnedComponents>&>(owned_component_sparse_sets)
                   .move(entity_id, entities_.size()), ...);
 
                (std::get<std::vector<ObservedComponents*>>(observed_components_)
-                  .push_back(std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets)
-                     .find(entity_id)), ...);
+                  .push_back(std::get<ObservedComponents*>(observed_components)), ...);
 
                entities_.push_back(entity.get());
             }

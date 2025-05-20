@@ -21,43 +21,40 @@ namespace fro
          Entity& operator=(Entity const&) = delete;
          Entity& operator=(Entity&&) = delete;
 
-         template <SparseSetStorable Component, typename... Arguments>
+         template <Componentable Component, typename... Arguments>
             requires std::constructible_from<Component, Arguments...>
          Component& add_component(Arguments&&... arguments)
          {
-            return scene_->component_sparse_set<Component>().enqueue_add(static_cast<ID::InternalValue>(id()),
-               std::forward<Arguments>(arguments)...);
+            return std::get<Scene::ComponentSparseSet<Component>>(scene_->component_sparse_sets_).enqueue_add(
+               static_cast<ID::InternalValue>(id()), std::forward<Arguments>(arguments)...);
          }
 
-         template <SparseSetStorable Component>
+         template <Componentable Component>
          void remove_component()
          {
-            scene_->component_sparse_set<Component>().enqueue_remove(static_cast<ID::InternalValue>(id()));
+            std::get<Scene::ComponentSparseSet<Component>>(scene_->component_sparse_sets_).enqueue_remove(
+               static_cast<ID::InternalValue>(id()));
          }
 
-         void remove_components()
-         {
-            for (std::unique_ptr<Scene::BaseComponentSparseSet> const& component_sparse_set :
-               std::views::values(scene_->component_sparse_sets_))
-               component_sparse_set->enqueue_remove(static_cast<ID::InternalValue>(id()));
-         }
-
-         template <SparseSetStorable Component>
+         template <Componentable Component>
          [[nodiscard]] Component* find_component()
          {
-            return scene_->component_sparse_set<Component>().find(static_cast<ID::InternalValue>(id()));
+            return std::get<Scene::ComponentSparseSet<Component>>(scene_->component_sparse_sets_).find(
+               static_cast<ID::InternalValue>(id()));
          }
 
-         template <SparseSetStorable Component>
+         template <Componentable Component>
          [[nodiscard]] Component const* find_component() const
          {
-            return scene_->component_sparse_set<Component>().find(static_cast<ID::InternalValue>(id()));
+            return std::get<Scene::ComponentSparseSet<Component>>(scene_->component_sparse_sets_).find(
+               static_cast<ID::InternalValue>(id()));
          }
 
-         template<SparseSetStorable Component>
+         template <Componentable Component>
          [[nodiscard]] bool contains_component() const
          {
-            return scene_->component_sparse_set<Component>().contains(static_cast<ID::InternalValue>(id()));
+            return std::get<Scene::ComponentSparseSet<Component>>(scene_->component_sparse_sets_).contains(
+               static_cast<ID::InternalValue>(id()));
          }
 
          ID const& id() const

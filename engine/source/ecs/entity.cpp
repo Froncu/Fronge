@@ -11,6 +11,9 @@ namespace fro
 
    Entity::~Entity()
    {
-      remove_components();
+      std::apply([entity_id = ID::InternalValue{ id() }](auto&... component_sparse_sets)
+      {
+         (component_sparse_sets.enqueue_remove(entity_id), ...);
+      }, scene_->component_sparse_sets_);
    }
 }
