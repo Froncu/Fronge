@@ -10,5 +10,6 @@ namespace fro
 int main(int, char**)
 {
    fro::create_application()->run();
+   fro::Locator::reset();
    return 0;
 }
