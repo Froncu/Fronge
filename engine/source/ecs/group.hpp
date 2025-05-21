@@ -18,19 +18,15 @@ namespace fro
    template <Componentable... OwnedComponents, Componentable... ObservedComponents>
       requires IS_UNIQUE<OwnedComponents..., ObservedComponents...>
    class Group<TemplateParameterPack<OwnedComponents...>, TemplateParameterPack<ObservedComponents...>> final
+      : public Scene::BaseGroup
    {
       friend Scene;
 
       public:
-         explicit Group(Scene& scene)
-            : scene_{ scene }
-         {
-         }
-
          Group(Group const&) = delete;
          Group(Group&&) noexcept = delete;
 
-         ~Group() = default;
+         virtual ~Group() override = default;
 
          Group& operator=(Group const&) = delete;
          Group& operator=(Group&&) noexcept = delete;
@@ -45,12 +41,17 @@ namespace fro
             return view_.end();
          }
 
-         void update()
+      private:
+         explicit Group(Scene& scene)
+            : scene_{ scene }
+         {
+         }
+
+         virtual void update() override
          {
             view_ = construct_view();
          }
 
-      private:
          [[nodiscard]] auto construct_view()
          {
             std::tuple<Scene::ComponentSparseSet<OwnedComponents>&...> const owned_component_sparse_sets{
@@ -75,7 +76,7 @@ namespace fro
 
                std::tuple<ObservedComponents*...> const observed_components{
                   std::get<Scene::ComponentSparseSet<ObservedComponents>&>(observed_component_sparse_sets)
-                     .find(entity_id)...
+                  .find(entity_id)...
                };
 
                if (not can_group_owned_components or (not std::get<ObservedComponents*>(observed_components) or ...))

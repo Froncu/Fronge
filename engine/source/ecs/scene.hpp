@@ -5,10 +5,14 @@
 #include "reference/referenceable.hpp"
 #include "utility/mapped_tuple.hpp"
 #include "utility/sparse_set.hpp"
+#include "utility/template_parameter_pack.hpp"
+#include "utility/type_index.hpp"
 
 namespace fro
 {
    class Entity;
+   template <typename, typename>
+   class Group;
 
    class Scene final : public Referenceable
    {
@@ -95,6 +99,21 @@ namespace fro
             std::unordered_map<ID::InternalValue, Component> insert_queue_{};
       };
 
+      class BaseGroup
+      {
+         public:
+            BaseGroup() = default;
+            BaseGroup(BaseGroup const&) = default;
+            BaseGroup(BaseGroup&&) = default;
+
+            virtual ~BaseGroup() = default;
+
+            BaseGroup& operator=(BaseGroup const&) = default;
+            BaseGroup& operator=(BaseGroup&&) = default;
+
+            virtual void update() = 0;
+      };
+
       public:
          Scene() = default;
          Scene(Scene const&) = default;
@@ -110,6 +129,20 @@ namespace fro
 
          FRO_API void execute_queued();
 
+         template <typename OwnedComponents, typename ObservedComponents>
+         Group<OwnedComponents, ObservedComponents>& group()
+         {
+            using GroupType = Group<OwnedComponents, ObservedComponents>;
+
+            std::type_index const group_type_index{ type_index<GroupType>() };
+
+            auto group{ groups_.find(group_type_index) };
+            if (group == groups_.end())
+               group = groups_.emplace(group_type_index, new GroupType{ *this }).first;
+
+            return static_cast<GroupType&>(*group->second);
+         }
+
       private:
          MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
          // NOTE: the groups would benefit if this was a vector of Entities instead of pointers to them
@@ -117,6 +150,7 @@ namespace fro
          // the Scene class
          std::vector<std::unique_ptr<Entity>> entities_{};
          std::vector<ID::InternalValue> destroy_queue_{};
+         std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
    };
 }
 

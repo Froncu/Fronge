@@ -23,9 +23,14 @@ namespace fro
             });
       destroy_queue_.clear();
 
-      std::apply([](auto&... component_sparse_sets)
+      bool did_any_change{};
+      std::apply([&did_any_change](auto&... component_sparse_sets)
       {
-         (component_sparse_sets.remove_add_queued(), ...);
+         ((did_any_change = component_sparse_sets.remove_add_queued() or did_any_change), ...);
       }, component_sparse_sets_);
+
+      if (did_any_change)
+         for (std::unique_ptr<BaseGroup> const& group : std::views::values(groups_))
+            group->update();
    }
 }
