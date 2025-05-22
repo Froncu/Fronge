@@ -1,11 +1,10 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-#include "components/components.hpp"
+#include "components.hpp"
 #include "reference/referenceable.hpp"
 #include "utility/mapped_tuple.hpp"
 #include "utility/sparse_set.hpp"
-#include "utility/template_parameter_pack.hpp"
 #include "utility/type_index.hpp"
 
 namespace fro
@@ -75,12 +74,24 @@ namespace fro
 
             [[nodiscard]] Component* find(ID::InternalValue const entity_id)
             {
-               return components_.find(entity_id);
+               Component* component{ components_.find(entity_id) };
+               if (not component)
+                  if (auto const queued_component{ insert_queue_.find(entity_id) };
+                     queued_component not_eq insert_queue_.end())
+                     component = &queued_component->second;
+
+                  return component;
             }
 
             [[nodiscard]] Component const* find(ID::InternalValue const entity_id) const
             {
-               return components_.find(entity_id);
+               Component const* component{ components_.find(entity_id) };
+               if (not component)
+                  if (auto const queued_component{ insert_queue_.find(entity_id) };
+                     queued_component not_eq insert_queue_.end())
+                     component = &queued_component->second;
+
+               return component;
             }
 
             [[nodiscard]] bool contains(ID::InternalValue const entity_id) const

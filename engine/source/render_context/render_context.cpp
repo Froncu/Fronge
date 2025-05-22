@@ -79,28 +79,20 @@ namespace fro
       return *this = RenderContext{ other };
    }
 
-   bool RenderContext::upload_texture(Reference<Surface const> const& surface)
+   Texture const& RenderContext::upload_texture(Surface const& surface)
    {
-      if (not surface.valid())
-         exception("the surface passed to upload a texture in RenderContext{} is invalid",
-            id());
-
       // NOTE: you could check if the texture is created first to avoid unneccesary creation of it
       // if it already exists, but this method should not be called often in a hot path so it's fine
-      return textures_.insert(Texture{ *native_renderer_, *surface }).second;
+      return *textures_.insert(Texture{ *native_renderer_, surface }).first;
    }
 
-   bool RenderContext::unload_texture(Reference<Surface const> const& surface)
+   bool RenderContext::unload_texture(Texture const& texture)
    {
-      if (not surface.valid())
-         exception("the surface passed to unload a texture in RenderContext{} is invalid",
-            id());
-
-      auto const texture{ textures_.find(*surface) };
-      if (texture == textures_.end())
+      auto const stored_texture{ textures_.find(texture) };
+      if (stored_texture == textures_.end())
          return false;
 
-      textures_.erase(texture);
+      textures_.erase(stored_texture);
       return true;
    }
 
@@ -111,25 +103,21 @@ namespace fro
          id(), SDL_GetError());
    }
 
-   void RenderContext::render(Reference<Surface const> const& surface, TransformMatrix const& transform,
-      Rectangle<int> source_rectangle)
+   void RenderContext::render(Texture const& texture, TransformMatrix const& transform,
+      Rectangle<double> source_rectangle)
    {
-      if (not surface.valid())
-         exception("the Surface passed to RenderContext{} is invalid",
-            id());
+      auto const stored_texture{ textures_.find(texture) };
 
-      auto const texture{ textures_.find(*surface) };
-
-      if (texture == textures_.end())
+      if (stored_texture == textures_.end())
          exception("attempted to render a Texture which was not uploaded to RenderContext{}",
             id());
 
-      auto const [surface_width, surface_height]{ surface->size() };
+      auto const [surface_width, surface_height]{ texture.size() };
 
       if (not source_rectangle.width or not source_rectangle.height)
       {
-         source_rectangle.x = 0;
-         source_rectangle.y = 0;
+         source_rectangle.x = 0.0;
+         source_rectangle.y = 0.0;
          source_rectangle.width = surface_width;
          source_rectangle.height = surface_height;
       }
@@ -142,16 +130,18 @@ namespace fro
       };
 
       Vector2 const top_left_texture{
-         static_cast<float>(source_rectangle.x) / surface_width,
-         static_cast<float>(source_rectangle.y) / surface_height
+         static_cast<float>(source_rectangle.x / surface_width),
+         static_cast<float>(source_rectangle.y / surface_height)
       };
 
       Vector2 const bottom_right_texture{
-         static_cast<float>(source_rectangle.x + source_rectangle.width) / surface_width,
-         static_cast<float>(source_rectangle.y + source_rectangle.height) / surface_height,
+         static_cast<float>((source_rectangle.x + source_rectangle.width) / surface_width),
+         static_cast<float>((source_rectangle.y + source_rectangle.height) / surface_height),
       };
 
-      Vector2 const half_source_size{ source_rectangle.width / 2.0f, source_rectangle.height / 2.0f };
+      Vector2 const half_source_size{
+         static_cast<float>(source_rectangle.width / 2.0f), static_cast<float>(source_rectangle.height / 2.0f)
+      };
       std::array<SDL_Vertex, 4> vertices{
          {
             {
@@ -193,7 +183,7 @@ namespace fro
       };
 
       bool const succeeded{
-         SDL_RenderGeometry(native_renderer_.get(), texture->native_texture_.get(),
+         SDL_RenderGeometry(native_renderer_.get(), stored_texture->native_texture_.get(),
             vertices.data(), static_cast<int>(vertices.size()),
             indices.data(), static_cast<int>(indices.size()))
       };

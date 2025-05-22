@@ -12,7 +12,7 @@ namespace fro
    class RenderContext;
    class Surface;
 
-   class Texture final
+   class Texture final : public Referenceable
    {
       friend RenderContext;
 
@@ -20,12 +20,15 @@ namespace fro
          Texture(Texture const&) = delete;
          Texture(Texture&&) = default;
 
-         ~Texture() = default;
+         virtual ~Texture() override = default;
 
          Texture& operator=(Texture const&) = delete;
          Texture& operator=(Texture&&) = default;
 
-         [[nodiscard]] std::size_t hash() const;
+         FRO_API void change_linear_filtering(bool filter_linearly) const;
+
+         FRO_API [[nodiscard]] std::size_t hash() const;
+         FRO_API [[nodiscard]] Vector2<double> size() const;
 
       private:
          Texture(SDL_Renderer& target_native_renderer, Surface const& source_surface);
