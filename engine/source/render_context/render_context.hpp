@@ -53,12 +53,12 @@ namespace fro
          FRO_API RenderContext& operator=(RenderContext const& other);
          RenderContext& operator=(RenderContext&&) = default;
 
-         FRO_API bool upload_texture(Reference<Surface const> const& surface);
-         FRO_API bool unload_texture(Reference<Surface const> const& surface);
+         FRO_API Texture const& upload_texture(Surface const& surface);
+         FRO_API bool unload_texture(Texture const& texture);
 
          FRO_API void clear();
-         FRO_API void render(Reference<Surface const> const& surface, TransformMatrix const& transform = {},
-            Rectangle<int> source_rectangle = {});
+         FRO_API void render(Texture const& texture, TransformMatrix const& transform = {},
+            Rectangle<double> source_rectangle = {});
          FRO_API void present();
 
          FRO_API void change_title(std::string_view title);

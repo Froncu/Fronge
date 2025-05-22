@@ -2,10 +2,10 @@
 #define GROUP_HPP
 
 #include "scene.hpp"
-#include "components/components.hpp"
+#include "components.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"
-#include "utility/template_parameter_pack.hpp"
+#include "utility/pack.hpp"
 #include "utility/unique_parameter_pack.hpp"
 
 namespace fro
@@ -17,7 +17,7 @@ namespace fro
 
    template <Componentable... OwnedComponents, Componentable... ObservedComponents>
       requires IS_UNIQUE<OwnedComponents..., ObservedComponents...>
-   class Group<TemplateParameterPack<OwnedComponents...>, TemplateParameterPack<ObservedComponents...>> final
+   class Group<Pack<OwnedComponents...>, Pack<ObservedComponents...>> final
       : public Scene::BaseGroup
    {
       friend Scene;
@@ -113,7 +113,10 @@ namespace fro
 
          Reference<Scene> scene_;
          std::vector<Entity*> entities_{};
-         std::tuple<std::vector<ObservedComponents*...>> observed_components_{};
+         std::conditional_t<(sizeof...(ObservedComponents)),
+            std::tuple<std::vector<ObservedComponents*>...>,
+            std::tuple<>>
+         observed_components_{};
 
          // NOTE: std::invoke_result_t does not work on MSVC here because Group
          // is still considered undefined, whereas GCC works fine
@@ -124,7 +127,8 @@ namespace fro
             std::span<OwnedComponents>...,
             std::ranges::transform_view<
                std::ranges::ref_view<std::vector<ObservedComponents*>>,
-               std::function<ObservedComponents&(ObservedComponents*)>>...> view_{ construct_view() };
+               std::function<ObservedComponents&(ObservedComponents*)>>...>
+         view_{ construct_view() };
    };
 }
 

@@ -86,8 +86,27 @@ namespace fro
    {
    }
 
+   void Texture::change_linear_filtering(bool const filter_linearly) const
+   {
+      bool const succeeded{
+         SDL_SetTextureScaleMode(native_texture_.get(), filter_linearly ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST)
+      };
+      assert(succeeded, "failed to change the filtering mode of a Texture ({})",
+         SDL_GetError());
+   }
+
    std::size_t Texture::hash() const
    {
       return hash_;
+   }
+
+   Vector2<double> Texture::size() const
+   {
+      Vector2<float> size;
+      bool const succeeded{ SDL_GetTextureSize(native_texture_.get(), &size.x, &size.y) };
+      assert(succeeded, "failed to get the size of the texture ({})",
+         SDL_GetError());
+
+      return { static_cast<double>(size.x), static_cast<double>(size.y) };
    }
 }

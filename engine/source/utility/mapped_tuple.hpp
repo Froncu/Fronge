@@ -8,10 +8,10 @@ namespace fro
    template <template <typename> class Wrapper, typename Tuple>
    struct MappedTuple;
 
-   template <template <typename> class Wrapper, typename... Ts>
-   struct MappedTuple<Wrapper, std::tuple<Ts...>>
+   template <template <typename> class Wrapper, typename... TupleTypes>
+   struct MappedTuple<Wrapper, std::tuple<TupleTypes...>>
    {
-      using Type = std::tuple<Wrapper<Ts>...>;
+      using Type = std::tuple<Wrapper<TupleTypes>...>;
    };
 }
 
