@@ -10,6 +10,6 @@ namespace fro
 int main(int, char**)
 {
    fro::create_application()->run();
-   fro::Locator::reset();
+   fro::Locator::remove_providers();
    return 0;
 }

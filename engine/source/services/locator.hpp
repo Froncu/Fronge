@@ -29,13 +29,13 @@ namespace fro
             current_provider = UniquePointer<void>{ new Provider{ std::move(new_provider) }, void_deleter<Provider> };
          }
 
-         static void reset()
+         static void remove_providers()
          {
             services_.clear();
          }
 
          template <typename Service>
-         static void reset()
+         static void remove_provider()
          {
             services_.erase(type_index<Service>());
          }
