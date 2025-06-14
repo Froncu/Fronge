@@ -19,14 +19,14 @@ namespace fro
             requires std::constructible_from<Provider, Arguments...>
          static void set(Arguments&&... arguments)
          {
-            Provider new_provider{ std::forward<Arguments>(arguments)... };
+            UniquePointer<void> new_provider{ new Provider{ std::forward<Arguments>(arguments)... }, void_deleter<Provider> };
             UniquePointer<void>& current_provider{ internal_get<Service>() };
 
-            if constexpr (std::movable<Service> and std::movable<Provider>)
+            if constexpr (std::movable<Service>)
                if (current_provider)
-                  static_cast<Service&>(new_provider) = std::move(*static_cast<Service*>(current_provider.get()));
+                  *static_cast<Service*>(new_provider.get()) = std::move(*static_cast<Service*>(current_provider.get()));
 
-            current_provider = UniquePointer<void>{ new Provider{ std::move(new_provider) }, void_deleter<Provider> };
+            current_provider = std::move(new_provider);
          }
 
          static void remove_providers()
