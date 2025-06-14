@@ -37,7 +37,6 @@
 #include "services/locator.hpp"
 #include "services/logger/coloured_logger.hpp"
 #include "services/logger/logger.hpp"
-#include "services/system_event_dispatcher/regular_system_event_dispatcher.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "utility/assert.hpp"
 #include "utility/exception.hpp"
