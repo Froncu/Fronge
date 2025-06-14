@@ -14,12 +14,6 @@ namespace fro
    #else
    auto constexpr ENGINE{ false };
    #endif
-
-   #ifdef FRO_LOGGER
-   auto constexpr LOGGER{ true };
-   #else
-   auto constexpr LOGGER{ false };
-   #endif
 }
 
 #endif
