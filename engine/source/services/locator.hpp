@@ -17,16 +17,17 @@ namespace fro
       public:
          template <typename Service, std::derived_from<Service> Provider, typename... Arguments>
             requires std::constructible_from<Provider, Arguments...>
-         static void set(Arguments&&... arguments)
+         static Service& set(Arguments&&... arguments)
          {
             UniquePointer<void> new_provider{ new Provider{ std::forward<Arguments>(arguments)... }, void_deleter<Provider> };
-            UniquePointer<void>& current_provider{ internal_get<Service>() };
+            UniquePointer<void>& current_provider{ find<Service>() };
 
             if constexpr (std::movable<Service>)
                if (current_provider)
                   *static_cast<Service*>(new_provider.get()) = std::move(*static_cast<Service*>(current_provider.get()));
 
             current_provider = std::move(new_provider);
+            return *static_cast<Service*>(current_provider.get());
          }
 
          static void remove_providers()
@@ -67,9 +68,15 @@ namespace fro
 
       private:
          template <typename Service>
+         [[nodiscard]] static UniquePointer<void>& find()
+         {
+            return services_[type_index<Service>()];
+         }
+
+         template <typename Service>
          [[nodiscard]] static UniquePointer<void>& internal_get()
          {
-            UniquePointer<void>& service{ services_[type_index<Service>()] };
+            UniquePointer<void>& service{ find<Service>() };
             if constexpr (std::default_initializable<Service>)
                if (not service)
                   service = UniquePointer<void>{ new Service{}, void_deleter<Service> };
