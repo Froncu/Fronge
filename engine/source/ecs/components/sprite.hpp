@@ -3,7 +3,7 @@
 
 #include "maths/rectangle.hpp"
 #include "reference/reference.hpp"
-#include "render_context/texture.hpp"
+#include "services/render_context/texture.hpp"
 
 namespace fro
 {

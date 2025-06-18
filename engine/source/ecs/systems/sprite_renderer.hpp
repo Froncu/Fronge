@@ -3,7 +3,7 @@
 
 #include "core.hpp"
 #include "ecs/scene.hpp"
-#include "render_context/render_context.hpp"
+#include "services/render_context/render_context.hpp"
 
 namespace fro
 {

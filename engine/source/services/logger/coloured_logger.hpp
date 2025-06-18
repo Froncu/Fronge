@@ -9,12 +9,12 @@ namespace fro
    {
       public:
          ColouredLogger() = default;
-         ColouredLogger(ColouredLogger const&) = default;
+         ColouredLogger(ColouredLogger const&) = delete;
          ColouredLogger(ColouredLogger&&) = default;
 
          virtual ~ColouredLogger() override = default;
 
-         ColouredLogger& operator=(ColouredLogger const&) = default;
+         ColouredLogger& operator=(ColouredLogger const&) = delete;
          ColouredLogger& operator=(ColouredLogger&&) = default;
 
       private:

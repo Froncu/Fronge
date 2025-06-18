@@ -9,12 +9,12 @@ namespace fro
    {
       public:
          DisabledLogger() = default;
-         DisabledLogger(DisabledLogger const&) = default;
+         DisabledLogger(DisabledLogger const&) = delete;
          DisabledLogger(DisabledLogger&&) = default;
 
          virtual ~DisabledLogger() override = default;
 
-         DisabledLogger& operator=(DisabledLogger const&) = default;
+         DisabledLogger& operator=(DisabledLogger const&) = delete;
          DisabledLogger& operator=(DisabledLogger&&) = default;
 
       private:

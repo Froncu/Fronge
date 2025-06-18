@@ -20,7 +20,7 @@ namespace fro
          SceneManager& operator=(SceneManager const&) = delete;
          SceneManager& operator=(SceneManager&&) noexcept = default;
 
-         FRO_API Scene& add(std::string name);
+         FRO_API Scene const& add(std::string name);
 
          FRO_API void update(double delta_seconds);
          FRO_API void fixed_update(double fixed_delta_seconds);

@@ -2,7 +2,7 @@
 
 namespace fro
 {
-   Scene& SceneManager::add(std::string name)
+   Scene const& SceneManager::add(std::string name)
    {
       auto scene{ scenes_.find(name) };
       if (scene == scenes_.end())

@@ -20,12 +20,12 @@ namespace fro
 
       public:
          SystemEventDispatcher() = default;
-         SystemEventDispatcher(SystemEventDispatcher const&) = default;
+         SystemEventDispatcher(SystemEventDispatcher const&) = delete;
          SystemEventDispatcher(SystemEventDispatcher&&) = default;
 
          ~SystemEventDispatcher() = default;
 
-         SystemEventDispatcher& operator=(SystemEventDispatcher const&) = default;
+         SystemEventDispatcher& operator=(SystemEventDispatcher const&) = delete;
          SystemEventDispatcher& operator=(SystemEventDispatcher&&) = default;
 
          FRO_API void poll_events();

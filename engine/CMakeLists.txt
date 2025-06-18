@@ -12,14 +12,14 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/maths/transform_matrix.cpp
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp
-   source/render_context/render_context.cpp
-   source/render_context/texture.cpp
    source/resources/surface/surface.cpp
    source/services/input_manager/input_manager.cpp
    source/services/locator.cpp
    source/services/logger/coloured_logger.cpp
    source/services/logger/disabled_logger.cpp
    source/services/logger/logger.cpp
+   source/services/render_context/render_context.cpp
+   source/services/render_context/texture.cpp
    source/services/scene_manager/scene_manager.cpp
    source/services/system_event_dispatcher/system_event_dispatcher.cpp)
 
