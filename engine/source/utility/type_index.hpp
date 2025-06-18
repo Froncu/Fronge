@@ -1,7 +1,7 @@
 #ifndef TYPE_INDEX_HPP
 #define TYPE_INDEX_HPP
 
-#include <typeindex>
+#include "froch.hpp"
 
 namespace fro
 {

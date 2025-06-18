@@ -3,7 +3,6 @@
 
 #include "actions.hpp"
 #include "events/observer/event_dispatcher.hpp"
-#include "gamepad.hpp"
 #include "maths/vector2.hpp"
 #include "reference/referenceable.hpp"
 

@@ -2,6 +2,7 @@
 #define SCENE_HPP
 
 #include "components.hpp"
+#include "identifier/id.hpp"
 #include "reference/referenceable.hpp"
 #include "utility/mapped_tuple.hpp"
 #include "utility/sparse_set.hpp"
@@ -12,24 +13,26 @@ namespace fro
    class Entity;
    template <typename, typename>
    class Group;
+   class SceneManager;
 
    class Scene final : public Referenceable
    {
       friend Entity;
       template <typename, typename>
       friend class Group;
+      friend SceneManager;
 
       template <Componentable Component>
       class ComponentSparseSet final
       {
          public:
             ComponentSparseSet() = default;
-            ComponentSparseSet(ComponentSparseSet const&) = default;
+            ComponentSparseSet(ComponentSparseSet const&) = delete;
             ComponentSparseSet(ComponentSparseSet&&) = default;
 
             ~ComponentSparseSet() = default;
 
-            ComponentSparseSet& operator=(ComponentSparseSet const&) = default;
+            ComponentSparseSet& operator=(ComponentSparseSet const&) = delete;
             ComponentSparseSet& operator=(ComponentSparseSet&&) = default;
 
             bool remove_add_queued()
@@ -80,7 +83,7 @@ namespace fro
                      queued_component not_eq insert_queue_.end())
                      component = &queued_component->second;
 
-                  return component;
+               return component;
             }
 
             [[nodiscard]] Component const* find(ID::InternalValue const entity_id) const
@@ -114,34 +117,31 @@ namespace fro
       {
          public:
             BaseGroup() = default;
-            BaseGroup(BaseGroup const&) = default;
+            BaseGroup(BaseGroup const&) = delete;
             BaseGroup(BaseGroup&&) = default;
 
             virtual ~BaseGroup() = default;
 
-            BaseGroup& operator=(BaseGroup const&) = default;
+            BaseGroup& operator=(BaseGroup const&) = delete;
             BaseGroup& operator=(BaseGroup&&) = default;
 
             virtual void update() = 0;
       };
 
       public:
-         Scene() = default;
-         Scene(Scene const&) = default;
+         Scene(Scene const&) = delete;
          Scene(Scene&&) = default;
 
          virtual ~Scene() override = default;
 
-         Scene& operator=(Scene const&) = default;
+         Scene& operator=(Scene const&) = delete;
          Scene& operator=(Scene&&) = default;
 
-         FRO_API [[nodiscard]] Entity& create_entity();
-         FRO_API void destroy_entity(Entity const& entity);
-
-         FRO_API void execute_queued();
+         FRO_API [[nodiscard]] Entity& create_entity() const;
+         FRO_API void destroy_entity(Entity const& entity) const;
 
          template <typename OwnedComponents, typename ObservedComponents>
-         Group<OwnedComponents, ObservedComponents>& group()
+         Group<OwnedComponents, ObservedComponents>& group() const
          {
             using GroupType = Group<OwnedComponents, ObservedComponents>;
 
@@ -155,14 +155,19 @@ namespace fro
          }
 
       private:
-         MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
-         // NOTE: the groups would benefit if this was a vector of Entities instead of pointers to them
+         Scene() = default;
+
+         mutable MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
+         // TODO: the groups would benefit if this was a vector of Entities instead of pointers to them
          // or if the Entity class was just a wrapper around a number with its current methods moved to
          // the Scene class
-         std::vector<std::unique_ptr<Entity>> entities_{};
-         std::vector<ID::InternalValue> destroy_queue_{};
-         std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
+         mutable std::vector<std::unique_ptr<Entity>> entities_{};
+         mutable std::vector<ID::InternalValue> destroy_queue_{};
+         mutable std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
    };
 }
+
+#include "entity.hpp"
+#include "group.hpp"
 
 #endif

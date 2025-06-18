@@ -42,7 +42,7 @@ namespace fro
          }
 
       private:
-         explicit Group(Scene& scene)
+         explicit Group(Scene const& scene)
             : scene_{ scene }
          {
          }
@@ -111,7 +111,7 @@ namespace fro
                })...);
          }
 
-         Reference<Scene> scene_;
+         Reference<Scene const> scene_;
          std::vector<Entity*> entities_{};
          std::conditional_t<(sizeof...(ObservedComponents)),
             std::tuple<std::vector<ObservedComponents*>...>,

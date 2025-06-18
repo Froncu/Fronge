@@ -65,10 +65,10 @@ namespace fro
       private:
          static IDGenerator id_generator_;
 
-         explicit Entity(Scene& scene);
+         explicit Entity(Scene const& scene);
 
          ID id_{ id_generator_.generate() };
-         Reference<Scene> scene_;
+         Reference<Scene const> scene_;
    };
 }
 

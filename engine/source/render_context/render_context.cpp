@@ -172,8 +172,8 @@ namespace fro
          Vector3<double> position{ vertex.position.x, vertex.position.y, 1.0 };
 
          position = transform.transformation() * position;
-         vertex.position.x = static_cast<float>(std::floor(position.x));
-         vertex.position.y = static_cast<float>(std::floor(position.y));
+         vertex.position.x = static_cast<float>(position.x);
+         vertex.position.y = static_cast<float>(position.y);
       }
 
       std::array constexpr indices

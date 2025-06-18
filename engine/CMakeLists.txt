@@ -3,6 +3,7 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/ecs/components/transform.cpp
    source/ecs/entity.cpp
    source/ecs/scene.cpp
+   source/ecs/systems/sprite_renderer.cpp
    source/identifier/id.cpp
    source/identifier/id_generator.cpp
    source/input/gamepad.cpp
@@ -19,8 +20,8 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/services/logger/coloured_logger.cpp
    source/services/logger/disabled_logger.cpp
    source/services/logger/logger.cpp
-   source/services/system_event_dispatcher/system_event_dispatcher.cpp
-)
+   source/services/scene_manager/scene_manager.cpp
+   source/services/system_event_dispatcher/system_event_dispatcher.cpp)
 
 target_include_directories(${FRO_ENGINE_NAME}
    PUBLIC source)

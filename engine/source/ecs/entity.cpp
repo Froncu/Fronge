@@ -4,7 +4,7 @@ namespace fro
 {
    IDGenerator Entity::id_generator_{};
 
-   Entity::Entity(Scene& scene)
+   Entity::Entity(Scene const& scene)
       : scene_{ scene }
    {
    }
