@@ -79,9 +79,9 @@ namespace fro
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> operator*(Vector2<OtherComponent> const& vector) const
+      [[nodiscard]] ResultingComponent<Component, OtherComponent> operator*(Vector2<OtherComponent> const& vector) const
       {
-         return { x * vector.x + y * vector.y };
+         return x * vector.x + y * vector.y;
       }
 
       template <Arithmetic Multiplier>

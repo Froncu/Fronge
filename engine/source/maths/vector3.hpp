@@ -95,7 +95,7 @@ namespace fro
       }
 
       template <Arithmetic OtherType>
-      [[nodiscard]] auto operator*(Vector3<OtherType> const& vector) const
+      [[nodiscard]] ResultingComponent<Component, OtherType> operator*(Vector3<OtherType> const& vector) const
       {
          return
             x * vector.x +
