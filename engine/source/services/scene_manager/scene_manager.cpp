@@ -1,4 +1,5 @@
 #include "scene_manager.hpp"
+#include "ecs/entity.hpp"
 
 namespace fro
 {

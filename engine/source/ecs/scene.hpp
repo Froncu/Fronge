@@ -167,7 +167,4 @@ namespace fro
    };
 }
 
-#include "entity.hpp"
-#include "group.hpp"
-
 #endif

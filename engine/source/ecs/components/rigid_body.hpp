@@ -9,7 +9,7 @@ namespace fro
    struct Collider final
    {
       TransformMatrix transform;
-      Shape shape;
+      // Shape shape;
       double static_friction;
       double dynamic_friction;
       double restitution;

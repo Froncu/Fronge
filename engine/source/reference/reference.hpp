@@ -5,15 +5,14 @@
 
 namespace fro
 {
-   // TODO: there should be a constraint/static assert on Type to be derived from Referenceable.
-   // This is not implemented because such a constraint limits the Reference when used as a
-   // data member; class A cannot hold a data member of type Reference<A> even though A
-   // derives from Referenceable. This is because A is not complete when the constraint
-   // is checked.
+   // TODO: there should be constraints/static asserts on Type to be both derived from
+   // Referenceable and not from BaseReference. This is not implemented because such
+   // constraints limits the Reference when used as a data member; class A cannot hold
+   // a data member of type Reference<A> even though A because A is not complete when
+   // the constraints are checked.
 
    template <typename Type>
    concept NonReference =
-      not std::derived_from<Type, BaseReference> and
       not std::is_reference_v<Type>;
 
    template <typename From, typename To>

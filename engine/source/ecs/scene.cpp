@@ -1,3 +1,4 @@
+#include "entity.hpp"
 #include "scene.hpp"
 
 namespace fro
