@@ -3,6 +3,7 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/ecs/components/transform.cpp
    source/ecs/entity.cpp
    source/ecs/scene.cpp
+   source/ecs/systems/physics_system.cpp
    source/ecs/systems/sprite_renderer.cpp
    source/identifier/id.cpp
    source/identifier/id_generator.cpp
