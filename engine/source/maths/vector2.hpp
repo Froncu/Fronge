@@ -48,7 +48,8 @@ namespace fro
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> operator+(Vector2<OtherComponent> const& vector) const
+      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> operator+(
+         Vector2<OtherComponent> const& vector) const
       {
          return { x + vector.x, y + vector.y };
       }
@@ -66,7 +67,8 @@ namespace fro
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> operator-(Vector2<OtherComponent> const& vector) const
+      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> operator-(
+         Vector2<OtherComponent> const& vector) const
       {
          return { x - vector.x, y - vector.y };
       }
@@ -116,9 +118,14 @@ namespace fro
          return x == vector.x and y == vector.y;
       }
 
+      [[nodiscard]] auto magnitude_squared() const
+      {
+         return x * x + y * y;
+      }
+
       [[nodiscard]] auto magnitude() const
       {
-         return std::sqrt(x * x + y * y);
+         return std::sqrt(magnitude_squared());
       }
 
       [[nodiscard]] auto normalized() const
@@ -128,20 +135,32 @@ namespace fro
       }
 
       Vector2& normalize()
-         requires std::same_as<Vector2, decltype(normalized())>
+         requires std::same_as<Vector2, decltype(this->normalized())>
       {
          return *this = normalized();
       }
 
-      template <Arithmetic OtherType>
-      [[nodiscard]] auto cross(Vector2<OtherType> const& vector) const
+      template <Arithmetic OtherComponent>
+      [[nodiscard]] auto cross(Vector2<OtherComponent> const& vector) const
       {
          return x * vector.y - y * vector.x;
+      }
+
+      template <Arithmetic OtherComponent>
+      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> cross(OtherComponent const& scalar) const
+      {
+         return { scalar * y, -scalar * x };
       }
 
       Component x;
       Component y;
    };
+
+   template <Arithmetic ComponentA, Arithmetic ComponentB>
+   [[nodiscard]] Vector2<ResultingComponent<ComponentA, ComponentB>> cross(ComponentA const& scalar, Vector2<ComponentB> const& vector)
+   {
+      return { -scalar * vector.y, scalar * vector.x };
+   }
 }
 
 #endif
