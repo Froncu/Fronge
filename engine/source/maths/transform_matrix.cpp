@@ -42,6 +42,27 @@ namespace fro
       change_scale({ x * scale.x, y * scale.y });
    }
 
+   TransformMatrix TransformMatrix::translated(Vector2<double> const translation) const
+   {
+      TransformMatrix transformation{ *this };
+      transformation.translate(translation);
+      return TransformMatrix{ transformation };
+   }
+
+   TransformMatrix TransformMatrix::rotated(double const rotation_radians) const
+   {
+      TransformMatrix transformation{ *this };
+      transformation.rotate(rotation_radians);
+      return TransformMatrix{ transformation };
+   }
+
+   TransformMatrix TransformMatrix::scaled(Vector2<double> const scale) const
+   {
+      TransformMatrix transformation{ *this };
+      transformation.scale(scale);
+      return TransformMatrix{ transformation };
+   }
+
    void TransformMatrix::change_translation(Vector2<double> const position)
    {
       transformation_[0][2] = position.x;

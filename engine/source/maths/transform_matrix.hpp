@@ -26,6 +26,10 @@ namespace fro
          FRO_API void rotate(double rotation_radians);
          FRO_API void scale(Vector2<double> scale);
 
+         FRO_API [[nodiscard]] TransformMatrix translated(Vector2<double> translation) const;
+         FRO_API [[nodiscard]] TransformMatrix rotated(double rotation_radians) const;
+         FRO_API [[nodiscard]] TransformMatrix scaled(Vector2<double> scale) const;
+
          FRO_API void change_translation(Vector2<double> position);
          FRO_API void change_rotation(double rotation_radians);
          FRO_API void change_scale(Vector2<double> scale);
