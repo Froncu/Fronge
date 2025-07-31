@@ -27,6 +27,7 @@
 #include "maths/matrix.hpp"
 #include "maths/rectangle.hpp"
 #include "maths/resulting_component.hpp"
+#include "maths/shapes.hpp"
 #include "maths/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "maths/vector3.hpp"

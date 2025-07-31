@@ -15,6 +15,8 @@ namespace fro
    {
       std::vector<Vector2<double>> vertices;
    };
+
+   using Shape = std::variant<Circle, Polygon>;
 }
 
 #endif
