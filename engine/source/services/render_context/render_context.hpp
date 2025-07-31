@@ -6,6 +6,7 @@
 #include "events/render_context_event.hpp"
 #include "froch.hpp"
 #include "maths/rectangle.hpp"
+#include "maths/shapes.hpp"
 #include "maths/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "reference/reference.hpp"
@@ -21,6 +22,14 @@ struct SDL_Renderer;
 
 namespace fro
 {
+   struct Color final
+   {
+      std::uint8_t red;
+      std::uint8_t green;
+      std::uint8_t blue;
+      std::uint8_t alpha;
+   };
+
    class RenderContext final : public Referenceable
    {
       public:
@@ -59,6 +68,8 @@ namespace fro
          FRO_API void clear();
          FRO_API void render(Texture const& texture, TransformMatrix const& transform = {},
             Rectangle<double> source_rectangle = {});
+         FRO_API void render(Shape const& shape, TransformMatrix const& transform = {},
+            Color color = { 255, 255, 255, 255 });
          FRO_API void present();
 
          FRO_API void change_title(std::string_view title);
@@ -87,7 +98,7 @@ namespace fro
          {
             VariantVisitor
             {
-               [smart_this = Reference<RenderContext>{ this }](RenderContextCloseEvent const& event)
+               [smart_this = Reference{ this }](RenderContextCloseEvent const& event)
                {
                   if (smart_this->id() not_eq event.id)
                      return false;

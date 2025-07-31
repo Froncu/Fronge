@@ -16,14 +16,19 @@ namespace fro
    {
    }
 
-   void SceneManager::fixed_update(double /*fixed_delta_seconds*/)
+   void SceneManager::fixed_update(double const fixed_delta_seconds)
    {
+      for (Scene const& scene : std::views::values(scenes_))
+         physics_system_.step(scene, fixed_delta_seconds);
    }
 
    void SceneManager::render()
    {
-      for (Scene& scene : std::views::values(scenes_))
+      for (Scene const& scene : std::views::values(scenes_))
+      {
          sprite_renderer_.render(scene);
+         physics_system_.render(scene);
+      }
    }
 
    void SceneManager::execute_queued()

@@ -1,6 +1,7 @@
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 
+#include "components/rigid_body.hpp"
 #include "components/sprite.hpp"
 #include "components/transform.hpp"
 #include "froch.hpp"
@@ -10,6 +11,7 @@
 namespace fro
 {
    using Components = std::tuple<
+      RigidBody,
       Transform,
       Sprite>;
 

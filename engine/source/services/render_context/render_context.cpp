@@ -103,8 +103,7 @@ namespace fro
          id(), SDL_GetError());
    }
 
-   void RenderContext::render(Texture const& texture, TransformMatrix const& transform,
-      Rectangle<double> source_rectangle)
+   void RenderContext::render(Texture const& texture, TransformMatrix const& transform, Rectangle<double> source_rectangle)
    {
       auto const stored_texture{ textures_.find(texture) };
 
@@ -189,6 +188,62 @@ namespace fro
       };
       assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
          id(), SDL_GetError());
+   }
+
+   void RenderContext::render(Shape const& shape, TransformMatrix const& transform, Color const color)
+   {
+      Color old_color;
+      bool succeeded{
+         SDL_GetRenderDrawColor(native_renderer_.get(), &old_color.red, &old_color.green, &old_color.blue, &old_color.alpha)
+      };
+      assert(succeeded, "failed to get the draw color of RenderContext{} ({})",
+         id(), SDL_GetError());
+
+      succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), color.red, color.green, color.blue, color.alpha);
+      assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
+         id(), color.red, color.green, color.blue, color.alpha, SDL_GetError());
+
+      std::vector<SDL_FPoint> shape_vertices{};
+      VariantVisitor{
+         [&transform, &shape_vertices](Circle const& circle)
+         {
+            std::size_t constexpr vertex_count{ 16 };
+            shape_vertices.reserve(vertex_count);
+
+            for (std::size_t index{}; index < vertex_count; ++index)
+            {
+               double const angle{ index * (2 * std::numbers::pi / (vertex_count - 1)) };
+
+               Vector3 vertex{ std::cos(angle) * circle.radius, std::sin(angle) * circle.radius, 1.0 };
+               vertex = transform.transformation() * vertex;
+
+               shape_vertices.push_back({ static_cast<float>(vertex.x), static_cast<float>(vertex.y) });
+            }
+         },
+
+         [&transform, &shape_vertices](Polygon const& polygon)
+         {
+            shape_vertices.reserve(polygon.vertices.size() + 1);
+            for (auto const [x, y] : polygon.vertices)
+            {
+               Vector3 vertex{ x, y, 1.0 };
+               vertex = transform.transformation() * vertex;
+
+               shape_vertices.push_back({ static_cast<float>(vertex.x), static_cast<float>(vertex.y) });
+            }
+
+            shape_vertices.emplace_back(shape_vertices.front());
+         }
+      }(shape);
+
+      succeeded = SDL_RenderLines(native_renderer_.get(), shape_vertices.data(), static_cast<int>(shape_vertices.size()));
+      assert(succeeded, "failed to render a Circle to RenderContext{} ({})",
+         id(), SDL_GetError());
+
+      succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), old_color.red, old_color.green, old_color.blue,
+         old_color.alpha);
+      assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
+         id(), old_color.red, old_color.green, old_color.blue, old_color.alpha, SDL_GetError());
    }
 
    void RenderContext::present()

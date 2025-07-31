@@ -3,6 +3,7 @@
 
 #include "core.hpp"
 #include "ecs/scene.hpp"
+#include "ecs/systems/physics_system.hpp"
 #include "ecs/systems/sprite_renderer.hpp"
 #include "froch.hpp"
 
@@ -31,6 +32,7 @@ namespace fro
          std::unordered_map<std::string, Scene> scenes_{};
 
          SpriteRenderer sprite_renderer_{};
+         PhysicsSystem physics_system_{};
    };
 }
 
