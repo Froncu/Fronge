@@ -118,6 +118,11 @@ namespace fro
          return x == vector.x and y == vector.y;
       }
 
+      [[nodiscard]] Vector2 perpendicular() const
+      {
+         return { y, -x };
+      }
+
       [[nodiscard]] auto magnitude_squared() const
       {
          return x * x + y * y;
