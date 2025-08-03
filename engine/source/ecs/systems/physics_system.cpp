@@ -25,20 +25,6 @@ namespace fro
       rigid_body_b->velocity += impulse * rigid_body_b->inverse_mass;
    }
 
-   void PhysicsSystem::positional_correction(Manifold const& manifold)
-   {
-      double constexpr percent{ 0.8 };
-      double constexpr slop{ 0.01 };
-
-      Vector2 const correction{
-         manifold.normal * percent * std::max(manifold.penetration - slop, 0.0) /
-         (manifold.participant_a.rigid_body->inverse_mass + manifold.participant_b.rigid_body->inverse_mass)
-      };
-
-      manifold.participant_a.transform->world_translate(correction * -manifold.participant_a.rigid_body->inverse_mass);
-      manifold.participant_b.transform->world_translate(correction * manifold.participant_b.rigid_body->inverse_mass);
-   }
-
    void PhysicsSystem::step(Scene const& scene, double const delta_seconds)
    {
       manifolds_.clear();
@@ -46,7 +32,10 @@ namespace fro
       auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
 
       for (auto&& [entity, rigid_body, transform] : groups)
+      {
+         rigid_body.velocity += gravity * delta_seconds;
          transform.world_translate(rigid_body.velocity * delta_seconds);
+      }
 
       for (auto group_a{ groups.begin() }; group_a not_eq groups.end(); ++group_a)
       {
@@ -71,6 +60,16 @@ namespace fro
            auto const& [entity, rigid_body, transform] : groups)
          for (auto const& [shape, translation] : rigid_body.colliders)
             render_context_->render(shape, transform.world().translated(translation));
+   }
+
+   void PhysicsSystem::change_positional_correction_percent(double const percent)
+   {
+      positional_correction_percent_ = std::clamp(percent, 0.0, 1.0);
+   }
+
+   void PhysicsSystem::change_positional_correction_slop(double const slop)
+   {
+      positional_correction_slop_ = std::max(slop, 0.0);
    }
 
    void PhysicsSystem::generate_manifolds(RigidBody& rigid_body_a, Transform& transform_a,
@@ -139,5 +138,16 @@ namespace fro
 
             manifolds_.emplace_back(std::move(manifold.value()));
          }
+   }
+
+   void PhysicsSystem::positional_correction(Manifold const& manifold) const
+   {
+      Vector2 const correction{
+         manifold.normal * positional_correction_percent_ * std::max(manifold.penetration - positional_correction_slop_, 0.0) /
+         (manifold.participant_a.rigid_body->inverse_mass + manifold.participant_b.rigid_body->inverse_mass)
+      };
+
+      manifold.participant_a.transform->world_translate(correction * -manifold.participant_a.rigid_body->inverse_mass);
+      manifold.participant_b.transform->world_translate(correction * manifold.participant_b.rigid_body->inverse_mass);
    }
 }
