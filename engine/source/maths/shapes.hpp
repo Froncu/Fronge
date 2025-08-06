@@ -8,12 +8,15 @@ namespace fro
 {
    struct Circle final
    {
-      double radius;
+      double radius{};
    };
 
    struct Polygon final
    {
-      std::vector<Vector2<double>> vertices;
+      FRO_API [[nodiscard]] std::pair<double, double> project(Vector2<double> const& normalized_axis) const;
+      FRO_API [[nodiscard]] Vector2<double> center() const;
+
+      std::vector<Vector2<double>> vertices{};
    };
 
    using Shape = std::variant<Circle, Polygon>;

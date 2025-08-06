@@ -11,15 +11,15 @@ namespace fro
    {
       struct Participant final
       {
-         Reference<RigidBody> rigid_body{};
-         Reference<Transform> transform{};
+         Reference<RigidBody> const rigid_body{};
+         Reference<Transform> const transform{};
+         int const collider_index{};
       };
 
       struct Manifold final
       {
-         Vector2<double> normal{};
-         double penetration{};
-
+         Vector2<double> penetration_normal;
+         double penetration_depth;
          Participant participant_a{};
          Participant participant_b{};
       };
@@ -43,14 +43,21 @@ namespace fro
          Vector2<double> gravity{ 0.0, 9.81 };
 
       private:
+         static [[nodiscard]] std::optional<Manifold> are_colliding(Participant const& participant_a, Circle const& shape_a,
+            Participant const& participant_b, Circle const& shape_b);
          static void resolve_collisions(Manifold const& manifold);
+
+         [[nodiscard]] std::optional<Manifold> are_colliding(Participant const& participant_a, Circle const& shape_a,
+            Participant const& participant_b, Polygon const& shape_b);
+         [[nodiscard]] std::optional<Manifold> are_colliding(Participant const& participant_a, Polygon const& shape_a,
+            Participant const& participant_b, Polygon const& shape_b);
          void generate_manifolds(RigidBody& rigid_body_a, Transform& transform_a,
             RigidBody& rigid_body_b, Transform& transform_b);
          void positional_correction(Manifold const& manifold) const;
 
          std::vector<Manifold> manifolds_{};
+         Polygon transformed_polygon_{};
          Reference<RenderContext> render_context_{ Locator::get<RenderContext>() };
-
          double positional_correction_percent_{ 0.8 };
          double positional_correction_slop_{ 0.01 };
    };

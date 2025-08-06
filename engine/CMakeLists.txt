@@ -10,6 +10,7 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/input/gamepad.cpp
    source/input/input_conversions.cpp
    source/input/user_input.cpp
+   source/maths/shapes.cpp
    source/maths/transform_matrix.cpp
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp

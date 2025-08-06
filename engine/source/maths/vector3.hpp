@@ -138,9 +138,14 @@ namespace fro
             z == vector.z;
       }
 
+      [[nodiscard]] auto magnitude_squared() const
+      {
+         return x * x + y * y + z * z;
+      }
+
       [[nodiscard]] auto magnitude() const
       {
-         return std::sqrt(x * x + y * y + z * z);
+         return std::sqrt(magnitude_squared());
       }
 
       [[nodiscard]] auto normalized() const

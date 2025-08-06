@@ -208,7 +208,7 @@ namespace fro
          [&transform, &shape_vertices](Circle const& circle)
          {
             std::size_t constexpr vertex_count{ 16 };
-            shape_vertices.reserve(vertex_count);
+            shape_vertices.reserve(vertex_count + 1);
 
             for (std::size_t index{}; index < vertex_count; ++index)
             {
@@ -219,6 +219,9 @@ namespace fro
 
                shape_vertices.push_back({ static_cast<float>(vertex.x), static_cast<float>(vertex.y) });
             }
+
+            auto const [x, y]{ transform.translation() };
+            shape_vertices.push_back({ static_cast<float>(x), static_cast<float>(y) });
          },
 
          [&transform, &shape_vertices](Polygon const& polygon)
