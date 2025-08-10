@@ -5,7 +5,7 @@ set(SDL_TEST_LIBRARY OFF)
 set(BUILD_SHARED_LIBS OFF)
 FetchContent_Declare(SDL
    GIT_REPOSITORY https://github.com/libsdl-org/SDL
-   GIT_TAG release-3.2.8
+   GIT_TAG release-3.2.20
    GIT_PROGRESS ON
    GIT_SHALLOW ON)
 
@@ -19,7 +19,7 @@ FetchContent_Declare(SDL_image
 set(SDLTTF_VENDORED ON)
 FetchContent_Declare(SDL_ttf
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
-   GIT_TAG release-3.2.0
+   GIT_TAG release-3.2.2
    GIT_PROGRESS ON
    GIT_SHALLOW ON)
 
