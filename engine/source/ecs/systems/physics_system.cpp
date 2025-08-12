@@ -32,22 +32,32 @@ namespace fro
       if (distance_squared > total_radius * total_radius)
          return std::nullopt;
 
-      Vector2<double> penetration_normal;
-      double penetration_depth;
+      Vector3<double> penetration;
+      penetration.z = 0.0;
       if (not distance_squared)
       {
-         penetration_normal.x = 1.0;
-         penetration_normal.y = 0.0;
-         penetration_depth = shape_a.radius;
+         penetration.x = 1.0;
+         penetration.y = 0.0;
       }
       else
       {
          double const distance{ std::sqrt(distance_squared) };
-         penetration_normal = delta / distance;
-         penetration_depth = total_radius - distance;
+         double const penetration_depth{ total_radius - distance };
+         double const scalar{ penetration_depth / distance };
+         penetration.x = delta.x * scalar;
+         penetration.y = delta.y * scalar;
       }
 
+      penetration = transform_matrix_a.transformation() * penetration;
+      double const penetration_depth{ penetration.magnitude() };
+      double const inverse_penetration_depth{ 1.0 / penetration_depth };
+      Vector2 const penetration_normal{
+         penetration.x * inverse_penetration_depth,
+         penetration.y * inverse_penetration_depth
+      };
+
       return Manifold{
+         .contact_point{ transform_matrix_a.translation() + penetration_normal * shape_a.radius },
          .penetration_normal{ penetration_normal },
          .penetration_depth{ penetration_depth },
          .participant_a{ participant_a },
@@ -60,22 +70,69 @@ namespace fro
       auto const& [rigid_body_a, transform_a, collider_index_a]{ manifold.participant_a };
       auto const& [rigid_body_b, transform_b, collider_index_b]{ manifold.participant_b };
 
-      Vector2 const relative_velocity{ rigid_body_b->velocity - rigid_body_a->velocity };
-      double const velocity_along_normal{ relative_velocity * manifold.penetration_normal };
+      Vector2 const ra{ manifold.contact_point - transform_a->world().translation() };
+      Vector2 const rb{ manifold.contact_point - transform_b->world().translation() };
 
+      Vector2 relative_velocity{
+         rigid_body_b->velocity + cross(rigid_body_b->angular_velocity, rb) -
+         rigid_body_a->velocity - cross(rigid_body_a->angular_velocity, ra)
+      };
+
+      double velocity_along_normal{ relative_velocity * manifold.penetration_normal };
       if (velocity_along_normal > 0.0)
          return;
 
       double const restitution_coefficient{
          std::min(rigid_body_a->colliders[collider_index_a].restitution, rigid_body_b->colliders[collider_index_b].restitution)
       };
-      double const impulse_scalar{
-         -(1 + restitution_coefficient) * velocity_along_normal / (rigid_body_a->inverse_mass + rigid_body_b->inverse_mass)
+
+      double const ra_cross_n{ ra.cross(manifold.penetration_normal) };
+      double const rb_cross_n{ rb.cross(manifold.penetration_normal) };
+      double const inverse_mass_sum{
+         rigid_body_a->inverse_mass +
+         rigid_body_b->inverse_mass +
+         ra_cross_n * ra_cross_n * rigid_body_a->inverse_inertia +
+         rb_cross_n * rb_cross_n * rigid_body_b->inverse_inertia
       };
 
+      double const impulse_scalar{ -(1 + restitution_coefficient) * velocity_along_normal / inverse_mass_sum };
       Vector2 const impulse{ manifold.penetration_normal * impulse_scalar };
+
       rigid_body_a->velocity -= impulse * rigid_body_a->inverse_mass;
       rigid_body_b->velocity += impulse * rigid_body_b->inverse_mass;
+
+      rigid_body_a->angular_velocity -= ra.cross(impulse) * rigid_body_a->inverse_inertia;
+      rigid_body_b->angular_velocity += rb.cross(impulse) * rigid_body_b->inverse_inertia;
+
+      relative_velocity =
+         rigid_body_b->velocity + cross(rigid_body_b->angular_velocity, rb) -
+         rigid_body_a->velocity - cross(rigid_body_a->angular_velocity, ra);
+
+      velocity_along_normal = relative_velocity * manifold.penetration_normal;
+
+      Vector2 tangent{ relative_velocity - manifold.penetration_normal * velocity_along_normal };
+      if (double const tangent_magnitude_squared{ tangent.magnitude_squared() }; tangent_magnitude_squared > 0)
+         tangent /= std::sqrt(tangent_magnitude_squared);
+
+      double const blended_friction{
+         std::sqrt(
+            rigid_body_a->colliders[collider_index_a].friction *
+            rigid_body_b->colliders[collider_index_b].friction
+         )
+      };
+
+      double const max_friction_impulse{ impulse_scalar * blended_friction };
+
+      double friction_impulse_scalar{ -relative_velocity * tangent / inverse_mass_sum };
+      friction_impulse_scalar = std::clamp(friction_impulse_scalar, -max_friction_impulse, max_friction_impulse);
+
+      Vector2 const friction_impulse{ tangent * friction_impulse_scalar };
+
+      rigid_body_a->velocity -= friction_impulse * rigid_body_a->inverse_mass;
+      rigid_body_b->velocity += friction_impulse * rigid_body_b->inverse_mass;
+
+      rigid_body_a->angular_velocity -= ra.cross(friction_impulse) * rigid_body_a->inverse_inertia;
+      rigid_body_b->angular_velocity += rb.cross(friction_impulse) * rigid_body_b->inverse_inertia;
    }
 
    void PhysicsSystem::step(Scene const& scene, double const delta_seconds)
@@ -88,6 +145,7 @@ namespace fro
       {
          rigid_body.velocity += gravity * delta_seconds;
          transform.world_translate(rigid_body.velocity * delta_seconds);
+         transform.world_rotate(rigid_body.angular_velocity * delta_seconds);
       }
 
       for (auto group_a{ groups.begin() }; group_a not_eq groups.end(); ++group_a)
@@ -111,8 +169,8 @@ namespace fro
    {
       for (auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
            auto const& [entity, rigid_body, transform] : groups)
-         for (auto const& [shape, local_transform, restitution] : rigid_body.colliders)
-            render_context_->render(shape, transform.world() * local_transform);
+         for (Collider const& collider : rigid_body.colliders)
+            render_context_->render(collider.shape, transform.world() * collider.transform);
    }
 
    void PhysicsSystem::change_positional_correction_percent(double const percent)
@@ -143,57 +201,87 @@ namespace fro
          y = transformed_vertex.y;
       }
 
-      Vector2<double> smallest_axis;
-      double min_overlap{ std::numeric_limits<double>::max() };
+      Vector3<double> penetration_normal;
+      penetration_normal.z = 0.0;
+      double penetration_depth{ std::numeric_limits<double>::max() };
+
+      enum class OverlapResult
+      {
+         NO_OVERLAP,
+         OVERLAP,
+         OVERLAP_WITH_SMALLER_PENETRATION
+      };
+
+      auto const query_overlap{
+         [this, &shape_a, &penetration_normal, &penetration_depth] [[nodiscard]] (Vector2<double> const& axis)
+         {
+            auto const [min, max]{ transformed_polygon_.project(axis) };
+            if (shape_a.radius < min or max < -shape_a.radius)
+               return OverlapResult::NO_OVERLAP;
+
+            double const test_penetration_depth{
+               std::min(max, shape_a.radius) - std::max(min, -shape_a.radius)
+            };
+
+            if (test_penetration_depth >= penetration_depth)
+               return OverlapResult::OVERLAP;
+
+            penetration_normal.x = axis.x;
+            penetration_normal.y = axis.y;
+            penetration_depth = test_penetration_depth;
+
+            return OverlapResult::OVERLAP_WITH_SMALLER_PENETRATION;
+         }
+      };
 
       for (std::size_t index{}; index < transformed_polygon_.vertices.size(); ++index)
       {
          Vector2<double> const& a{ transformed_polygon_.vertices[index] };
          Vector2<double> const& b{ transformed_polygon_.vertices[(index + 1) % transformed_polygon_.vertices.size()] };
+         if (query_overlap((a - b).perpendicular().normalized()) == OverlapResult::NO_OVERLAP)
+            return std::nullopt;
+      }
 
-         Vector2 axis{ b - a };
-         axis = axis.perpendicular().normalized();
+      Vector2<double> closest_vertex;
+      double closest_vertex_distance_squared{ std::numeric_limits<double>::max() };
+      for (Vector2<double> const& vertex : transformed_polygon_.vertices)
+         if (double const distance_squared{ vertex.magnitude_squared() }; distance_squared < closest_vertex_distance_squared)
+         {
+            closest_vertex = vertex;
+            closest_vertex_distance_squared = distance_squared;
+         }
 
-         auto&& [min_polygon, max_polygon]{ transformed_polygon_.project(axis) };
-         if (shape_a.radius < min_polygon or max_polygon < -shape_a.radius)
+      Vector3<double> contact_point;
+      contact_point.z = 1.0;
+      switch (query_overlap(closest_vertex / std::sqrt(closest_vertex_distance_squared)))
+      {
+         case OverlapResult::NO_OVERLAP:
             return std::nullopt;
 
-         if (double const overlap{
-            std::min(max_polygon, shape_a.radius) - std::max(min_polygon, -shape_a.radius)
-         }; overlap < min_overlap)
-         {
-            smallest_axis = axis;
-            min_overlap = overlap;
-         }
+         case OverlapResult::OVERLAP:
+            contact_point.x = penetration_normal.x * shape_a.radius;
+            contact_point.y = penetration_normal.y * shape_a.radius;
+            break;
+
+         case OverlapResult::OVERLAP_WITH_SMALLER_PENETRATION:
+            contact_point.x = closest_vertex.x;
+            contact_point.y = closest_vertex.y;
+            break;
       }
 
-      double min_distance{ std::numeric_limits<float>::max() };
-      Vector2<double> closest_vertex;
-      for (Vector2<double> const& vertex : transformed_polygon_.vertices)
-         if (double const distance_squared{ vertex.magnitude_squared() }; distance_squared < min_distance)
-         {
-            min_distance = distance_squared;
-            closest_vertex = vertex;
-         }
-
-      min_distance = std::sqrt(min_distance);
-      Vector2 const axis{ closest_vertex / min_distance };
-
-      auto&& [min_polygon, max_polygon]{ transformed_polygon_.project({ axis.x, axis.y }) };
-      if (shape_a.radius < min_polygon or max_polygon < -shape_a.radius)
-         return std::nullopt;
-
-      if (double const overlap{
-         std::min(max_polygon, shape_a.radius) - std::max(min_polygon, -shape_a.radius)
-      }; overlap < min_overlap)
-      {
-         min_overlap = overlap;
-         smallest_axis = axis;
-      }
+      contact_point = transform_matrix_a.transformation() * contact_point;
+      penetration_normal = transform_matrix_a.transformation().inversed().transposed() * (penetration_normal * penetration_depth);
+      penetration_normal.z = 0.0;
+      penetration_depth = penetration_normal.magnitude();
+      double const inverse_penetration_depth{ 1.0 / penetration_depth };
 
       return Manifold{
-         .penetration_normal{ closest_vertex * smallest_axis < 0.0 ? -smallest_axis : smallest_axis },
-         .penetration_depth{ min_overlap },
+         .contact_point{ contact_point.x, contact_point.y },
+         .penetration_normal{
+            penetration_normal.x * inverse_penetration_depth,
+            penetration_normal.y * inverse_penetration_depth
+         },
+         .penetration_depth{ penetration_depth },
          .participant_a{ participant_a },
          .participant_b{ participant_b }
       };

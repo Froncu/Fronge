@@ -12,13 +12,18 @@ namespace fro
    {
       Shape shape{ Circle{ 16.0 } };
       TransformMatrix transform{};
-      double restitution{ 0.5 };
+      double restitution{ 0.9 };
+      double friction{ 0.8 };
    };
 
    struct RigidBody final : Referenceable
    {
-      Vector2<double> velocity{};
       std::vector<Collider> colliders{};
+
+      Vector2<double> velocity{};
+      double angular_velocity{};
+
+      double inverse_inertia{ 0.01 };
       double inverse_mass{ 1.0 };
    };
 }

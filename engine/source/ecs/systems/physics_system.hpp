@@ -11,17 +11,18 @@ namespace fro
    {
       struct Participant final
       {
-         Reference<RigidBody> const rigid_body{};
-         Reference<Transform> const transform{};
-         int const collider_index{};
+         Reference<RigidBody> const rigid_body;
+         Reference<Transform> const transform;
+         int const collider_index;
       };
 
       struct Manifold final
       {
+         Vector2<double> contact_point;
          Vector2<double> penetration_normal;
          double penetration_depth;
-         Participant participant_a{};
-         Participant participant_b{};
+         Participant participant_a;
+         Participant participant_b;
       };
 
       public:
@@ -58,7 +59,7 @@ namespace fro
          std::vector<Manifold> manifolds_{};
          Polygon transformed_polygon_{};
          Reference<RenderContext> render_context_{ Locator::get<RenderContext>() };
-         double positional_correction_percent_{ 0.8 };
+         double positional_correction_percent_{ 0.2 };
          double positional_correction_slop_{ 0.01 };
    };
 }

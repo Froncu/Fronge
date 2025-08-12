@@ -41,6 +41,8 @@ namespace fro
 
          FRO_API [[nodiscard]] TransformMatrix inversed() const;
          FRO_API TransformMatrix& inverse();
+         FRO_API [[nodiscard]] TransformMatrix transposed() const;
+         FRO_API TransformMatrix& transpose();
 
       private:
          void calculate_rotation() const;

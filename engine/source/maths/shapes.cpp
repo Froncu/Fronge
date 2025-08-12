@@ -23,6 +23,6 @@ namespace fro
       for (Vector2<double> const& vertex : vertices)
          sum += vertex;
 
-      return sum / static_cast<double>(vertices.size());
+      return sum / vertices.size();
    }
 }

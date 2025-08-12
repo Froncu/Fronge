@@ -158,6 +158,16 @@ namespace fro
       return *this = inversed();
    }
 
+   TransformMatrix TransformMatrix::transposed() const
+   {
+      return static_cast<TransformMatrix>(transformation().transposed());
+   }
+
+   TransformMatrix& TransformMatrix::transpose()
+   {
+      return *this = transposed();
+   }
+
    void TransformMatrix::calculate_rotation() const
    {
       Matrix<double> const& transformation{ this->transformation() };

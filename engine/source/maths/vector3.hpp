@@ -155,7 +155,7 @@ namespace fro
       }
 
       Vector3& normalize()
-         requires std::same_as<Vector3, decltype(normalized())>
+         requires std::same_as<Vector3, decltype(this->normalized())>
       {
          return *this = normalized();
       }
