@@ -19,7 +19,7 @@ namespace fro
       if ((x_a not_eq y_a or x_b not_eq y_b) and
          (x_a / y_a not_eq x_b / y_b or transform_matrix_a.rotation() not_eq transform_matrix_b.rotation()))
       {
-         Locator::get<Logger>().error(
+         Locator::get<Logger>().warning(
             "attempted to solve collision between two circles with different rotations and non-uniform scale ratios; those will be skipped");
          return std::nullopt;
       }
