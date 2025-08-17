@@ -9,7 +9,7 @@ namespace fro
 {
    class Logger
    {
-      public:
+      protected:
          enum class Type
          {
             INFO,
@@ -17,6 +17,7 @@ namespace fro
             ERROR
          };
 
+      public:
          Logger() = default;
          Logger(Logger const&) = default;
          Logger(Logger&&) = default;
