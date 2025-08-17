@@ -242,9 +242,9 @@ namespace fro
             return std::nullopt;
       }
 
-      Vector2<double> closest_vertex;
-      double closest_vertex_distance_squared{ std::numeric_limits<double>::max() };
-      for (Vector2<double> const& vertex : transformed_polygon_.vertices)
+      Vector2 closest_vertex{ transformed_polygon_.vertices.front() };
+      double closest_vertex_distance_squared{ closest_vertex.magnitude_squared() };
+      for (Vector2<double> const& vertex : std::views::drop(transformed_polygon_.vertices, 1))
          if (double const distance_squared{ vertex.magnitude_squared() }; distance_squared < closest_vertex_distance_squared)
          {
             closest_vertex = vertex;
@@ -270,7 +270,8 @@ namespace fro
       }
 
       contact_point = transform_matrix_a.transformation() * contact_point;
-      penetration_normal = transform_matrix_a.transformation().inversed().transposed() * (penetration_normal * penetration_depth);
+      penetration_normal =
+         transform_matrix_a.transformation().inversed().transposed() * (penetration_normal * penetration_depth);
       penetration_normal.z = 0.0;
       penetration_depth = penetration_normal.magnitude();
       double const inverse_penetration_depth{ 1.0 / penetration_depth };
@@ -334,6 +335,7 @@ namespace fro
 
       Vector2 const direction{ polygons[1]->center() - polygons[0]->center() };
       return Manifold{
+         .contact_point{},
          .penetration_normal{ direction * smallest_axis < 0.0 ? -smallest_axis : smallest_axis },
          .penetration_depth{ min_overlap },
          .participant_a{ participant_a },
@@ -344,8 +346,8 @@ namespace fro
    void PhysicsSystem::generate_manifolds(RigidBody& rigid_body_a, Transform& transform_a,
       RigidBody& rigid_body_b, Transform& transform_b)
    {
-      for (int collider_index_a{}; collider_index_a < rigid_body_a.colliders.size(); ++collider_index_a)
-         for (int collider_index_b{}; collider_index_b < rigid_body_b.colliders.size(); ++collider_index_b)
+      for (std::size_t collider_index_a{}; collider_index_a < rigid_body_a.colliders.size(); ++collider_index_a)
+         for (std::size_t collider_index_b{}; collider_index_b < rigid_body_b.colliders.size(); ++collider_index_b)
          {
             Participant const participant_a{
                .rigid_body{ Reference{ rigid_body_a } },

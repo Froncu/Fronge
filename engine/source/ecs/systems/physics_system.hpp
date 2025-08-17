@@ -13,7 +13,7 @@ namespace fro
       {
          Reference<RigidBody> const rigid_body;
          Reference<Transform> const transform;
-         int const collider_index;
+         std::size_t const collider_index;
       };
 
       struct Manifold final
@@ -44,7 +44,7 @@ namespace fro
          Vector2<double> gravity{ 0.0, 9.81 };
 
       private:
-         static [[nodiscard]] std::optional<Manifold> are_colliding(Participant const& participant_a, Circle const& shape_a,
+         [[nodiscard]] static std::optional<Manifold> are_colliding(Participant const& participant_a, Circle const& shape_a,
             Participant const& participant_b, Circle const& shape_b);
          static void resolve_collisions(Manifold const& manifold);
 
