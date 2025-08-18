@@ -14,6 +14,12 @@ namespace fro
    #else
    auto constexpr ENGINE{ false };
    #endif
+
+   #ifdef __MINGW32__
+   auto constexpr MINGW{ true };
+   #else
+   auto constexpr MINGW{ false };
+   #endif
 }
 
 #endif

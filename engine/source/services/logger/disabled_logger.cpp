@@ -2,7 +2,7 @@
 
 namespace fro
 {
-   void DisabledLogger::log(Type, bool, std::string_view)
+   void DisabledLogger::log(Type, bool, std::stacktrace_entry, std::string_view)
    {
    }
 }

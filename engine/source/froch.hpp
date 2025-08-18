@@ -20,9 +20,11 @@
 #include <numbers>
 #include <numeric>
 #include <optional>
+#include <print>
 #include <ranges>
 #include <set>
 #include <sstream>
+#include <stacktrace>
 #include <stdexcept>
 #include <string>
 #include <thread>

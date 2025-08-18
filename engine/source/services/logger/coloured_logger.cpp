@@ -2,7 +2,7 @@
 
 namespace fro
 {
-   void ColouredLogger::log(Type const type, bool const engine_level, std::string_view const message)
+   void ColouredLogger::log(Type const type, bool const engine_level, std::stacktrace_entry, std::string_view const message)
    {
       std::time_t const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
       std::tm local_time;
@@ -27,10 +27,19 @@ namespace fro
             break;
       }
 
-      std::cout
-         << std::format("\033[{}m", esc_sequence)
-         << std::format("[{}] {:6}: ", time_stream.str(), engine_level ? "FRONGE" : "APP")
-         << message
-         << "\033[0m\n";
+      // TODO: remove this when MinGW works with std::println
+      if constexpr (MINGW)
+         std::cout
+            << std::format("\033[{}m", esc_sequence)
+            << std::format("[{}] {:6}: ", time_stream.str(), engine_level ? "FRONGE" : "APP")
+            << message
+            << "\033[0m\n";
+      else
+         std::println("\033[{}m[{}] {:6}: {}\033[0m",
+            esc_sequence,
+            time_stream.str(),
+            engine_level ? "FRONGE" : "APP",
+            message
+         );
    }
 }
