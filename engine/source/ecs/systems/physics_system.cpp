@@ -143,7 +143,9 @@ namespace fro
 
       for (auto&& [entity, rigid_body, transform] : groups)
       {
-         rigid_body.velocity += gravity * delta_seconds;
+         if (rigid_body.inverse_mass)
+            rigid_body.velocity += gravity * delta_seconds;
+
          transform.world_translate(rigid_body.velocity * delta_seconds);
          transform.world_rotate(rigid_body.angular_velocity * delta_seconds);
       }
@@ -171,6 +173,11 @@ namespace fro
            auto const& [entity, rigid_body, transform] : groups)
          for (Collider const& collider : rigid_body.colliders)
             render_context_->render(collider.shape, transform.world() * collider.transform);
+
+      for (Manifold const& manifold : manifolds_)
+         render_context_->render(Polygon{
+            { manifold.contact_point, manifold.contact_point + manifold.penetration_normal * 8.0 }
+         });
    }
 
    void PhysicsSystem::change_positional_correction_percent(double const percent)
@@ -288,6 +295,7 @@ namespace fro
       };
    }
 
+   // TODO: find the contact point
    std::optional<PhysicsSystem::Manifold> PhysicsSystem::are_colliding(Participant const& participant_a, Polygon const& shape_a,
       Participant const& participant_b, Polygon const& shape_b)
    {
@@ -306,38 +314,50 @@ namespace fro
          y = transformed_vertex.y;
       }
 
-      double min_overlap{ std::numeric_limits<double>::max() };
-      Vector2<double> smallest_axis;
+      Vector3<double> penetration_normal;
+      penetration_normal.z = 0.0;
+      double penetration_depth{ std::numeric_limits<double>::max() };
+
       std::array<Polygon const*, 2> const polygons{ &shape_a, &transformed_polygon_ };
+      for (std::size_t polygon_index{}; polygon_index < polygons.size(); ++polygon_index)
+      {
+         int const normal_scalar{ not polygon_index ? 1 : -1 };
 
-      for (auto& polygon : polygons)
-         for (std::size_t index{}; index < polygon->vertices.size(); ++index)
+         auto const& [vertices]{ *polygons[polygon_index] };
+         for (std::size_t vertex_index{}; vertex_index < vertices.size(); ++vertex_index)
          {
-            Vector2<double> const& a{ polygon->vertices[index] };
-            Vector2<double> const& b{ polygon->vertices[(index + 1) % polygon->vertices.size()] };
+            Vector2<double> const& a{ vertices[vertex_index] };
+            Vector2<double> const& b{ vertices[(vertex_index + 1) % vertices.size()] };
 
-            Vector2 axis{ b - a };
-            axis = axis.perpendicular().normalized();
+            Vector2 const edge_normal{ (b - a).perpendicular().normalized() };
 
-            auto&& [min_a, max_a]{ polygons[0]->project(axis) };
-            auto&& [min_b, max_b]{ polygons[1]->project(axis) };
+            auto&& [min_a, max_a]{ polygons[0]->project(edge_normal) };
+            auto&& [min_b, max_b]{ polygons[1]->project(edge_normal) };
             if (max_a < min_b or max_b < min_a)
                return std::nullopt;
 
-            if (double const overlap{
+            if (double const test_penetration_depth{
                std::min(max_a, max_b) - std::max(min_a, min_b)
-            }; overlap < min_overlap)
+            }; test_penetration_depth < penetration_depth)
             {
-               min_overlap = overlap;
-               smallest_axis = axis;
+               penetration_normal.x = edge_normal.x * normal_scalar;
+               penetration_normal.y = edge_normal.y * normal_scalar;
+               penetration_depth = test_penetration_depth;
             }
          }
+      }
 
-      Vector2 const direction{ polygons[1]->center() - polygons[0]->center() };
+      penetration_normal = transform_matrix_a.transformation() * penetration_normal;
+      penetration_depth = penetration_normal.magnitude();
+      double const inverse_penetration_depth{ 1.0 / penetration_depth };
+
       return Manifold{
          .contact_point{},
-         .penetration_normal{ direction * smallest_axis < 0.0 ? -smallest_axis : smallest_axis },
-         .penetration_depth{ min_overlap },
+         .penetration_normal{
+            penetration_normal.x * inverse_penetration_depth,
+            penetration_normal.y * inverse_penetration_depth
+         },
+         .penetration_depth{ penetration_depth },
          .participant_a{ participant_a },
          .participant_b{ participant_b }
       };
