@@ -17,8 +17,6 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/resources/surface/surface.cpp
    source/services/input_manager/input_manager.cpp
    source/services/locator.cpp
-   source/services/logger/coloured_logger.cpp
-   source/services/logger/disabled_logger.cpp
    source/services/logger/logger.cpp
    source/services/render_context/render_context.cpp
    source/services/render_context/texture.cpp

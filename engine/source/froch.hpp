@@ -9,6 +9,7 @@
 #include <compare>
 #include <concepts>
 #include <condition_variable>
+#include <condition_variable>
 #include <cstdint>
 #include <deque>
 #include <format>
@@ -17,16 +18,19 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <numbers>
 #include <numeric>
 #include <optional>
 #include <print>
+#include <queue>
 #include <ranges>
 #include <set>
 #include <sstream>
 #include <stacktrace>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <thread>
 #include <tuple>
 #include <typeindex>

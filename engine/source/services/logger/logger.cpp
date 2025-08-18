@@ -2,6 +2,16 @@
 
 namespace fro
 {
+   Logger::~Logger()
+   {
+      {
+         std::lock_guard const lock{ mutex_ };
+         run_thread_ = false;
+      }
+
+      condition_.notify_one();
+   }
+
    std::stacktrace_entry Logger::location()
    {
       // TODO: remove this when MinGW works with std::stacktrace
@@ -12,15 +22,10 @@ namespace fro
       return stack_trace[0];
    }
 
-   void Logger::log(Type const type, bool const engine_level, std::stacktrace_entry const location,
-      std::string_view const message)
+   void Logger::log(Payload const& payload)
    {
-      std::optional const formatted_message{ format(type, engine_level, location, message) };
-      if (not formatted_message)
-         return;
-
       std::ostream* output_stream;
-      switch (type)
+      switch (payload.type)
       {
          case Type::INFO:
             output_stream = &std::clog;
@@ -37,28 +42,51 @@ namespace fro
             output_stream = &std::cout;
       }
 
+      std::time_t const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
+      std::tm local_time;
+      localtime_s(&local_time, &now);
+
+      std::ostringstream time_stream;
+      time_stream << std::put_time(&local_time, "%H:%M:%S");
+
+      std::string_view esc_sequence;
+      switch (payload.type)
+      {
+         case Type::INFO:
+            esc_sequence = payload.engine_level ? "1;2;36;40" : "1;36;40";
+            break;
+
+         case Type::WARNING:
+            esc_sequence = payload.engine_level ? "1;2;33;40" : "1;33;40";
+            break;
+
+         case Type::ERROR:
+            esc_sequence = payload.engine_level ? "1;2;31;40" : "1;31;40";
+            break;
+      }
+
       // TODO: remove this when MinGW works with std::println
       if constexpr (MINGW)
-         *output_stream << *formatted_message << '\n';
+         *output_stream << std::format(
+            "\033[{}m[{}] {:6}: {}\033[0m\n",
+            esc_sequence,
+            time_stream.str(),
+            payload.engine_level ? "FRONGE" : "APP",
+            payload.message);
       else
-         std::println(*output_stream, "{}", *formatted_message);
+         std::println(*output_stream,
+            "\033[{}m[{}] {:6}: {}\033[0m",
+            esc_sequence,
+            time_stream.str(),
+            payload.engine_level ? "FRONGE" : "APP",
+            payload.message);
    }
 
-   void Logger::log_once(Type const type, bool const engine_level, std::stacktrace_entry const location,
-      std::string_view const message)
+   void Logger::log_once(Payload const& payload)
    {
-      if (location and not stacktrace_entries_.insert(location).second)
+      if (payload.location and not stacktrace_entries_.insert(payload.location).second)
          return;
 
-      return log(type, engine_level, location, message);
-   }
-
-   std::optional<std::string> Logger::format(Type const type, bool const engine_level, std::stacktrace_entry,
-      std::string_view const message)
-   {
-      return std::format("[{}] [{}]: {}\n",
-         engine_level ? "ENGINE" : "APP",
-         type == Type::INFO ? "INFO" : type == Type::WARNING ? "WARNING" : "ERROR",
-         message);
+      return log(payload);
    }
 }

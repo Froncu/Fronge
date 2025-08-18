@@ -37,7 +37,6 @@
 #include "resources/surface/surface.hpp"
 #include "services/input_manager/input_manager.hpp"
 #include "services/locator.hpp"
-#include "services/logger/coloured_logger.hpp"
 #include "services/logger/logger.hpp"
 #include "services/render_context/render_context.hpp"
 #include "services/render_context/texture.hpp"
