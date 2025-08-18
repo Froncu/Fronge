@@ -102,8 +102,14 @@ namespace fro
       private:
          FRO_API [[nodiscard]] static std::stacktrace_entry location();
 
-         FRO_API void log_once(Type type, bool engine_level, std::stacktrace_entry location, std::string_view message);
-         FRO_API virtual void log(Type type, bool engine_level, std::stacktrace_entry location, std::string_view message);
+         FRO_API void log(Type type, bool engine_level,
+            std::stacktrace_entry location, std::string_view message);
+
+         FRO_API void log_once(Type type, bool engine_level,
+            std::stacktrace_entry location, std::string_view message);
+
+         FRO_API [[nodiscard]] virtual std::optional<std::string> format(Type type, bool engine_level,
+            std::stacktrace_entry location, std::string_view message);
 
          std::unordered_set<std::stacktrace_entry> stacktrace_entries_{};
    };

@@ -18,7 +18,8 @@ namespace fro
          ColouredLogger& operator=(ColouredLogger&&) = default;
 
       private:
-         FRO_API virtual void log(Type type, bool engine_level, std::stacktrace_entry location, std::string_view message) override;
+         FRO_API [[nodiscard]] virtual std::optional<std::string> format(Type type, bool engine_level,
+            std::stacktrace_entry location, std::string_view message) override;
    };
 }
 

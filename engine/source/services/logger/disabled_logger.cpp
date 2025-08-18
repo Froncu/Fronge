@@ -2,7 +2,8 @@
 
 namespace fro
 {
-   void DisabledLogger::log(Type, bool, std::stacktrace_entry, std::string_view)
+   std::optional<std::string> DisabledLogger::format(Type, bool, std::stacktrace_entry, std::string_view)
    {
+      return std::nullopt;
    }
 }
