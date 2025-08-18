@@ -2,13 +2,13 @@
 #define TRANSFORM_HPP
 
 #include "core.hpp"
+#include "ecs/component.hpp"
 #include "maths/transform_matrix.hpp"
 #include "reference/reference.hpp"
-#include "reference/referenceable.hpp"
 
 namespace fro
 {
-   class Transform final : public Referenceable
+   class Transform final : public Component
    {
       public:
          Transform() = default;

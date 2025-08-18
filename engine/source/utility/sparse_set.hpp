@@ -14,16 +14,26 @@ namespace fro
       std::swappable<Type> and
       std::movable<Type>;
 
-   template <SparseSetStorable Data>
+   template <typename Key, SparseSetStorable Data>
    class SparseSet final
    {
       public:
-         using Key = std::size_t;
-         using DataIndex = Key;
+         using SimpleKey = std::size_t;
+         using DataIndex = SimpleKey;
 
          static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 
-         SparseSet() = default;
+         SparseSet(std::function<SimpleKey(Key const&)> simple_key_converter,
+            std::function<SimpleKey(Data const&)> simple_key_extractor,
+            std::function<void(Key const&, Data&)> data_key_updater,
+            std::function<void(Data&)> data_key_eraser)
+            : simple_key_converter_{ std::move(simple_key_converter) }
+            , simple_key_extractor_{ std::move(simple_key_extractor) }
+            , data_key_updater_{ std::move(data_key_updater) }
+            , data_key_eraser_{ std::move(data_key_eraser) }
+         {
+         }
+
          SparseSet(SparseSet const&) = default;
          SparseSet(SparseSet&&) noexcept = default;
 
@@ -34,27 +44,32 @@ namespace fro
 
          template <typename... Arguments>
             requires std::constructible_from<Data, Arguments...>
-         Data& insert(Key const key, Arguments&&... arguments)
+         Data& insert(Key const& key, Arguments&&... arguments)
          {
-            if (not in_sparse_range(key))
-               sparse_.resize(key + 1, UNUSED_DATA_INDEX);
-            else if (naive_contains(key))
-               return naive_find(key);
+            SimpleKey const simple_key{ simple_key_converter_(key) };
 
-            return naive_insert(key, std::forward<Arguments>(arguments)...);
+            if (not in_sparse_range(simple_key))
+               sparse_.resize(key + 1, UNUSED_DATA_INDEX);
+            else if (naive_contains(simple_key))
+               return naive_find(simple_key);
+
+            return naive_insert(key, simple_key, std::forward<Arguments>(arguments)...);
          }
 
          std::optional<Data> erase(Key const key)
          {
-            if (not contains(key))
+            SimpleKey const simple_key{ simple_key_converter_(key) };
+
+            if (not simple_contains(simple_key))
                return std::nullopt;
 
-            naive_move(key, dense_.size() - 1);
-            sparse_[key] = UNUSED_DATA_INDEX;
+            naive_move(simple_key, dense_.size() - 1);
+            sparse_[simple_key] = UNUSED_DATA_INDEX;
+
+            std::optional data{ std::move(dense_.back()) };
             dense_.pop_back();
 
-            std::optional data{ std::move(dense_data_.back()) };
-            dense_data_.pop_back();
+            data_key_eraser_(*data);
 
             return data;
          }
@@ -63,7 +78,6 @@ namespace fro
          {
             sparse_.clear();
             dense_.clear();
-            dense_data_.clear();
          }
 
          void shrink_sparse()
@@ -84,7 +98,6 @@ namespace fro
          void shrink_dense()
          {
             dense_.shrink_to_fit();
-            dense_data_.shrink_to_fit();
          }
 
          void shrink()
@@ -93,34 +106,41 @@ namespace fro
             shrink_dense();
          }
 
-         bool move(Key const key, DataIndex const where)
+         bool move(Key const& key, DataIndex const where)
          {
-            if (not in_dense_range(where) or not contains(key) or sparse_[key] == where)
+            SimpleKey const simple_key{ simple_key_converter_(key) };
+
+            if (not in_dense_range(where) or not simple_contains(simple_key) or sparse_[simple_key] == where)
                return false;
 
-            naive_move(key, where);
+            naive_move(simple_key, where);
             return true;
          }
 
-         [[nodiscard]] Data* find(Key const key)
+         [[nodiscard]] Data* find(Key const& key)
          {
-            if (not contains(key))
+            SimpleKey const simple_key{ simple_key_converter_(key) };
+
+            if (not simple_contains(simple_key))
                return nullptr;
 
-            return &naive_find(key);
+            return &naive_find(simple_key);
          }
 
-         [[nodiscard]] Data const* find(Key const key) const
+         [[nodiscard]] Data const* find(Key const& key) const
          {
-            if (not contains(key))
+            SimpleKey const simple_key{ simple_key_converter_(key) };
+
+            if (not simple_contains(simple_key))
                return nullptr;
 
-            return &naive_find(key);
+            return &naive_find(simple_key);
          }
 
-         [[nodiscard]] bool contains(Key const key) const
+         [[nodiscard]] bool contains(Key const& key) const
          {
-            return in_sparse_range(key) and naive_contains(key);
+            SimpleKey const simple_key{ simple_key_converter_(key) };
+            return simple_contains(simple_key);
          }
 
          [[nodiscard]] std::size_t sparse_capacity() const
@@ -133,11 +153,6 @@ namespace fro
             return dense_.capacity();
          }
 
-         [[nodiscard]] std::size_t dense_data_capacity() const
-         {
-            return dense_data_.capacity();
-         }
-
          [[nodiscard]] std::span<DataIndex> sparse()
          {
             return sparse_;
@@ -148,65 +163,60 @@ namespace fro
             return sparse_;
          }
 
-         [[nodiscard]] std::span<Key> dense()
+         [[nodiscard]] std::span<Data> dense()
          {
             return dense_;
          }
 
-         [[nodiscard]] std::span<Key const> dense() const
+         [[nodiscard]] std::span<Data const> dense() const
          {
             return dense_;
-         }
-
-         [[nodiscard]] std::span<Data> dense_data()
-         {
-            return dense_data_;
-         }
-
-         [[nodiscard]] std::span<Data const> dense_data() const
-         {
-            return dense_data_;
          }
 
       private:
+         [[nodiscard]] bool simple_contains(SimpleKey const simple_key) const
+         {
+            return in_sparse_range(simple_key) and naive_contains(simple_key);
+         }
+
          template <typename... ArgumentTypes>
             requires std::constructible_from<Data, ArgumentTypes...>
-         Data& naive_insert(Key const key, ArgumentTypes&&... arguments)
+         Data& naive_insert(Key const& key, SimpleKey const simple_key, ArgumentTypes&&... arguments)
          {
-            sparse_[key] = dense_.size();
-            dense_.emplace_back(key);
+            sparse_[simple_key] = dense_.size();
 
-            return dense_data_.emplace_back(std::forward<ArgumentTypes>(arguments)...);
+            Data& data{ dense_.emplace_back(std::forward<ArgumentTypes>(arguments)...) };
+            data_key_updater_(key, data);
+
+            return data;
          }
 
-         void naive_move(Key const key, DataIndex const where)
+         void naive_move(SimpleKey const simple_key, DataIndex const where)
          {
-            Key const other_key{ dense_[where] };
+            SimpleKey const other_simple_key{ simple_key_extractor_(dense_[where]) };
 
-            std::swap(dense_[sparse_[key]], dense_[where]);
-            std::swap(dense_data_[sparse_[key]], dense_data_[where]);
-
-            std::swap(sparse_[key], sparse_[other_key]);
+            std::swap(dense_[sparse_[simple_key]], dense_[where]);
+            std::swap(sparse_[simple_key], sparse_[other_simple_key]);
          }
 
-         [[nodiscard]] Data& naive_find(Key const key)
+         [[nodiscard]] Data& naive_find(SimpleKey const simple_key)
          {
-            return dense_data_[sparse_[key]];
+            return dense_[sparse_[simple_key]];
          }
 
-         [[nodiscard]] Data const& naive_find(Key const key) const
+         [[nodiscard]] Data const& naive_find(SimpleKey const simple_key) const
          {
-            return dense_data_[sparse_[key]];
+            return dense_[sparse_[simple_key]];
          }
 
-         [[nodiscard]] bool naive_contains(Key const key) const
+         [[nodiscard]] bool naive_contains(SimpleKey const simple_key) const
          {
-            return sparse_[key] not_eq UNUSED_DATA_INDEX;
+            return sparse_[simple_key] not_eq UNUSED_DATA_INDEX;
          }
 
-         [[nodiscard]] bool in_sparse_range(Key const key) const
+         [[nodiscard]] bool in_sparse_range(SimpleKey const simple_key) const
          {
-            return key < sparse_.size();
+            return simple_key < sparse_.size();
          }
 
          [[nodiscard]] bool in_dense_range(DataIndex const data_index) const
@@ -214,9 +224,13 @@ namespace fro
             return data_index < dense_.size();
          }
 
+         std::function<SimpleKey(Key const&)> simple_key_converter_;
+         std::function<SimpleKey(Data const&)> simple_key_extractor_;
+         std::function<void(Key const&, Data&)> data_key_updater_;
+         std::function<void(Data&)> data_key_eraser_;
+
          std::vector<DataIndex> sparse_{};
-         std::vector<Key> dense_{};
-         std::vector<Data> dense_data_{};
+         std::vector<Data> dense_{};
    };
 }
 

@@ -1,15 +1,31 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-#include "components.hpp"
+#include "component.hpp"
+#include "components/rigid_body.hpp"
+#include "components/sprite.hpp"
+#include "components/transform.hpp"
 #include "identifier/id.hpp"
 #include "reference/referenceable.hpp"
+#include "utility/is_in_tuple.hpp"
 #include "utility/mapped_tuple.hpp"
 #include "utility/sparse_set.hpp"
+#include "utility/strictly_derived_from.hpp"
 #include "utility/type_index.hpp"
 
 namespace fro
 {
+   using Components = std::tuple<
+      RigidBody,
+      Transform,
+      Sprite>;
+
+   template <typename Type>
+   concept Componentable =
+      SparseSetStorable<Type> and
+      StrictlyDerivedFrom<Type, Component> and
+      IsInTuple<Components, Type>;
+
    class Entity;
    template <typename, typename>
    class Group;
@@ -55,9 +71,11 @@ namespace fro
                requires std::constructible_from<Component, Arguments...>
             Component& enqueue_add(ID::InternalValue const entity_id, Arguments&&... arguments)
             {
-               Component* const component{ components_.find(entity_id) };
-               if (component)
+               if (Component* const component{ components_.find(entity_id) }; component)
                   return *component;
+
+               Component component{ std::forward<Arguments>(arguments)... };
+               component.entity_ = entity_id;
 
                return insert_queue_.emplace(entity_id, Component{ std::forward<Arguments>(arguments)... }).first->second;
             }
@@ -108,7 +126,7 @@ namespace fro
             }
 
          private:
-            SparseSet<Component> components_{};
+            SparseSet<Entity, Component> components_{};
             std::unordered_set<ID::InternalValue> remove_queue_{};
             std::unordered_map<ID::InternalValue, Component> insert_queue_{};
       };

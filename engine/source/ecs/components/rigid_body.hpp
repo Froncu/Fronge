@@ -4,7 +4,6 @@
 #include "maths/shapes.hpp"
 #include "maths/transform_matrix.hpp"
 #include "maths/vector2.hpp"
-#include "reference/referenceable.hpp"
 
 namespace fro
 {
@@ -16,7 +15,7 @@ namespace fro
       double friction{ 0.8 };
    };
 
-   struct RigidBody final : Referenceable
+   struct RigidBody final : Component
    {
       std::vector<Collider> colliders{};
 

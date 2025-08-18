@@ -1,7 +1,7 @@
 #ifndef GROUP_HPP
 #define GROUP_HPP
 
-#include "components.hpp"
+#include "component.hpp"
 #include "entity.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"

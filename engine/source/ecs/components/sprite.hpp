@@ -7,7 +7,7 @@
 
 namespace fro
 {
-   struct Sprite final
+   struct Sprite final : Component
    {
       Reference<Texture const> texture{};
       Rectangle<double> source_rectangle{};
