@@ -10,9 +10,9 @@ namespace fro
    template <Arithmetic Component>
    class Matrix final
    {
-      using Row = Vector3<Component>;
-
       public:
+         using Row = Vector3<Component>;
+
          Matrix() = default;
 
          Matrix(Row const& row0, Row const& row1, Row const& row2)
@@ -61,7 +61,7 @@ namespace fro
             return data_[index];
          }
 
-         Row const& operator[](std::size_t const index) const
+         [[nodiscard]] Row operator[](std::size_t const index) const
          {
             if (index > 2)
                exception("index {} is outside the [0, 2] range!", index);
@@ -138,13 +138,13 @@ namespace fro
 
          [[nodiscard]] auto inversed() const
          {
-            using ResultingMatrix = Matrix<ResultingComponent<Component, decltype(1.0f / determinant())>>;
+            using ResultingMatrix = Matrix<ResultingComponent<Component, decltype(1.0 / determinant())>>;
 
             auto const determinant{ this->determinant() };
             if (not determinant)
                return ResultingMatrix{ true };
 
-            auto const inverse_determinant{ 1.0f / determinant };
+            auto const inverse_determinant{ 1.0 / determinant };
             ResultingMatrix result;
 
             result[0][0] = inverse_determinant * (data_[1][1] * data_[2][2] - data_[1][2] * data_[2][1]);
@@ -163,7 +163,7 @@ namespace fro
          }
 
          Matrix& inverse()
-            requires std::same_as<ResultingComponent<Component, decltype(1.0f / determinant())>, Component>
+            requires std::same_as<ResultingComponent<Component, decltype(1.0 / determinant())>, Component>
          {
             return *this = inversed();
          }

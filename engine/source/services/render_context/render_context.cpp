@@ -170,7 +170,7 @@ namespace fro
       {
          Vector3<double> position{ vertex.position.x, vertex.position.y, 1.0 };
 
-         position = transform.transformation() * position;
+         position = transform * position;
          vertex.position.x = static_cast<float>(position.x);
          vertex.position.y = static_cast<float>(position.y);
       }
@@ -215,7 +215,7 @@ namespace fro
                double const angle{ index * (2 * std::numbers::pi / (vertex_count - 1)) };
 
                Vector3 vertex{ std::cos(angle) * circle.radius, std::sin(angle) * circle.radius, 1.0 };
-               vertex = transform.transformation() * vertex;
+               vertex = transform * vertex;
 
                shape_vertices.push_back({ static_cast<float>(vertex.x), static_cast<float>(vertex.y) });
             }
@@ -230,7 +230,7 @@ namespace fro
             for (auto const [x, y] : polygon.vertices)
             {
                Vector3 vertex{ x, y, 1.0 };
-               vertex = transform.transformation() * vertex;
+               vertex = transform * vertex;
 
                shape_vertices.push_back({ static_cast<float>(vertex.x), static_cast<float>(vertex.y) });
             }

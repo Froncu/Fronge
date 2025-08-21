@@ -48,7 +48,7 @@ namespace fro
          penetration.y = delta.y * scalar;
       }
 
-      penetration = transform_matrix_a.transformation() * penetration;
+      penetration = transform_matrix_a * penetration;
       double const penetration_depth{ penetration.magnitude() };
       double const inverse_penetration_depth{ 1.0 / penetration_depth };
       Vector2 const penetration_normal{
@@ -203,7 +203,7 @@ namespace fro
       TransformMatrix const transform_matrix{ transform_matrix_a.inversed() * transform_matrix_b };
       for (auto& [x, y] : transformed_polygon_.vertices = shape_b.vertices)
       {
-         Vector3 const transformed_vertex{ transform_matrix.transformation() * Vector3{ x, y, 1.0 } };
+         Vector3 const transformed_vertex{ transform_matrix * Vector3{ x, y, 1.0 } };
          x = transformed_vertex.x;
          y = transformed_vertex.y;
       }
@@ -276,9 +276,9 @@ namespace fro
             break;
       }
 
-      contact_point = transform_matrix_a.transformation() * contact_point;
+      contact_point = transform_matrix_a * contact_point;
       penetration_normal =
-         transform_matrix_a.transformation().inversed().transposed() * (penetration_normal * penetration_depth);
+         transform_matrix_a.inversed().transposed() * (penetration_normal * penetration_depth);
       penetration_normal.z = 0.0;
       penetration_depth = penetration_normal.magnitude();
       double const inverse_penetration_depth{ 1.0 / penetration_depth };
@@ -309,7 +309,7 @@ namespace fro
       TransformMatrix const transform_matrix{ transform_matrix_a.inversed() * transform_matrix_b };
       for (auto& [x, y] : transformed_polygon_.vertices = shape_b.vertices)
       {
-         Vector3 const transformed_vertex{ transform_matrix.transformation() * Vector3{ x, y, 1.0 } };
+         Vector3 const transformed_vertex{ transform_matrix * Vector3{ x, y, 1.0 } };
          x = transformed_vertex.x;
          y = transformed_vertex.y;
       }
@@ -347,7 +347,7 @@ namespace fro
          }
       }
 
-      penetration_normal = transform_matrix_a.transformation() * penetration_normal;
+      penetration_normal = transform_matrix_a * penetration_normal;
       penetration_depth = penetration_normal.magnitude();
       double const inverse_penetration_depth{ 1.0 / penetration_depth };
 
