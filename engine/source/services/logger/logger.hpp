@@ -48,7 +48,7 @@ namespace fro
          void info(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -67,7 +67,7 @@ namespace fro
          void info(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -86,7 +86,7 @@ namespace fro
          void info_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
@@ -105,7 +105,7 @@ namespace fro
          void info_once(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
@@ -124,7 +124,7 @@ namespace fro
          void warning(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -143,7 +143,7 @@ namespace fro
          void warning(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -162,7 +162,7 @@ namespace fro
          void warning_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
@@ -181,7 +181,7 @@ namespace fro
          void warning_once(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
@@ -200,7 +200,7 @@ namespace fro
          void error(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -219,7 +219,7 @@ namespace fro
          void error(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ false },
                   .payload{
@@ -238,7 +238,7 @@ namespace fro
          void error_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
@@ -257,7 +257,7 @@ namespace fro
          void error_once(Message&& message)
          {
             {
-               std::lock_guard const lock(mutex_);
+               std::lock_guard const lock{ mutex_ };
                log_queue_.push({
                   .once{ true },
                   .payload{
