@@ -30,8 +30,7 @@ target_precompile_headers(${FRO_ENGINE_NAME}
    PRIVATE source/froch.hpp)
 
 target_compile_definitions(${FRO_ENGINE_NAME}
-   PRIVATE FRO_ENGINE
-   PUBLIC FRO_LOGGER)
+   PRIVATE FRO_ENGINE)
 
 target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE SDL3::SDL3
