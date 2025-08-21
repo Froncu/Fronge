@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 
 #include "application.hpp"
+#include "services/locator.hpp"
 
 namespace fro
 {
@@ -27,6 +28,7 @@ namespace fro
 
    Application::~Application()
    {
+      Locator::remove_providers();
       SDL_QuitSubSystem(INITIALIZATION_FLAGS);
    }
 }

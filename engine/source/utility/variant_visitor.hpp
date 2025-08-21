@@ -14,8 +14,8 @@ namespace fro
       };
 
       public:
-         explicit VariantVisitor(Callables... callables)
-            : visitor_{ callables... }
+         explicit VariantVisitor(Callables&&... callables)
+            : visitor_{ std::forward<Callables>(callables)... }
          {
          }
 

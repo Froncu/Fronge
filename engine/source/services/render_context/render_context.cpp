@@ -111,14 +111,14 @@ namespace fro
          exception("attempted to render a Texture which was not uploaded to RenderContext{}",
             id());
 
-      auto const [surface_width, surface_height]{ texture.size() };
+      auto const [texture_width, texture_height]{ texture.size() };
 
       if (not source_rectangle.width or not source_rectangle.height)
       {
          source_rectangle.x = 0.0;
          source_rectangle.y = 0.0;
-         source_rectangle.width = surface_width;
-         source_rectangle.height = surface_height;
+         source_rectangle.width = texture_width;
+         source_rectangle.height = texture_height;
       }
 
       SDL_FColor constexpr vertex_color{
@@ -129,13 +129,13 @@ namespace fro
       };
 
       Vector2 const top_left_texture{
-         static_cast<float>(source_rectangle.x / surface_width),
-         static_cast<float>(source_rectangle.y / surface_height)
+         static_cast<float>(source_rectangle.x / texture_width),
+         static_cast<float>(source_rectangle.y / texture_height)
       };
 
       Vector2 const bottom_right_texture{
-         static_cast<float>((source_rectangle.x + source_rectangle.width) / surface_width),
-         static_cast<float>((source_rectangle.y + source_rectangle.height) / surface_height),
+         static_cast<float>((source_rectangle.x + source_rectangle.width) / texture_width),
+         static_cast<float>((source_rectangle.y + source_rectangle.height) / texture_height),
       };
 
       Vector2 const half_source_size{

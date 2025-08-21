@@ -4,7 +4,6 @@
 #include "core.hpp"
 #include "froch.hpp"
 #include "maths/vector2.hpp"
-#include "reference/referenceable.hpp"
 #include "utility/unique_pointer.hpp"
 
 struct SDL_Surface;
@@ -13,7 +12,7 @@ namespace fro
 {
    class Texture;
 
-   class Surface final : public Referenceable
+   class Surface final
    {
       friend Texture;
 
@@ -22,7 +21,7 @@ namespace fro
          Surface(Surface const&) = delete;
          Surface(Surface&&) = default;
 
-         virtual ~Surface() override = default;
+         ~Surface() = default;
 
          Surface& operator=(Surface const&) = delete;
          Surface& operator=(Surface&&) = default;

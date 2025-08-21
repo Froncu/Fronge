@@ -6,8 +6,7 @@
 namespace fro
 {
    template <typename Type>
-   concept Dispatchable =
-      not std::is_reference_v<Type>;
+   concept Dispatchable = not std::is_reference_v<Type>;
 }
 
 #endif

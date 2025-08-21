@@ -3,10 +3,10 @@
 
 namespace fro
 {
-   template <typename T>
-   static void void_deleter(void* value)
+   template <typename Type>
+   static void void_deleter(void* const value)
    {
-      delete static_cast<T*>(value);
+      delete static_cast<Type* const>(value);
    }
 }
 

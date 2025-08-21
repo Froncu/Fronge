@@ -42,37 +42,18 @@ namespace fro
 template <>
 struct std::hash<fro::Texture>
 {
-   using is_transparent = void;
-
    [[nodiscard]] std::size_t operator()(fro::Texture const& texture) const noexcept
    {
       return texture.hash();
-   }
-
-   [[nodiscard]] std::size_t operator()(fro::Surface const& surface) const noexcept
-   {
-      return surface.hash();
    }
 };
 
 template <>
 struct std::equal_to<fro::Texture>
 {
-   using is_transparent = void;
-
-   [[nodiscard]] bool operator()(fro::Texture const& texture0, fro::Texture const& texture1) const noexcept
+   [[nodiscard]] bool operator()(fro::Texture const& texture_a, fro::Texture const& texture_b) const noexcept
    {
-      return texture0.hash() == texture1.hash();
-   }
-
-   [[nodiscard]] bool operator()(fro::Texture const& texture, fro::Surface const& surface) const noexcept
-   {
-      return texture.hash() == surface.hash();
-   }
-
-   [[nodiscard]] bool operator()(fro::Surface const& surface, fro::Texture const& texture) const noexcept
-   {
-      return operator()(texture, surface);
+      return texture_a.hash() == texture_b.hash();
    }
 };
 

@@ -9,7 +9,7 @@
 
 namespace fro
 {
-   class Logger final : public Referenceable
+   class Logger final
    {
       protected:
          enum class Type
@@ -39,7 +39,7 @@ namespace fro
          Logger(Logger const&) = delete;
          Logger(Logger&&) = delete;
 
-         FRO_API virtual ~Logger() override;
+         FRO_API ~Logger();
 
          Logger& operator=(Logger const&) = delete;
          Logger& operator=(Logger&&) = delete;
@@ -286,31 +286,31 @@ namespace fro
          std::mutex mutex_{};
          std::condition_variable condition_{};
          std::jthread thread_{
-            [smart_this = Reference{ this }]
+            [this]
             {
                while (true)
                {
                   LogInfo log_info;
 
                   {
-                     std::unique_lock lock{ smart_this->mutex_ };
-                     smart_this->condition_.wait(lock,
-                        [&smart_this]
+                     std::unique_lock lock{ mutex_ };
+                     condition_.wait(lock,
+                        [this]
                         {
-                           return not smart_this->run_thread_ or not smart_this->log_queue_.empty();
+                           return not run_thread_ or not log_queue_.empty();
                         });
 
-                     if (not smart_this->run_thread_)
+                     if (not run_thread_)
                         break;
 
-                     log_info = std::move(smart_this->log_queue_.front());
-                     smart_this->log_queue_.pop();
+                     log_info = std::move(log_queue_.front());
+                     log_queue_.pop();
                   }
 
                   if (log_info.once)
-                     smart_this->log_once(log_info.payload);
+                     log_once(log_info.payload);
                   else
-                     smart_this->log(log_info.payload);
+                     log(log_info.payload);
                }
             }
          };

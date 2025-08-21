@@ -1,7 +1,6 @@
 #ifndef INPUT_EVENT_HPP
 #define INPUT_EVENT_HPP
 
-#include "core.hpp"
 #include "froch.hpp"
 #include "identifier/id.hpp"
 #include "input/input.hpp"

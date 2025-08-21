@@ -5,10 +5,10 @@
 
 namespace fro
 {
-   template <typename T>
+   template <typename Type>
    std::type_index type_index()
    {
-      return std::type_index(typeid(T));
+      return typeid(Type);
    }
 }
 
