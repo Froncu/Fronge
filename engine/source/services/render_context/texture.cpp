@@ -3,7 +3,7 @@
 #include "render_context.hpp"
 #include "resources/surface/surface.hpp"
 #include "texture.hpp"
-#include "utility/assert.hpp"
+#include "utility/runtime_assert.hpp"
 
 namespace fro
 {
@@ -15,13 +15,13 @@ namespace fro
                SDL_CreateTexture(&target_native_renderer, source_surface.format, SDL_TEXTUREACCESS_TARGET,
                   source_surface.w, source_surface.h)
             };
-            assert(target_native_texture, "failed to create a target texture ({})",
+            runtime_assert(target_native_texture, "failed to create a target texture ({})",
                SDL_GetError());
 
             SDL_Texture* old_render_target = SDL_GetRenderTarget(&target_native_renderer);
 
             bool succeeded{ SDL_SetRenderTarget(&target_native_renderer, target_native_texture) };
-            assert(succeeded, "failed to set the target rendering context ({})",
+            runtime_assert(succeeded, "failed to set the target rendering context ({})",
                SDL_GetError());
 
             if (UniquePointer<SDL_Texture> const source_native_texture{
@@ -30,7 +30,7 @@ namespace fro
             })
             {
                succeeded = SDL_RenderTexture(&target_native_renderer, source_native_texture.get(), nullptr, nullptr);
-               assert(succeeded, "failed to create a rendering texture ({})",
+               runtime_assert(succeeded, "failed to create a rendering texture ({})",
                   SDL_GetError());
             }
             else
@@ -38,7 +38,7 @@ namespace fro
                   SDL_GetError());
 
             succeeded = SDL_SetRenderTarget(&target_native_renderer, old_render_target);
-            assert(succeeded, "failed to reset the target rendering context ({})",
+            runtime_assert(succeeded, "failed to reset the target rendering context ({})",
                SDL_GetError());
 
             return target_native_texture;
@@ -57,7 +57,7 @@ namespace fro
             SDL_Texture* const old_render_target{ SDL_GetRenderTarget(source_native_renderer) };
 
             bool succeeded{ SDL_SetRenderTarget(source_native_renderer, &source_native_texture) };
-            assert(succeeded, "failed to set the source rendering context ({})",
+            runtime_assert(succeeded, "failed to set the source rendering context ({})",
                SDL_GetError());
 
             SDL_Texture* native_texture;
@@ -76,7 +76,7 @@ namespace fro
                   SDL_GetError());
 
             succeeded = SDL_SetRenderTarget(source_native_renderer, old_render_target);
-            assert(succeeded, "failed to reset the source rendering context");
+            runtime_assert(succeeded, "failed to reset the source rendering context");
 
             return native_texture;
          }(target_native_renderer, *source_texture.native_texture_),
@@ -91,7 +91,7 @@ namespace fro
       bool const succeeded{
          SDL_SetTextureScaleMode(native_texture_.get(), filter_linearly ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST)
       };
-      assert(succeeded, "failed to change the filtering mode of a Texture ({})",
+      runtime_assert(succeeded, "failed to change the filtering mode of a Texture ({})",
          SDL_GetError());
    }
 
@@ -104,7 +104,7 @@ namespace fro
    {
       Vector2<float> size;
       bool const succeeded{ SDL_GetTextureSize(native_texture_.get(), &size.x, &size.y) };
-      assert(succeeded, "failed to get the size of the texture ({})",
+      runtime_assert(succeeded, "failed to get the size of the texture ({})",
          SDL_GetError());
 
       return { static_cast<double>(size.x), static_cast<double>(size.y) };

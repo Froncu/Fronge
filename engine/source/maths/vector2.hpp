@@ -28,7 +28,7 @@ namespace fro
                return y;
 
             default:
-               exception("index {}} is outside the [0, 1] range!", index);
+               exception("index {} is outside the [0, 1] range!", index);
          }
       }
 
@@ -43,7 +43,7 @@ namespace fro
                return y;
 
             default:
-               exception("index {}} is outside the [0, 1] range!", index);
+               exception("index {} is outside the [0, 1] range!", index);
          }
       }
 
@@ -140,29 +140,37 @@ namespace fro
       }
 
       Vector2& normalize()
-         requires std::same_as<Vector2, decltype(this->normalized())>
+         requires std::same_as<Vector2, decltype(normalized())>
       {
          return *this = normalized();
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] auto cross(Vector2<OtherComponent> const& vector) const
+      [[nodiscard]] auto crossed(Vector2<OtherComponent> const& vector) const
       {
          return x * vector.y - y * vector.x;
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> cross(OtherComponent const& scalar) const
+      [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> crossed(OtherComponent const& scalar) const
       {
          return { scalar * y, -scalar * x };
+      }
+
+      template <Arithmetic OtherComponent>
+         requires std::same_as<Vector2, decltype(crossed())>
+      [[nodiscard]] Vector2& cross(OtherComponent const& scalar) const
+      {
+         return *this = crossed(scalar);
       }
 
       Component x;
       Component y;
    };
 
-   template <Arithmetic ComponentA, Arithmetic ComponentB>
-   [[nodiscard]] Vector2<ResultingComponent<ComponentA, ComponentB>> cross(ComponentA const& scalar, Vector2<ComponentB> const& vector)
+   template <Arithmetic Component, Arithmetic OtherComponent>
+   [[nodiscard]] Vector2<ResultingComponent<Component, OtherComponent>> cross(Component const& scalar,
+      Vector2<OtherComponent> const& vector)
    {
       return { -scalar * vector.y, scalar * vector.x };
    }

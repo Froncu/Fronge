@@ -54,14 +54,10 @@ namespace fro
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> operator+(Vector3<OtherComponent> const& vector) const
+      [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> operator+(
+         Vector3<OtherComponent> const& vector) const
       {
-         return
-         {
-            x + vector.x,
-            y + vector.y,
-            z + vector.z
-         };
+         return { x + vector.x, y + vector.y, z + vector.z };
       }
 
       template <Arithmetic OtherComponent>
@@ -77,14 +73,10 @@ namespace fro
       }
 
       template <Arithmetic OtherComponent>
-      [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> operator-(Vector3<OtherComponent> const& vector) const
+      [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> operator-(
+         Vector3<OtherComponent> const& vector) const
       {
-         return
-         {
-            x - vector.x,
-            y - vector.y,
-            z - vector.z
-         };
+         return { x - vector.x, y - vector.y, z - vector.z };
       }
 
       template <Arithmetic OtherComponent>
@@ -94,13 +86,10 @@ namespace fro
          return *this = *this - vector;
       }
 
-      template <Arithmetic OtherType>
-      [[nodiscard]] ResultingComponent<Component, OtherType> operator*(Vector3<OtherType> const& vector) const
+      template <Arithmetic OtherComponent>
+      [[nodiscard]] ResultingComponent<Component, OtherComponent> operator*(Vector3<OtherComponent> const& vector) const
       {
-         return
-            x * vector.x +
-            y * vector.y +
-            z * vector.z;
+         return x * vector.x + y * vector.y + z * vector.z;
       }
 
       template <Arithmetic Multiplier>
@@ -132,10 +121,7 @@ namespace fro
       template <Arithmetic OtherComponent>
       [[nodiscard]] bool operator==(Vector3<OtherComponent> const& vector) const
       {
-         return
-            x == vector.x and
-            y == vector.y and
-            z == vector.z;
+         return x == vector.x and y == vector.y and z == vector.z;
       }
 
       [[nodiscard]] auto magnitude_squared() const
@@ -155,7 +141,7 @@ namespace fro
       }
 
       Vector3& normalize()
-         requires std::same_as<Vector3, decltype(this->normalized())>
+         requires std::same_as<Vector3, decltype(normalized())>
       {
          return *this = normalized();
       }
@@ -163,8 +149,7 @@ namespace fro
       template <Arithmetic OtherComponent>
       [[nodiscard]] Vector3<ResultingComponent<Component, OtherComponent>> crossed(Vector3<OtherComponent> const& other) const
       {
-         return
-         {
+         return {
             y * other.z - z * other.y,
             z * other.x - x * other.z,
             x * other.y - y * other.x

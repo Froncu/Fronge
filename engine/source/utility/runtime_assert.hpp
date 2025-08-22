@@ -1,5 +1,5 @@
-#ifndef ASSERT_HPP
-#define ASSERT_HPP
+#ifndef RUNTIME_ASSERT_HPP
+#define RUNTIME_ASSERT_HPP
 
 #include "constants.hpp"
 #include "services/locator.hpp"
@@ -8,7 +8,7 @@
 namespace fro
 {
    template <typename... Arguments>
-   void assert([[maybe_unused]] bool const condition,
+   void runtime_assert([[maybe_unused]] bool const condition,
       [[maybe_unused]] std::format_string<Arguments...> const format,
       [[maybe_unused]] Arguments&&... arguments)
    {
@@ -23,9 +23,9 @@ namespace fro
    }
 
    template <typename Message>
-   void assert(bool const condition, Message&& message)
+   void runtime_assert(bool const condition, Message&& message)
    {
-      assert(condition, "{}", std::forward<Message>(message));
+      runtime_assert(condition, "{}", std::forward<Message>(message));
    }
 }
 

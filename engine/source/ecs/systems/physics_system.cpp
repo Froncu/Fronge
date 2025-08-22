@@ -86,8 +86,8 @@ namespace fro
          std::min(rigid_body_a->colliders[collider_index_a].restitution, rigid_body_b->colliders[collider_index_b].restitution)
       };
 
-      double const ra_cross_n{ ra.cross(manifold.penetration_normal) };
-      double const rb_cross_n{ rb.cross(manifold.penetration_normal) };
+      double const ra_cross_n{ ra.crossed(manifold.penetration_normal) };
+      double const rb_cross_n{ rb.crossed(manifold.penetration_normal) };
       double const inverse_mass_sum{
          rigid_body_a->inverse_mass +
          rigid_body_b->inverse_mass +
@@ -101,8 +101,8 @@ namespace fro
       rigid_body_a->velocity -= impulse * rigid_body_a->inverse_mass;
       rigid_body_b->velocity += impulse * rigid_body_b->inverse_mass;
 
-      rigid_body_a->angular_velocity -= ra.cross(impulse) * rigid_body_a->inverse_inertia;
-      rigid_body_b->angular_velocity += rb.cross(impulse) * rigid_body_b->inverse_inertia;
+      rigid_body_a->angular_velocity -= ra.crossed(impulse) * rigid_body_a->inverse_inertia;
+      rigid_body_b->angular_velocity += rb.crossed(impulse) * rigid_body_b->inverse_inertia;
 
       relative_velocity =
          rigid_body_b->velocity + cross(rigid_body_b->angular_velocity, rb) -
@@ -131,8 +131,8 @@ namespace fro
       rigid_body_a->velocity -= friction_impulse * rigid_body_a->inverse_mass;
       rigid_body_b->velocity += friction_impulse * rigid_body_b->inverse_mass;
 
-      rigid_body_a->angular_velocity -= ra.cross(friction_impulse) * rigid_body_a->inverse_inertia;
-      rigid_body_b->angular_velocity += rb.cross(friction_impulse) * rigid_body_b->inverse_inertia;
+      rigid_body_a->angular_velocity -= ra.crossed(friction_impulse) * rigid_body_a->inverse_inertia;
+      rigid_body_b->angular_velocity += rb.crossed(friction_impulse) * rigid_body_b->inverse_inertia;
    }
 
    void PhysicsSystem::step(Scene const& scene, double const delta_seconds)

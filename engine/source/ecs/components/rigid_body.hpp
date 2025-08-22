@@ -2,7 +2,7 @@
 #define RIGID_BODY_HPP
 
 #include "maths/shapes.hpp"
-#include "maths/transform_matrix.hpp"
+#include "maths/transform_matrix/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "reference/referenceable.hpp"
 

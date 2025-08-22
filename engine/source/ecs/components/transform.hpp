@@ -2,7 +2,7 @@
 #define TRANSFORM_HPP
 
 #include "core.hpp"
-#include "maths/transform_matrix.hpp"
+#include "maths/transform_matrix/transform_matrix.hpp"
 #include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
 

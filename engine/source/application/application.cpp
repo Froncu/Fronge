@@ -2,6 +2,7 @@
 
 #include "application.hpp"
 #include "services/locator.hpp"
+#include "utility/runtime_assert.hpp"
 
 namespace fro
 {
@@ -13,7 +14,9 @@ namespace fro
 
    Application::Application()
    {
-      SDL_InitSubSystem(INITIALIZATION_FLAGS);
+      bool const succeeded{ SDL_InitSubSystem(INITIALIZATION_FLAGS) };
+      runtime_assert(succeeded, "failed to initialize SDL subsystems ({})",
+         SDL_GetError());
    }
 
    Application::Application(Application const&)
@@ -29,6 +32,8 @@ namespace fro
    Application::~Application()
    {
       Locator::remove_providers();
+
       SDL_QuitSubSystem(INITIALIZATION_FLAGS);
+      SDL_Quit();
    }
 }

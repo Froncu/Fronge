@@ -5,9 +5,8 @@
 #include "events/observer/event_dispatcher.hpp"
 #include "events/render_context_event.hpp"
 #include "froch.hpp"
-#include "maths/rectangle.hpp"
 #include "maths/shapes.hpp"
-#include "maths/transform_matrix.hpp"
+#include "maths/transform_matrix/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
@@ -65,9 +64,9 @@ namespace fro
          FRO_API Texture const& upload_texture(Surface const& surface);
          FRO_API bool unload_texture(Texture const& texture);
 
-         FRO_API void clear();
+         FRO_API void begin();
          FRO_API void render(Texture const& texture, TransformMatrix const& transform = {},
-            Rectangle<double> source_rectangle = {});
+            SourceRectangle source_rectangle = {});
          FRO_API void render(Shape const& shape, TransformMatrix const& transform = {},
             Color color = { 255, 255, 255, 255 });
          FRO_API void present();

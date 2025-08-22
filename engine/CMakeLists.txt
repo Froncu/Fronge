@@ -10,8 +10,8 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/input/gamepad.cpp
    source/input/input_conversions.cpp
    source/input/user_input.cpp
-   source/maths/shapes.cpp
-   source/maths/transform_matrix.cpp
+   source/maths/polygon/polygon.cpp
+   source/maths/transform_matrix/transform_matrix.cpp
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp
    source/resources/surface/surface.cpp
@@ -36,7 +36,8 @@ target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE SDL3::SDL3
    PRIVATE SDL3_image::SDL3_image
    PRIVATE SDL3_ttf::SDL3_ttf
-   PRIVATE SDL3_mixer::SDL3_mixer)
+   PRIVATE SDL3_mixer::SDL3_mixer
+   PUBLIC frogui) # TODO: make private when an abstraction API is done
 
 set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
    CXX_STANDARD 23

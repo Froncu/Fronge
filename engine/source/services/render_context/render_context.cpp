@@ -2,7 +2,7 @@
 
 #include "froch.hpp"
 #include "render_context.hpp"
-#include "utility/assert.hpp"
+#include "utility/runtime_assert.hpp"
 
 namespace fro
 {
@@ -13,7 +13,7 @@ namespace fro
          [](std::string_view const title, Vector2<int> const size, std::uint64_t const flags)
          {
             SDL_Window* const native_window{ SDL_CreateWindow(title.data(), size.x, size.y, flags) };
-            assert(native_window, "failed to create an SDL window ({})",
+            runtime_assert(native_window, "failed to create an SDL window ({})",
                SDL_GetError());
             return native_window;
          }(title, size, flags),
@@ -23,7 +23,7 @@ namespace fro
          [](SDL_Window* const native_window)
          {
             SDL_Renderer* const native_renderer{ SDL_CreateRenderer(native_window, nullptr) };
-            assert(native_renderer, "failed to create an SDL renderer ({})",
+            runtime_assert(native_renderer, "failed to create an SDL renderer ({})",
                SDL_GetError());
             return native_renderer;
          }(native_window_.get()),
@@ -96,14 +96,14 @@ namespace fro
       return true;
    }
 
-   void RenderContext::clear()
+   void RenderContext::begin()
    {
       bool const succeeded{ SDL_RenderClear(native_renderer_.get()) };
-      assert(succeeded, "failed to clear the RenderContext{} ({})",
+      runtime_assert(succeeded, "failed to clear the RenderContext{} ({})",
          id(), SDL_GetError());
    }
 
-   void RenderContext::render(Texture const& texture, TransformMatrix const& transform, Rectangle<double> source_rectangle)
+   void RenderContext::render(Texture const& texture, TransformMatrix const& transform, SourceRectangle source_rectangle)
    {
       auto const stored_texture{ textures_.find(texture) };
 
@@ -139,7 +139,7 @@ namespace fro
       };
 
       Vector2 const half_source_size{
-         static_cast<float>(source_rectangle.width / 2.0f), static_cast<float>(source_rectangle.height / 2.0f)
+         static_cast<float>(source_rectangle.width / 2), static_cast<float>(source_rectangle.height / 2)
       };
       std::array<SDL_Vertex, 4> vertices{
          {
@@ -186,7 +186,7 @@ namespace fro
             vertices.data(), static_cast<int>(vertices.size()),
             indices.data(), static_cast<int>(indices.size()))
       };
-      assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
+      runtime_assert(succeeded, "failed to render a Texture to RenderContext{} ({})",
          id(), SDL_GetError());
    }
 
@@ -196,11 +196,11 @@ namespace fro
       bool succeeded{
          SDL_GetRenderDrawColor(native_renderer_.get(), &old_color.red, &old_color.green, &old_color.blue, &old_color.alpha)
       };
-      assert(succeeded, "failed to get the draw color of RenderContext{} ({})",
+      runtime_assert(succeeded, "failed to get the draw color of RenderContext{} ({})",
          id(), SDL_GetError());
 
       succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), color.red, color.green, color.blue, color.alpha);
-      assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
+      runtime_assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
          id(), color.red, color.green, color.blue, color.alpha, SDL_GetError());
 
       std::vector<SDL_FPoint> shape_vertices{};
@@ -240,40 +240,40 @@ namespace fro
       }(shape);
 
       succeeded = SDL_RenderLines(native_renderer_.get(), shape_vertices.data(), static_cast<int>(shape_vertices.size()));
-      assert(succeeded, "failed to render a Circle to RenderContext{} ({})",
+      runtime_assert(succeeded, "failed to render a Circle to RenderContext{} ({})",
          id(), SDL_GetError());
 
       succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), old_color.red, old_color.green, old_color.blue,
          old_color.alpha);
-      assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
+      runtime_assert(succeeded, "failed to set the draw color of RenderContext{} to [{}, {}, {}, {}] ({})",
          id(), old_color.red, old_color.green, old_color.blue, old_color.alpha, SDL_GetError());
    }
 
    void RenderContext::present()
    {
       bool const succeeded{ SDL_RenderPresent(native_renderer_.get()) };
-      assert(succeeded, "failed to present the RenderContext{} ({})",
+      runtime_assert(succeeded, "failed to present the RenderContext{} ({})",
          id(), SDL_GetError());
    }
 
    void RenderContext::change_title(std::string_view const title)
    {
       bool const succeeded{ SDL_SetWindowTitle(native_window_.get(), title.data()) };
-      assert(succeeded, "failed to set RenderContext{}'s title to {} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s title to {} ({})",
          id(), title, SDL_GetError());
    }
 
    void RenderContext::change_size(Vector2<int> const size)
    {
       bool const succeeded{ SDL_SetWindowSize(native_window_.get(), size.x, size.y) };
-      assert(succeeded, "failed to set RenderContext{}'s size to {}x{} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s size to {}x{} ({})",
          id(), size.x, size.y, SDL_GetError());
    }
 
    void RenderContext::change_position(Vector2<int> position)
    {
       bool const succeeded{ SDL_SetWindowPosition(native_window_.get(), position.x, position.y) };
-      assert(succeeded, "failed to set RenderContext{}'s position to {}x{} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s position to {}x{} ({})",
          id(), position.x, position.y, SDL_GetError());
    }
 
@@ -285,21 +285,21 @@ namespace fro
    void RenderContext::change_fullscreen_mode(bool const fullscreen)
    {
       bool const succeeded{ SDL_SetWindowFullscreen(native_window_.get(), fullscreen) };
-      assert(succeeded, "failed to set RenderContext{}'s fullscreen to {} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s fullscreen to {} ({})",
          id(), fullscreen ? "fullscreen" : "windowed", SDL_GetError());
    }
 
    void RenderContext::change_resizability(bool const resizable)
    {
       bool const succeeded{ SDL_SetWindowResizable(native_window_.get(), resizable) };
-      assert(succeeded, "failed to set RenderContext{}'s resizability to {} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s resizability to {} ({})",
          id(), resizable, SDL_GetError());
    }
 
    void RenderContext::change_visibility(bool const show)
    {
       bool const succeeded{ show ? SDL_ShowWindow(native_window_.get()) : SDL_HideWindow(native_window_.get()) };
-      assert(succeeded, "failed to set RenderContext{}'s visibility to {} ({})",
+      runtime_assert(succeeded, "failed to set RenderContext{}'s visibility to {} ({})",
          id(), show ? "show" : "hidden", SDL_GetError());
    }
 
@@ -336,7 +336,7 @@ namespace fro
          SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution.x, resolution.y,
             scaling_mode_to_sdl(current_scaling_mode))
       };
-      assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
+      runtime_assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
          id(), SDL_GetError());
    }
 
@@ -347,7 +347,7 @@ namespace fro
          SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution_width, resolution_height,
             scaling_mode_to_sdl(scaling_mode))
       };
-      assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
+      runtime_assert(succeeded, "failed to change RenderContext{}'s scaling mode ({})",
          id(), SDL_GetError());
    }
 
@@ -390,7 +390,7 @@ namespace fro
    ID::InternalValue RenderContext::id() const
    {
       ID::InternalValue const id{ SDL_GetWindowID(native_window_.get()) };
-      assert(id, "failed to retrieve the ID of a RenderContext ({})",
+      runtime_assert(id, "failed to retrieve the ID of a RenderContext ({})",
          SDL_GetError());
 
       return id;
@@ -405,7 +405,7 @@ namespace fro
    {
       Vector2<int> size;
       bool const succeeded{ SDL_GetWindowSize(native_window_.get(), &size.x, &size.y) };
-      assert(succeeded, "failed to retrieve RenderContext{}'s size ({})",
+      runtime_assert(succeeded, "failed to retrieve RenderContext{}'s size ({})",
          id(), SDL_GetError());
 
       return size;
@@ -415,7 +415,7 @@ namespace fro
    {
       Vector2<int> position;
       bool const succeeded{ SDL_GetWindowPosition(native_window_.get(), &position.x, &position.y) };
-      assert(succeeded, "failed to retrieve RenderContext{}'s position ({})",
+      runtime_assert(succeeded, "failed to retrieve RenderContext{}'s position ({})",
          id(), SDL_GetError());
 
       return position;
@@ -440,7 +440,7 @@ namespace fro
    {
       Vector2<int> resolution;
       bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), &resolution.x, &resolution.y, nullptr) };
-      assert(succeeded, "failed to retrieve RenderContext{}'s resolution ({})",
+      runtime_assert(succeeded, "failed to retrieve RenderContext{}'s resolution ({})",
          id(), SDL_GetError());
 
       return resolution;
@@ -450,7 +450,7 @@ namespace fro
    {
       SDL_RendererLogicalPresentation native_scaling_mode;
       bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), nullptr, nullptr, &native_scaling_mode) };
-      assert(succeeded, "failed to retrieve RenderContext{}'s scaling mode ({})",
+      runtime_assert(succeeded, "failed to retrieve RenderContext{}'s scaling mode ({})",
          id(), SDL_GetError());
 
       switch (native_scaling_mode)

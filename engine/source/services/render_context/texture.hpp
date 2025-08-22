@@ -12,6 +12,14 @@ namespace fro
    class RenderContext;
    class Surface;
 
+   struct SourceRectangle final
+   {
+      double x;
+      double y;
+      double width;
+      double height;
+   };
+
    class Texture final : public Referenceable
    {
       friend RenderContext;
