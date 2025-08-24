@@ -1,3 +1,4 @@
+#include <backends/imgui_impl_sdl3.h>
 #include <SDL3/SDL.h>
 
 #include "input/input.hpp"
@@ -10,6 +11,10 @@ namespace fro
    {
       SDL_Event native_event;
       while (SDL_PollEvent(&native_event))
+      {
+         ImGui_ImplSDL3_ProcessEvent(&native_event);
+
+         ImGuiIO const& input_output{ ImGui::GetIO() };
          switch (native_event.type)
          {
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
@@ -17,11 +22,13 @@ namespace fro
                break;
 
             case SDL_EVENT_KEY_DOWN:
-               key_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
+               if (not input_output.WantCaptureKeyboard)
+                  key_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
                break;
 
             case SDL_EVENT_KEY_UP:
-               key_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
+               if (not input_output.WantCaptureKeyboard)
+                  key_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(native_event.key.key) } });
                break;
 
             case SDL_EVENT_GAMEPAD_ADDED:
@@ -101,5 +108,6 @@ namespace fro
             default:
                break;
          }
+      }
    }
 }

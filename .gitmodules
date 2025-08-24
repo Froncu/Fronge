@@ -1,0 +1,4 @@
+[submodule "frogui"]
+    path = frogui
+    url = https://github.com/Froncu/FroGui
+    branch = origin/docking

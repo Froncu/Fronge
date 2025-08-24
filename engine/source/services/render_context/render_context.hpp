@@ -56,7 +56,7 @@ namespace fro
          FRO_API RenderContext(RenderContext const& other);
          RenderContext(RenderContext&&) = default;
 
-         FRO_API virtual ~RenderContext() override = default;
+         FRO_API virtual ~RenderContext() override;
 
          FRO_API RenderContext& operator=(RenderContext const& other);
          RenderContext& operator=(RenderContext&&) = default;

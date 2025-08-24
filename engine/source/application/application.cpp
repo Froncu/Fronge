@@ -14,6 +14,8 @@ namespace fro
 
    Application::Application()
    {
+      ImGui::StyleColorsDark();
+
       bool const succeeded{ SDL_InitSubSystem(INITIALIZATION_FLAGS) };
       runtime_assert(succeeded, "failed to initialize SDL subsystems ({})",
          SDL_GetError());
