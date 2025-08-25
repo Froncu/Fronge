@@ -1,5 +1,3 @@
-#include <backends/imgui_impl_sdl3.h>
-#include <backends/imgui_impl_sdlrenderer3.h>
 #include <SDL3/SDL.h>
 
 #include "froch.hpp"
@@ -17,6 +15,7 @@ namespace fro
             SDL_Window* const native_window{ SDL_CreateWindow(title.data(), size.x, size.y, flags) };
             runtime_assert(native_window, "failed to create an SDL window ({})",
                SDL_GetError());
+
             return native_window;
          }(title, size, flags),
          SDL_DestroyWindow
@@ -59,12 +58,6 @@ namespace fro
          SDL_GetRenderVSync(native_renderer_.get(), &vsync);
          SDL_SetRenderVSync(native_renderer_.get(), vsync);
       }
-
-      bool succeeded{ ImGui_ImplSDLRenderer3_Init(native_renderer_.get()) };
-      runtime_assert(succeeded, "failed to initialize ImGui's SDL implementation");
-
-      succeeded = ImGui_ImplSDL3_InitForSDLRenderer(native_window_.get(), native_renderer_.get());
-      runtime_assert(succeeded, "failed to initialize ImGui for SDL renderer");
    }
 
    RenderContext::RenderContext(std::string_view const title, Vector2<int> const size)
@@ -77,12 +70,6 @@ namespace fro
          other.position(), SDL_GetWindowFlags(other.native_window_.get()),
          other.native_renderer_.get(), other.textures_)
    {
-   }
-
-   RenderContext::~RenderContext()
-   {
-      ImGui_ImplSDL3_Shutdown();
-      ImGui_ImplSDLRenderer3_Shutdown();
    }
 
    RenderContext& RenderContext::operator=(RenderContext const& other)
@@ -110,15 +97,11 @@ namespace fro
       return true;
    }
 
-   void RenderContext::begin()
+   void RenderContext::clear()
    {
       bool const succeeded{ SDL_RenderClear(native_renderer_.get()) };
       runtime_assert(succeeded, "failed to clear the RenderContext{} ({})",
          id(), SDL_GetError());
-
-      ImGui_ImplSDLRenderer3_NewFrame();
-      ImGui_ImplSDL3_NewFrame();
-      ImGui::NewFrame();
    }
 
    void RenderContext::render(Texture const& texture, TransformMatrix const& transform, SourceRectangle source_rectangle)
@@ -269,18 +252,6 @@ namespace fro
 
    void RenderContext::present()
    {
-      ScalingMode const current_scaling_mode{ scaling_mode() };
-      change_scaling_mode(ScalingMode::NONE);
-      ImGui::Render();
-      ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), native_renderer_.get());
-      change_scaling_mode(current_scaling_mode);
-
-      if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) == ImGuiConfigFlags_ViewportsEnable)
-      {
-         ImGui::UpdatePlatformWindows();
-         ImGui::RenderPlatformWindowsDefault();
-      }
-
       bool const succeeded{ SDL_RenderPresent(native_renderer_.get()) };
       runtime_assert(succeeded, "failed to present the RenderContext{} ({})",
          id(), SDL_GetError());

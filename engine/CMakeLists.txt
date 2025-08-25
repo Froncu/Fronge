@@ -15,6 +15,7 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/reference/base_reference.cpp
    source/reference/referenceable.cpp
    source/resources/surface/surface.cpp
+   source/services/editor_ui/editor_ui.cpp
    source/services/input_manager/input_manager.cpp
    source/services/locator.cpp
    source/services/logger/logger.cpp
@@ -37,7 +38,7 @@ target_link_libraries(${FRO_ENGINE_NAME}
    PRIVATE SDL3_image::SDL3_image
    PRIVATE SDL3_ttf::SDL3_ttf
    PRIVATE SDL3_mixer::SDL3_mixer
-   PUBLIC frogui) # TODO: make private when an abstraction API is done
+   PRIVATE frogui)
 
 set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
    CXX_STANDARD 23

@@ -29,8 +29,12 @@ namespace fro
       std::uint8_t alpha;
    };
 
+   class EditorUI;
+
    class RenderContext final : public Referenceable
    {
+      friend EditorUI;
+
       public:
          enum class ScalingMode
          {
@@ -56,7 +60,7 @@ namespace fro
          FRO_API RenderContext(RenderContext const& other);
          RenderContext(RenderContext&&) = default;
 
-         FRO_API virtual ~RenderContext() override;
+         virtual ~RenderContext() override = default;
 
          FRO_API RenderContext& operator=(RenderContext const& other);
          RenderContext& operator=(RenderContext&&) = default;
@@ -64,7 +68,7 @@ namespace fro
          FRO_API Texture const& upload_texture(Surface const& surface);
          FRO_API bool unload_texture(Texture const& texture);
 
-         FRO_API void begin();
+         FRO_API void clear();
          FRO_API void render(Texture const& texture, TransformMatrix const& transform = {},
             SourceRectangle source_rectangle = {});
          FRO_API void render(Shape const& shape, TransformMatrix const& transform = {},

@@ -35,6 +35,7 @@
 #include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
 #include "resources/surface/surface.hpp"
+#include "services/editor_ui/editor_ui.hpp"
 #include "services/input_manager/input_manager.hpp"
 #include "services/locator.hpp"
 #include "services/logger/logger.hpp"
