@@ -1,4 +1,4 @@
-add_library(${FRO_ENGINE_NAME} SHARED
+add_library(${FRO_LIBRARY_NAME} SHARED
    source/application/application.cpp
    source/ecs/components/transform.cpp
    source/ecs/entity.cpp
@@ -24,26 +24,26 @@ add_library(${FRO_ENGINE_NAME} SHARED
    source/services/scene_manager/scene_manager.cpp
    source/services/system_event_dispatcher/system_event_dispatcher.cpp)
 
-target_include_directories(${FRO_ENGINE_NAME}
+target_include_directories(${FRO_LIBRARY_NAME}
    PUBLIC source)
 
-target_precompile_headers(${FRO_ENGINE_NAME}
+target_precompile_headers(${FRO_LIBRARY_NAME}
    PRIVATE source/froch.hpp)
 
-target_compile_definitions(${FRO_ENGINE_NAME}
+target_compile_definitions(${FRO_LIBRARY_NAME}
    PRIVATE FRO_ENGINE)
 
-target_link_libraries(${FRO_ENGINE_NAME}
+target_link_libraries(${FRO_LIBRARY_NAME}
    PRIVATE SDL3::SDL3
    PRIVATE SDL3_image::SDL3_image
    PRIVATE SDL3_ttf::SDL3_ttf
    PRIVATE SDL3_mixer::SDL3_mixer
    PRIVATE frogui)
 
-set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
+set_target_properties(${FRO_LIBRARY_NAME} PROPERTIES
    CXX_STANDARD 23
    CXX_STANDARD_REQUIRED TRUE)
 
-target_compile_options(${FRO_ENGINE_NAME}
+target_compile_options(${FRO_LIBRARY_NAME}
    PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -Werror>
    PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>)
