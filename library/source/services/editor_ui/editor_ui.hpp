@@ -23,6 +23,9 @@ namespace fro
          EditorUI& operator=(EditorUI const&) = delete;
          EditorUI& operator=(EditorUI&&) = default;
 
+         FRO_API [[nodiscard]] bool captures_mouse() const;
+         FRO_API [[nodiscard]] bool captures_keyboard() const;
+
          FRO_API void show_demo_window() const;
 
          FRO_API void begin_frame() const;

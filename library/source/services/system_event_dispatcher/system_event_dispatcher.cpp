@@ -2,6 +2,7 @@
 
 #include "input/input.hpp"
 #include "input/input_conversions.hpp"
+#include "services/editor_ui/editor_ui.hpp"
 #include "system_event_dispatcher.hpp"
 
 namespace fro
@@ -13,18 +14,35 @@ namespace fro
       {
          native_event.notify(polled_event);
 
+         auto const& editor_ui{ Locator::get<EditorUI>() }; // TODO: this should not be used here
          switch (polled_event.type)
          {
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                render_context_event.notify(RenderContextCloseEvent{ .id{ polled_event.window.windowID } });
                break;
 
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+               if (not editor_ui.captures_mouse())
+                  mouse_button_event.notify(MouseButtonDownEvent{
+                     .button{ convert_sdl_mouse_button(polled_event.button.button) }
+                  });
+               break;
+
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+               if (not editor_ui.captures_mouse())
+                  mouse_button_event.notify(MouseButtonUpEvent{
+                     .button{ convert_sdl_mouse_button(polled_event.button.button) }
+                  });
+               break;
+
             case SDL_EVENT_KEY_DOWN:
-               key_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(polled_event.key.key) } });
+               if (not editor_ui.captures_keyboard())
+                  key_event.notify(KeyDownEvent{ .key{ convert_sdl_key_code(polled_event.key.key) } });
                break;
 
             case SDL_EVENT_KEY_UP:
-               key_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(polled_event.key.key) } });
+               if (not editor_ui.captures_keyboard())
+                  key_event.notify(KeyUpEvent{ .key{ convert_sdl_key_code(polled_event.key.key) } });
                break;
 
             case SDL_EVENT_GAMEPAD_ADDED:

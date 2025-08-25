@@ -37,6 +37,16 @@ namespace fro
       ImGui_ImplSDL3_Shutdown();
    }
 
+   bool EditorUI::captures_mouse() const
+   {
+      return ImGui::GetIO().WantCaptureMouse;
+   }
+
+   bool EditorUI::captures_keyboard() const
+   {
+      return ImGui::GetIO().WantCaptureKeyboard;
+   }
+
    void EditorUI::show_demo_window() const
    {
       ImGui::ShowDemoWindow();
