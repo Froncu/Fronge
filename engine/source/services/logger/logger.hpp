@@ -4,8 +4,6 @@
 #include "constants.hpp"
 #include "core.hpp"
 #include "froch.hpp"
-#include "reference/reference.hpp"
-#include "reference/referenceable.hpp"
 
 namespace fro
 {
