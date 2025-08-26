@@ -12,7 +12,7 @@
 
 namespace fro
 {
-   template <typename... Arguments>
+   template <std::stacktrace::size_type StackTraceDepth, typename... Arguments>
    [[noreturn]] void exception(std::format_string<Arguments...>, Arguments&&...);
 
    template <typename Message>

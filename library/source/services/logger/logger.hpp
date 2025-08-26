@@ -42,7 +42,10 @@ namespace fro
          Logger& operator=(Logger const&) = delete;
          Logger& operator=(Logger&&) = delete;
 
-         template <typename... Arguments>
+         FRO_API void register_engine_source_root(std::filesystem::path user_root);
+         FRO_API void register_source_root(std::filesystem::path user_root, std::filesystem::path compile_root);
+
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void info(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -52,7 +55,7 @@ namespace fro
                   .payload{
                      .type{ Type::INFO },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -61,7 +64,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void info(Message&& message)
          {
             {
@@ -71,7 +74,7 @@ namespace fro
                   .payload{
                      .type{ Type::INFO },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -80,7 +83,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename... Arguments>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void info_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -90,7 +93,7 @@ namespace fro
                   .payload{
                      .type{ Type::INFO },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -99,7 +102,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void info_once(Message&& message)
          {
             {
@@ -109,7 +112,7 @@ namespace fro
                   .payload{
                      .type{ Type::INFO },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -118,7 +121,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename... Arguments>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void warning(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -128,7 +131,7 @@ namespace fro
                   .payload{
                      .type{ Type::WARNING },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -137,7 +140,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void warning(Message&& message)
          {
             {
@@ -147,7 +150,7 @@ namespace fro
                   .payload{
                      .type{ Type::WARNING },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -156,7 +159,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename... Arguments>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void warning_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -166,7 +169,7 @@ namespace fro
                   .payload{
                      .type{ Type::WARNING },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -175,7 +178,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void warning_once(Message&& message)
          {
             {
@@ -185,7 +188,7 @@ namespace fro
                   .payload{
                      .type{ Type::WARNING },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -194,7 +197,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename... Arguments>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void error(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -204,7 +207,7 @@ namespace fro
                   .payload{
                      .type{ Type::ERROR },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -213,7 +216,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void error(Message&& message)
          {
             {
@@ -223,7 +226,7 @@ namespace fro
                   .payload{
                      .type{ Type::ERROR },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -232,7 +235,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename... Arguments>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
          void error_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
          {
             {
@@ -242,7 +245,7 @@ namespace fro
                   .payload{
                      .type{ Type::ERROR },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format(format, std::forward<Arguments>(arguments)...) }
                   }
                });
@@ -251,7 +254,7 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <typename Message>
+         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
          void error_once(Message&& message)
          {
             {
@@ -261,7 +264,7 @@ namespace fro
                   .payload{
                      .type{ Type::ERROR },
                      .engine_level{ ENGINE },
-                     .location{ location() },
+                     .location{ location(StackTraceDepth) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -271,11 +274,12 @@ namespace fro
          }
 
       private:
-         FRO_API [[nodiscard]] static std::stacktrace_entry location();
+         [[nodiscard]] FRO_API static std::stacktrace_entry location(std::stacktrace::size_type stack_trace_depth = 0);
 
-         FRO_API static void log(Payload const& payload);
+         FRO_API void log(Payload const& payload);
          FRO_API void log_once(Payload const& payload);
 
+         std::vector<std::pair<std::filesystem::path, std::filesystem::path>> source_roots_;
          std::unordered_set<std::stacktrace_entry> stacktrace_entries_{};
 
          bool run_thread_{ true };

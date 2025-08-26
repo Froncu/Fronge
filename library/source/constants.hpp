@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include "froch.hpp"
+
 namespace fro
 {
    #ifdef NDEBUG
@@ -11,6 +13,7 @@ namespace fro
 
    #ifdef FRO_ENGINE
    auto constexpr ENGINE{ true };
+   std::string_view constexpr ENGINE_COMPILE_SOURCE_PATH{ FRO_COMPILE_SOURCE_PATH };
    #else
    auto constexpr ENGINE{ false };
    #endif

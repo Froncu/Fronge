@@ -12,6 +12,7 @@
 #include <condition_variable>
 #include <cstdint>
 #include <deque>
+#include <filesystem>
 #include <format>
 #include <fstream>
 #include <functional>
