@@ -9,7 +9,7 @@ struct SDL_Renderer;
 
 namespace fro
 {
-   class RenderContext;
+   class Renderer;
    class Surface;
 
    struct SourceRectangle final
@@ -22,7 +22,7 @@ namespace fro
 
    class Texture final : public Referenceable
    {
-      friend RenderContext;
+      friend Renderer;
 
       public:
          Texture(Texture const&) = delete;
@@ -39,6 +39,9 @@ namespace fro
          FRO_API [[nodiscard]] Vector2<double> size() const;
 
       private:
+         [[nodiscard]] static SDL_Texture* create_texture(SDL_Renderer& target_native_renderer,
+            SDL_Surface& source_native_surface);
+
          Texture(SDL_Renderer& target_native_renderer, Surface const& source_surface);
          Texture(SDL_Renderer& target_native_renderer, Texture const& source_texture);
 

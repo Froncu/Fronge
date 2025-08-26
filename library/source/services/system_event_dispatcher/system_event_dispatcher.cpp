@@ -18,7 +18,7 @@ namespace fro
          switch (polled_event.type)
          {
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
-               render_context_event.notify(RenderContextCloseEvent{ .id{ polled_event.window.windowID } });
+               window_event.notify(WindowCloseEvent{ .id{ polled_event.window.windowID } });
                break;
 
             case SDL_EVENT_MOUSE_BUTTON_DOWN:

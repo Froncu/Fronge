@@ -19,10 +19,11 @@ add_library(${FRO_LIBRARY_NAME} SHARED
    source/services/input_manager/input_manager.cpp
    source/services/locator.cpp
    source/services/logger/logger.cpp
-   source/services/render_context/render_context.cpp
-   source/services/render_context/texture.cpp
+   source/services/renderer/renderer.cpp
+   source/services/renderer/texture.cpp
    source/services/scene_manager/scene_manager.cpp
-   source/services/system_event_dispatcher/system_event_dispatcher.cpp)
+   source/services/system_event_dispatcher/system_event_dispatcher.cpp
+   source/window/window.cpp)
 
 target_include_directories(${FRO_LIBRARY_NAME}
    PUBLIC source)

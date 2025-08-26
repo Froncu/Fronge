@@ -4,6 +4,7 @@
 #include "core.hpp"
 #include "events/observer/event_listener.hpp"
 #include "reference/referenceable.hpp"
+#include "services/renderer/renderer.hpp"
 #include "utility/unique_pointer.hpp"
 
 struct ImGuiContext;
@@ -28,12 +29,29 @@ namespace fro
 
          FRO_API void show_demo_window() const;
 
+         FRO_API void begin() const;
+         FRO_API void end() const;
+
+         FRO_API bool button() const;
+
          FRO_API void begin_frame() const;
          FRO_API void end_frame() const;
 
       private:
+         static void initialise_backend();
+         static void shutdown_backend();
+
          UniquePointer<ImGuiContext> imgui_context_;
          EventListener<SDL_Event const> on_native_event_;
+         EventListener<SDL_Window> on_renderer_window_assigned_{
+            [](SDL_Window&)
+            {
+               shutdown_backend();
+               initialise_backend();
+               return true;
+            },
+            Locator::get<Renderer>().native_window_assigned_event
+         };
    };
 }
 

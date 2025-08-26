@@ -3,7 +3,7 @@
 
 #include "ecs/scene.hpp"
 #include "services/locator.hpp"
-#include "services/render_context/render_context.hpp"
+#include "services/renderer/renderer.hpp"
 
 namespace fro
 {
@@ -58,7 +58,7 @@ namespace fro
 
          std::vector<Manifold> manifolds_{};
          Polygon transformed_polygon_{};
-         Reference<RenderContext> render_context_{ Locator::get<RenderContext>() };
+         Reference<Renderer> renderer_{ Locator::get<Renderer>() };
          double positional_correction_percent_{ 0.2 };
          double positional_correction_slop_{ 0.01 };
    };

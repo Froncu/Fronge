@@ -7,6 +7,6 @@ namespace fro
    {
       for (auto&& [_, sprite, transform] : scene.group<Pack<Sprite>, Pack<Transform>>())
          if (sprite.texture.valid())
-            render_context_->render(*sprite.texture, transform.world() * sprite.transform, sprite.source_rectangle);
+            renderer_->render(*sprite.texture, transform.world() * sprite.transform, sprite.source_rectangle);
    }
 }

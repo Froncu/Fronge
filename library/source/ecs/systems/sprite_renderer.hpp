@@ -3,7 +3,7 @@
 
 #include "core.hpp"
 #include "ecs/scene.hpp"
-#include "services/render_context/render_context.hpp"
+#include "services/renderer/renderer.hpp"
 
 namespace fro
 {
@@ -22,7 +22,7 @@ namespace fro
          FRO_API void render(Scene const& scene) const;
 
       private:
-         Reference<RenderContext> render_context_{ Locator::get<RenderContext>() };
+         Reference<Renderer> renderer_{ Locator::get<Renderer>() };
    };
 }
 

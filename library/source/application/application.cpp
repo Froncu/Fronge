@@ -5,7 +5,7 @@
 #include "services/editor_ui/editor_ui.hpp"
 #include "services/input_manager/input_manager.hpp"
 #include "services/locator.hpp"
-#include "services/render_context/render_context.hpp"
+#include "services/renderer/renderer.hpp"
 #include "services/scene_manager/scene_manager.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "utility/runtime_assert.hpp"
@@ -27,7 +27,7 @@ namespace fro
       Locator::provide<Logger>();
       Locator::provide<SystemEventDispatcher>();
       Locator::provide<InputManager>();
-      Locator::provide<RenderContext>();
+      Locator::provide<Renderer>();
       Locator::provide<EditorUI>();
       Locator::provide<SceneManager>();
    }

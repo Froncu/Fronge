@@ -172,10 +172,10 @@ namespace fro
       for (auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
            auto const& [entity, rigid_body, transform] : groups)
          for (Collider const& collider : rigid_body.colliders)
-            render_context_->render(collider.shape, transform.world() * collider.transform);
+            renderer_->render(collider.shape, transform.world() * collider.transform);
 
       for (Manifold const& manifold : manifolds_)
-         render_context_->render(Polygon{
+         renderer_->render(Polygon{
             { manifold.contact_point, manifold.contact_point + manifold.penetration_normal * 8.0 }
          });
    }

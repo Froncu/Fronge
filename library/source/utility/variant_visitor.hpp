@@ -28,7 +28,7 @@ namespace fro
          VariantVisitor& operator=(VariantVisitor&&) = default;
 
          template <typename... Arguments>
-         auto operator()(Arguments&&... arguments)
+         decltype(auto) operator()(Arguments&&... arguments)
          {
             return std::visit(visitor_, std::forward<Arguments>(arguments)...);
          }

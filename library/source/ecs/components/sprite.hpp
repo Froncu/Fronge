@@ -2,7 +2,7 @@
 #define SPRITE_HPP
 
 #include "reference/reference.hpp"
-#include "services/render_context/texture.hpp"
+#include "services/renderer/texture.hpp"
 
 namespace fro
 {

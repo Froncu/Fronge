@@ -16,7 +16,7 @@
 #include "events/observer/dispatchable.hpp"
 #include "events/observer/event_dispatcher.hpp"
 #include "events/observer/event_listener.hpp"
-#include "events/render_context_event.hpp"
+#include "events/window_event.hpp"
 #include "froch.hpp"
 #include "identifier/id.hpp"
 #include "identifier/id_generator.hpp"
@@ -39,8 +39,8 @@
 #include "services/input_manager/input_manager.hpp"
 #include "services/locator.hpp"
 #include "services/logger/logger.hpp"
-#include "services/render_context/render_context.hpp"
-#include "services/render_context/texture.hpp"
+#include "services/renderer/renderer.hpp"
+#include "services/renderer/texture.hpp"
 #include "services/scene_manager/scene_manager.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "utility/exception.hpp"
@@ -55,5 +55,6 @@
 #include "utility/unique_pointer.hpp"
 #include "utility/variant_visitor.hpp"
 #include "utility/void_deleter.hpp"
+#include "window/window.hpp"
 
 #endif
