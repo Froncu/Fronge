@@ -6,10 +6,8 @@ set(FRO_COMPILE_SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 project(${FRO_ENGINE_NAME})
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(external)
-
-set(FRO_COMPILE_SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+find_package(SDL3 CONFIG REQUIRED COMPONENTS SDL3-static)
+find_package(SDL3_image CONFIG REQUIRED COMPONENTS SDL3_image-static)
 
 add_subdirectory(frogui)
 add_subdirectory(library)

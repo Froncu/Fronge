@@ -36,10 +36,8 @@ target_compile_definitions(${FRO_LIBRARY_NAME}
    PRIVATE FRO_COMPILE_SOURCE_PATH="${FRO_COMPILE_SOURCE_PATH}")
 
 target_link_libraries(${FRO_LIBRARY_NAME}
-   PRIVATE SDL3::SDL3
-   PRIVATE SDL3_image::SDL3_image
-   PRIVATE SDL3_ttf::SDL3_ttf
-   PRIVATE SDL3_mixer::SDL3_mixer
+   PRIVATE SDL3::SDL3-static
+   PRIVATE SDL3_image::SDL3_image-static
    PRIVATE frogui)
 
 set_target_properties(${FRO_LIBRARY_NAME} PROPERTIES

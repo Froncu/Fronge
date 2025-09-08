@@ -3,7 +3,7 @@ add_library(${FRO_ENGINE_NAME} STATIC
 
 target_link_libraries(${FRO_ENGINE_NAME}
    PUBLIC ${FRO_LIBRARY_NAME}
-   PRIVATE SDL3::SDL3)
+   PRIVATE SDL3::SDL3-static)
 
 set_target_properties(${FRO_ENGINE_NAME} PROPERTIES
    CXX_STANDARD 23
