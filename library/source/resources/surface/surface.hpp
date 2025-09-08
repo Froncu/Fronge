@@ -17,7 +17,7 @@ namespace fro
       friend Texture;
 
       public:
-         FRO_API explicit Surface(std::string_view image_path);
+         FRO_API explicit Surface(std::filesystem::path const& image_path);
          Surface(Surface const&) = delete;
          Surface(Surface&&) = default;
 

@@ -7,17 +7,21 @@
 namespace fro
 {
    // TODO: make a better hash
-   Surface::Surface(std::string_view const image_path)
+   Surface::Surface(std::filesystem::path const& image_path)
       : native_surface_{
-         [](std::string_view const image_path)
+         [&image_path]
          {
-            SDL_Surface* const native_surface{ IMG_Load(image_path.data()) };
+            if (not std::filesystem::is_regular_file(image_path))
+               exception("\"{}\" is not a file",
+                  image_path.string());
+
+            SDL_Surface* const native_surface{ IMG_Load(image_path.string().c_str()) };
             if (not native_surface)
                exception("failed to load \"{}\" into an Surface ({})",
-                  image_path, SDL_GetError());
+                  image_path.filename().string(), SDL_GetError());
 
             return native_surface;
-         }(image_path),
+         }(),
          SDL_DestroySurface
       }
       , hash_{
