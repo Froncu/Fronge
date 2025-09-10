@@ -8,7 +8,7 @@ project(${FRO_ENGINE_NAME})
 
 find_package(SDL3 CONFIG REQUIRED COMPONENTS SDL3-static)
 find_package(SDL3_image CONFIG REQUIRED COMPONENTS SDL3_image-static)
+find_package(imgui CONFIG REQUIRED COMPONENTS imgui-static)
 
-add_subdirectory(frogui)
 add_subdirectory(library)
 add_subdirectory(entry)

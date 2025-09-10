@@ -38,7 +38,7 @@ target_compile_definitions(${FRO_LIBRARY_NAME}
 target_link_libraries(${FRO_LIBRARY_NAME}
    PRIVATE SDL3::SDL3-static
    PRIVATE SDL3_image::SDL3_image-static
-   PRIVATE frogui)
+   PRIVATE imgui::imgui)
 
 set_target_properties(${FRO_LIBRARY_NAME} PROPERTIES
    CXX_STANDARD 23
