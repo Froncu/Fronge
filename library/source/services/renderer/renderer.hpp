@@ -3,18 +3,14 @@
 
 #include "core.hpp"
 #include "events/observer/event_dispatcher.hpp"
-#include "events/window_event.hpp"
 #include "froch.hpp"
 #include "maths/shapes.hpp"
 #include "maths/transform_matrix/transform_matrix.hpp"
 #include "maths/vector2.hpp"
 #include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
-#include "services/locator.hpp"
-#include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "texture.hpp"
 #include "utility/unique_pointer.hpp"
-#include "utility/variant_visitor.hpp"
 #include "window/window.hpp"
 
 struct SDL_Window;
