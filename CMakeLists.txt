@@ -10,5 +10,14 @@ find_package(SDL3 CONFIG REQUIRED COMPONENTS SDL3-static)
 find_package(SDL3_image CONFIG REQUIRED COMPONENTS SDL3_image-static)
 find_package(imgui CONFIG REQUIRED COMPONENTS imgui-static)
 
+#include(FetchContent)
+#set(FETCHCONTENT_QUIET OFF)
+#FetchContent_Declare(frogui
+#   GIT_REPOSITORY https://github.com/Froncu/frogui
+#   GIT_TAG fronge
+#   GIT_PROGRESS ON
+#   GIT_SHALLOW ON)
+#FetchContent_MakeAvailable(frogui)
+
 add_subdirectory(library)
 add_subdirectory(entry)

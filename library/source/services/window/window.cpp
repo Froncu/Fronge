@@ -6,29 +6,10 @@
 namespace fro
 {
    Window::Window(std::string_view const title, Vector2<int> const size)
-      : Window(title, size, {}, {})
-   {
-   }
-
-   Window::Window(Window const& other)
-      : Window(other.title(), other.size(), other.position(), SDL_GetWindowFlags(other.native_window_.get()))
-   {
-   }
-
-   Window& Window::operator=(Window const& other)
-   {
-      if (this == &other)
-         return *this;
-
-      return *this = Window{ other };
-   }
-
-   Window::Window(std::string_view title, Vector2<int> size, std::optional<Vector2<int>> const& position,
-      std::uint64_t const flags)
       : native_window_{
-         [title, size, flags]
+         [title, size]
          {
-            SDL_Window* const native_window{ SDL_CreateWindow(title.data(), size.x, size.y, flags) };
+            SDL_Window* const native_window{ SDL_CreateWindow(title.data(), size.x, size.y, SDL_WINDOW_HIDDEN) };
             runtime_assert(native_window, "failed to create an SDL window ({})",
                SDL_GetError());
 
@@ -37,8 +18,6 @@ namespace fro
          SDL_DestroyWindow
       }
    {
-      if (position.has_value())
-         change_position(*position);
    }
 
    void Window::change_title(std::string_view const title)

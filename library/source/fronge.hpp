@@ -43,6 +43,7 @@
 #include "services/renderer/texture.hpp"
 #include "services/scene_manager/scene_manager.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
+#include "services/window/window.hpp"
 #include "utility/exception.hpp"
 #include "utility/is_in_tuple.hpp"
 #include "utility/lazy_hasher.hpp"
@@ -55,6 +56,5 @@
 #include "utility/unique_pointer.hpp"
 #include "utility/variant_visitor.hpp"
 #include "utility/void_deleter.hpp"
-#include "window/window.hpp"
 
 #endif

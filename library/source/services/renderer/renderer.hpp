@@ -7,11 +7,9 @@
 #include "maths/shapes.hpp"
 #include "maths/transform_matrix/transform_matrix.hpp"
 #include "maths/vector2.hpp"
-#include "reference/reference.hpp"
 #include "reference/referenceable.hpp"
 #include "texture.hpp"
 #include "utility/unique_pointer.hpp"
-#include "window/window.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -62,8 +60,6 @@ namespace fro
          Renderer& operator=(Renderer const&) = delete;
          Renderer& operator=(Renderer&&) = default;
 
-         FRO_API void assign_render_target(Window const& window);
-
          FRO_API Texture const& upload_texture(Surface const& surface);
          FRO_API bool unload_texture(Texture const& texture);
 
@@ -78,18 +74,12 @@ namespace fro
          FRO_API void change_scaling_mode(ScalingMode scaling_mode);
          FRO_API void change_present_mode(PresentingMode presenting_mode);
 
-         FRO_API [[nodiscard]] SDL_Window& assigned_native_window() const;
          FRO_API [[nodiscard]] Vector2<int> resolution() const;
          FRO_API [[nodiscard]] ScalingMode scaling_mode() const;
 
          EventDispatcher<SDL_Window> native_window_assigned_event{};
 
       private:
-         [[nodiscard]] static UniquePointer<SDL_Window> create_hidden_native_window();
-         [[nodiscard]] static UniquePointer<SDL_Renderer> create_native_renderer(SDL_Window& native_window,
-            SDL_Renderer* current_native_renderer = nullptr);
-
-         std::variant<UniquePointer<SDL_Window>, Reference<Window const>> window_;
          UniquePointer<SDL_Renderer> native_renderer_;
          std::vector<Texture> textures_{};
    };

@@ -23,7 +23,7 @@ add_library(${FRO_LIBRARY_NAME} SHARED
    source/services/renderer/texture.cpp
    source/services/scene_manager/scene_manager.cpp
    source/services/system_event_dispatcher/system_event_dispatcher.cpp
-   source/window/window.cpp)
+   source/services/window/window.cpp)
 
 target_include_directories(${FRO_LIBRARY_NAME}
    PUBLIC source)

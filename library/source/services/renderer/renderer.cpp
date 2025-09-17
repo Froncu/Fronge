@@ -2,58 +2,24 @@
 
 #include "froch.hpp"
 #include "renderer.hpp"
+#include "services/window/window.hpp"
 #include "utility/runtime_assert.hpp"
 
 namespace fro
 {
-   UniquePointer<SDL_Window> Renderer::create_hidden_native_window()
-   {
-      SDL_Window* const native_window{ SDL_CreateWindow(nullptr, 0, 0, SDL_WINDOW_HIDDEN) };
-      runtime_assert(native_window, "failed to create an SDL window ({})",
-         SDL_GetError());
-
-      return { native_window, SDL_DestroyWindow };
-   }
-
-   UniquePointer<SDL_Renderer> Renderer::create_native_renderer(SDL_Window& native_window,
-      SDL_Renderer* const current_native_renderer)
-   {
-      SDL_Renderer* const native_renderer{ SDL_CreateRenderer(&native_window, nullptr) };
-      runtime_assert(native_renderer, "failed to create an SDL renderer ({})",
-         SDL_GetError());
-
-      if (current_native_renderer)
-      {
-         int width;
-         int height;
-         SDL_RendererLogicalPresentation scaling_mode;
-         SDL_GetRenderLogicalPresentation(current_native_renderer, &width, &height, &scaling_mode);
-         SDL_SetRenderLogicalPresentation(native_renderer, width, height, scaling_mode);
-
-         int vsync;
-         SDL_GetRenderVSync(current_native_renderer, &vsync);
-         SDL_SetRenderVSync(native_renderer, vsync);
-      }
-
-      return { native_renderer, SDL_DestroyRenderer };
-   }
-
    Renderer::Renderer()
-      : window_{ create_hidden_native_window() }
-      , native_renderer_{ create_native_renderer(*std::get<UniquePointer<SDL_Window>>(window_)) }
+      : native_renderer_{
+         []
+         {
+            SDL_Renderer* const native_renderer{ SDL_CreateRenderer(&Locator::get<Window>().native_window(), nullptr) };
+            runtime_assert(native_renderer, "failed to create an SDL renderer ({})",
+               SDL_GetError());
+
+            return native_renderer;
+         }(),
+         SDL_DestroyRenderer
+      }
    {
-   }
-
-   void Renderer::assign_render_target(Window const& window)
-   {
-      UniquePointer new_native_renderer{ create_native_renderer(window.native_window(), native_renderer_.get()) };
-      for (Texture& texture : textures_)
-         texture = Texture{ *new_native_renderer, texture };
-
-      native_renderer_ = std::move(new_native_renderer);
-
-      window_ = Reference{ window };
-      native_window_assigned_event.notify(window.native_window());
    }
 
    Texture const& Renderer::upload_texture(Surface const& surface)
@@ -307,21 +273,6 @@ namespace fro
       if (not SDL_SetRenderVSync(native_renderer_.get(), native_presenting_mode))
          Locator::get<Logger>().warning("failed to change the Renderer's presenting mode to {} ({})",
             static_cast<int>(presenting_mode), SDL_GetError());
-   }
-
-   SDL_Window& Renderer::assigned_native_window() const
-   {
-      return VariantVisitor{
-         [](UniquePointer<SDL_Window> const& native_window) -> SDL_Window&
-         {
-            return *native_window;
-         },
-
-         [](Reference<Window const> const& window) -> SDL_Window&
-         {
-            return window->native_window();
-         },
-      }(window_);
    }
 
    Vector2<int> Renderer::resolution() const

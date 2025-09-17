@@ -18,12 +18,12 @@ namespace fro
    {
       public:
          FRO_API explicit Window(std::string_view title = "Application", Vector2<int> size = { 640, 480 });
-         FRO_API Window(Window const& other);
+         Window(Window const&) = delete;
          Window(Window&&) = default;
 
          virtual ~Window() override = default;
 
-         FRO_API Window& operator=(Window const& other);
+         Window& operator=(Window const&) = delete;
          Window& operator=(Window&&) = default;
 
          FRO_API void change_title(std::string_view title);
@@ -67,8 +67,6 @@ namespace fro
          };
 
       private:
-         Window(std::string_view title, Vector2<int> size, std::optional<Vector2<int>> const& position, std::uint64_t flags);
-
          UniquePointer<SDL_Window> native_window_;
    };
 }

@@ -4,6 +4,8 @@
 
 #include "editor_ui.hpp"
 #include "services/locator.hpp"
+#include "services/system_event_dispatcher/system_event_dispatcher.hpp"
+#include "services/window/window.hpp"
 #include "utility/runtime_assert.hpp"
 
 namespace fro
@@ -12,7 +14,7 @@ namespace fro
    {
       auto const& renderer{ Locator::get<Renderer>() };
       bool succeeded{
-         ImGui_ImplSDL3_InitForSDLRenderer(&renderer.assigned_native_window(), renderer.native_renderer_.get())
+         ImGui_ImplSDL3_InitForSDLRenderer(&Locator::get<Window>().native_window(), renderer.native_renderer_.get())
       };
       runtime_assert(succeeded, "failed to initialize ImGui's SDL implementation");
 
@@ -84,6 +86,8 @@ namespace fro
 
    void EditorUI::end_frame() const
    {
+      ImGui::ShowDemoWindow();
+
       auto& render_context{ Locator::get<Renderer>() };
       Renderer::ScalingMode const scaling_mode{ render_context.scaling_mode() };
       render_context.change_scaling_mode(Renderer::ScalingMode::NONE);

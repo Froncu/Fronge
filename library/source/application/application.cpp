@@ -8,6 +8,7 @@
 #include "services/renderer/renderer.hpp"
 #include "services/scene_manager/scene_manager.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
+#include "services/window/window.hpp"
 #include "utility/runtime_assert.hpp"
 
 namespace fro
@@ -27,6 +28,7 @@ namespace fro
       Locator::provide<Logger>();
       Locator::provide<SystemEventDispatcher>();
       Locator::provide<InputManager>();
+      Locator::provide<Window>();
       Locator::provide<Renderer>();
       Locator::provide<EditorUI>();
       Locator::provide<SceneManager>();
