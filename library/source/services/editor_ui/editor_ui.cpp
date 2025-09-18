@@ -1,33 +1,16 @@
-#include <imgui_impl_sdl3.h>
-#include <imgui_impl_sdlrenderer3.h>
 #include <imgui.h>
+#include <imgui_impl_sdl3.h>
+#include <imgui_impl_sdlgpu3.h>
 
 #include "editor_ui.hpp"
 #include "services/locator.hpp"
+#include "services/renderer/renderer.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "services/window/window.hpp"
 #include "utility/runtime_assert.hpp"
 
 namespace fro
 {
-   void EditorUI::initialise_backend()
-   {
-      auto const& renderer{ Locator::get<Renderer>() };
-      bool succeeded{
-         ImGui_ImplSDL3_InitForSDLRenderer(&Locator::get<Window>().native_window(), renderer.native_renderer_.get())
-      };
-      runtime_assert(succeeded, "failed to initialize ImGui's SDL implementation");
-
-      succeeded = ImGui_ImplSDLRenderer3_Init(renderer.native_renderer_.get());
-      runtime_assert(succeeded, "failed to initialize ImGui for SDL renderer");
-   }
-
-   void EditorUI::shutdown_backend()
-   {
-      ImGui_ImplSDLRenderer3_Shutdown();
-      ImGui_ImplSDL3_Shutdown();
-   }
-
    EditorUI::EditorUI()
       : imgui_context_{ ImGui::CreateContext(), ImGui::DestroyContext }
       , on_native_event_{
@@ -38,13 +21,26 @@ namespace fro
          Locator::get<SystemEventDispatcher>().native_event
       }
    {
-      ImGui::StyleColorsDark();
-      initialise_backend();
+      bool succeeded{
+         ImGui_ImplSDL3_InitForSDLGPU(&Locator::get<Window>().native_window())
+      };
+      runtime_assert(succeeded, "failed to initialize ImGui's SDL implementation");
+
+      SDL_GPUDevice& gpu_device{ Locator::get<Renderer>().gpu_device() };
+      ImGui_ImplSDLGPU3_InitInfo initialisation_info{
+         .Device{ &gpu_device },
+         .ColorTargetFormat{ SDL_GetGPUSwapchainTextureFormat(&gpu_device, &Locator::get<Window>().native_window()) },
+         .MSAASamples{ SDL_GPU_SAMPLECOUNT_1 }
+      };
+
+      succeeded = ImGui_ImplSDLGPU3_Init(&initialisation_info);
+      runtime_assert(succeeded, "failed to initialize ImGui for SDL renderer");
    }
 
    EditorUI::~EditorUI()
    {
-      shutdown_backend();
+      ImGui_ImplSDLGPU3_Shutdown();
+      ImGui_ImplSDL3_Shutdown();
    }
 
    bool EditorUI::captures_mouse() const
@@ -62,38 +58,27 @@ namespace fro
       ImGui::ShowDemoWindow();
    }
 
-   void EditorUI::begin() const
-   {
-      ImGui::Begin("Window");
-   }
-
-   void EditorUI::end() const
-   {
-      ImGui::End();
-   }
-
-   bool EditorUI::button() const
-   {
-      return ImGui::Button("Switch Windows");
-   }
-
    void EditorUI::begin_frame() const
    {
-      ImGui_ImplSDLRenderer3_NewFrame();
+      ImGui_ImplSDLGPU3_NewFrame();
       ImGui_ImplSDL3_NewFrame();
       ImGui::NewFrame();
    }
 
    void EditorUI::end_frame() const
    {
-      ImGui::ShowDemoWindow();
-
-      auto& render_context{ Locator::get<Renderer>() };
-      Renderer::ScalingMode const scaling_mode{ render_context.scaling_mode() };
-      render_context.change_scaling_mode(Renderer::ScalingMode::NONE);
       ImGui::Render();
-      ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), render_context.native_renderer_.get());
-      render_context.change_scaling_mode(scaling_mode);
+   }
+
+   void EditorUI::prepare_render_data() const
+   {
+      ImGui_ImplSDLGPU3_PrepareDrawData(ImGui::GetDrawData(), Locator::get<Renderer>().command_buffer());
+   }
+
+   void EditorUI::render() const
+   {
+      auto const& renderer{ Locator::get<Renderer>() };
+      ImGui_ImplSDLGPU3_RenderDrawData(ImGui::GetDrawData(), renderer.command_buffer(), renderer.render_pass());
 
       if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) == ImGuiConfigFlags_ViewportsEnable)
       {

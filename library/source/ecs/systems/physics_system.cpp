@@ -167,17 +167,17 @@ namespace fro
          positional_correction(manifold);
    }
 
-   void PhysicsSystem::render(Scene const& scene) const
+   void PhysicsSystem::render(Scene const& /*scene*/) const
    {
-      for (auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
-           auto const& [entity, rigid_body, transform] : groups)
-         for (Collider const& collider : rigid_body.colliders)
-            renderer_->render(collider.shape, transform.world() * collider.transform);
-
-      for (Manifold const& manifold : manifolds_)
-         renderer_->render(Polygon{
-            { manifold.contact_point, manifold.contact_point + manifold.penetration_normal * 8.0 }
-         });
+      // for (auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
+      //      auto const& [entity, rigid_body, transform] : groups)
+      //    for (Collider const& collider : rigid_body.colliders)
+      //       renderer_->render(collider.shape, transform.world() * collider.transform);
+      //
+      // for (Manifold const& manifold : manifolds_)
+      //    renderer_->render(Polygon{
+      //       { manifold.contact_point, manifold.contact_point + manifold.penetration_normal * 8.0 }
+      //    });
    }
 
    void PhysicsSystem::change_positional_correction_percent(double const percent)
