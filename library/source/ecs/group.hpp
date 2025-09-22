@@ -2,7 +2,6 @@
 #define GROUP_HPP
 
 #include "components.hpp"
-#include "entity.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"
 #include "utility/pack.hpp"

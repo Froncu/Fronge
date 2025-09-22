@@ -10,17 +10,13 @@
 
 namespace fro
 {
-   class Entity;
-   template <typename, typename>
-   class Group;
-   class SceneManager;
-
    class Scene final : public Referenceable
    {
-      friend Entity;
+      friend class Component;
+      friend class Entity;
       template <typename, typename>
       friend class Group;
-      friend SceneManager;
+      friend class SceneManager;
 
       template <Componentable Component>
       class ComponentSparseSet final
@@ -70,31 +66,19 @@ namespace fro
                remove_queue_.insert(entity_id);
             }
 
-            bool move(ID::InternalValue const entity_id, std::size_t const data_index)
+            bool move(ID::InternalValue const entity_id, std::size_t data_index)
             {
                return components_.move(entity_id, data_index);
             }
 
             [[nodiscard]] Component* find(ID::InternalValue const entity_id)
             {
-               Component* component{ components_.find(entity_id) };
-               if (not component)
-                  if (auto const queued_component{ insert_queue_.find(entity_id) };
-                     queued_component not_eq insert_queue_.end())
-                     component = &queued_component->second;
-
-               return component;
+               return components_.find(entity_id);
             }
 
             [[nodiscard]] Component const* find(ID::InternalValue const entity_id) const
             {
-               Component const* component{ components_.find(entity_id) };
-               if (not component)
-                  if (auto const queued_component{ insert_queue_.find(entity_id) };
-                     queued_component not_eq insert_queue_.end())
-                     component = &queued_component->second;
-
-               return component;
+               return components_.find(entity_id);
             }
 
             [[nodiscard]] bool contains(ID::InternalValue const entity_id) const
@@ -104,7 +88,7 @@ namespace fro
 
             [[nodiscard]] std::span<Component> components()
             {
-               return components_.dense_data();
+               return components_.dense();
             }
 
          private:
@@ -168,3 +152,6 @@ namespace fro
 }
 
 #endif
+
+#include "entity.hpp"
+#include "group.hpp"

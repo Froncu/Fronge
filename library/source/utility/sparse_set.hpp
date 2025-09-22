@@ -6,6 +6,7 @@
 #define SPARSE_SET_HPP
 
 #include "froch.hpp"
+#include "identifier/id.hpp"
 
 namespace fro
 {
@@ -18,12 +19,20 @@ namespace fro
    class SparseSet final
    {
       public:
-         using Key = std::size_t;
-         using DataIndex = Key;
+         using Key = ID::InternalValue;
+         using DataIndex = std::size_t;
 
          static DataIndex constexpr UNUSED_DATA_INDEX{ std::numeric_limits<DataIndex>::max() };
 
-         SparseSet() = default;
+         SparseSet(std::function<void(Data&, Key)> data_key_updater,
+            std::function<void(Data&)> data_key_eraser,
+            std::function<Key(Data&)> data_key_extractor)
+            : data_key_updater_{ std::move(data_key_updater) }
+            , data_key_eraser_{ std::move(data_key_eraser) }
+            , data_key_extractor_{ std::move(data_key_extractor) }
+         {
+         }
+
          SparseSet(SparseSet const&) = default;
          SparseSet(SparseSet&&) noexcept = default;
 
@@ -51,11 +60,11 @@ namespace fro
 
             naive_move(key, dense_.size() - 1);
             sparse_[key] = UNUSED_DATA_INDEX;
+
+            std::optional data{ std::move(dense_.back()) };
             dense_.pop_back();
 
-            std::optional data{ std::move(dense_data_.back()) };
-            dense_data_.pop_back();
-
+            data_key_eraser_(*data);
             return data;
          }
 
@@ -63,7 +72,6 @@ namespace fro
          {
             sparse_.clear();
             dense_.clear();
-            dense_data_.clear();
          }
 
          void shrink_sparse()
@@ -84,7 +92,6 @@ namespace fro
          void shrink_dense()
          {
             dense_.shrink_to_fit();
-            dense_data_.shrink_to_fit();
          }
 
          void shrink()
@@ -133,11 +140,6 @@ namespace fro
             return dense_.capacity();
          }
 
-         [[nodiscard]] std::size_t dense_data_capacity() const
-         {
-            return dense_data_.capacity();
-         }
-
          [[nodiscard]] std::span<DataIndex> sparse()
          {
             return sparse_;
@@ -148,24 +150,14 @@ namespace fro
             return sparse_;
          }
 
-         [[nodiscard]] std::span<Key> dense()
+         [[nodiscard]] std::span<Data> dense()
          {
             return dense_;
          }
 
-         [[nodiscard]] std::span<Key const> dense() const
+         [[nodiscard]] std::span<Data const> dense() const
          {
             return dense_;
-         }
-
-         [[nodiscard]] std::span<Data> dense_data()
-         {
-            return dense_data_;
-         }
-
-         [[nodiscard]] std::span<Data const> dense_data() const
-         {
-            return dense_data_;
          }
 
       private:
@@ -174,29 +166,27 @@ namespace fro
          Data& naive_insert(Key const key, ArgumentTypes&&... arguments)
          {
             sparse_[key] = dense_.size();
-            dense_.emplace_back(key);
-
-            return dense_data_.emplace_back(std::forward<ArgumentTypes>(arguments)...);
+            Data& data{ dense_.emplace_back(std::forward<ArgumentTypes>(arguments)...) };
+            data_key_updater_(data, key);
+            return data;
          }
 
          void naive_move(Key const key, DataIndex const where)
          {
-            Key const other_key{ dense_[where] };
+            Key const other_key{ data_key_extractor_(dense_[where]) };
 
             std::swap(dense_[sparse_[key]], dense_[where]);
-            std::swap(dense_data_[sparse_[key]], dense_data_[where]);
-
             std::swap(sparse_[key], sparse_[other_key]);
          }
 
          [[nodiscard]] Data& naive_find(Key const key)
          {
-            return dense_data_[sparse_[key]];
+            return dense_[sparse_[key]];
          }
 
          [[nodiscard]] Data const& naive_find(Key const key) const
          {
-            return dense_data_[sparse_[key]];
+            return dense_[sparse_[key]];
          }
 
          [[nodiscard]] bool naive_contains(Key const key) const
@@ -214,9 +204,12 @@ namespace fro
             return data_index < dense_.size();
          }
 
+         std::function<void(Data&, Key)> data_key_updater_;
+         std::function<void(Data&)> data_key_eraser_;
+         std::function<Key(Data&)> data_key_extractor_;
+
          std::vector<DataIndex> sparse_{};
-         std::vector<Key> dense_{};
-         std::vector<Data> dense_data_{};
+         std::vector<Data> dense_{};
    };
 }
 
