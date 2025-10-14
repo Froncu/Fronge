@@ -46,7 +46,6 @@
 #include "services/window/window.hpp"
 #include "utility/hash.hpp"
 #include "utility/is_in_tuple.hpp"
-#include "utility/lazy_hasher.hpp"
 #include "utility/mapped_tuple.hpp"
 #include "utility/pack.hpp"
 #include "utility/runtime_assert.hpp"
