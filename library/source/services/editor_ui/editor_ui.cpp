@@ -86,8 +86,6 @@ namespace fro
 
    void EditorUI::end_frame() const
    {
-      ImGui::ShowDemoWindow();
-
       auto& render_context{ Locator::get<Renderer>() };
       Renderer::ScalingMode const scaling_mode{ render_context.scaling_mode() };
       render_context.change_scaling_mode(Renderer::ScalingMode::NONE);
