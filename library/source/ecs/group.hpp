@@ -2,7 +2,6 @@
 #define GROUP_HPP
 
 #include "components.hpp"
-#include "entity.hpp"
 #include "froch.hpp"
 #include "reference/reference.hpp"
 #include "utility/pack.hpp"
@@ -42,7 +41,7 @@ namespace fro
          }
 
       private:
-         explicit Group(Scene const& scene)
+         explicit Group(Scene& scene)
             : scene_{ scene }
          {
          }
@@ -111,7 +110,7 @@ namespace fro
                })...);
          }
 
-         Reference<Scene const> scene_;
+         Reference<Scene> scene_;
          std::vector<Entity*> entities_{};
          std::conditional_t<(sizeof...(ObservedComponents)),
             std::tuple<std::vector<ObservedComponents*>...>,

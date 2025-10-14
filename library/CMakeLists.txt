@@ -1,5 +1,6 @@
 add_library(${FRO_LIBRARY_NAME} SHARED
    source/application/application.cpp
+   source/ecs/components/base_component.cpp
    source/ecs/components/transform.cpp
    source/ecs/entity.cpp
    source/ecs/scene.cpp

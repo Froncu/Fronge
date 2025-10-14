@@ -10,17 +10,13 @@
 
 namespace fro
 {
-   class Entity;
-   template <typename, typename>
-   class Group;
-   class SceneManager;
-
    class Scene final : public Referenceable
    {
-      friend Entity;
+      friend class BaseComponent;
+      friend class Entity;
       template <typename, typename>
       friend class Group;
-      friend SceneManager;
+      friend class SceneManager;
 
       template <Componentable Component>
       class ComponentSparseSet final
@@ -70,31 +66,19 @@ namespace fro
                remove_queue_.insert(entity_id);
             }
 
-            bool move(ID::InternalValue const entity_id, std::size_t const data_index)
+            bool move(ID::InternalValue const entity_id, std::size_t data_index)
             {
                return components_.move(entity_id, data_index);
             }
 
             [[nodiscard]] Component* find(ID::InternalValue const entity_id)
             {
-               Component* component{ components_.find(entity_id) };
-               if (not component)
-                  if (auto const queued_component{ insert_queue_.find(entity_id) };
-                     queued_component not_eq insert_queue_.end())
-                     component = &queued_component->second;
-
-               return component;
+               return components_.find(entity_id);
             }
 
             [[nodiscard]] Component const* find(ID::InternalValue const entity_id) const
             {
-               Component const* component{ components_.find(entity_id) };
-               if (not component)
-                  if (auto const queued_component{ insert_queue_.find(entity_id) };
-                     queued_component not_eq insert_queue_.end())
-                     component = &queued_component->second;
-
-               return component;
+               return components_.find(entity_id);
             }
 
             [[nodiscard]] bool contains(ID::InternalValue const entity_id) const
@@ -104,7 +88,7 @@ namespace fro
 
             [[nodiscard]] std::span<Component> components()
             {
-               return components_.dense_data();
+               return components_.dense();
             }
 
          private:
@@ -137,11 +121,11 @@ namespace fro
          Scene& operator=(Scene const&) = delete;
          Scene& operator=(Scene&&) = default;
 
-         FRO_API [[nodiscard]] Entity& create_entity() const;
-         FRO_API void destroy_entity(Entity const& entity) const;
+         FRO_API [[nodiscard]] Entity& create_entity();
+         FRO_API void destroy_entity(Entity const& entity);
 
          template <typename OwnedComponents, typename ObservedComponents>
-         Group<OwnedComponents, ObservedComponents>& group() const
+         Group<OwnedComponents, ObservedComponents>& group()
          {
             using GroupType = Group<OwnedComponents, ObservedComponents>;
 
@@ -157,14 +141,17 @@ namespace fro
       private:
          Scene() = default;
 
-         mutable MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
+         MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
          // TODO: the groups would benefit if this was a vector of Entities instead of pointers to them
          // or if the Entity class was just a wrapper around a number with its current methods moved to
          // the Scene class
-         mutable std::vector<std::unique_ptr<Entity>> entities_{};
-         mutable std::vector<ID::InternalValue> destroy_queue_{};
-         mutable std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
+         std::vector<std::unique_ptr<Entity>> entities_{};
+         std::vector<ID::InternalValue> destroy_queue_{};
+         std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
    };
 }
 
 #endif
+
+#include "entity.hpp"
+#include "group.hpp"

@@ -135,7 +135,7 @@ namespace fro
       rigid_body_b->angular_velocity += rb.crossed(friction_impulse) * rigid_body_b->inverse_inertia;
    }
 
-   void PhysicsSystem::step(Scene const& scene, double const delta_seconds)
+   void PhysicsSystem::step(Scene& scene, double const delta_seconds)
    {
       manifolds_.clear();
 
@@ -167,7 +167,7 @@ namespace fro
          positional_correction(manifold);
    }
 
-   void PhysicsSystem::render(Scene const& scene) const
+   void PhysicsSystem::render(Scene& scene) const
    {
       for (auto& groups{ scene.group<Pack<RigidBody>, Pack<Transform>>() };
            auto const& [entity, rigid_body, transform] : groups)

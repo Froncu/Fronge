@@ -17,6 +17,7 @@ namespace fro
 
    template <typename Type>
    concept Componentable =
+      std::derived_from<BaseComponent, Type> and
       SparseSetStorable<Type> and
       IsInTuple<Components, Type>;
 }

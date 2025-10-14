@@ -1,10 +1,10 @@
 #ifndef RIGID_BODY_HPP
 #define RIGID_BODY_HPP
 
+#include "base_component.hpp"
 #include "maths/shapes.hpp"
 #include "maths/transform_matrix/transform_matrix.hpp"
 #include "maths/vector2.hpp"
-#include "reference/referenceable.hpp"
 
 namespace fro
 {
@@ -16,7 +16,7 @@ namespace fro
       double friction{ 0.5 };
    };
 
-   struct RigidBody final : Referenceable
+   struct RigidBody final : BaseComponent
    {
       std::vector<Collider> colliders{};
 

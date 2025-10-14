@@ -3,13 +3,9 @@
 
 namespace fro
 {
-   Scene const& SceneManager::add(std::string name)
+   Scene& SceneManager::add()
    {
-      auto scene{ scenes_.find(name) };
-      if (scene == scenes_.end())
-         scene = scenes_.emplace(std::move(name), Scene{}).first;
-
-      return scene->second;
+      return scenes_.emplace_back(Scene{});
    }
 
    void SceneManager::update(double /*delta_seconds*/)
@@ -18,13 +14,13 @@ namespace fro
 
    void SceneManager::fixed_update(double const fixed_delta_seconds)
    {
-      for (Scene const& scene : std::views::values(scenes_))
+      for (Scene& scene : scenes_)
          physics_system_.step(scene, fixed_delta_seconds);
    }
 
    void SceneManager::render()
    {
-      for (Scene const& scene : std::views::values(scenes_))
+      for (Scene& scene : scenes_)
       {
          sprite_renderer_.render(scene);
          physics_system_.render(scene);
@@ -33,7 +29,7 @@ namespace fro
 
    void SceneManager::execute_queued()
    {
-      for (Scene& scene : std::views::values(scenes_))
+      for (Scene& scene : scenes_)
       {
          for (ID::InternalValue const entity_id : scene.destroy_queue_)
             std::erase_if(scene.entities_,

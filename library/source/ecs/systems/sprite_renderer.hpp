@@ -19,7 +19,7 @@ namespace fro
          SpriteRenderer& operator=(SpriteRenderer const&) = default;
          SpriteRenderer& operator=(SpriteRenderer&&) noexcept = default;
 
-         FRO_API void render(Scene const& scene) const;
+         FRO_API void render(Scene& scene) const;
 
       private:
          Reference<Renderer> renderer_{ Locator::get<Renderer>() };

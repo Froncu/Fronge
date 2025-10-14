@@ -1,7 +1,6 @@
 #include <SDL3/SDL.h>
 
 #include "application.hpp"
-#include "ecs/entity.hpp" // TODO: remove when the file structure for ECS is improved
 #include "services/editor_ui/editor_ui.hpp"
 #include "services/input_manager/input_manager.hpp"
 #include "services/locator.hpp"
