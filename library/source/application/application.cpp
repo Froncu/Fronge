@@ -22,8 +22,7 @@ namespace fro
    Application::Application()
    {
       bool const succeeded{ SDL_InitSubSystem(INITIALIZATION_FLAGS) };
-      runtime_assert(succeeded, "failed to initialize SDL subsystems ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to initialize SDL subsystems ({})", SDL_GetError()));
 
       Locator::provide<Logger>();
       Locator::provide<SystemEventDispatcher>();

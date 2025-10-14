@@ -1,7 +1,6 @@
 #include "froch.hpp"
 #include "id.hpp"
 #include "id_generator.hpp"
-#include "utility/exception.hpp"
 
 namespace fro
 {
@@ -39,7 +38,7 @@ namespace fro
       if (free_ids_.empty())
       {
          if (highest_taken_id_ == ID::MAX_ID)
-            exception("the ID generator has run out of IDs");
+            throw std::runtime_error{ "the ID generator has run out of IDs" };
 
          id = ++highest_taken_id_;
       }

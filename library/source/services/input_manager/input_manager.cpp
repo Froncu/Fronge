@@ -93,7 +93,7 @@ namespace fro
    UserInput const& InputManager::user_input(int const id)
    {
       if (id == UserInput::INVALID_USER_ID)
-         exception("attempted to retrieve an UserInput with invalid user ID");
+         throw std::runtime_error{ std::format("attempted to retrieve an UserInput with invalid user ID") };
 
       auto user_input{ user_inputs_.find(id) };
       if (user_input == user_inputs_.end())

@@ -1,6 +1,7 @@
 #ifndef POLYGON_HPP
 #define POLYGON_HPP
 
+#include "core.hpp"
 #include "froch.hpp"
 #include "maths/vector2.hpp"
 

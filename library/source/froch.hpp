@@ -11,6 +11,7 @@
 #include <condition_variable>
 #include <condition_variable>
 #include <cstdint>
+#include <cstring>
 #include <deque>
 #include <filesystem>
 #include <format>
@@ -27,8 +28,8 @@
 #include <queue>
 #include <ranges>
 #include <set>
+#include <source_location>
 #include <sstream>
-#include <stacktrace>
 #include <stdexcept>
 #include <string>
 #include <thread>

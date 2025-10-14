@@ -12,13 +12,14 @@ namespace fro
          [&image_path]
          {
             if (not std::filesystem::is_regular_file(image_path))
-               exception("\"{}\" is not a file",
-                  image_path.string());
+               throw std::runtime_error{ std::format("\"{}\" is not a file", image_path.string()) };
 
             SDL_Surface* const native_surface{ IMG_Load(image_path.string().c_str()) };
             if (not native_surface)
-               exception("failed to load \"{}\" into an Surface ({})",
-                  image_path.filename().string(), SDL_GetError());
+               throw std::runtime_error{
+                  std::format("failed to load \"{}\" into an Surface ({})",
+                     image_path.filename().string(), SDL_GetError())
+               };
 
             return native_surface;
          }(),

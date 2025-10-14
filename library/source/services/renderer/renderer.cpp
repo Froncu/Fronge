@@ -12,8 +12,7 @@ namespace fro
          []
          {
             SDL_Renderer* const native_renderer{ SDL_CreateRenderer(&Locator::get<Window>().native_window(), nullptr) };
-            runtime_assert(native_renderer, "failed to create an SDL renderer ({})",
-               SDL_GetError());
+            runtime_assert(native_renderer, std::format("failed to create an SDL renderer ({})", SDL_GetError()));
 
             return native_renderer;
          }(),
@@ -41,8 +40,7 @@ namespace fro
    void Renderer::clear()
    {
       bool const succeeded{ SDL_RenderClear(native_renderer_.get()) };
-      runtime_assert(succeeded, "failed to clear the Renderer ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to clear the Renderer ({})", SDL_GetError()));
    }
 
    void Renderer::render(Texture const& texture, TransformMatrix const& transform, SourceRectangle source_rectangle)
@@ -122,8 +120,7 @@ namespace fro
             vertices.data(), static_cast<int>(vertices.size()),
             indices.data(), static_cast<int>(indices.size()))
       };
-      runtime_assert(succeeded, "failed to render a Texture to the Renderer ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to render a Texture to the Renderer ({})", SDL_GetError()));
    }
 
    void Renderer::render(Shape const& shape, TransformMatrix const& transform, Color const color)
@@ -132,12 +129,11 @@ namespace fro
       bool succeeded{
          SDL_GetRenderDrawColor(native_renderer_.get(), &old_color.red, &old_color.green, &old_color.blue, &old_color.alpha)
       };
-      runtime_assert(succeeded, "failed to get the draw color of the Renderer ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to get the draw color of the Renderer ({})", SDL_GetError()));
 
       succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), color.red, color.green, color.blue, color.alpha);
-      runtime_assert(succeeded, "failed to set the draw color of the Renderer to [{}, {}, {}, {}] ({})",
-         color.red, color.green, color.blue, color.alpha, SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to set the draw color of the Renderer to [{}, {}, {}, {}] ({})", color.red,
+         color.green, color.blue, color.alpha, SDL_GetError()));
 
       std::vector<SDL_FPoint> shape_vertices{};
       VariantVisitor{
@@ -176,20 +172,18 @@ namespace fro
       }(shape);
 
       succeeded = SDL_RenderLines(native_renderer_.get(), shape_vertices.data(), static_cast<int>(shape_vertices.size()));
-      runtime_assert(succeeded, "failed to render a Circle to the Renderer ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to render a Circle to the Renderer ({})", SDL_GetError()));
 
       succeeded = SDL_SetRenderDrawColor(native_renderer_.get(), old_color.red, old_color.green, old_color.blue,
          old_color.alpha);
-      runtime_assert(succeeded, "failed to set the draw color of the Renderer to [{}, {}, {}, {}] ({})",
-         old_color.red, old_color.green, old_color.blue, old_color.alpha, SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to set the draw color of the Renderer to [{}, {}, {}, {}] ({})",
+         old_color.red, old_color.green, old_color.blue, old_color.alpha, SDL_GetError()));
    }
 
    void Renderer::present()
    {
       bool const succeeded{ SDL_RenderPresent(native_renderer_.get()) };
-      runtime_assert(succeeded, "failed to present the Renderer ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to present the Renderer ({})", SDL_GetError()));
    }
 
    SDL_RendererLogicalPresentation scaling_mode_to_sdl(Renderer::ScalingMode const scaling_mode)
@@ -224,8 +218,7 @@ namespace fro
          SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution.x, resolution.y,
             scaling_mode_to_sdl(current_scaling_mode))
       };
-      runtime_assert(succeeded, "failed to change the Renderer's resolution ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to change the Renderer's resolution ({})", SDL_GetError()));
    }
 
    void Renderer::change_scaling_mode(ScalingMode const scaling_mode)
@@ -235,8 +228,7 @@ namespace fro
          SDL_SetRenderLogicalPresentation(native_renderer_.get(), resolution_width, resolution_height,
             scaling_mode_to_sdl(scaling_mode))
       };
-      runtime_assert(succeeded, "failed to change the Renderer's scaling mode ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to change the Renderer's scaling mode ({})", SDL_GetError()));
    }
 
    void Renderer::change_present_mode(PresentingMode presenting_mode)
@@ -271,16 +263,15 @@ namespace fro
       }
 
       if (not SDL_SetRenderVSync(native_renderer_.get(), native_presenting_mode))
-         Locator::get<Logger>().warning("failed to change the Renderer's presenting mode to {} ({})",
-            static_cast<int>(presenting_mode), SDL_GetError());
+         Locator::get<Logger>().warning(std::format("failed to change the Renderer's presenting mode to {} ({})",
+            static_cast<int>(presenting_mode), SDL_GetError()));
    }
 
    Vector2<int> Renderer::resolution() const
    {
       Vector2<int> resolution;
       bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), &resolution.x, &resolution.y, nullptr) };
-      runtime_assert(succeeded, "failed to retrieve the Renderer's resolution ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to retrieve the Renderer's resolution ({})", SDL_GetError()));
 
       return resolution;
    }
@@ -289,8 +280,7 @@ namespace fro
    {
       SDL_RendererLogicalPresentation native_scaling_mode;
       bool const succeeded{ SDL_GetRenderLogicalPresentation(native_renderer_.get(), nullptr, nullptr, &native_scaling_mode) };
-      runtime_assert(succeeded, "failed to retrieve the Renderer's scaling mode ({})",
-         SDL_GetError());
+      runtime_assert(succeeded, std::format("failed to retrieve the Renderer's scaling mode ({})", SDL_GetError()));
 
       switch (native_scaling_mode)
       {

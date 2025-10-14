@@ -56,7 +56,7 @@ namespace fro
          [[nodiscard]] Row& operator[](std::size_t const index)
          {
             if (index > 2)
-               exception("index {} is outside the [0, 2] range!", index);
+               throw std::runtime_error{ std::format("index {} is outside the [0, 2] range!", index) };
 
             return data_[index];
          }
@@ -64,7 +64,7 @@ namespace fro
          [[nodiscard]] Row operator[](std::size_t const index) const
          {
             if (index > 2)
-               exception("index {} is outside the [0, 2] range!", index);
+               throw std::runtime_error{ std::format("index {} is outside the [0, 2] range!", index) };
 
             return data_[index];
          }

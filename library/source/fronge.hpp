@@ -44,7 +44,7 @@
 #include "services/scene_manager/scene_manager.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "services/window/window.hpp"
-#include "utility/exception.hpp"
+#include "utility/hash.hpp"
 #include "utility/is_in_tuple.hpp"
 #include "utility/lazy_hasher.hpp"
 #include "utility/mapped_tuple.hpp"

@@ -4,6 +4,7 @@
 #include "core.hpp"
 #include "events/observer/event_listener.hpp"
 #include "reference/referenceable.hpp"
+#include "services/locator.hpp"
 #include "services/renderer/renderer.hpp"
 #include "utility/unique_pointer.hpp"
 

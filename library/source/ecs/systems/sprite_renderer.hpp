@@ -3,6 +3,7 @@
 
 #include "core.hpp"
 #include "ecs/scene.hpp"
+#include "services/locator.hpp"
 #include "services/renderer/renderer.hpp"
 
 namespace fro

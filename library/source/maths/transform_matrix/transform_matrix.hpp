@@ -1,6 +1,7 @@
 #ifndef TRANSFORM_MATRIX_HPP
 #define TRANSFORM_MATRIX_HPP
 
+#include "core.hpp"
 #include "maths/matrix.hpp"
 #include "maths/vector2.hpp"
 

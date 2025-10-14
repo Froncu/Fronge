@@ -12,12 +12,6 @@
 
 namespace fro
 {
-   template <std::stacktrace::size_type StackTraceDepth, typename... Arguments>
-   [[noreturn]] void exception(std::format_string<Arguments...>, Arguments&&...);
-
-   template <typename Message>
-   [[noreturn]] void exception(Message&&);
-
    class Locator final
    {
       public:
@@ -53,7 +47,7 @@ namespace fro
          {
             auto const service_index{ service_indices_.find(type_index<Service>()) };
             if (service_index == service_indices_.end())
-               exception("attempted to get a service that hasn't been provided");
+               throw std::runtime_error{ "attempted to get a service that hasn't been provided" };
 
             return *static_cast<Service* const>(services_[service_index->second].get());
          }

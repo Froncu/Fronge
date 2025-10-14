@@ -5,39 +5,52 @@
 #include "core.hpp"
 #include "froch.hpp"
 
+namespace std
+{
+   template <>
+   struct hash<source_location>
+   {
+      [[nodiscard]] std::size_t operator()(source_location const& location) const noexcept;
+   };
+
+   template <>
+   struct equal_to<source_location>
+   {
+      [[nodiscard]] bool operator()(source_location const& location_a, source_location const& location_b) const noexcept;
+   };
+}
+
 namespace fro
 {
    class Logger final
    {
-      protected:
-         enum class Type
-         {
-            INFO,
-            WARNING,
-            ERROR
-         };
+      enum class Type
+      {
+         INFO,
+         WARNING,
+         ERROR
+      };
 
-      private:
-         struct Payload final
-         {
-            Type type;
-            bool engine_level;
-            std::stacktrace_entry location;
-            std::string message;
-         };
+      struct Payload final
+      {
+         Type type;
+         bool engine_level;
+         std::source_location location;
+         std::string message;
+      };
 
-         struct LogInfo final
-         {
-            bool once;
-            Payload payload;
-         };
+      struct LogInfo final
+      {
+         bool once;
+         Payload payload;
+      };
 
       public:
          Logger() = default;
          Logger(Logger const&) = delete;
          Logger(Logger&&) = delete;
 
-         FRO_API ~Logger();
+         ~Logger();
 
          Logger& operator=(Logger const&) = delete;
          Logger& operator=(Logger&&) = delete;
@@ -45,36 +58,17 @@ namespace fro
          FRO_API void register_engine_source_root(std::filesystem::path user_root);
          FRO_API void register_source_root(std::filesystem::path user_root, std::filesystem::path compile_root);
 
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void info(std::format_string<Arguments...> const format, Arguments&&... arguments)
+         template <typename Message>
+         void info(Message&& message, bool const once = false, std::source_location location = std::source_location::current())
          {
             {
                std::lock_guard const lock{ mutex_ };
                log_queue_.push({
-                  .once{ false },
+                  .once{ once },
                   .payload{
                      .type{ Type::INFO },
                      .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void info(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ false },
-                  .payload{
-                     .type{ Type::INFO },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
+                     .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -83,74 +77,18 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void info_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
+         template <typename Message>
+         void warning(Message&& message, bool const once = false,
+            std::source_location location = std::source_location::current())
          {
             {
                std::lock_guard const lock{ mutex_ };
                log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::INFO },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void info_once(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::INFO },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format("{}", message) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void warning(std::format_string<Arguments...> const format, Arguments&&... arguments)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ false },
+                  .once{ once },
                   .payload{
                      .type{ Type::WARNING },
                      .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void warning(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ false },
-                  .payload{
-                     .type{ Type::WARNING },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
+                     .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -159,112 +97,17 @@ namespace fro
             condition_.notify_one();
          }
 
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void warning_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
+         template <typename Message>
+         void error(Message&& message, bool const once = false, std::source_location location = std::source_location::current())
          {
             {
                std::lock_guard const lock{ mutex_ };
                log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::WARNING },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void warning_once(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::WARNING },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format("{}", message) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void error(std::format_string<Arguments...> const format, Arguments&&... arguments)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ false },
+                  .once{ once },
                   .payload{
                      .type{ Type::ERROR },
                      .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void error(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ false },
-                  .payload{
-                     .type{ Type::ERROR },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format("{}", message) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename... Arguments>
-         void error_once(std::format_string<Arguments...> const format, Arguments&&... arguments)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::ERROR },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
-                     .message{ std::format(format, std::forward<Arguments>(arguments)...) }
-                  }
-               });
-            }
-
-            condition_.notify_one();
-         }
-
-         template <std::stacktrace::size_type StackTraceDepth = 0, typename Message>
-         void error_once(Message&& message)
-         {
-            {
-               std::lock_guard const lock{ mutex_ };
-               log_queue_.push({
-                  .once{ true },
-                  .payload{
-                     .type{ Type::ERROR },
-                     .engine_level{ ENGINE },
-                     .location{ location(StackTraceDepth) },
+                     .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }
                });
@@ -274,13 +117,11 @@ namespace fro
          }
 
       private:
-         [[nodiscard]] FRO_API static std::stacktrace_entry location(std::stacktrace::size_type stack_trace_depth = 0);
-
-         FRO_API void log(Payload const& payload);
-         FRO_API void log_once(Payload const& payload);
+         void log(Payload const& payload);
+         void log_once(Payload const& payload);
 
          std::vector<std::pair<std::filesystem::path, std::filesystem::path>> source_roots_;
-         std::unordered_set<std::stacktrace_entry> stacktrace_entries_{};
+         std::unordered_set<std::source_location> location_entries_{};
 
          bool run_thread_{ true };
          std::queue<LogInfo> log_queue_{};

@@ -4,7 +4,6 @@
 #include "arithmetic.hpp"
 #include "froch.hpp"
 #include "resulting_component.hpp"
-#include "utility/exception.hpp"
 
 namespace fro
 {
@@ -28,7 +27,7 @@ namespace fro
                return y;
 
             default:
-               exception("index {} is outside the [0, 1] range!", index);
+               throw std::runtime_error{ std::format("index {} is outside the [0, 1] range!", index) };
          }
       }
 
@@ -43,7 +42,7 @@ namespace fro
                return y;
 
             default:
-               exception("index {} is outside the [0, 1] range!", index);
+               throw std::runtime_error{ std::format("index {} is outside the [0, 1] range!", index) };
          }
       }
 

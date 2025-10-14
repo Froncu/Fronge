@@ -1,6 +1,5 @@
 #include "froch.hpp"
 #include "id.hpp"
-#include "utility/exception.hpp"
 
 namespace fro
 {
@@ -39,7 +38,7 @@ namespace fro
          return *this;
 
       if (generator_ not_eq other.generator_)
-         exception("cannot move assign ID with different generators");
+         throw std::runtime_error{ "cannot move assign ID with different generators" };
 
       free_value();
       value_ = other.value_;

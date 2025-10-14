@@ -17,8 +17,7 @@ namespace fro
          [](ID::InternalValue const id)
          {
             SDL_Gamepad* native_gamepad{ SDL_OpenGamepad(id) };
-            runtime_assert(native_gamepad, "failed to open a Gamepad with ID {} ({})",
-               id, SDL_GetError());
+            runtime_assert(native_gamepad, std::format("failed to open a Gamepad with ID {} ({})", id, SDL_GetError()));
 
             return native_gamepad;
          }(id),
@@ -30,8 +29,7 @@ namespace fro
    ID::InternalValue Gamepad::id() const
    {
       ID::InternalValue const id{ SDL_GetGamepadID(native_gamepad_.get()) };
-      runtime_assert(id, "failed to get the ID of a Gamepad ({})",
-         SDL_GetError());
+      runtime_assert(id, std::format("failed to get the ID of a Gamepad ({})", SDL_GetError()));
 
       return id;
    }
@@ -44,8 +42,8 @@ namespace fro
    void Gamepad::assign_user_input_id(int user_input_id) const
    {
       bool const succeeded{ SDL_SetGamepadPlayerIndex(native_gamepad_.get(), user_input_id) };
-      runtime_assert(succeeded, "failed to assign UserInput{} to Gamepad{} ({})",
-         user_input_id, id(), SDL_GetError());
+      runtime_assert(succeeded,
+         std::format("failed to assign UserInput{} to Gamepad{} ({})", user_input_id, id(), SDL_GetError()));
    }
 
    // bool Gamepad::rumble(std::uint16_t const low_frequency, std::uint16_t const high_frequency,

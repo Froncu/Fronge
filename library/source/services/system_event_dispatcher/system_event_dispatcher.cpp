@@ -3,6 +3,7 @@
 #include "input/input.hpp"
 #include "input/input_conversions.hpp"
 #include "services/editor_ui/editor_ui.hpp"
+#include "services/locator.hpp"
 #include "system_event_dispatcher.hpp"
 
 namespace fro

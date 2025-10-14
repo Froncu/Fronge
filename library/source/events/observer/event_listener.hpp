@@ -4,7 +4,6 @@
 #include "dispatchable.hpp"
 #include "event_dispatcher.hpp"
 #include "froch.hpp"
-#include "utility/exception.hpp"
 
 namespace fro
 {
@@ -24,7 +23,7 @@ namespace fro
             : on_notify_{ std::move(on_notify) }
          {
             if (not on_notify_)
-               exception("the on_notify callback cannot be a null!");
+               throw std::runtime_error{ "the on_notify callback cannot be null!" };
 
             (subscribe(event_dispatchers), ...);
          }
@@ -96,7 +95,7 @@ namespace fro
          EventListener& operator=(CallbackType on_notify)
          {
             if (not on_notify)
-               exception("the on_notify callback cannot be a nullptr!");
+               throw std::runtime_error{ "the on_notify callback cannot be a nullptr!" };
 
             on_notify_ = std::move(on_notify);
             return *this;

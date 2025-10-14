@@ -7,6 +7,7 @@
 #include "identifier/id.hpp"
 #include "maths/vector2.hpp"
 #include "reference/referenceable.hpp"
+#include "services/locator.hpp"
 #include "services/system_event_dispatcher/system_event_dispatcher.hpp"
 #include "utility/variant_visitor.hpp"
 
