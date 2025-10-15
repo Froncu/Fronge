@@ -89,19 +89,19 @@ namespace fro
             output_stream = &std::cout;
       }
 
-      std::string_view esc_sequence;
+      std::string_view escape_sequence;
       switch (payload.type)
       {
          case Type::INFO:
-            esc_sequence = payload.engine_level ? "1;2;36;40" : "1;36;40";
+            escape_sequence = payload.engine_level ? "1;2;36;40" : "1;36;40";
             break;
 
          case Type::WARNING:
-            esc_sequence = payload.engine_level ? "1;2;33;40" : "1;33;40";
+            escape_sequence = payload.engine_level ? "1;2;33;40" : "1;33;40";
             break;
 
          case Type::ERROR:
-            esc_sequence = payload.engine_level ? "1;2;31;40" : "1;31;40";
+            escape_sequence = payload.engine_level ? "1;2;31;40" : "1;31;40";
             break;
       }
 
@@ -119,28 +119,21 @@ namespace fro
       else
          source_file_location = "unknown source file location";
 
-      std::time_t const now{ std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) };
-      std::tm local_time;
-      localtime_s(&local_time, &now);
-
-      std::ostringstream time_stream;
-      time_stream << std::put_time(&local_time, "%H:%M:%S");
-
       // TODO: remove this when MinGW works with std::println
       if constexpr (MINGW)
          *output_stream << std::format(
-            "\033[{}m>> {}\n[{}] {:6}: {}\033[0m\n",
-            esc_sequence,
+            "\033[{}m>> {}\n[{:%T}] {:6}: {}\033[0m\n",
+            escape_sequence,
             source_file_location,
-            time_stream.str(),
+            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
             payload.engine_level ? "FRONGE" : "APP",
             payload.message);
       else
          std::println(*output_stream,
-            "\033[{}m>> {}\n[{}] {:6}: {}\033[0m",
-            esc_sequence,
+            "\033[{}m>> {}\n[{:%T}] {:6}: {}\033[0m",
+            escape_sequence,
             source_file_location,
-            time_stream.str(),
+            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()),
             payload.engine_level ? "FRONGE" : "APP",
             payload.message);
    }
