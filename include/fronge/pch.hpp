@@ -1,0 +1,45 @@
+#ifndef PCH_HPP
+#define PCH_HPP
+
+#include <algorithm>
+#include <array>
+#include <chrono>
+#include <cmath>
+#include <compare>
+#include <concepts>
+#include <condition_variable>
+#include <condition_variable>
+#include <cstdint>
+#include <cstring>
+#include <deque>
+#include <filesystem>
+#include <format>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <numbers>
+#include <numeric>
+#include <optional>
+#include <print>
+#include <queue>
+#include <ranges>
+#include <set>
+#include <source_location>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <thread>
+#include <thread>
+#include <tuple>
+#include <typeindex>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <variant>
+#include <vector>
+
+#endif
