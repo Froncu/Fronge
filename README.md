@@ -4,24 +4,29 @@ A modern 2D game engine written in C++23, featuring custom solutions across the 
 
 ## Features
 
-- **Custom ECS Architecture**: High-performance Entity Component System built on sparse set data structures for optimal cache efficiency and iteration speed.
-- **Integrated Physics**: Custom physics system designed to work seamlessly with the ECS architecture.
-- **Flexible Input System**: Keyboard and gamepad inputs are routed to per-user controllers, allowing dynamic device assignment and customizable action mappings.
-- **Thread-Safe Logging**: Centralized logging class ensuring safe access from multiple threads. Supports source-directory mapping.
-- **Smart References**: Pointer-like class that automatically updates its address when the object it points to is moved or becomes `nullptr` if the object is destroyed.
-- **Event System**: Event listener and dispatcher classes for decoupling systems through event handling.
+- **Custom ECS Architecture** built on sparse set data structures for optimal cache efficiency and iteration speed.
+- **Integrated Physics** system designed to work seamlessly with the ECS architecture.
+- **Flexible Input System** that routes keyboard and gamepad inputs to per-user controllers, allowing dynamic device assignment and customizable action mappings.
+- **Thread-Safe Logging** class ensuring safe access from multiple threads with support for source-directory mapping.
+- **Smart References** which are pointer-like class that automatically updates its address when the object it points to is moved or becomes `nullptr` if the object is destroyed.
+- **Event System** with listener and dispatcher classes for decoupling systems through event handling.
 
 ## Philosophy
 
 This engine is developed with three core principles:
 
-- **Learning by Building**: Relies only on minimal foundational libraries for platform and tooling support; everything else is built from scratch.
-- **Abstraction First**: The dependencies are wrapped behind clean, engine-specific interfaces to maintain flexibility and control over the API.
-- **Modern C++**: Written in C++23 with a focus on clean design, safety, and performance through modern language features. Future updates will explore C++26 to leverage compile-time reflection for serialization of components, scenes, and other engine data.
+- **Learning by Building**  
+Relies only on minimal foundational libraries for platform and tooling support; everything else is built from scratch.
+
+- **Abstraction First**  
+The dependencies are wrapped behind clean, engine-specific interfaces to maintain flexibility and control over the API.
+
+- **Modern C++**  
+Written in C++23 with a focus on clean design, safety, and performance through modern language features. Future updates will explore C++26 to leverage compile-time reflection for serialization of components, scenes, and other engine data.
 
 ## Dependencies
 
-- [SDL3](https://github.com/libsdl-org/SDL) - Core functionality (entry point, system events, input, windowing, ...)
+- [SDL3](https://github.com/libsdl-org/SDL) - Core functionality (entry point, system events, input, windowing, etc.)
 - [SDL3_image](https://github.com/libsdl-org/SDL_image) - Image loading support
 - [SDL3_ttf](https://github.com/libsdl-org/SDL_ttf) - Font rendering and text support
 - [Dear ImGui](https://github.com/ocornut/imgui) - Editor UI
@@ -30,7 +35,7 @@ Those are managed through my custom [vcpkg](https://github.com/microsoft/vcpkg) 
 
 ## Quickstart
 
-### Requirements
+### Prerequisites
 
 - C++23 compatible compiler
 - CMake 3.15 or higher
@@ -45,7 +50,7 @@ git clone https://github.com/Froncu/Fronge --recursive
 
 ### Configuring & Building
 
-The project includes CMake presets (`CMakePresets.json`) that configure vcpkg integration automatically. You can build using your preferred IDE or command line.
+The project includes CMake presets (`CMakePresets.json`) that configure vcpkg integration automatically. You can configure and build using your preferred IDE or command line.
 
 **Note:** If creating custom configurations, ensure they inherit from the provided `base`, `debug` and/or `release` preset to maintain proper vcpkg integration.
 
