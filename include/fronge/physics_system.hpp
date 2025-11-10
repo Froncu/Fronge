@@ -35,8 +35,8 @@ namespace fro
          PhysicsSystem& operator=(PhysicsSystem const&) = default;
          PhysicsSystem& operator=(PhysicsSystem&&) noexcept = default;
 
-         FRO_API void step(Scene const& scene, double delta_seconds);
-         FRO_API void render(Scene const& scene) const;
+         FRO_API void step(Scene& scene, double delta_seconds);
+         FRO_API void render(Scene& scene) const;
 
          FRO_API void change_positional_correction_percent(double percent);
          FRO_API void change_positional_correction_slop(double slop);

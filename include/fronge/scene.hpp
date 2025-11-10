@@ -137,11 +137,11 @@ namespace fro
          Scene& operator=(Scene const&) = delete;
          Scene& operator=(Scene&&) = default;
 
-         FRO_API [[nodiscard]] Entity& create_entity() const;
-         FRO_API void destroy_entity(Entity const& entity) const;
+         FRO_API [[nodiscard]] Entity& create_entity();
+         FRO_API void destroy_entity(Entity const& entity);
 
          template <typename OwnedComponents, typename ObservedComponents>
-         Group<OwnedComponents, ObservedComponents>& group() const
+         Group<OwnedComponents, ObservedComponents>& group()
          {
             using GroupType = Group<OwnedComponents, ObservedComponents>;
 
@@ -157,13 +157,10 @@ namespace fro
       private:
          Scene() = default;
 
-         mutable MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
-         // TODO: the groups would benefit if this was a vector of Entities instead of pointers to them
-         // or if the Entity class was just a wrapper around a number with its current methods moved to
-         // the Scene class
-         mutable std::vector<std::unique_ptr<Entity>> entities_{};
-         mutable std::vector<ID::InternalValue> destroy_queue_{};
-         mutable std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
+         MappedTuple<ComponentSparseSet, Components>::Type component_sparse_sets_{};
+         std::vector<std::unique_ptr<Entity>> entities_{};
+         std::vector<ID::InternalValue> destroy_queue_{};
+         std::unordered_map<std::type_index, std::unique_ptr<BaseGroup>> groups_{};
    };
 }
 

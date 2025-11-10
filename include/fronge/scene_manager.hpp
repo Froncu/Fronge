@@ -21,7 +21,7 @@ namespace fro
          SceneManager& operator=(SceneManager const&) = delete;
          SceneManager& operator=(SceneManager&&) noexcept = default;
 
-         FRO_API Scene const& add(std::string name);
+         FRO_API Scene& add();
 
          FRO_API void update(double delta_seconds);
          FRO_API void fixed_update(double fixed_delta_seconds);
@@ -29,7 +29,7 @@ namespace fro
          FRO_API void execute_queued();
 
       private:
-         std::unordered_map<std::string, Scene> scenes_{};
+         std::vector<Scene> scenes_{};
 
          SpriteRenderer sprite_renderer_{};
          PhysicsSystem physics_system_{};
