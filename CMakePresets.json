@@ -8,7 +8,7 @@
          "cacheVariables" : {
             "CMAKE_TOOLCHAIN_FILE" : "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
             "VCPKG_MANIFEST_DIR" : "${sourceDir}",
-            "VCPKG_DEFAULT_STATIC" : true
+            "VCPKG_LIBRARY_LINKAGE" : "static"
          }
       },
       {
