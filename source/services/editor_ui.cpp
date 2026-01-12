@@ -88,10 +88,12 @@ namespace fro
    {
       auto& render_context{ Locator::get<Renderer>() };
       Renderer::ScalingMode const scaling_mode{ render_context.scaling_mode() };
+      Vector2 const resolution{ render_context.resolution() };
       render_context.change_scaling_mode(Renderer::ScalingMode::NONE);
       ImGui::Render();
       ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), render_context.native_renderer_.get());
       render_context.change_scaling_mode(scaling_mode);
+      render_context.change_resolution(resolution);
 
       if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) == ImGuiConfigFlags_ViewportsEnable)
       {
