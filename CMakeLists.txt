@@ -17,7 +17,7 @@ find_package(imgui CONFIG REQUIRED COMPONENTS imgui-static)
 
 file(GLOB_RECURSE FRO_SOURCE_FILES CONFIGURE_DEPENDS source/*.cpp)
 list(FILTER FRO_SOURCE_FILES EXCLUDE REGEX entry\\.cpp)
-if(FRO_BUILD_SHARED)
+if(FRO_BUILD_SHARED AND NOT ${EMSCRIPTEN})
    add_library(${PROJECT_NAME} SHARED ${FRO_SOURCE_FILES})
 else()
    add_library(${PROJECT_NAME} STATIC ${FRO_SOURCE_FILES})
@@ -27,18 +27,22 @@ target_include_directories(${PROJECT_NAME}
    PUBLIC include
    PRIVATE source)
 
-target_precompile_headers(${PROJECT_NAME}
-   PRIVATE include/${PROJECT_NAME}/pch.hpp)
+if(NOT ${EMSCRIPTEN})
+   target_precompile_headers(${PROJECT_NAME}
+      PRIVATE include/${PROJECT_NAME}/pch.hpp)
+endif()
 
 target_compile_definitions(${PROJECT_NAME}
    PUBLIC $<$<BOOL:${FRO_BUILD_SHARED}>:FRO_SHARED>
    PRIVATE FRO_ENGINE
-   PRIVATE FRO_COMPILE_SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+   PRIVATE FRO_COMPILE_SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}"
+   PUBLIC $<$<BOOL:${EMSCRIPTEN}>:-pthread>)
 
 target_link_libraries(${PROJECT_NAME}
    PRIVATE SDL3::SDL3-static
    PRIVATE SDL3_image::SDL3_image-static
-   PRIVATE imgui::imgui)
+   PRIVATE imgui::imgui
+   PUBLIC $<$<BOOL:${EMSCRIPTEN}>:-sASSERTIONS -sUSE_PTHREADS -sPTHREAD_POOL_SIZE=2 -sALLOW_MEMORY_GROWTH>)
 
 set_project_defaults(${PROJECT_NAME})
 generate_umbrella_header(${PROJECT_NAME}
