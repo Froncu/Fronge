@@ -3,6 +3,8 @@
 
 #include "fronge/api.hpp"
 
+union SDL_Event;
+
 namespace fro
 {
    class Application
@@ -13,10 +15,11 @@ namespace fro
 
          FRO_API virtual ~Application();
 
-         Application& operator=(Application const&) = default;
-         Application& operator=(Application&&) = default;
+         Application& operator=(Application const&) = delete;
+         Application& operator=(Application&&) = delete;
 
-         virtual void run() = 0;
+         [[nodiscard]] virtual bool tick() = 0;
+         FRO_API void process_event(SDL_Event& event);
 
       protected:
          FRO_API Application();

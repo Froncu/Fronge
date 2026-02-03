@@ -12,7 +12,6 @@
 #include "fronge/components.hpp"
 #include "fronge/constants.hpp"
 #include "fronge/dispatchable.hpp"
-#include "fronge/editor_ui.hpp"
 #include "fronge/entity.hpp"
 #include "fronge/event_dispatcher.hpp"
 #include "fronge/event_listener.hpp"

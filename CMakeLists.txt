@@ -9,7 +9,6 @@ option(FRO_BUILD_SHARED "Build ${PROJECT_NAME} as shared library" ${BUILD_SHARED
 
 find_package(SDL3 CONFIG REQUIRED COMPONENTS SDL3-static)
 find_package(SDL3_image CONFIG REQUIRED COMPONENTS SDL3_image-static)
-find_package(imgui CONFIG REQUIRED COMPONENTS imgui-static)
 
 # Engine library - contains all core engine functionality
 # Can be built as SHARED or STATIC depending on FRO_BUILD_SHARED
@@ -36,9 +35,11 @@ target_compile_definitions(${PROJECT_NAME}
    PRIVATE FRO_COMPILE_SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 target_link_libraries(${PROJECT_NAME}
-   PRIVATE SDL3::SDL3-static
-   PRIVATE SDL3_image::SDL3_image-static
-   PRIVATE imgui::imgui)
+   PRIVATE SDL3::SDL3
+   PRIVATE SDL3_image::SDL3_image)
+
+target_link_options(${PROJECT_NAME}
+   PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/EXPORT:SDL_RunApp /EXPORT:SDL_EnterAppMainCallbacks>)
 
 set_project_defaults(${PROJECT_NAME})
 generate_umbrella_header(${PROJECT_NAME}
@@ -56,6 +57,6 @@ add_library(${FRO_ENTRY_NAME} STATIC
 
 target_link_libraries(${FRO_ENTRY_NAME}
    PUBLIC ${PROJECT_NAME}
-   PRIVATE SDL3::SDL3-static)
+   PRIVATE SDL3::Headers)
 
 set_project_defaults(${FRO_ENTRY_NAME})

@@ -6,10 +6,6 @@
       {
          "name": "sdl3-image",
          "features": ["jpeg", "png"]
-      },
-      {
-         "name": "imgui",
-         "features": ["sdl3-renderer-binding", "sdl3-binding", "docking-experimental"]
       }
    ]
 }

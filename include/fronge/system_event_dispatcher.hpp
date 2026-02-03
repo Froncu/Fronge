@@ -30,14 +30,13 @@ namespace fro
          SystemEventDispatcher& operator=(SystemEventDispatcher const&) = delete;
          SystemEventDispatcher& operator=(SystemEventDispatcher&&) = default;
 
-         FRO_API void poll_events();
+         FRO_API void process_event(SDL_Event& event);
 
          EventDispatcher<WindowEvent const> window_event{};
          EventDispatcher<MouseButtonEvent const> mouse_button_event{};
          EventDispatcher<KeyEvent const> key_event{};
          EventDispatcher<GamepadConnectionEvent const> gamepad_connection_event{};
          EventDispatcher<GamepadInputEvent const> gamepad_input_event{};
-         EventDispatcher<SDL_Event const> native_event{};
 
       private:
          std::unordered_map<std::uint32_t, GamepadStickValues> previous_gamepad_stick_values_{};

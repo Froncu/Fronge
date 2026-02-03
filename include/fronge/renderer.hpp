@@ -24,12 +24,8 @@ namespace fro
       std::uint8_t alpha;
    };
 
-   class EditorUI;
-
    class Renderer final : public Referenceable
    {
-      friend EditorUI;
-
       public:
          enum class ScalingMode
          {

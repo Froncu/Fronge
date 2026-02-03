@@ -1,7 +1,6 @@
 #include <SDL3/SDL.h>
 
 #include "fronge/application.hpp"
-#include "fronge/editor_ui.hpp"
 #include "fronge/entity.hpp"
 #include "fronge/input_manager.hpp"
 #include "fronge/locator.hpp"
@@ -19,6 +18,11 @@ namespace fro
       SDL_INIT_GAMEPAD
    };
 
+   void Application::process_event(SDL_Event& event)
+   {
+      Locator::get<SystemEventDispatcher>().process_event(event);
+   }
+
    Application::Application()
    {
       bool const succeeded{ SDL_InitSubSystem(INITIALIZATION_FLAGS) };
@@ -29,7 +33,6 @@ namespace fro
       Locator::provide<InputManager>();
       Locator::provide<Window>();
       Locator::provide<Renderer>();
-      Locator::provide<EditorUI>();
       Locator::provide<SceneManager>();
    }
 
