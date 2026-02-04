@@ -18,11 +18,6 @@ namespace fro
       SDL_INIT_GAMEPAD
    };
 
-   void Application::process_event(SDL_Event& event)
-   {
-      Locator::get<SystemEventDispatcher>().process_event(event);
-   }
-
    Application::Application()
    {
       bool const succeeded{ SDL_InitSubSystem(INITIALIZATION_FLAGS) };
@@ -42,5 +37,10 @@ namespace fro
 
       SDL_QuitSubSystem(INITIALIZATION_FLAGS);
       SDL_Quit();
+   }
+
+   void Application::process_event(SDL_Event& event)
+   {
+      Locator::get<SystemEventDispatcher>().process_event(event);
    }
 }

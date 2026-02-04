@@ -12,7 +12,7 @@ find_package(SDL3_image CONFIG REQUIRED COMPONENTS SDL3_image-static)
 
 # Engine library - contains all core engine functionality
 # Can be built as SHARED or STATIC depending on FRO_BUILD_SHARED
-# Direct linking is possible but not recommended; use the entry point library instead
+# Direct linking is possible but not recommended; use the entry point library instead unless you know what you are doing
 
 file(GLOB_RECURSE FRO_SOURCE_FILES CONFIGURE_DEPENDS source/*.cpp)
 list(FILTER FRO_SOURCE_FILES EXCLUDE REGEX entry\\.cpp)
