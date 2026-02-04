@@ -67,7 +67,7 @@ namespace fro
                   .once{ once },
                   .payload{
                      .type{ Type::INFO },
-                     .engine_level{ ENGINE },
+                     .engine_level{ ENGINE_LEVEL },
                      .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }
@@ -87,7 +87,7 @@ namespace fro
                   .once{ once },
                   .payload{
                      .type{ Type::WARNING },
-                     .engine_level{ ENGINE },
+                     .engine_level{ ENGINE_LEVEL },
                      .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }
@@ -106,7 +106,7 @@ namespace fro
                   .once{ once },
                   .payload{
                      .type{ Type::ERROR },
-                     .engine_level{ ENGINE },
+                     .engine_level{ ENGINE_LEVEL },
                      .location{ std::move(location) },
                      .message{ std::format("{}", message) }
                   }

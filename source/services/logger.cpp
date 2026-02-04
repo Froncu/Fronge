@@ -55,12 +55,12 @@ namespace fro
 
    void Logger::register_engine_source_root(std::filesystem::path user_root)
    {
-      register_source_root(std::move(user_root), ENGINE_COMPILE_SOURCE_PATH.data());
+      register_source_root(std::move(user_root), COMPILE_SOURCE_PATH.data());
    }
 
    void Logger::register_source_root(std::filesystem::path user_root, std::filesystem::path compile_root)
    {
-      if (not std::filesystem::exists(user_root))
+      if (not exists(user_root))
          throw std::runtime_error{ "the specified user source root must exist" };
 
       if (compile_root.empty())
@@ -109,12 +109,12 @@ namespace fro
       for (auto const& [user_root, compile_root] : source_roots_)
          if (std::ranges::mismatch(compile_root, path).in1 == compile_root.end())
          {
-            path = user_root / std::filesystem::relative(path, compile_root);
+            path = user_root / relative(path, compile_root);
             break;
          }
 
       std::string source_file_location;
-      if (std::filesystem::exists(path))
+      if (exists(path))
          source_file_location = std::format("{}({})", path.lexically_normal().string(), payload.location.line());
       else
          source_file_location = "unknown source file location";

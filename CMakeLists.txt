@@ -31,8 +31,11 @@ target_precompile_headers(${PROJECT_NAME}
 
 target_compile_definitions(${PROJECT_NAME}
    PUBLIC $<$<BOOL:${FRO_BUILD_SHARED}>:FRO_SHARED>
-   PRIVATE FRO_ENGINE
+   PRIVATE FRO_ENGINE_LEVEL
    PRIVATE FRO_COMPILE_SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+
+target_compile_options(${PROJECT_NAME}
+   PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-fvisibility=hidden -fvisibility-inlines-hidden>)
 
 target_link_libraries(${PROJECT_NAME}
    PRIVATE SDL3::SDL3

@@ -11,11 +11,11 @@ namespace fro
    auto constexpr DEBUG{ true };
    #endif
 
-   #ifdef FRO_ENGINE
-   auto constexpr ENGINE{ true };
-   std::string_view constexpr ENGINE_COMPILE_SOURCE_PATH{ FRO_COMPILE_SOURCE_PATH };
+   #ifdef FRO_ENGINE_LEVEL
+   auto constexpr ENGINE_LEVEL{ true };
+   std::string_view constexpr COMPILE_SOURCE_PATH{ FRO_COMPILE_SOURCE_PATH };
    #else
-   auto constexpr ENGINE{ false };
+   auto constexpr ENGINE_LEVEL{ false };
    #endif
 
    #ifdef __MINGW32__
