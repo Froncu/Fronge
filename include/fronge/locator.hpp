@@ -47,8 +47,9 @@ namespace fro
          {
             auto const service_index{ service_indices_.find(type_index<Service>()) };
             if (service_index == service_indices_.end())
-               throw std::runtime_error{ "attempted to get a service that hasn't been provided" };
-
+               throw std::runtime_error{
+                  std::format("attempted to get \"{}\" which hasn't been provided", typeid(Service).name())
+               };
             return *static_cast<Service* const>(services_[service_index->second].get());
          }
 
